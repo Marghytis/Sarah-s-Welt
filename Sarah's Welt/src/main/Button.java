@@ -6,6 +6,8 @@ import util.Quad;
 
 public class Button extends Quad{
 	
+	//thats a test
+	
 	public static StackedTexture tex = (StackedTexture) Texture.MENU_BUTTON;
 	
 	public String name;
