@@ -12,12 +12,12 @@ import org.lwjgl.opengl.GL11;
 
 import util.Quad;
 
-public class World{
+public class WorldView{
 	
 	public static final int fieldSize = 2000;
 	public static final int measureScale = 50;
 	
-	public static Column[] columns = new Column[3];
+	public static Sector[] Sectors = new Sector[3];
 	
 	public static int X;
 	public static float offsetX;
@@ -34,7 +34,7 @@ public class World{
 	
 	public static void tick(float dTime){
 		player.tick(dTime);
-		toColumnsAt((int)(player.pos.x/fieldSize) - (player.pos.x < 0 ? 1 : 0));
+		toSectorsAt((int)(player.pos.x/fieldSize) - (player.pos.x < 0 ? 1 : 0));
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
 			save();
@@ -46,7 +46,7 @@ public class World{
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(- player.pos.x + (Window.WIDTH/2.0f), - player.pos.y + (Window.HEIGHT/2.0f), 0);
 		GL11.glColor3f(0, 0, 0);
-		for(Column c : columns){
+		for(Sector c : Sectors){
 			c.render();
 		}
 
@@ -63,35 +63,35 @@ public class World{
 		player.nextPos.set(10, 500);
 		things = new ArrayList<>();
 		things.add(player);
-		(columns[0] = new Column(-1)).generateLeft(new Point(0, 300));
-		(columns[1] = new Column(0)).generateRight(new Point(0, 300));
-		(columns[2] = new Column(1)).generateRight(new Point(Column.columnWidth, 300));
+		(Sectors[0] = new Sector(-1)).generateLeft(new Point(0, 300));
+		(Sectors[1] = new Sector(0)).generateRight(new Point(0, 300));
+		(Sectors[2] = new Sector(1)).generateRight(new Point(Sector.SectorWidth, 300));
 	}
 	
-	public static void toColumnsAt(int x){
+	public static void toSectorsAt(int x){
 		if(X == x) return;
 		while(x > rightRim){
-			createColumn()
+			createSector()
 			rightRim++;
 		}
 		while(X < x){
 			X++;
-//			columns[0].save();
-			columns[0] = columns[1];
-			columns[1] = columns[2];
-			columns[2] = createColumn(X + 1);
+//			Sectors[0].save();
+			Sectors[0] = Sectors[1];
+			Sectors[1] = Sectors[2];
+			Sectors[2] = createSector(X + 1);
 		}
 		while(X > x){
 			X--;
-//			columns[2].save();
-			columns[2] = columns[1];
-			columns[1] = columns[0];
-			columns[0] = createColumn(X - 1);
+//			Sectors[2].save();
+			Sectors[2] = Sectors[1];
+			Sectors[1] = Sectors[0];
+			Sectors[0] = createSector(X - 1);
 		}
 	}
 	
-	public static Column createColumn(int fX){
-		Column c = new Column(fX);
+	public static Sector createSector(int fX){
+		Sector c = new Sector(fX);
 		if(fX > rightRim){
 			c.generate();//right
 			rightRim++;
@@ -104,16 +104,16 @@ public class World{
 		return c;
 	}
 	
-	public static Column getColumn(int fX){
-		for(Column c : columns){
+	public static Sector getSector(int fX){
+		for(Sector c : Sectors){
 			if(c.x == fX){
 				return c;
 			}
 		}
-		return createColumn(fX);
+		return createSector(fX);
 	}
 	
-	public static void removeColumn(int fX){
+	public static void removeSector(int fX){
 		//TODO
 		for(int i = 0; i < lines.get(0).vertices.size() && lines.get(0).vertices.get(i).x < fX*fieldSize; i++){
 			lines.get(fX).vertices.get(i).remove();
@@ -122,7 +122,7 @@ public class World{
 	}
 	
 	public static void save(){
-		//save columns TODO
+		//save Sectors TODO
 	}
 	
 }

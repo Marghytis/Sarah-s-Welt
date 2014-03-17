@@ -98,10 +98,10 @@ public abstract class WalkingThing extends Thing{
 //		System.out.println("-- Player position: " + pos + "  Thought next position: " + nextPos);
 		//TODO die Anzahl der durchsuchten Spalten noch verkleinern
 		float[] intersection = null;
-		for(Column column : World.columns){//	iterate columns
+		for(Sector sector : World.columns){//	iterate columns
 			for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
-					for(Line l : column.lines[mat.ordinal()-1]){//	iterate lines
+					for(Line l : sector.lines[mat.ordinal()-1]){//	iterate lines
 						Node n = l.start;
 						do {
 							Point inters = new Point();

@@ -13,19 +13,19 @@ import org.lwjgl.opengl.GL11;
 import resources.Texture;
 import util.Tessellator;
 
-public class Column{
+public class Sector{
 	public static Tessellator tessellator = new Tessellator();
 	public static int columnWidth = 1000;
 	
 	public Random random;
 	
 	int x;
-	public Point generationPoint;//for next Column
+	public Point generationPoint;//for next Sector
 	
 	@SuppressWarnings("unchecked")
 	public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
 	
-	public Column(int x){
+	public Sector(int x){
 		this.x = x;
 		random = new Random(x*2);
 		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
