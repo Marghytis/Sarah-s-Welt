@@ -4,8 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 public class GL {
 	
-	//Test test
-
 	public static void color(float r, float g, float b, float a){
 		GL11.glColor4f(r, g, b, a);
 	}
