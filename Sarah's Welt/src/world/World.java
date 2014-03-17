@@ -19,7 +19,6 @@ public class World{
 	
 	public static Column[] columns = new Column[3];
 	
-	
 	public static int X;
 	public static float offsetX;
 	public static float offsetY;
