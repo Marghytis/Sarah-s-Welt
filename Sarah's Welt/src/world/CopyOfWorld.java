@@ -24,9 +24,9 @@ public class CopyOfWorld{
 	public static String name = "Test";
 
 	public static void tick(int delta){
-		Player.tick(delta);
-		if((int)Player.X/fieldSize != fX || (int)Player.Y/fieldSize != fY){
-			updateFields(((int)Player.X/fieldSize) - fX, ((int)Player.Y/fieldSize) - fY);
+		Character.tick(delta);
+		if((int)Character.X/fieldSize != fX || (int)Character.Y/fieldSize != fY){
+			updateFields(((int)Character.X/fieldSize) - fX, ((int)Character.Y/fieldSize) - fY);
 		}
 	}
 	
@@ -45,7 +45,7 @@ public class CopyOfWorld{
 			}
 		}
 		
-		(new Quad(Player.X-10, Player.Y-10, 20, 20)).draw();
+		(new Quad(Character.X-10, Character.Y-10, 20, 20)).draw();
 		
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}

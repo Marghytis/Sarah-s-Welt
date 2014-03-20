@@ -95,7 +95,7 @@ public abstract class WalkingThing extends Thing{
 	}
 	
 	public void collision(){
-//		System.out.println("-- Player position: " + pos + "  Thought next position: " + nextPos);
+//		System.out.println("-- Character position: " + pos + "  Thought next position: " + nextPos);
 		//TODO die Anzahl der durchsuchten Spalten noch verkleinern
 		float[] intersection = null;
 		for(Sector sector : World.columns){//	iterate columns

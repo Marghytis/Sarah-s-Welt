@@ -15,7 +15,8 @@ import util.Tessellator;
 
 public class Sector{
 	public static Tessellator tessellator = new Tessellator();
-	public static int columnWidth = 1000;
+	/**The width of one sector, always the same*/
+	public static int sectorWidth = 1000;
 	
 	public Random random;
 	
@@ -33,9 +34,9 @@ public class Sector{
 	
 	public void generate(){
 		if(x >= 0){
-			generateRight(World.columns[1].generationPoint);
+			generateRight(WorldView.sectors[1].generationPoint);
 		} else {
-			generateLeft(World.columns[1].generationPoint);
+			generateLeft(WorldView.sectors[1].generationPoint);
 		}
 	}
 	
@@ -46,12 +47,12 @@ public class Sector{
 		Point point = start;
 		float segmentLength = 20;
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs too! :D)
-		while(point.x >= x*columnWidth){
+		while(point.x >= x*sectorWidth){
 			float dx = -random.nextFloat()*20;
 			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
 
 			point.add(dx, dy);
-			if(point.x >= x*columnWidth){
+			if(point.x >= x*sectorWidth){
 				base.addPoints(new Point(point));
 			}
 		}
@@ -71,12 +72,12 @@ public class Sector{
 		float segmentLength = 20;
 
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs too! :D)
-		while(point.x <= (x+1)*columnWidth){
+		while(point.x <= (x+1)*sectorWidth){
 			float dx = random.nextFloat()*20;
 			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
 
 			point.add(dx, dy);
-			if(point.x <= (x+1)*columnWidth){
+			if(point.x <= (x+1)*sectorWidth){
 				base.addPoints(new Point(point));
 			}
 		}
@@ -92,7 +93,7 @@ public class Sector{
 		Line earth = new Line();
 		Line grass = new Line();
 
-		if(x >= World.X){
+		if(x >= WorldView.X){
 			Node n = base.end;
 			while(n.last != null) {
 				if(n.p.x - n.last.p.x > 0){
@@ -120,7 +121,7 @@ public class Sector{
 		//finalize the lines by adding the way back and closing each to a circle
 		grass.appendLine(earth, true); grass.closeCircle();
 		earth.appendLine(stone, true); earth.closeCircle();
-		stone.addPoints(new Point(this.x*columnWidth, 0), new Point(this.x*columnWidth + columnWidth, 0)); stone.closeCircle();
+		stone.addPoints(new Point(this.x*sectorWidth, 0), new Point(this.x*sectorWidth + sectorWidth, 0)); stone.closeCircle();
 		lines[2].add(grass);
 		lines[1].add(earth);
 		lines[0].add(stone);

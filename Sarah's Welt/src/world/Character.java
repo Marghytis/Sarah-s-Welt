@@ -3,12 +3,14 @@ package world;
 import org.lwjgl.input.Keyboard;
 
 
-public class Player extends WalkingThing{
+public class Character extends WalkingThing{
 	
-	public float keyAcc = 0.00005f;//the acceleration the Player experiences on the pressure of a movement key
+	public float keyAcc = 0.00005f;//the acceleration the Character experiences on the pressure of a movement key
 	
-	public Player(){
+	public Character(float x, float y){
 		super(1f, 0.5f);
+		pos.set(x, y);
+		nextPos.set(x, y);
 	}
 	
 	public void tick(float dTime){

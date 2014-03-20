@@ -99,7 +99,7 @@ public abstract class CopyOfWalkingThing extends Thing{
 	}
 	
 	public boolean collision(Point nextPos){
-		System.out.println("-- Player position: " + pos + "  Thought next position: " + nextPos);
+		System.out.println("-- Character position: " + pos + "  Thought next position: " + nextPos);
 		float[] intersection = lineCollision(pos, nextPos);
 		if(intersection != null){
 			System.out.println("-- Found collision: " + "( " + intersection[0] + " | " + intersection[1] + " )");
