@@ -16,14 +16,13 @@ public class World{
 	/**The scale factor from meters to pixel*/
 	public static final int measureScale = 50;
 	
-	/**The name of this World*/
 	public String name = "Empty";
-	/**The name of this World*/
 	public Character player;
 
 	public Point leftRimP, rightRimP;
 	public int leftRim, rightRim;
 	public WorldView view;
+	public boolean isActive = false;
 	
 	public World(String name){
 		this.name = name;
@@ -41,8 +40,8 @@ public class World{
 		//TODO Evelyn? add method code
 //		+set the position of the world view
 
-//		File f = new File("worlds/" + name + "/" + x + ".field"); so kannst du testen, ob eine Datei vorhanden ist
-//		if(!f.exists())return false;
+//		File f = new File("worlds/" + name + "/" + x + ".field"); 
+//		if(!f.exists())return false;	so kannst du testen, ob eine Datei vorhanden ist
 		return false;
 	}
 	
@@ -71,6 +70,12 @@ public class World{
 		return null;
 	}
 	
+	public Sector sectorAt(int pos){
+		//TODO call the sector from the database
+		//if its outside the rims, generate fresh terrain
+		return null;
+	}
+	
 	public class WorldView { 
 		
 		public Sector[] sectors = new Sector[3];
@@ -79,19 +84,21 @@ public class World{
 		public float offsetX;
 		public float offsetY;
 		
-		public List<Point> allPoints = new ArrayList<>();
-		
-		public List<Thing> things = new ArrayList<>();//the first thing always has to be the Character
-		
-		public Random leftRand = new Random(), rightRand = new Random();
-		
 		public void tick(float dTime){
 			player.tick(dTime);
-			tosectorsAt((int)(player.pos.x/fieldSize) - (player.pos.x < 0 ? 1 : 0));
+			int playerX = (int)(player.pos.x/Sector.WIDTH) - (player.pos.x < 0 ? 1 : 0);
+			if(playerX != xSector){
+				if(playerX == xSector - 1){
+					step(-1);
+				} else if (playerX == xSector + 1){
+					step(-1);
+				}
+				goTo(playerX);
+			}
 			
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
 				save();
-				Game.inWorld = false;
+				isActive = false;
 			}
 		}
 		
@@ -108,39 +115,32 @@ public class World{
 			(new Point((Window.WIDTH/2), (Window.HEIGHT/2))).draw();
 		}
 		
-		public void load(String name){
-			//TODO -- Add a file reading function
-			WorldView.name = name;
-			player = new Player();
-			player.pos.set(10, 500);
-			player.nextPos.set(10, 500);
-			things = new ArrayList<>();
-			things.add(player);
-			(sectors[0] = new Sector(-1)).generateLeft(new Point(0, 300));
-			(sectors[1] = new Sector(0)).generateRight(new Point(0, 300));
-			(sectors[2] = new Sector(1)).generateRight(new Point(Sector.sectorWidth, 300));
-		}
-		
-		public void tosectorsAt(int x){
-			if(xSector == x) return;
-			while(x > rightRim){
-				createSector()
-				rightRim++;
-			}
-			while(xSector < x){
-				X++;
-	//			sectors[0].save();
+		public void step(int one_or_minus_one){
+			if(one_or_minus_one == 1){
+				xSector++;
+				sectors[0].save();
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
-				sectors[2] = createSector(xSector + 1);
-			}
-			while(xSector > x){
-				X--;
-	//			sectors[2].save();
+				sectors[2] = sectorAt(xSector + 1);
+			} else if(one_or_minus_one == -1){
+				xSector--;
+				sectors[2].save();
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
-				sectors[0] = createSector(xSector - 1);
+				sectors[0] = sectorAt(xSector - 1);
+			} else {
+				System.out.println("ERROR: Method 'step(int one_or_minus_one)' in class 'WorldView'");
 			}
+		}
+		
+		public void goTo(int x){
+			xSector = x;
+			sectors[0].save();
+			sectors[1].save();
+			sectors[2].save();
+			sectors[0] = sectorAt(x - 1);
+			sectors[1] = sectorAt(x);
+			sectors[2] = sectorAt(x + 1);
 		}
 		
 		public Sector createSector(int fX){

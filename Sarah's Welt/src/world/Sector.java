@@ -16,7 +16,7 @@ import util.Tessellator;
 public class Sector{
 	public static Tessellator tessellator = new Tessellator();
 	/**The width of one sector, always the same*/
-	public static int sectorWidth = 1000;
+	public static final int WIDTH = 1000;
 	
 	public Random random;
 	
@@ -173,24 +173,24 @@ public class Sector{
 	
 	public void save(){
 		//TODO
-		(new File("worlds/" + name)).mkdirs();
-		try{
-			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("worlds/" + name + "/" + x + ".field")));
-			writer.write(lines.length + ""); writer.newLine();
-			
-			for(int i = 0; i < lines.length; i++){
-				writer.write(lines[i].mat.name.toUpperCase() + " ");
-				
-				for(int v = 0; v < lines[i].vertices.length; v++){
-					if(v > 0)writer.write("; ");
-					writer.write(lines[i].vertices[v].x + ";" + lines[i].vertices[v].y);
-				}
-				writer.newLine();
-			}
-			
-			writer.close();
-		} catch(IOException e){
-			e.printStackTrace();
-		}
+//		(new File("worlds/" + name)).mkdirs();
+//		try{
+//			BufferedWriter writer = new BufferedWriter(new FileWriter(new File("worlds/" + name + "/" + x + ".field")));
+//			writer.write(lines.length + ""); writer.newLine();
+//			
+//			for(int i = 0; i < lines.length; i++){
+//				writer.write(lines[i].mat.name.toUpperCase() + " ");
+//				
+//				for(int v = 0; v < lines[i].vertices.length; v++){
+//					if(v > 0)writer.write("; ");
+//					writer.write(lines[i].vertices[v].x + ";" + lines[i].vertices[v].y);
+//				}
+//				writer.newLine();
+//			}
+//			
+//			writer.close();
+//		} catch(IOException e){
+//			e.printStackTrace();
+//		}
 	}
 }
