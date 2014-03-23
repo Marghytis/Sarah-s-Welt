@@ -1,9 +1,5 @@
 package world;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,120 +10,30 @@ import resources.Texture;
 import util.Tessellator;
 
 public class Sector{
-	public static Tessellator tessellator = new Tessellator();
 	/**The width of one sector, always the same*/
 	public static final int WIDTH = 1000;
+	public static Tessellator tessellator = new Tessellator();
 	
 	public Random random;
 	
 	int x;
-	public Point generationPoint;//for next Sector
 	
 	@SuppressWarnings("unchecked")
 	public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
 	
 	public Sector(int x){
 		this.x = x;
-		random = new Random(x*2);
+		random = new Random(x);
 		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
 	}
 	
-	public void generate(){
-		if(x >= 0){
-			generateRight(WorldView.sectors[1].generationPoint);
-		} else {
-			generateLeft(WorldView.sectors[1].generationPoint);
-		}
-	}
-	
-	public void generateLeft(Point start){
-		//create the base outline of the world
-		Line base = new Line();
-		base.addPoints(start);
-		Point point = start;
-		float segmentLength = 20;
-//		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs too! :D)
-		while(point.x >= x*sectorWidth){
-			float dx = -random.nextFloat()*20;
-			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
-
-			point.add(dx, dy);
-			if(point.x >= x*sectorWidth){
-				base.addPoints(new Point(point));
-			}
-		}
-
-		//create grass, earth and stone with base line
-		generateFromBase(base);
-
-//		System.out.println(base.end.p);
-		generationPoint = base.end.p;
-	}
-	
-	public Point generateRight(Point start){
-		//create the base outline of the world
-		Line base = new Line();
-		base.addPoints(start);
-		Point point = start;
-		float segmentLength = 20;
-
-//		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs too! :D)
-		while(point.x <= (x+1)*sectorWidth){
-			float dx = random.nextFloat()*20;
-			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
-
-			point.add(dx, dy);
-			if(point.x <= (x+1)*sectorWidth){
-				base.addPoints(new Point(point));
-			}
-		}
-
-		//create grass, earth and stone with base line
-		generateFromBase(base);
-
-		return base.end.p;
-	}
-	
-	public void generateFromBase(Line base){
-		Line stone = new Line();
-		Line earth = new Line();
-		Line grass = new Line();
-
-		if(x >= WorldView.X){
-			Node n = base.end;
-			while(n.last != null) {
-				if(n.p.x - n.last.p.x > 0){
-					grass.addPoints(n.p);
-					earth.addPoints(n.p.x, n.p.y - 30);
-					stone.addPoints(n.p.x, n.p.y - 100);
-				}
-				n = n.last;
-			}
-		} else {
-			Node n = base.start;
-			
-			while(n.next != null) {
-				if(n.p.x - n.next.p.x > 0){
-					grass.addPoints(n.p);
-					earth.addPoints(n.p.x, n.p.y - 30);
-					stone.addPoints(n.p.x, n.p.y - 100);
-				} else {
-					stone.addPoints(n.p.x, n.p.y);
-				}
-				n = n.next;
-			}
-		}
-
-		//finalize the lines by adding the way back and closing each to a circle
-		grass.appendLine(earth, true); grass.closeCircle();
-		earth.appendLine(stone, true); earth.closeCircle();
-		stone.addPoints(new Point(this.x*sectorWidth, 0), new Point(this.x*sectorWidth + sectorWidth, 0)); stone.closeCircle();
-		lines[2].add(grass);
-		lines[1].add(earth);
-		lines[0].add(stone);
-	}
-	
 	public void render(){
+		GL11.glColor3f(1, 1, 1);
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+		GL11.glVertex2f(x*WIDTH, -1000);
+		GL11.glVertex2f(x*WIDTH, 1000);
+		GL11.glEnd();
+		
 		for(int mat = 1; mat < Material.values().length; mat++){
 			GL11.glColor4f(1, 1, 1, 1);
 			Texture tex = Material.values()[mat].texture;
@@ -135,6 +41,114 @@ public class Sector{
 			tessellator.tessellate(lines[mat-1], tex.width, tex.height);
 			tex.release();
 		}
+	}
+	
+	public Point generateRight(Point lastPoint){
+		//create the base outline of the world
+		Line base = new Line();
+		base.addPoints(new Point(lastPoint));
+		float segmentLength = 20;
+
+//		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
+		while(lastPoint.x <= (x+1)*WIDTH){
+			float dx = 18 + (random.nextInt(3));
+			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
+
+			lastPoint.add(dx, dy);
+			base.addPoints(new Point(lastPoint));
+		}
+
+		//create grass, earth and stone with base line
+		Line bottom = new Line();
+		Line stone = new Line();
+		Line earth = new Line();
+		Line grass = new Line();
+		
+		Node n = base.end;
+		
+		while(n.last != null) {
+//			if(n.p.x - n.last.p.x > 0){//TODO
+			grass.addPoints(n.p);
+			earth.addPoints(n.p.x, n.p.y - 30);
+			stone.addPoints(n.p.x, n.p.y - 100);
+			bottom.addPoints(n.p.x, n.p.y - 160);
+//			}
+			n = n.last;
+		}
+		grass.addPoints(n.p);
+		earth.addPoints(n.p.x, n.p.y - 30);
+		stone.addPoints(n.p.x, n.p.y - 100);
+		bottom.addPoints(n.p.x, n.p.y - 160);
+
+		//finalize the lines by adding the way back and closing each to a circle
+		grass.appendLine(earth, true);
+		grass.closeCircle();
+		earth.appendLine(stone, true);
+		earth.closeCircle();
+//		stone.addPoints(new Point(this.x*WIDTH, 0), new Point(this.x*WIDTH + WIDTH, 0));
+		stone.appendLine(bottom, true);
+		stone.closeCircle();
+		
+		lines[2].add(grass);
+		lines[1].add(earth);
+		lines[0].add(stone);
+
+		return lastPoint;
+	}
+	
+	public Point generateLeft(Point lastPoint){
+		//create the base outline of the world
+		Line base = new Line();
+		base.addPoints(new Point(lastPoint));
+		float segmentLength = 20;
+//		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs too! :D)
+		while(lastPoint.x >= x*WIDTH){
+			float dx = -18 - (random.nextInt(3));
+			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
+
+			lastPoint.add(dx, dy);
+//			if(lastPoint.x >= x*WIDTH){
+			base.addPoints(new Point(lastPoint));
+//			}
+		}
+
+		//create grass, earth and stone with base line
+		Line bottom = new Line();
+		Line stone = new Line();
+		Line earth = new Line();
+		Line grass = new Line();
+		
+		Node n = base.start;
+		
+		while(n.next != null) {
+//			if(n.p.x - n.next.p.x > 0){//TODO re-add this
+				grass.addPoints(n.p);
+				earth.addPoints(n.p.x, n.p.y - 30);
+				stone.addPoints(n.p.x, n.p.y - 100);
+				bottom.addPoints(n.p.x, n.p.y - 130);
+//			} else {
+//				stone.addPoints(n.p.x, n.p.y);
+//			}
+			n = n.next;
+		}
+		grass.addPoints(n.p);
+		earth.addPoints(n.p.x, n.p.y - 30);
+		stone.addPoints(n.p.x, n.p.y - 100);
+		bottom.addPoints(n.p.x, n.p.y - 130);
+
+		//finalize the lines by adding the way back and closing each to a circle
+		grass.appendLine(earth, true);
+		grass.closeCircle();
+		earth.appendLine(stone, true);
+		earth.closeCircle();
+		stone.appendLine(bottom, true);
+		stone.closeCircle();
+		
+		lines[2].add(grass);
+		lines[1].add(earth);
+		lines[0].add(stone);
+
+		return lastPoint;
 	}
 
 	/**

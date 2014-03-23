@@ -1,5 +1,6 @@
 package main;
 
+import resources.ResLoader;
 import world.World;
 
 
@@ -15,6 +16,10 @@ public class Game {
 		
 		Game.window = new Window(1000, 500);
 		Menu.refresh();
+		ResLoader.setupFont();
+		
+		//TODO save last active worlds name. for now just use TestWorld all the time
+		world = new World("TestWorld");
 		
 		Game.startLoop();
 	}
@@ -27,12 +32,13 @@ public class Game {
 			
 			long newTime = System.nanoTime();
 
-			if(world.isActive){
-				
-				world.view.tick((int)(newTime - time)/1000000.0f);
-				world.view.render();
-				
-			} else {
+			world.view.render();
+			
+			if(world.isActive) world.view.tick((int)(newTime - time)/1000000.0f);
+			
+			world.view.render();
+			
+			if(!world.isActive){
 				
 				Menu.tick((int)(newTime - time)/1000000.0f);
 				Menu.render();

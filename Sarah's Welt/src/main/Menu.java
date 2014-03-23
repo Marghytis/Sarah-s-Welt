@@ -1,5 +1,6 @@
 package main;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import resources.Texture;
@@ -30,9 +31,10 @@ public class Menu{
 							System.out.println(b.name);
 							switch(b.name){
 							case "New World":
+								Game.world = new World("WASWEISICH");
+								break;
 							case "Continue":
-								Game.inWorld = true;
-								World.load("Test");
+								Game.world.isActive = true;
 								break;
 							case "Exit":
 								Game.closeRequested = true;
@@ -45,14 +47,15 @@ public class Menu{
 				
 			}
 		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+			Game.world.isActive = true;
+		}
 	}
 	
 	public static void render(){
-		background.bind();
-		Game.window.fill();
-		for(Button b : menu.buttons){
-			b.render();
-		}
+//		background.bind();
+//		Game.window.fill();
+		menu.render();
 	}
 	
 	private enum MenuSet{
@@ -69,5 +72,11 @@ public class Menu{
 		Button[] buttons;
 		
 		abstract void setup();
+		
+		public void render(){
+			for(Button b : buttons){
+				b.render();
+			}
+		}
 	}
 }

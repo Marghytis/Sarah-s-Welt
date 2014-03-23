@@ -1,7 +1,5 @@
 package main;
 
-import world.World;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -78,7 +76,7 @@ public class Window {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
 		Menu.refresh();
-		World.load("Test");
+		Game.world.view.refresh();
 	}
 	
 	/**

@@ -39,12 +39,12 @@ public class ResLoader {
 		}
 	}
 	
-	private static void setupFont(){
+	public static void setupFont(){
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 //		String fontPath = "res/albertus mt light.ttf";
 //		fontPath = "res/albertus mt light.ttf";
 		font = null;
-		
+
 		Font awtFont = new Font("Russel Write TT", Font.BOLD, 45);
 		font = new SimpleText(awtFont, true);
 		font2 = new TrueTypeFont(awtFont, false);

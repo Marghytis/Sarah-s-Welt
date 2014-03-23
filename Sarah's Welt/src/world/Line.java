@@ -15,27 +15,23 @@ public class Line{
 			while(src.next != null){
 				Node n = new Node(src.p, end);
 				end.next = n;
-				n.last = end;
 				end = n;
 				src = src.next;
 			}
 			Node n = new Node(src.p, end);
 			end.next = n;
-			n.last = end;
 			end = n;
 		} else {
 			Node src = l.end;
 
-			while(src.last != null){
+			while(!src.equals(l.start) || src.last != null){
 				Node n = new Node(src.p, end);
 				end.next = n;
-				n.last = end;
 				end = n;
 				src = src.last;
 			}
 			Node n = new Node(src.p, end);
 			end.next = n;
-			n.last = end;
 			end = n;
 		}
 	}

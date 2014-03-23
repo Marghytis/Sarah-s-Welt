@@ -1,5 +1,6 @@
 package world;
 
+import main.Game;
 import util.Geom;
 
 public abstract class WalkingThing extends Thing{
@@ -96,9 +97,8 @@ public abstract class WalkingThing extends Thing{
 	
 	public void collision(){
 //		System.out.println("-- Character position: " + pos + "  Thought next position: " + nextPos);
-		//TODO die Anzahl der durchsuchten Spalten noch verkleinern
 		float[] intersection = null;
-		for(Sector sector : World.columns){//	iterate columns
+		for(Sector sector : Game.world.view.sectors){//	iterate columns
 			for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
 					for(Line l : sector.lines[mat.ordinal()-1]){//	iterate lines
@@ -109,7 +109,7 @@ public abstract class WalkingThing extends Thing{
 							if(found && (intersection == null || inters.y > intersection[1])){
 								if(intersection == null)intersection = new float[7];
 
-								System.out.println("-- Found collision: " + inters);
+//								System.out.println("-- Found collision: " + inters + "     Material: " + mat.name + ", First point: " + n.p.toString() + ", second point: " + n.next.p.toString());
 								
 								intersection[0] = inters.x;
 								intersection[1] = inters.y;

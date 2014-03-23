@@ -1,10 +1,5 @@
 package world;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import main.Game;
 import main.Window;
 
 import org.lwjgl.input.Keyboard;
@@ -20,23 +15,24 @@ public class World{
 	public Character player;
 
 	public Point leftRimP, rightRimP;
-	public int leftRim, rightRim;
+	public int leftRim = 0, rightRim = -1;
 	public WorldView view;
 	public boolean isActive = false;
 	
 	public World(String name){
 		this.name = name;
-		view = new WorldView();
 		if(!load()){
 			create();
 		}
+		view = new WorldView();
+		view.goTo((int)(player.pos.x/Sector.WIDTH) - (player.pos.x < 0 ? 1 : 0));
 	}
 	
 	/**
 	 * Load this world from the world file
 	 * @return if the world file exists
 	 */
-	public boolean load(){
+	private boolean load(){
 		//TODO Evelyn? add method code
 //		+set the position of the world view
 
@@ -45,35 +41,35 @@ public class World{
 		return false;
 	}
 	
-	public void create(){
-		player = new Character(10, 500);
+	private void create(){
+		player = new Character(10, 340);
 		
 		leftRimP = new Point(0, 300);
-		rightRimP = leftRimP;
+		rightRimP = new Point(0, 300);
 	}
 	
 	/**
-	 * Generates the next sector to the right
+	 * if its outside the rims, generate fresh terrain, otherwise load it from the database
+	 * @param pos
+	 * @return
 	 */
-	public Sector generateRight(int pos, Point lastRim){
-		//TODO add method code here
-//		rightRim = ...;
-		return null;
-	}
-	
-	/**
-	 * Generates the next sector to the left
-	 */
-	public Sector generateLeft(int pos, Point lastRim){
-		//TODO add method code here
-//		leftRim = ...;
-		return null;
-	}
-	
-	public Sector sectorAt(int pos){
-		//TODO call the sector from the database
-		//if its outside the rims, generate fresh terrain
-		return null;
+	private Sector sectorAt(int pos){
+		if(pos > rightRim){
+			
+			Sector newSector = new Sector(pos);
+			rightRimP = newSector.generateRight(rightRimP);
+			return newSector;
+			
+		} else if(pos < leftRim){
+			
+			Sector newSector = new Sector(pos);
+			leftRimP = newSector.generateLeft(leftRimP);
+			return newSector;
+			
+		} else {
+			//TODO call the sector from the database
+			return null;//for now
+		}
 	}
 	
 	public class WorldView { 
@@ -89,11 +85,12 @@ public class World{
 			int playerX = (int)(player.pos.x/Sector.WIDTH) - (player.pos.x < 0 ? 1 : 0);
 			if(playerX != xSector){
 				if(playerX == xSector - 1){
-					step(-1);
+					step(false);
 				} else if (playerX == xSector + 1){
-					step(-1);
+					step(true);
+				} else {
+					goTo(playerX);
 				}
-				goTo(playerX);
 			}
 			
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
@@ -115,67 +112,42 @@ public class World{
 			(new Point((Window.WIDTH/2), (Window.HEIGHT/2))).draw();
 		}
 		
-		public void step(int one_or_minus_one){
-			if(one_or_minus_one == 1){
+		public void refresh(){
+			
+		}
+		
+		public void step(boolean rightwards){
+			System.out.println("Step");
+			if(rightwards){
 				xSector++;
 				sectors[0].save();
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
 				sectors[2] = sectorAt(xSector + 1);
-			} else if(one_or_minus_one == -1){
+			} else {
 				xSector--;
 				sectors[2].save();
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
 				sectors[0] = sectorAt(xSector - 1);
-			} else {
-				System.out.println("ERROR: Method 'step(int one_or_minus_one)' in class 'WorldView'");
 			}
 		}
 		
 		public void goTo(int x){
 			xSector = x;
-			sectors[0].save();
-			sectors[1].save();
-			sectors[2].save();
-			sectors[0] = sectorAt(x - 1);
-			sectors[1] = sectorAt(x);
-			sectors[2] = sectorAt(x + 1);
-		}
-		
-		public Sector createSector(int fX){
-			Sector c = new Sector(fX);
-			if(fX > rightRim){
-				c.generate();//right
-				rightRim++;
-			} else if(fX < leftRim){
-				c.generate();//left
-				leftRim--;
-			} else {
-				c.read();
-			}
-			return c;
-		}
-		
-		public Sector getSector(int fX){
-			for(Sector c : sectors){
-				if(c.x == fX){
-					return c;
-				}
-			}
-			return createSector(fX);
-		}
-		
-		public void removeSector(int fX){
-			//TODO
-			for(int i = 0; i < lines.get(0).vertices.size() && lines.get(0).vertices.get(i).x < fX*fieldSize; i++){
-				lines.get(fX).vertices.get(i).remove();
-				i--;
-			}
+			if(sectors[0] != null) sectors[0].save();
+			if(sectors[1] != null) sectors[1].save();
+			if(sectors[2] != null) sectors[2].save();
+			sectors[0] = sectorAt(xSector - 1);
+			sectors[1] = sectorAt(xSector);
+			sectors[2] = sectorAt(xSector + 1);
 		}
 		
 		public void save(){
-			//save sectors TODO
+			//save sectors TODO save player??
+			sectors[0].save();
+			sectors[1].save();
+			sectors[2].save();
 		}
 	}
 	

@@ -1,13 +1,11 @@
 package main;
 
+import resources.ResLoader;
 import resources.StackedTexture;
 import resources.Texture;
 import util.Quad;
 
 public class Button extends Quad{
-	
-	
-	//thats a test
 	
 	public static StackedTexture tex = (StackedTexture) Texture.MENU_BUTTON;
 	
@@ -21,5 +19,8 @@ public class Button extends Quad{
 	
 	public void render(){
 		draw(tex, 0, state);
+		float xMiddle = x + (width/2);
+		float yMiddle = y + (height/2);
+		ResLoader.font.drawString(xMiddle - (ResLoader.font.getWidth(name)/3), yMiddle - (ResLoader.font.getHeight()/2), name, 1, 1);
 	}
 }
