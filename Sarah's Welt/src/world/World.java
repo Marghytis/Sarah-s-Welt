@@ -2,7 +2,6 @@ package world;
 
 import main.Window;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import util.Quad;
@@ -12,20 +11,19 @@ public class World{
 	public static final int measureScale = 50;
 	
 	public String name = "Empty";
-	public Character player;
+	public Character character;
 
 	public Point leftRimP, rightRimP;
 	public int leftRim = 0, rightRim = -1;
-	public WorldView view;
-	public boolean isActive = false;
+	public WorldWindow view;
 	
 	public World(String name){
 		this.name = name;
 		if(!load()){
 			create();
 		}
-		view = new WorldView();
-		view.goTo((int)(player.pos.x/Sector.WIDTH) - (player.pos.x < 0 ? 1 : 0));
+		view = new WorldWindow();
+		view.goTo((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
 	}
 	
 	/**
@@ -42,7 +40,7 @@ public class World{
 	}
 	
 	private void create(){
-		player = new Character(10, 340);
+		character = new Character(10, 340);
 		
 		leftRimP = new Point(0, 300);
 		rightRimP = new Point(0, 300);
@@ -72,7 +70,7 @@ public class World{
 		}
 	}
 	
-	public class WorldView { 
+	public class WorldWindow { 
 		
 		public Sector[] sectors = new Sector[3];
 		
@@ -81,8 +79,8 @@ public class World{
 		public float offsetY;
 		
 		public void tick(float dTime){
-			player.tick(dTime);
-			int playerX = (int)(player.pos.x/Sector.WIDTH) - (player.pos.x < 0 ? 1 : 0);
+			character.tick(dTime);
+			int playerX = (int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0);
 			if(playerX != xSector){
 				if(playerX == xSector - 1){
 					step(false);
@@ -92,16 +90,15 @@ public class World{
 					goTo(playerX);
 				}
 			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
-				save();
-				isActive = false;
-			}
+		}
+		
+		public void mouseListening(){
+			//add later
 		}
 		
 		public void render(){
 			GL11.glLoadIdentity();
-			GL11.glTranslatef(- player.pos.x + (Window.WIDTH/2.0f), - player.pos.y + (Window.HEIGHT/2.0f), 0);
+			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor3f(0, 0, 0);
 			for(Sector c : sectors){
 				c.render();
@@ -144,7 +141,7 @@ public class World{
 		}
 		
 		public void save(){
-			//save sectors TODO save player??
+			//save sectors TODO save character??
 			sectors[0].save();
 			sectors[1].save();
 			sectors[2].save();

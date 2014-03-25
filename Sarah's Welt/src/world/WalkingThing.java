@@ -63,30 +63,40 @@ public abstract class WalkingThing extends Thing{
 		Node finalNode = null;
 		
 		for(int i = 0; i <= 16; i++){
-			//TODO make circleIntersection relative to the player, so I can just add it to the nextPos
-			Point[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
-
-			if(inter[0] != null){
-				if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
-					if(intersection == null){
-						intersection = inter[0];
-						finalNode = node;
-					} else if(inter[0].y > intersection.y){
-						intersection = inter[0];
-						finalNode = node;
+			//TODO make circleIntersection relative to the character, so I can just add it to the nextPos
+			if(node.p.x > node.next.p.x){
+				Point[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
+	
+				if(inter[0] != null){
+					if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
+						if(intersection == null){
+							intersection = inter[0];
+							finalNode = node;
+						} else if(inter[0].y > intersection.y){
+							intersection = inter[0];
+							finalNode = node;
+						}
 					}
-				}
-				if(inter[1] != null && ((inter[1].x-pos.x)*(v/Math.abs(v))) > 0){
-					if(intersection == null){
-						intersection = inter[1];
-						finalNode = node;
-					} else if(inter[1].y > intersection.y){
-						intersection = inter[1];
-						finalNode = node;
+					if(inter[1] != null && ((inter[1].x-pos.x)*(v/Math.abs(v))) > 0){
+						if(intersection == null){
+							intersection = inter[1];
+							finalNode = node;
+						} else if(inter[1].y > intersection.y){
+							intersection = inter[1];
+							finalNode = node;
+						}
 					}
 				}
 			}
 			
+			if(node.p instanceof MultiNodePoint){
+				MultiNodePoint point = (MultiNodePoint) node.p;
+				for(Node n : point.nodes){
+					if(n.next.p.y > node.next.p.y){
+						node = n;
+					}
+				}
+			}
 			node = node.next;
 		}
 		if(intersection != null){

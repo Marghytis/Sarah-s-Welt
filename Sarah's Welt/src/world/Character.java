@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 public class Character extends WalkingThing{
 	
 	public float keyAcc = 0.00005f;//the acceleration the Character experiences on the pressure of a movement key
+	public boolean flying = false;
 	
 	public Character(float x, float y){
 		super(1f, 0.5f);
@@ -14,6 +15,7 @@ public class Character extends WalkingThing{
 	}
 	
 	public void tick(float dTime){
+		if(flying) g = false;
 		if(g){
 //			System.out.println(pos.x + "  " + vP);
 			//apply keyboard force
@@ -37,7 +39,7 @@ public class Character extends WalkingThing{
 			doMotion(dTime);
 		} else {
 			//apply gravity
-			accelerate(0, -0.00005f);
+			if(!flying) accelerate(0, -0.00005f);
 			
 			//apply keyboard force
 			if(Keyboard.isKeyDown(Keyboard.KEY_D)){
@@ -55,9 +57,9 @@ public class Character extends WalkingThing{
 			
 			//do movement in air
 			updateVel(dTime);
-			collision();
+			if(!flying) collision();
 		}
-		//set the player to the new location
+		//set the character to the new location
 		updatePos();
 	}
 }

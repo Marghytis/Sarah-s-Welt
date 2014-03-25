@@ -64,7 +64,7 @@ public abstract class CopyOfWalkingThing extends Thing{
 		int p2 = link.nextPoint(link.pointIndex2, -8);
 		
 		for(int i = 0; i <= 16; i++){
-			//TODO make circleIntersection relative to the player, so I can just add it to the nextPos
+			//TODO make circleIntersection relative to the character, so I can just add it to the nextPos
 			Point[] inter = Geom.circleIntersection(line.vertices.get(p1), line.vertices.get(p2), pos, v);
 
 			if(inter[0] != null){

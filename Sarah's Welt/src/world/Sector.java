@@ -51,7 +51,7 @@ public class Sector{
 
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
 		while(lastPoint.x <= (x+1)*WIDTH){
-			float dx = 18 + (random.nextInt(3));
+			float dx = 16 + (random.nextInt(5));
 			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
 
 			lastPoint.add(dx, dy);
@@ -69,16 +69,16 @@ public class Sector{
 		while(n.last != null) {
 //			if(n.p.x - n.last.p.x > 0){//TODO
 			grass.addPoints(n.p);
-			earth.addPoints(n.p.x, n.p.y - 30);
+			earth.addPoints(n.p.x, n.p.y - 10);
 			stone.addPoints(n.p.x, n.p.y - 100);
-			bottom.addPoints(n.p.x, n.p.y - 160);
+			bottom.addPoints(n.p.x, n.p.y - 1000);
 //			}
 			n = n.last;
 		}
 		grass.addPoints(n.p);
 		earth.addPoints(n.p.x, n.p.y - 30);
 		stone.addPoints(n.p.x, n.p.y - 100);
-		bottom.addPoints(n.p.x, n.p.y - 160);
+		bottom.addPoints(n.p.x, n.p.y - 1000);
 
 		//finalize the lines by adding the way back and closing each to a circle
 		grass.appendLine(earth, true);
@@ -125,7 +125,7 @@ public class Sector{
 				grass.addPoints(n.p);
 				earth.addPoints(n.p.x, n.p.y - 30);
 				stone.addPoints(n.p.x, n.p.y - 100);
-				bottom.addPoints(n.p.x, n.p.y - 130);
+				bottom.addPoints(n.p.x, n.p.y - 1000);
 //			} else {
 //				stone.addPoints(n.p.x, n.p.y);
 //			}
@@ -134,7 +134,7 @@ public class Sector{
 		grass.addPoints(n.p);
 		earth.addPoints(n.p.x, n.p.y - 30);
 		stone.addPoints(n.p.x, n.p.y - 100);
-		bottom.addPoints(n.p.x, n.p.y - 130);
+		bottom.addPoints(n.p.x, n.p.y - 1000);
 
 		//finalize the lines by adding the way back and closing each to a circle
 		grass.appendLine(earth, true);

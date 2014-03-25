@@ -1,14 +1,20 @@
 package main;
 
+import java.awt.Font;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import resources.SimpleText;
+
 public class Window {
 
 	public static int WIDTH;
 	public static int HEIGHT;
+	
+	public static SimpleText font;
 	
 	public long lastTime;
 	
@@ -16,6 +22,7 @@ public class Window {
 		WIDTH = width;
 		HEIGHT = height;
 		init();
+		font = new SimpleText(new Font("Russel Write TT", Font.BOLD, 45), true);
 	}
 	
 	/**

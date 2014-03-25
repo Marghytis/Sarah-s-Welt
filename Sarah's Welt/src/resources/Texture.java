@@ -6,13 +6,12 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.PNGDecoder;
 
 public class Texture {
 
 	public static final Texture MENU_BACKGROUND = new Texture("MainMenu");
 	public static final Texture MENU_LIGHTMAP = new Texture("");
-	public static final Texture MENU_BUTTON = new StackedTexture("Button", 1, 2);
+	public static final StackedTexture MENU_BUTTON = new StackedTexture("Button", 1, 2);
 	
 	public int handle;
 	public int width, height;

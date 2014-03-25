@@ -6,7 +6,7 @@ import resources.Texture;
 public enum Material {
 
 	AIR("", 00.8f, false),
-	STONE("Stone", 2f, true),
+	STONE("Stone_g", 2f, true),
 	EARTH("Earth", 3f, true),
 	GRASS("Grass", 3f, true),
 	WOOD("Wood", 1.2f, true),
