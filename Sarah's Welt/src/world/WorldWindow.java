@@ -6,77 +6,50 @@ import org.lwjgl.opengl.GL11;
 
 import util.Quad;
 
-public class World{
-	/**The scale factor from meters to pixel*/
-	public static final int measureScale = 50;
-	
-	public String name = "Empty";
-	public Character character;
-
-	public Point leftRimP, rightRimP;
-	public int leftRim = 0, rightRim = -1;
-	public WorldWindow view;
-	
-	public World(String name){
-		this.name = name;
-		if(!load()){
-			create();
-		}
-		view = new WorldWindow();
-		view.goTo((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
-	}
-	
-	/**
-	 * Load this world from the world file
-	 * @return if the world file exists
-	 */
-	private boolean load(){
-		//TODO Evelyn? add method code
-//		+set the position of the world view
-
-//		File f = new File("worlds/" + name + "/" + x + ".field"); 
-//		if(!f.exists())return false;	so kannst du testen, ob eine Datei vorhanden ist
-		return false;
-	}
-	
-	private void create(){
-		character = new Character(10, 340);
-		
-		leftRimP = new Point(0, 300);
-		rightRimP = new Point(0, 300);
-	}
-	
-	/**
-	 * if its outside the rims, generate fresh terrain, otherwise load it from the database
-	 * @param pos
-	 * @return
-	 */
-	private Sector sectorAt(int pos){
-		if(pos > rightRim){
-			
-			Sector newSector = new Sector(pos);
-			rightRimP = newSector.generateRight(rightRimP);
-			return newSector;
-			
-		} else if(pos < leftRim){
-			
-			Sector newSector = new Sector(pos);
-			leftRimP = newSector.generateLeft(leftRimP);
-			return newSector;
-			
-		} else {
-			//TODO call the sector from the database
-			return null;//for now
-		}
-	}
-	
-	public class WorldWindow { 
+public class WorldWindow { 
+		/**The scale factor from meters to pixel*/
+		public static final int measureScale = 50;
 		
 		public Sector[] sectors = new Sector[3];
 		
 		public int xSector;
 		public float offsetX;
 		public float offsetY;
+		
+
+		public Character character;
+		public String worldName;
+
+		public Point leftRimP, rightRimP;
+		public int leftRim = 0, rightRim = -1;
+		
+		public WorldWindow(String worldName){
+			this.worldName = worldName;
+			if(!load()){
+				create();
+			}
+			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
+		}
+		
+		/**
+		 * Load this world from the world file
+		 * @return if the world file exists
+		 */
+		private boolean load(){
+			//TODO Evelyn? add method code
+//			+set the position of the world view
+
+//			File f = new File("worlds/" + name + "/" + x + ".field"); 
+//			if(!f.exists())return false;	so kannst du testen, ob eine Datei vorhanden ist
+			return false;
+		}
+		
+		private void create(){
+			character = new Character(10, 340);
+			
+			leftRimP = new Point(0, 300);
+			rightRimP = new Point(0, 300);
+		}
 		
 		public void tick(float dTime){
 			character.tick(dTime);
@@ -87,7 +60,7 @@ public class World{
 				} else if (playerX == xSector + 1){
 					step(true);
 				} else {
-					goTo(playerX);
+					loadPosition(playerX);
 				}
 			}
 		}
@@ -130,7 +103,32 @@ public class World{
 			}
 		}
 		
-		public void goTo(int x){
+
+		/**
+		 * if its outside the rims, generate fresh terrain, otherwise load it from the database
+		 * @param pos
+		 * @return
+		 */
+		private Sector sectorAt(int pos){
+			if(pos > rightRim){
+				
+				Sector newSector = new Sector(pos);
+				rightRimP = newSector.generateRight(rightRimP);
+				return newSector;
+				
+			} else if(pos < leftRim){
+				
+				Sector newSector = new Sector(pos);
+				leftRimP = newSector.generateLeft(leftRimP);
+				return newSector;
+				
+			} else {
+				//TODO call the sector from the database
+				return null;//for now
+			}
+		}
+		
+		public void loadPosition(int x){
 			xSector = x;
 			if(sectors[0] != null) sectors[0].save();
 			if(sectors[1] != null) sectors[1].save();
@@ -146,6 +144,6 @@ public class World{
 			sectors[1].save();
 			sectors[2].save();
 		}
-	}
+	
 	
 }

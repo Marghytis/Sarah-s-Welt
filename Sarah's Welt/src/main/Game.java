@@ -2,7 +2,7 @@ package main;
 
 import org.lwjgl.input.Keyboard;
 
-import world.World;
+import world.WorldWindow;
 
 
 public class Game {
@@ -10,7 +10,7 @@ public class Game {
 	public static Window window;
 	public static long time;
 	
-	public static World world;
+	public static WorldWindow world;
 	public static Menu menu;
 	public static boolean closeRequested = false;
 	
@@ -19,7 +19,7 @@ public class Game {
 		Game.window = new Window(1000, 500);
 		
 		//TODO save last active worlds name. for now just use TestWorld all the time
-		world = new World("TestWorld");
+		world = new WorldWindow("TestWorld");
 		menu = Menu.MAIN;
 		
 		Game.startLoop();
@@ -36,9 +36,9 @@ public class Game {
 			keyListening();
 			mouseListening();
 			
-			if(!menu.pauseWorld) world.view.tick((int)(newTime - time)/1000000.0f);
+			if(!menu.pauseWorld) world.tick((int)(newTime - time)/1000000.0f);
 			
-			world.view.render();
+			world.render();
 			menu.render();
 			
 			time = newTime;
@@ -68,7 +68,7 @@ public class Game {
 	
 	public static void mouseListening(){
 		menu.mouseListening();
-		if(!menu.pauseWorld) world.view.mouseListening();
+		if(!menu.pauseWorld) world.mouseListening();
 	}
 	
 	/**

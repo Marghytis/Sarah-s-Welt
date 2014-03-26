@@ -56,7 +56,7 @@ public abstract class WalkingThing extends Thing{
 	 */
 	public void doStepping(float d){
 		if(d == 0)return;
-		float v = d*World.measureScale;
+		float v = d*WorldWindow.measureScale;
 		Point intersection = null;
 		
 		Node node = worldLink.last.last.last.last.last.last.last.last;
@@ -108,7 +108,7 @@ public abstract class WalkingThing extends Thing{
 	public void collision(){
 //		System.out.println("-- Character position: " + pos + "  Thought next position: " + nextPos);
 		float[] intersection = null;
-		for(Sector sector : Game.world.view.sectors){//	iterate columns
+		for(Sector sector : Game.world.sectors){//	iterate columns
 			for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
 					for(Line l : sector.lines[mat.ordinal()-1]){//	iterate lines

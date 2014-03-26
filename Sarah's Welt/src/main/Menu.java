@@ -2,7 +2,7 @@ package main;
 
 import org.lwjgl.input.Mouse;
 
-import world.World;
+import world.WorldWindow;
 
 public enum Menu{
 	EMPTY(false){
@@ -23,7 +23,7 @@ public enum Menu{
 			System.out.println(b.name);
 			switch(b.name){
 			case "New World":
-				Game.world = new World("TestWorld");
+				Game.world = new WorldWindow("TestWorld");
 				break;
 			case "Continue":
 				Game.menu = EMPTY;
