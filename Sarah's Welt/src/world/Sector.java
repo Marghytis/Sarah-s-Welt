@@ -76,7 +76,7 @@ public class Sector{
 			n = n.last;
 		}
 		grass.addPoints(n.p);
-		earth.addPoints(n.p.x, n.p.y - 30);
+		earth.addPoints(n.p.x, n.p.y - 10);
 		stone.addPoints(n.p.x, n.p.y - 100);
 		bottom.addPoints(n.p.x, n.p.y - 1000);
 
@@ -123,7 +123,7 @@ public class Sector{
 		while(n.next != null) {
 //			if(n.p.x - n.next.p.x > 0){//TODO re-add this
 				grass.addPoints(n.p);
-				earth.addPoints(n.p.x, n.p.y - 30);
+				earth.addPoints(n.p.x, n.p.y - 10);
 				stone.addPoints(n.p.x, n.p.y - 100);
 				bottom.addPoints(n.p.x, n.p.y - 1000);
 //			} else {
@@ -132,7 +132,7 @@ public class Sector{
 			n = n.next;
 		}
 		grass.addPoints(n.p);
-		earth.addPoints(n.p.x, n.p.y - 30);
+		earth.addPoints(n.p.x, n.p.y - 10);
 		stone.addPoints(n.p.x, n.p.y - 100);
 		bottom.addPoints(n.p.x, n.p.y - 1000);
 
