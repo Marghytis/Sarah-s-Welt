@@ -5,7 +5,7 @@ import resources.Texture;
 import util.Quad;
 
 public class Button extends Quad{
-	
+	//
 	public static StackedTexture tex = Texture.MENU_BUTTON;
 	
 	public String name;
