@@ -22,7 +22,7 @@ public class WorldGenerator {
 	
 	
 	public void generateRight(){
-
-			rim++;
+		surfaceRight.expand();
+		rim++;
 	}
 }

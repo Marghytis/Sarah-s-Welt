@@ -28,7 +28,7 @@ public class Surface {
 	Line stoneT = new Line();
 	Line bottom = new Line();
 
-	Line[] expand(float xDest){
+	public Line[] expand(float xDest){
 
 		float segmentLength = 20;
 
