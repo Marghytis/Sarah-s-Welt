@@ -1,21 +1,27 @@
 package world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import main.Window;
 
 import org.lwjgl.opengl.GL11;
 
+import resources.Texture;
 import util.Quad;
+import util.Tessellator;
 
 public class WorldWindow { 
 		/**The scale factor from meters to pixel*/
 		public static final int measureScale = 50;
-		
-		public Sector[] sectors = new Sector[3];
+		public static Tessellator tessellator = new Tessellator();
 		
 		public int xSector;
-		public float offsetX;
-		public float offsetY;
 		
+		@SuppressWarnings("unchecked")
+		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
+		
+		public List<Node> openings;//an welche Knoten kann noch was angehängt werden, wenn die Welt weiter geladen wird?
 
 		public Character character;
 		public String worldName;
@@ -73,13 +79,20 @@ public class WorldWindow {
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor3f(0, 0, 0);
-			for(Sector c : sectors){
-				c.render();
+
+			for(int mat = 1; mat < Material.values().length; mat++){
+				
+				GL11.glColor4f(1, 1, 1, 1);
+				
+				Texture tex = Material.values()[mat].texture;
+				tex.bind();
+				{
+					tessellator.tessellate(lines[mat-1], tex.width, tex.height);
+				}
+				tex.release();
 			}
 	
-			GL11.glLoadIdentity();
-			(new Quad((Window.WIDTH/2)-10, (Window.HEIGHT/2)-10, 20, 20)).outline();
-			(new Point((Window.WIDTH/2), (Window.HEIGHT/2))).draw();
+			character.render();
 		}
 		
 		public void refresh(){
@@ -87,22 +100,17 @@ public class WorldWindow {
 		}
 		
 		public void step(boolean rightwards){
-			System.out.println("Step");
+			//if !load(x)
 			if(rightwards){
-				xSector++;
-				sectors[0].save();
-				sectors[0] = sectors[1];
-				sectors[1] = sectors[2];
-				sectors[2] = sectorAt(xSector + 1);
-			} else {
-				xSector--;
-				sectors[2].save();
-				sectors[2] = sectors[1];
-				sectors[1] = sectors[0];
-				sectors[0] = sectorAt(xSector - 1);
+				//expand rightwards
+				//move rim etc.
+				(new Sector(4)).generate(openings);
 			}
 		}
 		
+		public void connectLines(Line[] linesToAdd){
+			
+		}
 
 		/**
 		 * if its outside the rims, generate fresh terrain, otherwise load it from the database

@@ -1,6 +1,11 @@
 package world;
 
+import main.Window;
+
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import util.Quad;
 
 
 public class Character extends WalkingThing{
@@ -61,5 +66,11 @@ public class Character extends WalkingThing{
 		}
 		//set the character to the new location
 		updatePos();
+	}
+	
+	public void render(){
+		GL11.glLoadIdentity();
+		(new Quad((Window.WIDTH/2)-10, (Window.HEIGHT/2)-10, 20, 20)).outline();
+		(new Point((Window.WIDTH/2), (Window.HEIGHT/2))).draw();
 	}
 }
