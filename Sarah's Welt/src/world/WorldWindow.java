@@ -12,6 +12,7 @@ import util.Quad;
 import util.Tessellator;
 
 public class WorldWindow { 
+	//Test
 		/**The scale factor from meters to pixel*/
 		public static final int measureScale = 50;
 		public static Tessellator tessellator = new Tessellator();
