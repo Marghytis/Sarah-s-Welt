@@ -1,6 +1,7 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import main.Window;
@@ -23,11 +24,6 @@ public class WorldWindow {
 		
 		@SuppressWarnings("unchecked")
 		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
-
-		public List<Node> openings1;
-		public List<Node> openings2;
-		public List<Node> openings3;
-
 		public Sector sec1;
 		public Sector sec2;
 		public Sector sec3;
@@ -43,17 +39,14 @@ public class WorldWindow {
 			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
 		}
 		
-		public void plugSectorRight(Sector sec){
-			sec1 = sec2;
-			sec2 = sec3;
-			sec3 = sec;
-			for(int n = 0; n < sec2.openEndingsRight.length; n++){
-				if(sec2.inOutRight[n]){
-					sec2.openEndingsRight[n].last = sec3.openEndingsLeft[n];
-					sec2.openEndingsLeft[n].next = sec3.openEndingsRight[n];
+		public void plugSectorRight(Sector sec, Sector plug){
+			for(int n = 0; n < sec.openEndingsRight.length; n++){
+				if(sec.inOutRight[n]){
+					sec.openEndingsRight[n].last = plug.openEndingsLeft[n];
+					sec.openEndingsLeft[n].next = plug.openEndingsRight[n];
 				} else {
-					sec2.openEndingsRight[n].next = sec3.openEndingsLeft[n];
-					sec2.openEndingsLeft[n].last = sec3.openEndingsRight[n];
+					sec.openEndingsRight[n].next = plug.openEndingsLeft[n];
+					sec.openEndingsLeft[n].last = plug.openEndingsRight[n];
 				}
 			}
 		}
@@ -159,9 +152,9 @@ public class WorldWindow {
 			if(sectors[0] != null) sectors[0].save();
 			if(sectors[1] != null) sectors[1].save();
 			if(sectors[2] != null) sectors[2].save();
-			sectors[0] = sectorAt(xSector - 1);
-			sectors[1] = sectorAt(xSector);
-			sectors[2] = sectorAt(xSector + 1);
+			sec1 = sectorAt(xSector - 1); lines = sec1.lines;
+			sec2 = sectorAt(xSector); plugSectorRight(sec1, sec2);
+			sec3 = sectorAt(xSector + 1); plugSectorRight(sec2, sec3);
 		}
 		
 		public void save(){

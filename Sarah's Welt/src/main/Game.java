@@ -2,6 +2,7 @@ package main;
 
 import org.lwjgl.input.Keyboard;
 
+import world.Line;
 import world.WorldWindow;
 
 

@@ -1,5 +1,7 @@
 package world;
 
+import java.util.List;
+
 import world.worldGen.Surface;
 
 public class WorldGenerator {
@@ -28,7 +30,7 @@ public class WorldGenerator {
 	
 	public class Sector {
 		public static final int WIDTH = 1000;
-		public Line[][] lines;
+		public List<Line>[] lines;
 		public Node[] openEndingsRight;
 		public boolean[]inOutRight;
 		public Node[] openEndingsLeft;
