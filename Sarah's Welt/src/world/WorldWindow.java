@@ -5,37 +5,57 @@ import java.util.List;
 
 import main.Window;
 
+import world.WorldGenerator.Sector;
+
 import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
 import util.Quad;
 import util.Tessellator;
 
-public class WorldWindow { 
-	//Test
+public class WorldWindow {
 		/**The scale factor from meters to pixel*/
 		public static final int measureScale = 50;
 		public static Tessellator tessellator = new Tessellator();
 		
 		public int xSector;
+		public WorldGenerator generator;
 		
 		@SuppressWarnings("unchecked")
 		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
-		
-		public List<Node> openings;//an welche Knoten kann noch was angehängt werden, wenn die Welt weiter geladen wird?
+
+		public List<Node> openings1;
+		public List<Node> openings2;
+		public List<Node> openings3;
+
+		public Sector sec1;
+		public Sector sec2;
+		public Sector sec3;
 
 		public Character character;
 		public String worldName;
-
-		public Point leftRimP, rightRimP;
-		public int leftRim = 0, rightRim = -1;
-		
+	
 		public WorldWindow(String worldName){
 			this.worldName = worldName;
 			if(!load()){
 				create();
 			}
 			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
+		}
+		
+		public void plugSectorRight(Sector sec){
+			sec1 = sec2;
+			sec2 = sec3;
+			sec3 = sec;
+			for(int n = 0; n < sec2.openEndingsRight.length; n++){
+				if(sec2.inOutRight[n]){
+					sec2.openEndingsRight[n].last = sec3.openEndingsLeft[n];
+					sec2.openEndingsLeft[n].next = sec3.openEndingsRight[n];
+				} else {
+					sec2.openEndingsRight[n].next = sec3.openEndingsLeft[n];
+					sec2.openEndingsLeft[n].last = sec3.openEndingsRight[n];
+				}
+			}
 		}
 		
 		/**
@@ -53,9 +73,6 @@ public class WorldWindow {
 		
 		private void create(){
 			character = new Character(10, 340);
-			
-			leftRimP = new Point(0, 300);
-			rightRimP = new Point(0, 300);
 		}
 		
 		public void tick(float dTime){
@@ -105,7 +122,7 @@ public class WorldWindow {
 			if(rightwards){
 				//expand rightwards
 				//move rim etc.
-				(new Sector(4)).generate(openings);
+				plugSectorRight(generator.generateRight());
 			}
 		}
 		

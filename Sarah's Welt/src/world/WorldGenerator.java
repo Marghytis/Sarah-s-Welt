@@ -12,17 +12,27 @@ public class WorldGenerator {
 //	public List<Line> openLines = new ArrayList<>();
 //	public Random random = new Random();
 
-	public Surface surfaceRight;
-	public Surface surfaceLeft;
+	public Surface surface;
+	int xSector;
 	
-	public WorldGenerator(){
-		this.surfaceRight = new Surface(true);
-		this.surfaceRight = new Surface(false);
+	public WorldGenerator(boolean right){
+		this.surface = new Surface(right);
 	}
 	
 	
-	public void generateRight(){
-		surfaceRight.expand();
-		rim++;
+	public Sector generateRight(){
+		Sector output = new Sector();
+		surface.expandRight(output, (xSector+1)*Sector.WIDTH);
+		return output;
+	}
+	
+	public class Sector {
+		public static final int WIDTH = 1000;
+		public Line[][] lines;
+		public Node[] openEndingsRight;
+		public boolean[]inOutRight;
+		public Node[] openEndingsLeft;
+		public boolean[]inOutLeft;
+		
 	}
 }

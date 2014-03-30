@@ -25,7 +25,7 @@ public class Tessellator {
 		tessellator.gluTessCallback(GLU.GLU_TESS_EDGE_FLAG, callback);
 		tessellator.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
 		tessellator.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
-//		tessellator.gluTessProperty(GLU.GLU_TESS_BOUNDARY_ONLY, GL11.GL_TRUE);
+		tessellator.gluTessProperty(GLU.GLU_TESS_BOUNDARY_ONLY, GL11.GL_TRUE);
 //		tessellator.gluTessProperty(GLU.GLU_TESS_WINDING_RULE, GLU.GLU_TESS_WINDING_POSITIVE);
 	}
 	

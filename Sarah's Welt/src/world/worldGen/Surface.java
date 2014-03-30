@@ -3,15 +3,13 @@ package world.worldGen;
 import java.util.Random;
 
 import world.Line;
+import world.Material;
 import world.Node;
 import world.Point;
+import world.WorldGenerator.Sector;
 
 public class Surface {
 
-	Line grassTop;
-	Line earthTop;
-	Line stoneTop;
-	Line StoneBottom;
 	Random random = new Random();
 	
 	boolean right;
@@ -28,29 +26,26 @@ public class Surface {
 	Line stoneT = new Line();
 	Line bottom = new Line();
 
-	public Line[] expand(float xDest){
-
-		float segmentLength = 20;
+	public Sector expandRight(Sector output, float xDest){
 
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
-		if(right){
-			while(baseEnd.x <= xDest){
-				step();
-			}
-		} else {
-			while(baseEnd.x >= xDest){
-				step();
-			}
+		step();
+		output.openEndingsLeft = new Node[]{grassT.end, earthT.end, stoneT.end, bottom.end};
+		while(baseEnd.x <= xDest){
+			step();
 		}
+		
+		output.lines = new Line[Material.values().length][];
+		output.lines[Material.GRASS.ordinal()] = new Line[]{grassT};
+		output.lines[Material.EARTH.ordinal()] = new Line[]{earthT};
+		output.lines[Material.STONE.ordinal()] = new Line[]{stoneT};
+		output.lines[Material.STONE.ordinal()] = new Line[]{bottom};
 
 //		finalize the lines by adding the way back and closing each to a circle
-		grassTop.appendLine(earth, true);
-		earth.appendLine(stone, true);
-		stone.appendLine(bottom, true);
-		
-		lines[2].add(grass);
-		lines[1].add(earth);
-		lines[0].add(stone);
+//		grassTop.appendLine(earthTop, true);
+//		earthTop.appendLine(stoneTop, true);
+//		stoneTop.appendLine(bottom, true);
+		return output;
 	}
 	
 	void step(){
@@ -64,8 +59,11 @@ public class Surface {
 	}
 
 	void shiftBaseEnd(){
-		baseEnd.x += (right ? 1 : -1) * (16 + (random.nextInt(5)));
-		baseEnd.y += (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
+		float segmentLength = 20;
+		float dx = (right ? 1 : -1) * (16 + (random.nextInt(5)));
+		float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
+		baseEnd.x += dx;
+		baseEnd.y += dy;
 	}
 	
 }
