@@ -32,10 +32,10 @@ public class WorldWindow {
 			for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
 			if(!load()){
 				create();
+				sectors[0] = generator.generateLeft();
+				sectors[1] = generator.generateRight();
+				sectors[2] = generator.generateRight();
 			}
-			sectors[0] = generator.generateLeft();
-			sectors[1] = generator.generateRight();
-			sectors[2] = generator.generateRight();
 //			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
 		}
 		

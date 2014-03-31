@@ -17,7 +17,7 @@ public class WorldGenerator {
 
 	public Surface surfaceRight;
 	public Surface surfaceLeft;
-	int xSector;
+	int rimR = 0, rimL = 0;
 	
 	public WorldGenerator(){
 		this.surfaceRight = new Surface(true);
@@ -25,14 +25,16 @@ public class WorldGenerator {
 	}
 	
 	public Sector generateRight(){
+		rimR++;
 		Sector output = new Sector();
-		surfaceRight.expandRight(output, (xSector+1)*Sector.WIDTH);
+		surfaceRight.expandRight(output, rimR*Sector.WIDTH);
 		return output;
 	}
 	
 	public Sector generateLeft(){
+		rimL--;
 		Sector output = new Sector();
-		surfaceLeft.expandLeft(output, (xSector+1)*Sector.WIDTH);
+		surfaceLeft.expandLeft(output, rimL*Sector.WIDTH);
 		return output;
 	}
 	

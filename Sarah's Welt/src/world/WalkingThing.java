@@ -114,9 +114,10 @@ public abstract class WalkingThing extends Thing{
 				if(mat.solid){
 					for(Line l : sector.lines[mat.ordinal()-1]){//	iterate lines
 						Node n = l.start;
-						do {
+						 while(n != l.end && n != null) {
+							n = n.next;
 							Point inters = new Point();
-							boolean found = Geom.intersectionLines(pos, nextPos, n.p, n.next.p, inters);
+							boolean found = Geom.intersectionLines(pos, nextPos, n.last.p, n.p, inters);
 							if(found && (intersection == null || inters.y > intersection[1])){
 								if(intersection == null)intersection = new float[7];
 
@@ -130,8 +131,7 @@ public abstract class WalkingThing extends Thing{
 								acc.set(0, 0);
 								g = true;
 							}
-							n = n.next;
-						} while(!(n.equals(l.start) || n.next == null));
+						}
 					}
 				}
 			}

@@ -36,6 +36,16 @@ public class Line{
 			connect(first, insert);
 		}
 	}
+	
+	public void addPoint(float x, float y){
+		connect(end, new Node(new Point(x, y)));
+		end = end.next;
+	}
+	
+	public void addPoint(Point p){
+		connect(end, new Node(p));
+		end = end.next;
+	}
 
 	public void addPoints(float... coords){
 		if(coords.length <= 1){
