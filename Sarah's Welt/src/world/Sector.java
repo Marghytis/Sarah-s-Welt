@@ -62,6 +62,7 @@ public class Sector{
 		Line bottom = new Line();
 		Line stone = new Line();
 		Line earth = new Line();
+		Line soil = new Line();
 		Line grass = new Line();
 		
 		Node n = base.end;
@@ -69,20 +70,24 @@ public class Sector{
 		while(n.last != null) {
 //			if(n.p.x - n.last.p.x > 0){//TODO
 			grass.addPoints(n.p);
-			earth.addPoints(n.p.x, n.p.y - 10);
+			soil.addPoints(n.p.x, n.p.y - 10);
+			earth.addPoints(n.p.x, n.p.y - 15);
 			stone.addPoints(n.p.x, n.p.y - 100);
 			bottom.addPoints(n.p.x, n.p.y - 1000);
 //			}
 			n = n.last;
 		}
 		grass.addPoints(n.p);
-		earth.addPoints(n.p.x, n.p.y - 10);
+		soil.addPoints(n.p.x, n.p.y - 10);
+		earth.addPoints(n.p.x, n.p.y - 15);
 		stone.addPoints(n.p.x, n.p.y - 100);
 		bottom.addPoints(n.p.x, n.p.y - 1000);
 
 		//finalize the lines by adding the way back and closing each to a circle
-		grass.appendLine(earth, true);
+		grass.appendLine(soil, true);
 		grass.closeCircle();
+		soil.appendLine(earth, true);
+		soil.closeCircle();
 		earth.appendLine(stone, true);
 		earth.closeCircle();
 //		stone.addPoints(new Point(this.x*WIDTH, 0), new Point(this.x*WIDTH + WIDTH, 0));
@@ -90,6 +95,7 @@ public class Sector{
 		stone.closeCircle();
 		
 		lines[2].add(grass);
+		lines[3].add(soil);
 		lines[1].add(earth);
 		lines[0].add(stone);
 
@@ -116,6 +122,7 @@ public class Sector{
 		Line bottom = new Line();
 		Line stone = new Line();
 		Line earth = new Line();
+		Line soil = new Line();
 		Line grass = new Line();
 		
 		Node n = base.start;
@@ -123,7 +130,8 @@ public class Sector{
 		while(n.next != null) {
 //			if(n.p.x - n.next.p.x > 0){//TODO re-add this
 				grass.addPoints(n.p);
-				earth.addPoints(n.p.x, n.p.y - 10);
+				soil.addPoints(n.p.x, n.p.y - 10);
+				earth.addPoints(n.p.x, n.p.y - 15);
 				stone.addPoints(n.p.x, n.p.y - 100);
 				bottom.addPoints(n.p.x, n.p.y - 1000);
 //			} else {
@@ -132,19 +140,23 @@ public class Sector{
 			n = n.next;
 		}
 		grass.addPoints(n.p);
-		earth.addPoints(n.p.x, n.p.y - 10);
+		soil.addPoints(n.p.x, n.p.y - 10);
+		earth.addPoints(n.p.x, n.p.y - 15);
 		stone.addPoints(n.p.x, n.p.y - 100);
 		bottom.addPoints(n.p.x, n.p.y - 1000);
 
 		//finalize the lines by adding the way back and closing each to a circle
-		grass.appendLine(earth, true);
+		grass.appendLine(soil, true);
 		grass.closeCircle();
+		soil.appendLine(earth, true);
+		soil.closeCircle();
 		earth.appendLine(stone, true);
 		earth.closeCircle();
 		stone.appendLine(bottom, true);
 		stone.closeCircle();
 		
 		lines[2].add(grass);
+		lines[3].add(soil);
 		lines[1].add(earth);
 		lines[0].add(stone);
 
