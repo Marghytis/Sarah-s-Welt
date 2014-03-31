@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import resources.Texture;
 import util.Tessellator;
 
-public class Sector{
+public class SectorBefore{
 	/**The width of one sector, always the same*/
 	public static final int WIDTH = 1000;
 	public static Tessellator tessellator = new Tessellator();
@@ -21,7 +21,7 @@ public class Sector{
 	@SuppressWarnings("unchecked")
 	public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
 	
-	public Sector(int x){
+	public SectorBefore(int x){
 		this.x = x;
 		random = new Random(x);
 		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();

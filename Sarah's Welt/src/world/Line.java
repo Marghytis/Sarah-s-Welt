@@ -38,6 +38,10 @@ public class Line{
 	}
 
 	public void addPoints(float... coords){
+		if(coords.length <= 1){
+			System.out.println("ERROR while adding points");
+			return;
+		}
 		if(start == null){
 			start = new Node(new Point(coords[0], coords[1]), null);
 			end = start;

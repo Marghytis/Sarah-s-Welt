@@ -1,18 +1,15 @@
 package world;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import main.Window;
 
-import world.WorldGenerator.Sector;
-
 import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
-import util.Quad;
 import util.Tessellator;
+import world.WorldGenerator.Sector;
 
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
@@ -20,33 +17,48 @@ public class WorldWindow {
 		public static Tessellator tessellator = new Tessellator();
 		
 		public int xSector;
-		public WorldGenerator generator;
+		public WorldGenerator generator = new WorldGenerator();
 		
 		@SuppressWarnings("unchecked")
 		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
-		public Sector sec1;
-		public Sector sec2;
-		public Sector sec3;
+		
+		public Sector[] sectors = new Sector[3];
 
 		public Character character;
 		public String worldName;
 	
 		public WorldWindow(String worldName){
 			this.worldName = worldName;
+			for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
 			if(!load()){
 				create();
 			}
-			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
+			sectors[0] = generator.generateLeft();
+			sectors[1] = generator.generateRight();
+			sectors[2] = generator.generateRight();
+//			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
 		}
 		
 		public void plugSectorRight(Sector sec, Sector plug){
 			for(int n = 0; n < sec.openEndingsRight.length; n++){
 				if(sec.inOutRight[n]){
 					sec.openEndingsRight[n].last = plug.openEndingsLeft[n];
-					sec.openEndingsLeft[n].next = plug.openEndingsRight[n];
+					plug.openEndingsLeft[n].next = sec.openEndingsRight[n];
 				} else {
 					sec.openEndingsRight[n].next = plug.openEndingsLeft[n];
+					plug.openEndingsLeft[n].last = sec.openEndingsRight[n];
+				}
+			}
+		}
+		
+		public void plugSectorLeft(Sector sec, Sector plug){
+			for(int n = 0; n < sec.openEndingsRight.length; n++){
+				if(sec.inOutRight[n]){
 					sec.openEndingsLeft[n].last = plug.openEndingsRight[n];
+					plug.openEndingsRight[n].next = sec.openEndingsLeft[n];
+				} else {
+					sec.openEndingsLeft[n].next = plug.openEndingsRight[n];
+					plug.openEndingsRight[n].last = sec.openEndingsLeft[n];
 				}
 			}
 		}
@@ -115,12 +127,16 @@ public class WorldWindow {
 			if(rightwards){
 				//expand rightwards
 				//move rim etc.
-				plugSectorRight(generator.generateRight());
+				sectors[0] = sectors[1];
+				sectors[1] = sectors[2];
+				sectors[2] = generator.generateRight();
+				plugSectorRight(sectors[1], sectors[2]);
+			} else {
+				sectors[2] = sectors[1];
+				sectors[1] = sectors[0];
+				sectors[0] = generator.generateLeft();
+				plugSectorLeft(sectors[1], sectors[0]);
 			}
-		}
-		
-		public void connectLines(Line[] linesToAdd){
-			
 		}
 
 		/**
@@ -152,9 +168,9 @@ public class WorldWindow {
 			if(sectors[0] != null) sectors[0].save();
 			if(sectors[1] != null) sectors[1].save();
 			if(sectors[2] != null) sectors[2].save();
-			sec1 = sectorAt(xSector - 1); lines = sec1.lines;
-			sec2 = sectorAt(xSector); plugSectorRight(sec1, sec2);
-			sec3 = sectorAt(xSector + 1); plugSectorRight(sec2, sec3);
+			sectors[0] = sectorAt(xSector - 1); lines = sectors[0].lines;
+			sectors[1] = sectorAt(xSector); plugSectorRight(sectors[0], sectors[1]);
+			sectors[2] = sectorAt(xSector + 1); plugSectorRight(sectors[1], sectors[2]);
 		}
 		
 		public void save(){

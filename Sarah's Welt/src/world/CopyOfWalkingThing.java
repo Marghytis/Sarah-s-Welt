@@ -116,7 +116,7 @@ public abstract class CopyOfWalkingThing extends Thing{
 	public float[] lineCollision(Point p1, Point p2){
 		float[] intersection = null;
 		int columnFX = World.columns[0].x;//TODO die Anzahl der durchsuchten Spalten noch verkleinern
-		for(Sector sector : World.columns){//	iterate columns
+		for(SectorBefore sector : World.columns){//	iterate columns
 			for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
 					int lineIndex = 0;

@@ -1,5 +1,6 @@
 package world;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import world.worldGen.Surface;
@@ -14,27 +15,40 @@ public class WorldGenerator {
 //	public List<Line> openLines = new ArrayList<>();
 //	public Random random = new Random();
 
-	public Surface surface;
+	public Surface surfaceRight;
+	public Surface surfaceLeft;
 	int xSector;
 	
-	public WorldGenerator(boolean right){
-		this.surface = new Surface(right);
+	public WorldGenerator(){
+		this.surfaceRight = new Surface(true);
+		this.surfaceLeft = new Surface(false);
 	}
-	
 	
 	public Sector generateRight(){
 		Sector output = new Sector();
-		surface.expandRight(output, (xSector+1)*Sector.WIDTH);
+		surfaceRight.expandRight(output, (xSector+1)*Sector.WIDTH);
+		return output;
+	}
+	
+	public Sector generateLeft(){
+		Sector output = new Sector();
+		surfaceLeft.expandLeft(output, (xSector+1)*Sector.WIDTH);
 		return output;
 	}
 	
 	public class Sector {
 		public static final int WIDTH = 1000;
-		public List<Line>[] lines;
+		@SuppressWarnings("unchecked")
+		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];
 		public Node[] openEndingsRight;
 		public boolean[]inOutRight;
 		public Node[] openEndingsLeft;
 		public boolean[]inOutLeft;
 		
+		public Sector(){
+			for(int i = 0; i < lines.length; i++){
+				lines[i] = new ArrayList<>();
+			}
+		}
 	}
 }

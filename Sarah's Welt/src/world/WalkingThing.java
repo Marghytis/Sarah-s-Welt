@@ -2,6 +2,7 @@ package world;
 
 import main.Game;
 import util.Geom;
+import world.WorldGenerator.Sector;
 
 public abstract class WalkingThing extends Thing{
 	
