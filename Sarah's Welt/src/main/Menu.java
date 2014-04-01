@@ -1,6 +1,7 @@
 package main;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import world.World;
 
@@ -103,6 +104,7 @@ public enum Menu{
 	abstract void buttonPressed(Button button);
 	
 	public void render(){
+		GL11.glLoadIdentity();
 		for(Button b : buttons){
 			b.render();
 		}

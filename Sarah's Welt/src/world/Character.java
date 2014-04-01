@@ -2,11 +2,15 @@ package world;
 
 import org.lwjgl.input.Keyboard;
 
+import resources.StackedTexture;
+import util.Quad;
+
 
 public class Character extends WalkingThing{
 	
 	public float keyAcc = 0.00005f;//the acceleration the Character experiences on the pressure of a movement key
 	public boolean flying = false;
+	StackedTexture tex = new StackedTexture("Sarah", 11, 1);
 	
 	public Character(float x, float y){
 		super(1f, 0.5f);
@@ -61,5 +65,16 @@ public class Character extends WalkingThing{
 		}
 		//set the character to the new location
 		updatePos();
+	}
+	
+	Quad quad = new Quad(-25, -37, 50, 75);
+	int counter = 0;
+	int[] framesWalking = {4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6};
+	public void render(){
+		if(counter >= framesWalking.length*20) counter = 0;
+
+		quad.draw(tex, framesWalking[counter/20], 0);
+		
+		counter++;
 	}
 }

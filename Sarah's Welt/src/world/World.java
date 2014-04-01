@@ -105,8 +105,10 @@ public class World{
 			}
 	
 			GL11.glLoadIdentity();
-			(new Quad((Window.WIDTH/2)-10, (Window.HEIGHT/2)-10, 20, 20)).outline();
-			(new Point((Window.WIDTH/2), (Window.HEIGHT/2))).draw();
+			GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
+			character.render();
+//			(new Quad((Window.WIDTH/2)-10, (Window.HEIGHT/2)-10, 20, 20)).outline();
+//			(new Point((Window.WIDTH/2), (Window.HEIGHT/2))).draw();
 		}
 		
 		public void refresh(){
