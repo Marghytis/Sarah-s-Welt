@@ -17,6 +17,11 @@ public class Line{
 		addPoints(coords);
 	}
 	
+	public void empty(){
+		start = null;
+		end = null;
+	}
+	
 	public void connect(Node from, Node to){
 		from.next = to;
 		to.last = from;
@@ -38,18 +43,41 @@ public class Line{
 	}
 	
 	public void addPoint(float x, float y){
-		connect(end, new Node(new Point(x, y)));
-		end = end.next;
+		Node n = new Node(new Point(x, y));
+		if(end == null){
+			end = n;
+			start = n;
+		} else {
+			connect(end, n);
+			end = end.next;
+		}
 	}
 	
 	public void addPoint(Point p){
-		connect(end, new Node(p));
-		end = end.next;
+		Node n = new Node(p);
+		if(end == null){
+			end = n;
+			start = n;
+		} else {
+			connect(end, n);
+			end = end.next;
+		}
+	}
+	
+	public void addPointBack(float x, float y){
+		Node n = new Node(new Point(x, y));
+		if(end == null){
+			end = n;
+			start = n;
+		} else {
+			connect(n, start);
+			start = n;
+		}
 	}
 
 	public void addPoints(float... coords){
 		if(coords.length <= 1){
-			System.out.println("ERROR while adding points");
+			System.out.println("NO POINTS TO ADD");
 			return;
 		}
 		if(start == null){

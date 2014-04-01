@@ -20,7 +20,7 @@ public class WorldWindow {
 		public WorldGenerator generator = new WorldGenerator();
 		
 		@SuppressWarnings("unchecked")
-		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
+//		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
 		
 		public Sector[] sectors = new Sector[3];
 
@@ -29,7 +29,7 @@ public class WorldWindow {
 	
 		public WorldWindow(String worldName){
 			this.worldName = worldName;
-			for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
+//			for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
 			if(!load()){
 				create();
 				sectors[0] = generator.generateLeft();
@@ -39,29 +39,29 @@ public class WorldWindow {
 //			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
 		}
 		
-		public void plugSectorRight(Sector sec, Sector plug){
-			for(int n = 0; n < sec.openEndingsRight.length; n++){
-				if(sec.inOutRight[n]){
-					sec.openEndingsRight[n].last = plug.openEndingsLeft[n];
-					plug.openEndingsLeft[n].next = sec.openEndingsRight[n];
-				} else {
-					sec.openEndingsRight[n].next = plug.openEndingsLeft[n];
-					plug.openEndingsLeft[n].last = sec.openEndingsRight[n];
-				}
-			}
-		}
-		
-		public void plugSectorLeft(Sector sec, Sector plug){
-			for(int n = 0; n < sec.openEndingsRight.length; n++){
-				if(sec.inOutRight[n]){
-					sec.openEndingsLeft[n].last = plug.openEndingsRight[n];
-					plug.openEndingsRight[n].next = sec.openEndingsLeft[n];
-				} else {
-					sec.openEndingsLeft[n].next = plug.openEndingsRight[n];
-					plug.openEndingsRight[n].last = sec.openEndingsLeft[n];
-				}
-			}
-		}
+//		public void plugSectorRight(Sector sec, Sector plug){
+//			for(int n = 0; n < sec.openEndingsRight.length; n++){
+//				if(sec.inOutRight[n]){
+//					sec.openEndingsRight[n].last = plug.openEndingsLeft[n];
+//					plug.openEndingsLeft[n].next = sec.openEndingsRight[n];
+//				} else {
+//					sec.openEndingsRight[n].next = plug.openEndingsLeft[n];
+//					plug.openEndingsLeft[n].last = sec.openEndingsRight[n];
+//				}
+//			}
+//		}
+//		
+//		public void plugSectorLeft(Sector sec, Sector plug){
+//			for(int n = 0; n < sec.openEndingsRight.length; n++){
+//				if(sec.inOutRight[n]){
+//					sec.openEndingsLeft[n].last = plug.openEndingsRight[n];
+//					plug.openEndingsRight[n].next = sec.openEndingsLeft[n];
+//				} else {
+//					sec.openEndingsLeft[n].next = plug.openEndingsRight[n];
+//					plug.openEndingsRight[n].last = sec.openEndingsLeft[n];
+//				}
+//			}
+//		}
 		
 		/**
 		 * Load this world from the world file
@@ -102,17 +102,18 @@ public class WorldWindow {
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor3f(0, 0, 0);
-
-			for(int mat = 1; mat < Material.values().length; mat++){
-				
-				GL11.glColor4f(1, 1, 1, 1);
-				
-				Texture tex = Material.values()[mat].texture;
-				tex.bind();
-				{
-					tessellator.tessellate(lines[mat-1], tex.width, tex.height);
+			
+			for(Sector sec: sectors){
+				for(int mat = 1; mat < Material.values().length; mat++){
+					GL11.glColor4f(1, 1, 1, 1);
+					
+					Texture tex = Material.values()[mat].texture;
+					tex.bind();
+					{
+						tessellator.tessellate(sec.lines[mat-1], tex.width, tex.height);
+					}
+					tex.release();
 				}
-				tex.release();
 			}
 	
 			character.render();
@@ -130,12 +131,12 @@ public class WorldWindow {
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
 				sectors[2] = generator.generateRight();
-				plugSectorRight(sectors[1], sectors[2]);
+//				plugSectorRight(sectors[1], sectors[2]);
 			} else {
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
 				sectors[0] = generator.generateLeft();
-				plugSectorLeft(sectors[1], sectors[0]);
+//				plugSectorLeft(sectors[1], sectors[0]);
 			}
 		}
 
@@ -165,12 +166,15 @@ public class WorldWindow {
 		
 		public void loadPosition(int x){
 			xSector = x;
-			if(sectors[0] != null) sectors[0].save();
-			if(sectors[1] != null) sectors[1].save();
-			if(sectors[2] != null) sectors[2].save();
-			sectors[0] = sectorAt(xSector - 1); lines = sectors[0].lines;
-			sectors[1] = sectorAt(xSector); plugSectorRight(sectors[0], sectors[1]);
-			sectors[2] = sectorAt(xSector + 1); plugSectorRight(sectors[1], sectors[2]);
+//			if(sectors[0] != null) sectors[0].save();
+//			if(sectors[1] != null) sectors[1].save();
+//			if(sectors[2] != null) sectors[2].save();
+			sectors[0] = sectorAt(xSector - 1); 
+//			lines = sectors[0].lines;
+			sectors[1] = sectorAt(xSector); 
+//			plugSectorRight(sectors[0], sectors[1]);
+			sectors[2] = sectorAt(xSector + 1); 
+//			plugSectorRight(sectors[1], sectors[2]);
 		}
 		
 		public void save(){

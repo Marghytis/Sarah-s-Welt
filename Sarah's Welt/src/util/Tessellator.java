@@ -31,16 +31,24 @@ public class Tessellator {
 	
 	public void tessellate(List<Line> lines, float texWidth, float texHeight){
 		tessellator.gluTessBeginPolygon(null);
-		for(int i1 = 0; i1 < lines.size(); i1++){
-			tessellator.gluTessBeginContour();
-			Node n = lines.get(i1).start;
-			do {
-				double[] coords = new double[]{n.p.x, n.p.y, 0};
-				float[] vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
-				n = n.next;
-				tessellator.gluTessVertex(coords, 0, vertexData);
-			} while(!(n.equals(lines.get(i1).start) || n.next == null));
-			tessellator.gluTessEndContour();
+		{
+			for(int i1 = 0; i1 < lines.size(); i1++){
+				if(lines.get(i1).start != null){
+				tessellator.gluTessBeginContour();
+				{
+					Node n = lines.get(i1).start;
+					double[] coords = new double[]{n.p.x, n.p.y, 0};
+					float[] vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
+					while(n != lines.get(i1).end) {
+						n = n.next;
+						coords = new double[]{n.p.x, n.p.y, 0};
+						vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
+						tessellator.gluTessVertex(coords, 0, vertexData);
+					}
+				}
+				tessellator.gluTessEndContour();
+				}
+			}
 		}
 		tessellator.gluTessEndPolygon();
 //		GL11.glColor3f(0, 0, 0);

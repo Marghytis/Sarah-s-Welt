@@ -3,7 +3,8 @@ package world;
 import java.util.ArrayList;
 import java.util.List;
 
-import world.worldGen.Surface;
+import world.worldGen.SurfaceGenL;
+import world.worldGen.SurfaceGenR;
 
 public class WorldGenerator {
 
@@ -15,26 +16,27 @@ public class WorldGenerator {
 //	public List<Line> openLines = new ArrayList<>();
 //	public Random random = new Random();
 
-	public Surface surfaceRight;
-	public Surface surfaceLeft;
+	public SurfaceGenR surfaceRight;
+	public SurfaceGenL surfaceLeft;
 	int rimR = 0, rimL = 0;
 	
 	public WorldGenerator(){
-		this.surfaceRight = new Surface(true);
-		this.surfaceLeft = new Surface(false);
+		surfaceRight = new SurfaceGenR();
+		surfaceLeft = new SurfaceGenL();
 	}
 	
 	public Sector generateRight(){
 		rimR++;
 		Sector output = new Sector();
-		surfaceRight.expandRight(output, rimR*Sector.WIDTH);
+		surfaceRight.expand(output, rimR*Sector.WIDTH);
+		System.out.println(output.lines[0].size());
 		return output;
 	}
 	
 	public Sector generateLeft(){
 		rimL--;
 		Sector output = new Sector();
-		surfaceLeft.expandLeft(output, rimL*Sector.WIDTH);
+		surfaceLeft.expand(output, rimL*Sector.WIDTH);
 		return output;
 	}
 	
@@ -42,10 +44,10 @@ public class WorldGenerator {
 		public static final int WIDTH = 1000;
 		@SuppressWarnings("unchecked")
 		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];
-		public Node[] openEndingsRight;
-		public boolean[]inOutRight;
-		public Node[] openEndingsLeft;
-		public boolean[]inOutLeft;
+//		public Node[] openEndingsRight;
+//		public boolean[]inOutRight;
+//		public Node[] openEndingsLeft;
+//		public boolean[]inOutLeft;
 		
 		public Sector(){
 			for(int i = 0; i < lines.length; i++){

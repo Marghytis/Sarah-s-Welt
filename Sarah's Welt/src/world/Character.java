@@ -20,6 +20,7 @@ public class Character extends WalkingThing{
 	}
 	
 	public void tick(float dTime){
+		System.out.println(pos);
 		if(flying) g = false;
 		if(g){
 //			System.out.println(pos.x + "  " + vP);
@@ -53,12 +54,15 @@ public class Character extends WalkingThing{
 			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 				accelerate(-keyAcc, 0);
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-				accelerate(0, keyAcc);
+			if(flying){
+				if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+					accelerate(0, keyAcc);
+				}
+				if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+					accelerate(0, -keyAcc);
+				}
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-				accelerate(0, -keyAcc);
-			}
+			
 			
 			//do movement in air
 			updateVel(dTime);

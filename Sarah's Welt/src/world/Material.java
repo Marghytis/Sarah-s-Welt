@@ -9,8 +9,7 @@ public enum Material {
 	STONE("Stone_g", 2f, true),
 	EARTH("Earth", 3f, true),
 	GRASS("Grass", 3f, true),
-	WOOD("Wood", 1.2f, true),
-	SNOW("Snow", 1.2f, false);
+	SOIL("Soil", 3f, true);
 	
 	public String name;
 	public Texture texture;
