@@ -62,7 +62,7 @@ public abstract class WalkingThing extends Thing{
 		
 		Node node = worldLink.last.last.last.last.last.last.last.last;
 		Node finalNode = null;
-		
+		if(node == null)return;//TODO
 		for(int i = 0; i <= 16; i++){
 			//TODO make circleIntersection relative to the character, so I can just add it to the nextPos
 			if(node.p.x > node.next.p.x){

@@ -77,7 +77,7 @@ public class Line{
 
 	public void addPoints(float... coords){
 		if(coords.length <= 1){
-			System.out.println("NO POINTS TO ADD");
+			//ERROR
 			return;
 		}
 		if(start == null){
@@ -162,7 +162,8 @@ public class Line{
 	}
 	
 	public boolean isCircle(){
-		return end.next == start;
+//		return end.next == start;
+		return false;
 	}
 	
 	public boolean appendLine(Line l){

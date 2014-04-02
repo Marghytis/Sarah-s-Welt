@@ -19,7 +19,7 @@ public class WorldWindow {
 		public int xSector;
 		public WorldGenerator generator = new WorldGenerator();
 		
-		@SuppressWarnings("unchecked")
+//		@SuppressWarnings("unchecked")
 //		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material
 		
 		public Sector[] sectors = new Sector[3];

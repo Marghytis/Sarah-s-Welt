@@ -29,7 +29,7 @@ public class WorldGenerator {
 		rimR++;
 		Sector output = new Sector();
 		surfaceRight.expand(output, rimR*Sector.WIDTH);
-		System.out.println(output.lines[0].size());
+		System.out.println(output.lines[1].get(0).toString());
 		return output;
 	}
 	
