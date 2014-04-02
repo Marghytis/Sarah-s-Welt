@@ -9,7 +9,7 @@ public abstract class WalkingThing extends Thing{
 	public float aP;
 	public static final int framesPerStep = 10;
 	public float maxSpeed = 15;
-	public float velocityUnit = 0.0005f;
+	public float velocityUnit = 0.00035f;
 	public int vP;// distance per stepping frame (in acceleration
 	
 	public int frame;

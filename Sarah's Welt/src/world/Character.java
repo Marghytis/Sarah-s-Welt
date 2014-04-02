@@ -67,14 +67,18 @@ public class Character extends WalkingThing{
 		updatePos();
 	}
 	
-	Quad quad = new Quad(-25, -37, 50, 75);
+	Quad quad = new Quad(-25, -7, 50, 75);
 	int counter = 0;
 	int[] framesWalking = {4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6};
+	
 	public void render(){
-		if(counter >= framesWalking.length*20) counter = 0;
-
-		quad.draw(tex, framesWalking[counter/20], 0);
-		
-		counter++;
+		if(vP > 0){
+			int time = 3;
+			if(counter >= framesWalking.length*time) counter = 0;
+	
+			quad.draw(tex, framesWalking[counter/time], 0);
+			
+			counter++;
+		}
 	}
 }
