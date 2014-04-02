@@ -69,16 +69,36 @@ public class Character extends WalkingThing{
 	
 	Quad quad = new Quad(-25, -7, 50, 75);
 	int counter = 0;
-	int[] framesWalking = {4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6};
+	int[] framesWalking = {0, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6};
+	boolean blickR = true;
 	
 	public void render(){
 		if(vP > 0){
+			blickR =true;
 			int time = 3;
-			if(counter >= framesWalking.length*time) counter = 0;
+			if(counter >= framesWalking.length*time) counter = 4;
 	
 			quad.draw(tex, framesWalking[counter/time], 0);
 			
 			counter++;
-		}
+		} 
+		else if(vP == 0){	
+			if(blickR==true){
+				quad.draw(tex, framesWalking[0],0);
+			}
+			else {
+				quad.drawMirrored(tex, framesWalking[0],0);
+			}
+		} 
+		if(vP < 0){
+			blickR = false;
+			int time = 3;
+			if(counter >= framesWalking.length*time) counter = 4;
+	
+			quad.drawMirrored(tex, framesWalking[counter/time], 0);
+			
+			counter++;
+		} 
 	}
+	
 }

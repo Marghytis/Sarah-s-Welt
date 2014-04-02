@@ -54,6 +54,23 @@ public class Quad {
 			GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
 	}
+	public void drawMirrored(StackedTexture texture, int xPart, int yPart){
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.handle);
+		
+		float yOffset = yPart*texture.heightP;
+		float xOffset = xPart*texture.widthP;
+		
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glTexCoord2f(xOffset + texture.widthP, yOffset + texture.heightP);
+			GL11.glVertex2f(x, y);
+			GL11.glTexCoord2f(xOffset, yOffset + texture.heightP);
+			GL11.glVertex2f(x + width, y);
+			GL11.glTexCoord2f(xOffset , yOffset);
+			GL11.glVertex2f(x + width, y + height);
+			GL11.glTexCoord2f(xOffset + texture.widthP, yOffset);
+			GL11.glVertex2f(x, y + height);
+		GL11.glEnd();
+	}
 	
 	public void outline(){
 		GL11.glBegin(GL11.GL_LINE_LOOP);
