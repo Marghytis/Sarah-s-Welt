@@ -43,10 +43,11 @@ public class WorldGenerator {
 		public static final int WIDTH = 1000;
 		@SuppressWarnings("unchecked")
 		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];
-//		public Node[] openEndingsRight;
-//		public boolean[]inOutRight;
-//		public Node[] openEndingsLeft;
-//		public boolean[]inOutLeft;
+		
+		public Node[] openEndingsRight;
+		public Node[] openEndingsLeft;
+		
+		public Node[] insideCircles;
 		
 		public Sector(){
 			for(int i = 0; i < lines.length; i++){

@@ -38,6 +38,7 @@ public class Tessellator {
 					Node n = lines.get(i1).start;
 					double[] coords = new double[]{n.p.x, n.p.y, 0};
 					float[] vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
+					tessellator.gluTessVertex(coords, 0, vertexData);
 					while(n != lines.get(i1).end) {
 						n = n.next;
 						coords = new double[]{n.p.x, n.p.y, 0};
