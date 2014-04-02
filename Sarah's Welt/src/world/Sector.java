@@ -6,15 +6,25 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
+import resources.StackedTexture;
 import resources.Texture;
+import util.Quad;
 import util.Tessellator;
 
 public class Sector{
 	/**The width of one sector, always the same*/
 	public static final int WIDTH = 1000;
 	public static Tessellator tessellator = new Tessellator();
+	StackedTexture cloud = new StackedTexture("Cloud", 1, 1);
 	
 	public Random random;
+	
+	/*public int randomnr(int min , int max){
+		Random rn = new Random();
+		int n = max - min + 1;
+		int i = min + rn.nextInt() % n;
+		return i;
+	}*/
 	
 	int x;
 	
@@ -27,12 +37,28 @@ public class Sector{
 		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
 	}
 	
+	Random rn = new Random();
+	int n = 270 - 150 + 1;
+	int i = 150 + rn.nextInt() % n;
+	
+	int nx = 700 - 20 + 1;
+	int ix = 20 + rn.nextInt() % nx;
+	
+	int ny = 600 - 480 + 1;
+	int iy = 480 + rn.nextInt() % ny;
+
+	Quad quad = new Quad(ix, iy, i, i);
+	
 	public void render(){
 		GL11.glColor3f(1, 1, 1);
 		GL11.glBegin(GL11.GL_LINE_LOOP);
 		GL11.glVertex2f(x*WIDTH, -1000);
 		GL11.glVertex2f(x*WIDTH, 1000);
 		GL11.glEnd();
+		
+		
+		quad.draw(cloud, i,i); 
+		
 		
 		for(int mat = 1; mat < Material.values().length; mat++){
 			GL11.glColor4f(1, 1, 1, 1);
@@ -48,6 +74,7 @@ public class Sector{
 		Line base = new Line();
 		base.addPoints(new Point(lastPoint));
 		float segmentLength = 20;
+		
 
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
 		while(lastPoint.x <= (x+1)*WIDTH){
@@ -65,6 +92,7 @@ public class Sector{
 		Line soil = new Line();
 		Line grass = new Line();
 		
+		
 		Node n = base.end;
 		
 		while(n.last != null) {
@@ -74,6 +102,7 @@ public class Sector{
 			earth.addPoints(n.p.x, n.p.y - 15);
 			stone.addPoints(n.p.x, n.p.y - 100);
 			bottom.addPoints(n.p.x, n.p.y - 1000);
+			
 //			}
 			n = n.last;
 		}
@@ -82,6 +111,7 @@ public class Sector{
 		earth.addPoints(n.p.x, n.p.y - 15);
 		stone.addPoints(n.p.x, n.p.y - 100);
 		bottom.addPoints(n.p.x, n.p.y - 1000);
+		
 
 		//finalize the lines by adding the way back and closing each to a circle
 		grass.appendLine(soil, true);
