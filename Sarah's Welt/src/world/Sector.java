@@ -28,7 +28,7 @@ public class Sector{
 	}
 	
 	public void render(){
-		GL11.glColor3f(1, 1, 1);
+		GL11.glColor4f(1, 1, 1, 0.1f);
 		GL11.glBegin(GL11.GL_LINE_LOOP);
 		GL11.glVertex2f(x*WIDTH, -1000);
 		GL11.glVertex2f(x*WIDTH, 1000);
