@@ -49,7 +49,7 @@ public class Window {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle("OpenGL Test");
 			Display.setResizable(true);
-			Display.setInitialBackground(0.6f, 0.3f, 0.4f);
+			Display.setInitialBackground(0.5f, 0.5f, 1f);
 			Display.create();
 		} catch(LWJGLException e){
 			e.printStackTrace();
@@ -63,7 +63,7 @@ public class Window {
 	public boolean nextFrame(){
 		Display.update();
 		if(Display.wasResized()) resize();
-		GL11.glClearColor(0.6f, 0.3f, 0.4f, 1);
+		GL11.glClearColor(0.5f, 0.5f, 1f, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		if(Display.wasResized()) resize();
 		Display.sync(60);
