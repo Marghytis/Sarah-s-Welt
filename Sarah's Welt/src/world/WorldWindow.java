@@ -87,6 +87,7 @@ public class WorldWindow {
 				if(playerX == xSector - 1){
 					step(false);
 				} else if (playerX == xSector + 1){
+					System.out.println("test");
 					step(true);
 				} else {
 					loadPosition(playerX);
@@ -128,14 +129,16 @@ public class WorldWindow {
 			if(rightwards){
 				//expand rightwards
 				//move rim etc.
+				xSector++;
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
-				sectors[2] = generator.generateRight();
+				sectors[2] = generator.generateRight();//TODO or load
 //				plugSectorRight(sectors[1], sectors[2]);
 			} else {
+				xSector--;
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
-				sectors[0] = generator.generateLeft();
+				sectors[0] = generator.generateLeft();//TODO or load
 //				plugSectorLeft(sectors[1], sectors[0]);
 			}
 		}

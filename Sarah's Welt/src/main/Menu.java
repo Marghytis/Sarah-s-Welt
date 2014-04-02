@@ -46,18 +46,31 @@ public enum Menu{
 						}
 						super.render();
 					}
-				}
+				},
+				new Button("Textures", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/8) - 20, 300, 60){
+					public void render(){
+						if(Settings.debugView){
+							name = "Textures enabled";
+						} else {
+							name = "Textures disabled";
+						}
+						super.render();
+					}
+				},
 			};
 		}
 		
 		void buttonPressed(Button b){
-			System.out.println(b.name);
-			if(Game.world.character.flying){
-				b.name = "Flying disabled";
-			} else {
-				b.name = "Flying enabled";
+			if(b.name.contains("Flying")){
+				if(Game.world.character.flying){
+					b.name = "Flying disabled";
+				} else {
+					b.name = "Flying enabled";
+				}
+				Game.world.character.flying = !Game.world.character.flying;
+			} else if(b.name.contains("Textures")){
+				Settings.switchDebugView();
 			}
-			Game.world.character.flying = !Game.world.character.flying;
 		}
 	};
 	

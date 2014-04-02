@@ -50,19 +50,18 @@ public class Game {
 	public static void keyListening(){
 		while(Keyboard.next()){
 			if(Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_ESCAPE){
-				System.out.println("test");
 				if(menu == Menu.MAIN){
 					menu = Menu.EMPTY;
 				} else {
 					menu = Menu.MAIN;
 				}
 			}
-		}
-		if(menu != Menu.MAIN){
-			if(Keyboard.isKeyDown(Keyboard.KEY_G)){
-				menu = Menu.DEBUG;
-			} else {
-				menu = Menu.EMPTY;
+			if(menu != Menu.MAIN && Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_O){
+				if(menu == Menu.DEBUG){
+					menu = Menu.EMPTY;
+				} else {
+					menu = Menu.DEBUG;
+				}
 			}
 		}
 	}

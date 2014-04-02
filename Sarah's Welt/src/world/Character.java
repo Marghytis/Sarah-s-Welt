@@ -20,7 +20,6 @@ public class Character extends WalkingThing{
 	}
 	
 	public void tick(float dTime){
-		System.out.println(pos);
 		if(flying) g = false;
 		if(g){
 //			System.out.println(pos.x + "  " + vP);
