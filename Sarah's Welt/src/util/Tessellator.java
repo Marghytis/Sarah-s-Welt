@@ -28,6 +28,28 @@ public class Tessellator {
 //		tessellator.gluTessProperty(GLU.GLU_TESS_WINDING_RULE, GLU.GLU_TESS_WINDING_POSITIVE);
 	}
 	
+	public void tessellateOneNode(List<Node> nodes, float texWidth, float texHeight){
+		tessellator.gluTessBeginPolygon(null);
+		{
+			for(int i1 = 0; i1 < nodes.size(); i1++){
+				if(nodes.get(i1) != null){
+				tessellator.gluTessBeginContour();
+				{
+					Node n = nodes.get(i1);
+					do {
+						double[] coords = new double[]{n.p.x, n.p.y, 0};
+						float[] vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
+						tessellator.gluTessVertex(coords, 0, vertexData);
+						n = n.next;
+					} while(n != nodes.get(i1));
+				}
+				tessellator.gluTessEndContour();
+				}
+			}
+		}
+		tessellator.gluTessEndPolygon();
+	}
+	
 	public void tessellate(List<Line> lines, float texWidth, float texHeight){
 		tessellator.gluTessBeginPolygon(null);
 		{

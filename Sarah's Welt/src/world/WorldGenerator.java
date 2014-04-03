@@ -40,19 +40,13 @@ public class WorldGenerator {
 	}
 	
 	public class Sector {
-		public static final int WIDTH = 1000;
-		@SuppressWarnings("unchecked")
-		public List<Line>[] lines = (List<Line>[]) new ArrayList<?>[Material.values().length];
+		public static final int WIDTH = 200;
+		public List<MaterialCycle> areas = new ArrayList<>();
 		
 		public Node[] openEndingsRight;
 		public Node[] openEndingsLeft;
 		
 		public Node[] insideCircles;
 		
-		public Sector(){
-			for(int i = 0; i < lines.length; i++){
-				lines[i] = new ArrayList<>();
-			}
-		}
 	}
 }

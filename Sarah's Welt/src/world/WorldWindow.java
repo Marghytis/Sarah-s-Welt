@@ -8,6 +8,7 @@ import main.Window;
 import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
+import util.Cycle;
 import util.Tessellator;
 import world.WorldGenerator.Sector;
 
@@ -20,7 +21,7 @@ public class WorldWindow {
 		public WorldGenerator generator = new WorldGenerator();
 		
 		@SuppressWarnings("unchecked")
-		public List<Node>[] lines = (List<Node>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
+		public List<Cycle>[] lines = (List<Cycle>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
 		
 		public Sector[] sectors = new Sector[3];
 
@@ -37,24 +38,22 @@ public class WorldWindow {
 		}
 		
 		public void startWorldWindowWithSectorLines(Sector s){
-			for(int i = 0; i < Material.values().length; i++){
-				for(int i2 = 0; i < s.lines[i].size(); i++){
-					lines[i].add(s.lines[i].get(i2).start);
-				}
+			for(MaterialCycle mc : s.areas){
+				lines[mc.mat.ordinal()].add((Cycle) mc);
 			}
 		}
 		
 		public void plugSectorRight(Sector sec, Sector plug){
 			for(int i = 0; i < sec.openEndingsRight.length; i++){
 				
-				Node otherL = plug.openEndingsLeft[i].next;
-				Node otherR = sec.openEndingsRight[i].next;
+				Node otherR = plug.openEndingsLeft[i].next;
+				Node otherL = sec.openEndingsRight[i].next;//correct
 				
-				sec.openEndingsRight[i].next = otherL;
-				otherL.last = sec.openEndingsRight[i];
+				sec.openEndingsRight[i].next = otherR;
+				otherR.last = sec.openEndingsRight[i];
 				
-				plug.openEndingsLeft[i].next = otherR;
-				otherR.last = plug.openEndingsLeft[i];
+				plug.openEndingsLeft[i].next = otherL;
+				otherL.last = plug.openEndingsLeft[i];
 				
 			}
 		}
@@ -89,6 +88,7 @@ public class WorldWindow {
 			sectors[0] = generator.generateLeft(); startWorldWindowWithSectorLines(sectors[0]);//!!! otherwise there will never be any lines in this window :P
 			sectors[1] = generator.generateRight();
 			sectors[2] = generator.generateRight();
+			plugSectorRight(sectors[1], sectors[2]);
 		}
 		
 		public void tick(float dTime){
@@ -115,19 +115,30 @@ public class WorldWindow {
 			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor3f(0, 0, 0);
 			
-			for(Sector sec: sectors){
-				for(int mat = 1; mat < Material.values().length; mat++){
-					GL11.glColor4f(1, 1, 1, 1);
-					
-					Texture tex = Material.values()[mat].texture;
-					tex.bind();
-					{
-						tessellator.tessellate(sec.lines[mat], tex.width, tex.height);
-					}
-					tex.release();
+			for(int mat = 0; mat < Material.values().length; mat++){
+				GL11.glColor4f(1, 1, 1, 1);
+				
+				Texture tex = Material.values()[mat].texture;
+				tex.bind();
+				{
+					tessellator.tessellateOneNode(lines[mat], tex.width, tex.height);
 				}
+				tex.release();
 			}
-	
+			
+//			for(Sector sec: sectors){
+//				for(int mat = 1; mat < Material.values().length; mat++){
+//					GL11.glColor4f(1, 1, 1, 1);
+//					
+//					Texture tex = Material.values()[mat].texture;
+//					tex.bind();
+//					{
+//						tessellator.tessellate(sec.lines[mat], tex.width, tex.height);
+//					}
+//					tex.release();
+//				}
+//			}
+//	
 			character.render();
 		}
 		
