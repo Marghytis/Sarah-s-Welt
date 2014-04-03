@@ -15,16 +15,15 @@ public class Sector{
 	/**The width of one sector, always the same*/
 	public static final int WIDTH = 1000;
 	public static Tessellator tessellator = new Tessellator();
-	StackedTexture cloud = new StackedTexture("Cloud", 1, 1);
+	Texture cloud = new Texture("Cloud");
 	
 	public Random random;
 	
-	/*public int randomnr(int min , int max){
-		Random rn = new Random();
+	public int randomnr(int min , int max){
 		int n = max - min + 1;
-		int i = min + rn.nextInt() % n;
+		int i = min + random.nextInt() % n;
 		return i;
-	}*/
+	}
 	
 	int x;
 	
@@ -33,21 +32,20 @@ public class Sector{
 	
 	public Sector(int x){
 		this.x = x;
-		random = new Random(x);
+		random = new Random();
 		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
+
+		
+		int breite = randomnr(150, 270);
+		int hoehe = randomnr(150, breite);
+		int cx = randomnr(20, 700);
+		int cy = randomnr(480, 600);
+		
+		quad = new Quad(cx, cy, breite, hoehe);
 	}
 	
-	Random rn = new Random();
-	int n = 270 - 150 + 1;
-	int i = 150 + rn.nextInt() % n;
-	
-	int nx = 700 - 20 + 1;
-	int ix = 20 + rn.nextInt() % nx;
-	
-	int ny = 600 - 480 + 1;
-	int iy = 480 + rn.nextInt() % ny;
 
-	Quad quad = new Quad(ix, iy, i, i);
+	Quad quad;
 	
 	public void render(){
 		GL11.glColor3f(1, 1, 1);
@@ -57,7 +55,7 @@ public class Sector{
 		GL11.glEnd();
 		
 		
-		quad.draw(cloud, i,i); 
+		quad.draw(cloud); 
 		
 		
 		for(int mat = 1; mat < Material.values().length; mat++){

@@ -1,8 +1,9 @@
 package util;
 
-import resources.StackedTexture;
-
 import org.lwjgl.opengl.GL11;
+
+import resources.StackedTexture;
+import resources.Texture;
 
 public class Quad {
 
@@ -33,6 +34,21 @@ public class Quad {
 			GL11.glVertex2f(x, y);
 			GL11.glVertex2f(x + width, y);
 			GL11.glVertex2f(x + width, y + height);
+			GL11.glVertex2f(x, y + height);
+		GL11.glEnd();
+	}
+	
+	public void draw(Texture texture){
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.handle);
+				
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glTexCoord2f(0, 1);
+			GL11.glVertex2f(x, y);
+			GL11.glTexCoord2f(1, 1);
+			GL11.glVertex2f(x + width, y);
+			GL11.glTexCoord2f(1, 0);
+			GL11.glVertex2f(x + width, y + height);
+			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
 	}
