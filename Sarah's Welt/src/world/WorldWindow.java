@@ -34,7 +34,6 @@ public class WorldWindow {
 			if(!load()){
 				create();
 			}
-//			loadPosition((int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0));
 		}
 		
 		public void startWorldWindowWithSectorLines(Sector s){
