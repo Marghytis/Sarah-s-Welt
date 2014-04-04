@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/Public/Documents/Informatik/Libraries/slick/lib/lwjgl.jar" sourcepath="C:/Users/Public/Documents/Hobbies/Informatik/LWJGL/lwjgl-2.9.0/lwjgl-source-2.9.0.zip">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Public/Documents/Informatik/Libraries/slick"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Public/Documents/Informatik/Libraries/slick/lib/lwjgl_util.jar" sourcepath="C:/Users/Public/Documents/Hobbies/Informatik/LWJGL/slick/src">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Public/Documents/Informatik/Libraries/slick"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
