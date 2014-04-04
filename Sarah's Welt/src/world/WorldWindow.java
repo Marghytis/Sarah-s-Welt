@@ -21,8 +21,10 @@ public class WorldWindow {
 		public WorldGenerator generator = new WorldGenerator();
 		
 		@SuppressWarnings("unchecked")
-		public List<Cycle>[] lines = (List<Cycle>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
+//		public List<Cycle>[] lines = (List<Cycle>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
 		
+		public List<AreaPart> areas
+
 		public Sector[] sectors = new Sector[3];
 
 		public Character character;
