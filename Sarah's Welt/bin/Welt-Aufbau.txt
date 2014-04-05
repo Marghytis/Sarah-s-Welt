@@ -1,0 +1,7 @@
+
+WORLD (Welt)
+	COLUMNS (Spalte) nach links und rechts vom Ursprung aus
+		LINE (Linie/Fläche) ist die Umrandungslinie von einer Materialfläche
+			NODE (Knotenpunkt) ein Knoten der Linie, verweist auf einen bestimmten Punkt und auf die benachbarten Knoten
+				POINT (Punkt) hat einen x und einen y Wert, ist von den Nodes unabhängig, kann also von mehreren benutzt werden
+	
