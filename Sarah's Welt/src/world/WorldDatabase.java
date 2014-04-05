@@ -1,10 +1,14 @@
 package world;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import db.DB_Anfragen;
 import db.Hilfsfunktionen;
 import util.Datenbank;
 
@@ -68,5 +72,30 @@ public class WorldDatabase extends Datenbank{
 	public void saveSectorAt(int xWert){
 		
 	}
+	
+	 public boolean createDB(String name) {
+	        Connection conn = db_open("worlds/", name + ".sqlite");
+            try {
+                Statement sql = conn.createStatement();
+
+                String sqlCreate = 
+                "DROP TABLE IF EXISTS 'Area';"+
+                "CREATE TABLE 'Area' ('a_ID' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , 'Material' VARCHAR NOT NULL  DEFAULT AIR);" +
+                "DROP TABLE IF EXISTS 'AreaPart';" +
+                "CREATE TABLE 'AreaPart' ('a_ID' INTEGER NOT NULL , 'sX' INTEGER NOT NULL , PRIMARY KEY ('a_ID', 'sX'));" +
+                "DROP TABLE IF EXISTS 'Contains';" +
+                "CREATE TABLE 'Contains' ('a_ID' INTEGER NOT NULL , 'sX' INTEGER NOT NULL , 'p_ID' INTEGER NOT NULL );" +
+                "DROP TABLE IF EXISTS 'Point';" +
+                "CREATE TABLE 'Point' ('p_ID' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0);";
+;
+
+                sql.executeUpdate(sqlCreate);
+                conn.close();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+	        return true;
+	    }
 	
 }
