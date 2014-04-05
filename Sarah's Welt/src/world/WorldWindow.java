@@ -20,10 +20,10 @@ public class WorldWindow {
 		public int xSector;
 		public WorldGenerator generator = new WorldGenerator();
 		
-		@SuppressWarnings("unchecked")
+//		@SuppressWarnings("unchecked")
 //		public List<Cycle>[] lines = (List<Cycle>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
 		
-		public List<AreaPart> areas
+		public List<Cycle> areas = new ArrayList<>();
 
 		public Sector[] sectors = new Sector[3];
 
@@ -142,11 +142,7 @@ public class WorldWindow {
 //	
 			character.render();
 		}
-		
-		public void refresh(){
-			
-		}
-		
+				
 		public void step(boolean rightwards){
 			//if !load(x)
 			if(rightwards){
@@ -212,4 +208,61 @@ public class WorldWindow {
 		}
 	
 	
+		public void stepR(){
+			for(List<Area> list : areas){
+				for(Area area : list){
+					area.shiftR();
+				}
+			}
+		}
+
+		public class Area {
+			int id;
+			Cycle current;
+			Material material;
+			AreaPart[] parts = new AreaPart[3];
+
+			public void shiftR(int sX){
+				parts[0].disconnectR(parts[1]);
+
+				parts[0] = parts[1];
+				parts[1] = parts[2];
+				parts[2] = WorldDatabase.getAreaPart(id, sX);
+
+				parts[1].connectR(parts[2]);
+			}
+
+			public void render(){
+				Node n = current.start;
+				do{
+
+					n = n.next;
+				} while(n != current.start);
+			}
+
+			public class AreaPart {
+				Cycle[] cycles;
+
+				Node[] leftEnds;
+				Node[] rightEnds;
+
+				/**
+				*Must fit together!!!
+				*/
+				public void connectR(AreaPart rightPart){
+					for(int n = 0; n < rightEnds.length; n++){
+						Node here = rightEnds[n];
+						Node there = rightPart.leftEnds[n];
+						
+						Cycle.fuseCycles(cycle, rightPart.cycle, here, there);
+					}
+				}
+
+				public void disconnectR(AreaPart rightPart){
+
+				}
+
+				public void remove(){}
+			}
+		}
 }
