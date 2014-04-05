@@ -21,7 +21,7 @@ public class Sector{
 	
 	public int randomnr(int min , int max){
 		int n = max - min + 1;
-		int i = min + random.nextInt() % n;
+		int i = min + random.nextInt(n);
 		return i;
 	}
 	
@@ -36,10 +36,10 @@ public class Sector{
 		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
 
 		
-		int breite = randomnr(150, 270);
-		int hoehe = randomnr(150, breite);
-		int cx = randomnr(20, 700);
-		int cy = randomnr(480, 600);
+		int breite = randomnr(130, 250);
+		int hoehe = breite - randomnr(-20, 80);
+		int cx = randomnr(-900, 900);
+		int cy = randomnr(330, 500);
 		
 		quad = new Quad(cx, cy, breite, hoehe);
 	}
