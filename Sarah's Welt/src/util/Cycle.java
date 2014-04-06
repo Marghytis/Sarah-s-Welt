@@ -2,6 +2,7 @@ package util;
 
 import world.Line;
 import world.Node;
+import world.Point;
 
 public class Cycle {
 
@@ -37,6 +38,14 @@ public class Cycle {
 		from.next = to;
 		to.last = from;
 		start = to;
+	}
+	
+	public void add(Point p){
+		Node n  = new Node(p);
+		n.next = start;
+		n.last = start.last;
+		start.last.next = n;
+		start.last = n;
 	}
 	
 	public String toString(){

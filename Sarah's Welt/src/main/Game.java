@@ -19,7 +19,7 @@ public class Game {
 		Game.window = new Window(1000, 500);
 		
 		//TODO save last active worlds name. for now just use TestWorld all the time
-		world = new WorldWindow("TestWorld");
+		WorldWindow.load("TestWelt");
 		menu = Menu.MAIN;
 		
 		Game.startLoop();
@@ -36,9 +36,9 @@ public class Game {
 			keyListening();
 			mouseListening();
 			
-			if(!menu.pauseWorld) world.tick((int)(newTime - time)/1000000.0f);
+			if(!menu.pauseWorld) WorldWindow.tick((int)(newTime - time)/1000000.0f);
 			
-			world.render();
+			WorldWindow.render();
 			menu.render();
 			
 			time = newTime;
@@ -67,7 +67,7 @@ public class Game {
 	
 	public static void mouseListening(){
 		menu.mouseListening();
-		if(!menu.pauseWorld) world.mouseListening();
+		if(!menu.pauseWorld) WorldWindow.mouseListening();
 	}
 	
 	/**

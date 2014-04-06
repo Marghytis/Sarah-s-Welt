@@ -17,34 +17,31 @@ public class WorldWindow {
 		public static final int measureScale = 50;
 		public static Tessellator tessellator = new Tessellator();
 		
-		public int xSector;
-		public WorldGenerator generator = new WorldGenerator();
+		public static int xSector;
+		public static WorldGenerator generator = new WorldGenerator();
+		public static WorldDatabase database;
 		
-//		@SuppressWarnings("unchecked")
-//		public List<Cycle>[] lines = (List<Cycle>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
-		
-		public List<Cycle> areas = new ArrayList<>();
-
-		public Sector[] sectors = new Sector[3];
-
-		public Character character;
-		public String worldName;
+		@SuppressWarnings("unchecked")
+		public List<Cycle>[] areas = (List<Cycle>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
+		public static Character character;
+		public static String worldName;
 	
-		public WorldWindow(String worldName){
-			this.worldName = worldName;
+		public static void load(String worldName){
+			WorldWindow.worldName = worldName;
+			database = new WorldDatabase(worldName);
 			for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
 			if(!load()){
 				create();
 			}
 		}
 		
-		public void startWorldWindowWithSectorLines(Sector s){
+		public static void startWorldWindowWithSectorLines(Sector s){
 			for(MaterialCycle mc : s.areas){
 				lines[mc.mat.ordinal()].add((Cycle) mc);
 			}
 		}
 		
-		public void plugSectorRight(Sector sec, Sector plug){
+		public static void plugSectorRight(Sector sec, Sector plug){
 			for(int i = 0; i < sec.openEndingsRight.length; i++){
 				
 				Node otherR = plug.openEndingsLeft[i].next;
@@ -75,7 +72,7 @@ public class WorldWindow {
 		 * Load this world from the world file
 		 * @return if the world file exists
 		 */
-		private boolean load(){
+		private static boolean load(){
 			//TODO Evelyn? add method code
 //			+set the position of the world view
 
@@ -84,7 +81,7 @@ public class WorldWindow {
 			return false;
 		}
 		
-		private void create(){
+		private static void create(){
 			character = new Character(10, 340);
 			sectors[0] = generator.generateLeft(); startWorldWindowWithSectorLines(sectors[0]);//!!! otherwise there will never be any lines in this window :P
 			sectors[1] = generator.generateRight();
@@ -92,7 +89,7 @@ public class WorldWindow {
 			plugSectorRight(sectors[1], sectors[2]);
 		}
 		
-		public void tick(float dTime){
+		public static void tick(float dTime){
 			character.tick(dTime);
 			int playerX = (int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0);
 			if(playerX != xSector){
@@ -107,11 +104,11 @@ public class WorldWindow {
 			}
 		}
 		
-		public void mouseListening(){
+		public static void mouseListening(){
 			//add later
 		}
 		
-		public void render(){
+		public static void render(){
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor3f(0, 0, 0);
@@ -143,7 +140,7 @@ public class WorldWindow {
 			character.render();
 		}
 				
-		public void step(boolean rightwards){
+		public static void step(boolean rightwards){
 			//if !load(x)
 			if(rightwards){
 				//expand rightwards
@@ -168,7 +165,7 @@ public class WorldWindow {
 		 * @param pos
 		 * @return
 		 */
-		private Sector sectorAt(int pos){
+		private static Sector sectorAt(int pos){
 			if(pos > rightRim){
 				
 				Sector newSector = new Sector(pos);
@@ -187,7 +184,7 @@ public class WorldWindow {
 			}
 		}
 		
-		public void loadPosition(int x){
+		public static void loadPosition(int x){
 			xSector = x;
 //			if(sectors[0] != null) sectors[0].save();
 //			if(sectors[1] != null) sectors[1].save();
@@ -200,7 +197,7 @@ public class WorldWindow {
 //			plugSectorRight(sectors[1], sectors[2]);
 		}
 		
-		public void save(){
+		public static void save(){
 			//save sectors TODO save character??
 			sectors[0].save();
 			sectors[1].save();
@@ -208,7 +205,8 @@ public class WorldWindow {
 		}
 	
 	
-		public void stepR(){
+		public static void stepR(){
+			xSector++;
 			for(List<Area> list : areas){
 				for(Area area : list){
 					area.shiftR();
@@ -216,53 +214,5 @@ public class WorldWindow {
 			}
 		}
 
-		public class Area {
-			int id;
-			Cycle current;
-			Material material;
-			AreaPart[] parts = new AreaPart[3];
-
-			public void shiftR(int sX){
-				parts[0].disconnectR(parts[1]);
-
-				parts[0] = parts[1];
-				parts[1] = parts[2];
-				parts[2] = WorldDatabase.getAreaPart(id, sX);
-
-				parts[1].connectR(parts[2]);
-			}
-
-			public void render(){
-				Node n = current.start;
-				do{
-
-					n = n.next;
-				} while(n != current.start);
-			}
-
-			public class AreaPart {
-				Cycle[] cycles;
-
-				Node[] leftEnds;
-				Node[] rightEnds;
-
-				/**
-				*Must fit together!!!
-				*/
-				public void connectR(AreaPart rightPart){
-					for(int n = 0; n < rightEnds.length; n++){
-						Node here = rightEnds[n];
-						Node there = rightPart.leftEnds[n];
-						
-						Cycle.fuseCycles(cycle, rightPart.cycle, here, there);
-					}
-				}
-
-				public void disconnectR(AreaPart rightPart){
-
-				}
-
-				public void remove(){}
-			}
-		}
+		
 }
