@@ -52,10 +52,10 @@ public class Character extends WalkingThing{
 			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 				accelerate(-keyAcc, 0);
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+			if(flying && Keyboard.isKeyDown(Keyboard.KEY_W)){
 				accelerate(0, keyAcc);
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+			if(flying && Keyboard.isKeyDown(Keyboard.KEY_S)){
 				accelerate(0, -keyAcc);
 			}
 			
