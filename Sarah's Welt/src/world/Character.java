@@ -38,6 +38,12 @@ public class Character extends WalkingThing{
 			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 				walkingAcceleration--;
 			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				maxSpeed = 24;
+			} else {
+				maxSpeed = 15;
+			}
+		
 			
 			//do movement on ground
 			calculateSpeed(walkingAcceleration);
@@ -58,6 +64,11 @@ public class Character extends WalkingThing{
 			}
 			if(flying && Keyboard.isKeyDown(Keyboard.KEY_S)){
 				accelerate(0, -keyAcc);
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				keyAcc = 0.00009f;
+			} else {
+				keyAcc = 0.00005f;
 			}
 			
 			//do movement in air
