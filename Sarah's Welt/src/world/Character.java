@@ -11,6 +11,7 @@ public class Character extends WalkingThing{
 	public float keyAcc = 0.00005f;//the acceleration the Character experiences on the pressure of a movement key
 	public boolean flying = false;
 	StackedTexture tex = new StackedTexture("Sarah", 11, 1);
+	StackedTexture texjump = new StackedTexture("sarah_jump_l", 7 , 1);
 	
 	public Character(float x, float y){
 		super(1f, 0.5f);
@@ -70,6 +71,7 @@ public class Character extends WalkingThing{
 	Quad quad = new Quad(-25, -7, 50, 75);
 	int counter = 0;
 	int[] framesWalking = {0, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6};
+	int[] framesJumping = {1, 2, 3, 4, 5, 6};
 	boolean blickR = true;
 	
 	public void render(){
@@ -82,15 +84,7 @@ public class Character extends WalkingThing{
 			
 			counter++;
 		} 
-		else if(vP == 0){	
-			if(blickR==true){
-				quad.draw(tex, framesWalking[0],0);
-			}
-			else {
-				quad.drawMirrored(tex, framesWalking[0],0);
-			}
-		} 
-		if(vP < 0){
+		else if(vP < 0){
 			blickR = false;
 			int time = 3;
 			if(counter >= framesWalking.length*time) counter = 4;
@@ -99,6 +93,33 @@ public class Character extends WalkingThing{
 			
 			counter++;
 		} 
+		else if(vP == 0){	
+			if(blickR==true){
+				quad.draw(tex, framesWalking[0],0);
+			}
+			else {
+				quad.drawMirrored(tex, framesWalking[0],0);
+			}
+		}
+		else if (vP < 0 || vP == 0 &&(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
+			blickR = false;
+			int time = 3;
+			if(counter >= framesJumping.length*time);
+	
+			quad.draw(texjump, framesJumping[counter/time], 0);
+			
+			counter++;
+		} 
+//			else if (vP > 0 &&(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
+//				blickR = true;
+//				int time = 3;
+//				if(counter >= framesJumping.length*time) counter = 4;
+//		
+//				quad.drawMirrored(texjump, framesJumping[counter/time], 0);
+//				
+//				counter++;
+//			} 
+		
 	}
 	
 }
