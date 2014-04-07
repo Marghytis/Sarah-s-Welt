@@ -38,7 +38,7 @@ public class Sector{
 		
 		int breite = randomnr(130, 250);
 		int hoehe = breite - randomnr(-20, 80);
-		int cx = randomnr(-900, 900);
+		int cx = randomnr(x*Sector.WIDTH, (x+1)*Sector.WIDTH);
 		int cy = randomnr(330, 500);
 		
 		quad = new Quad(cx, cy, breite, hoehe);
