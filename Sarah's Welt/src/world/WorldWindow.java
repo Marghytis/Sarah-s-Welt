@@ -15,32 +15,23 @@ import world.WorldGenerator.Sector;
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
 		public static final int measureScale = 50;
-		public static Tessellator tessellator = new Tessellator();
+		public static Tessellator tessellator;
+		
+		public static String worldName;
 		
 		public static int xSector;
-		public static WorldGenerator generator = new WorldGenerator();
+		public static WorldGenerator generator;
 		public static WorldDatabase database;
-		
-		@SuppressWarnings("unchecked")
-		public List<Cycle>[] areas = (List<Cycle>[]) new ArrayList<?>[Material.values().length];// Array of Lines for each Material -- a Line is a circle wich starts at the node
 		public static Character character;
-		public static String worldName;
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
 			database = new WorldDatabase(worldName);
-			for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
-			if(!load()){
-				create();
-			}
-		}
-		
-		public static void startWorldWindowWithSectorLines(Sector s){
-			for(MaterialCycle mc : s.areas){
-				lines[mc.mat.ordinal()].add((Cycle) mc);
-			}
-		}
-		
+			tessellator = new Tessellator();
+			generator = new WorldGenerator();
+
+			database.loadWorld();
+		}		
 		public static void plugSectorRight(Sector sec, Sector plug){
 			for(int i = 0; i < sec.openEndingsRight.length; i++){
 				

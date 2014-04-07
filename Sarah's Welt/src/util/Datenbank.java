@@ -5,19 +5,23 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Datenbank {
+	
+	protected Connection conn;
+	protected boolean fresh = true;;
 
-    public Connection db_open(String verzeichnis, String dbname) {
+    public Datenbank(String verzeichnis, String dbname) {
         try {
             if (Class.forName("org.sqlite.JDBC") == null) {
                 Class.forName("org.sqlite.JDBC").newInstance();
+            } else {
+            	fresh = false;
             }
-            return DriverManager.getConnection("jdbc:sqlite:" + verzeichnis + dbname);            
+            conn = DriverManager.getConnection("jdbc:sqlite:" + verzeichnis + dbname);            
             
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
 			e.printStackTrace();
 		}
-        return null;
     }
 }
