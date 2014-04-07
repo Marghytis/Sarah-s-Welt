@@ -31,6 +31,8 @@ public class TestingClass {
 		public List<Node> cycles = new ArrayList<>();
 		public int a_ID;
 		public Material material;
+		public Connection[] connsR;
+		public Connection[] connsL;
 	
 		public void tryConnect(WorldArea area){
 			
@@ -79,7 +81,46 @@ public class TestingClass {
 		Node node;
 		int id;
 	}
-	public class OneMatAreas {
-		List<WorldArea> areas = new ArrayList<>();
+	public class MatAreas {
+		public List<Node> cycles = new ArrayList<>();
+		public Connection[] rightConns;
+		public Connection[] leftConns;
+		
+		public void connectAreaR(MatAreas a){
+			for(Connection c1 : rightConns){
+				for(Connection c2 : a.leftConns){
+					if(c1.id == c2.id){
+						connectAreas(c1.node, c2.node);
+						break;
+					}
+				}
+			}
+		}
+		
+		public Node[] connectAreas(Node here, Node there){
+			Node here2 = here.next;
+			Node there2 = there.next;
+			
+			here.next = there2;
+			there2.last = here;
+			
+			there.next = here2;
+			here2.last = there;
+	
+			Node n = here;
+			boolean hitThere = false;
+			do {
+				if(n == there){
+					hitThere = true;
+				}
+				n = n.next;
+			} while(n != here);
+	
+			if(!hitThere){
+				return new Node[]{here, there};
+			} else {
+				return new Node[]{here};
+			}
+		}
 	}
 }
