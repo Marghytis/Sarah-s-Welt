@@ -75,7 +75,7 @@ public class Character extends WalkingThing{
 	boolean blickR = true;
 	
 	public void render(){
-		if(vP > 0 && !(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
+		if(vP > 0 && g){
 			blickR =true;
 			int time = 3;
 			if(counter >= framesWalking.length*time) counter = 4;
@@ -84,7 +84,7 @@ public class Character extends WalkingThing{
 			
 			counter++;
 		} 
-		else if(vP < 0 && !(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
+		else if(vP < 0 && g){
 			blickR = false;
 			int time = 3;
 			if(counter >= framesWalking.length*time) counter = 4;
@@ -93,7 +93,7 @@ public class Character extends WalkingThing{
 			
 			counter++;
 		} 
-		else if(vP == 0 && !(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){	
+		else if(vP == 0 && g){	
 			if(blickR==true){
 				quad.draw(tex, framesWalking[0],0);
 			}
@@ -101,7 +101,8 @@ public class Character extends WalkingThing{
 				quad.drawMirrored(tex, framesWalking[0],0);
 			}
 		}
-		else if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+//		else if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+		else if (!g){
 			int time = 4;
 			if(counter >= framesJumping.length*time) counter = 23;
 	
