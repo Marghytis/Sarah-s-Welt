@@ -75,7 +75,7 @@ public class Character extends WalkingThing{
 	boolean blickR = true;
 	
 	public void render(){
-		if(vP > 0){
+		if(vP > 0 && !(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
 			blickR =true;
 			int time = 3;
 			if(counter >= framesWalking.length*time) counter = 4;
@@ -84,7 +84,7 @@ public class Character extends WalkingThing{
 			
 			counter++;
 		} 
-		else if(vP < 0){
+		else if(vP < 0 && !(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
 			blickR = false;
 			int time = 3;
 			if(counter >= framesWalking.length*time) counter = 4;
@@ -93,7 +93,7 @@ public class Character extends WalkingThing{
 			
 			counter++;
 		} 
-		else if(vP == 0){	
+		else if(vP == 0 && !(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){	
 			if(blickR==true){
 				quad.draw(tex, framesWalking[0],0);
 			}
@@ -101,25 +101,34 @@ public class Character extends WalkingThing{
 				quad.drawMirrored(tex, framesWalking[0],0);
 			}
 		}
-		else if (vP < 0 || vP == 0 &&(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
-			blickR = false;
-			int time = 3;
-			if(counter >= framesJumping.length*time);
+		else if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+			int time = 4;
+			if(counter >= framesJumping.length*time) counter = 23;
 	
+			if(vP < 0 ){
+			blickR = false;
 			quad.draw(texjump, framesJumping[counter/time], 0);
 			
-			counter++;
+			if (counter<23) counter++;
+			}
+			else if(vP > 0 ){
+				blickR = true;
+				quad.drawMirrored(texjump, framesJumping[counter/time], 0);
+				
+				if (counter<23) counter++;
+				}
+			else if (vP == 0 && blickR ==true){
+				quad.drawMirrored(texjump, framesJumping[counter/time], 0);
+				
+				if (counter<23) counter++;
+			}
+			else if (vP == 0 && blickR ==false){
+				quad.draw(texjump, framesJumping[counter/time], 0);
+				
+				if (counter<23) counter++;
+			}
+			
 		} 
-//			else if (vP > 0 &&(Keyboard.isKeyDown(Keyboard.KEY_SPACE))){
-//				blickR = true;
-//				int time = 3;
-//				if(counter >= framesJumping.length*time) counter = 4;
-//		
-//				quad.drawMirrored(texjump, framesJumping[counter/time], 0);
-//				
-//				counter++;
-//			} 
-		
 	}
 	
 }
