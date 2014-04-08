@@ -1,12 +1,12 @@
 package world;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import util.Datenbank;
-import world.Area.AreaPart;
 
 public class WorldDatabase extends Datenbank{
 	
@@ -14,13 +14,14 @@ public class WorldDatabase extends Datenbank{
 		super("worlds/", worldName);
 		if(fresh){
 			createDB();
+//			WorldWindow.generator.generateLeft();
+			WorldWindow.generator.generateRight();
+			WorldWindow.generator.generateRight();
 		}
 	}
 	
 	public void loadWorld(){
 		try {
-        	Connection conn = db_open("worlds/", WorldWindow.worldName);
-
             Statement sql = conn.createStatement();
 
             ResultSet ergebnis = sql.executeQuery("SELECT xSector FROM World");//TODO
@@ -29,37 +30,50 @@ public class WorldDatabase extends Datenbank{
             WorldWindow.xSector = ergebnis.getInt("xSector");
             
             ergebnis.close();
-            conn.close();
+            sql.close();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 	}
 	
-	public AreaPart[] loadAreasAt(int xSector){
+//	public MatArea loadAreasAt(int xSector){
+//		try {
+//            Statement sql = conn.createStatement();
+//
+//            ResultSet ergebnis = sql.executeQuery("SELECT pX, pY FROM Point P INNER JOIN Contains C ON P.p_ID = C.p_ID WHERE a_ID = " + area.id + " AND sX = " + sX);//TODO
+//            
+//            while (list.next()) {
+//            	part.cycles[list.getInt("cycleIndex")].add(new Point(list.getFloat("pX"), list.getFloat("pY")));
+//            }
+//            
+//            ergebnis.close();
+//
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//            return null;
+//        }
+//	}
+	
+	public void saveSector(Sector sec){
 		try {
-        	Connection conn = db_open("worlds/", WorldWindow.worldName);
+            PreparedStatement p = conn.prepareStatement("INSERT INTO Point (p_ID, pX, pY) VALUES (?,?,?)");
 
-            Statement sql = conn.createStatement();
-
-            ResultSet ergebnis = sql.executeQuery("SELECT pX, pY FROM Point P INNER JOIN Contains C ON P.p_ID = C.p_ID WHERE a_ID = " + area.id + " AND sX = " + sX);//TODO
-            
-            while (list.next()) {
-            	part.cycles[list.getInt("cycleIndex")].add(new Point(list.getFloat("pX"), list.getFloat("pY")));
+            for(MatArea a : sec.areas){
+            	for(Node c : a.cycles){
+		            p.setInt(1, name);
+		            p.setString(2, vorname);
+		            p.addBatch();
+            	}
             }
-            
-            ergebnis.close();
-            conn.close();
-            return ergebnis;
+
+            conn.setAutoCommit(false);
+            p.executeBatch(); // Daten an DB senden
+            conn.setAutoCommit(true);
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return null;
         }
-	}	
-	
-	public void saveSectorAt(int xWert){
-		
 	}
 	
 	 public void createDB() {
@@ -67,14 +81,13 @@ public class WorldDatabase extends Datenbank{
                 Statement sql = conn.createStatement();
 
                 String sqlCreate = 
-                "CREATE TABLE 'Area' ('a_ID' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , 'Material' VARCHAR NOT NULL  DEFAULT 'AIR');" +
-                "CREATE TABLE 'Contains' ('a_ID' INTEGER NOT NULL , 'sX' INTEGER NOT NULL , 'p_ID' INTEGER NOT NULL , 'cycleIndex' INTEGER);" +
-                "CREATE TABLE 'Point' ('p_ID' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0);" +
-                "CREATE TABLE 'World' ('xSector' INTEGER NOT NULL DEFAULT 0);";
+            		"CREATE TABLE 'World' ('xSector' INTEGER NOT NULL DEFAULT 0);"
+                +	"CREATE TABLE 'Node' ('Material' VARCHAR NOT NULL  DEFAULT 'AIR' , 'sX' INTEGER NOT NULL , 'p_ID' INTEGER NOT NULL , 'cycleIndex' INTEGER);"
+                +	"CREATE TABLE 'Point' ('p_ID' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0);";
 ;
 
                 sql.executeUpdate(sqlCreate);
-                conn.close();
+                sql.close();
 
             } catch (SQLException ex) {
                 ex.printStackTrace();

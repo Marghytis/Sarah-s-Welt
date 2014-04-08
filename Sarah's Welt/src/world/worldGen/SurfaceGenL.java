@@ -2,7 +2,7 @@ package world.worldGen;
 
 import world.Line;
 import world.Material;
-import world.WorldGenerator.Sector;
+import world.Sector;
 
 public class SurfaceGenL extends Surface {
 	

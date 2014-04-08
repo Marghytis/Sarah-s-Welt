@@ -23,7 +23,7 @@ public enum Menu{
 			System.out.println(b.name);
 			switch(b.name){
 			case "New World":
-				Game.world = new WorldWindow("TestWorld");
+				WorldWindow.load("TestWorld");
 				break;
 			case "Continue":
 				Game.menu = EMPTY;
@@ -39,7 +39,7 @@ public enum Menu{
 			buttons = new Button[]{
 				new Button("Flying", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/8) - 20, 300, 60){
 					public void render(){
-						if(Game.world.character.flying){
+						if(WorldWindow.character.flying){
 							name = "Flying enabled";
 						} else {
 							name = "Flying disabled";
@@ -62,12 +62,12 @@ public enum Menu{
 		
 		void buttonPressed(Button b){
 			if(b.name.contains("Flying")){
-				if(Game.world.character.flying){
+				if(WorldWindow.character.flying){
 					b.name = "Flying disabled";
 				} else {
 					b.name = "Flying enabled";
 				}
-				Game.world.character.flying = !Game.world.character.flying;
+				WorldWindow.character.flying = !WorldWindow.character.flying;
 			} else if(b.name.contains("Textures")){
 				Settings.switchDebugView();
 			}

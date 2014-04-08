@@ -1,8 +1,5 @@
 package world;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import world.worldGen.SurfaceGenL;
 import world.worldGen.SurfaceGenR;
 
@@ -28,25 +25,20 @@ public class WorldGenerator {
 	public Sector generateRight(){
 		rimR++;
 		Sector output = new Sector();
+		
 		surfaceRight.expand(output, rimR*Sector.WIDTH); 
+		
 		return output;
 	}
 	
 	public Sector generateLeft(){
 		rimL--;
 		Sector output = new Sector();
-		surfaceLeft.expand(output, rimL*Sector.WIDTH);
-		return output;
+		
+//		surfaceLeft.expand(output, rimL*Sector.WIDTH);
+		
+		return null;
 	}
 	
-	public class Sector {
-		public static final int WIDTH = 200;
-		public List<MaterialCycle> areas = new ArrayList<>();
-		
-		public Node[] openEndingsRight;
-		public Node[] openEndingsLeft;
-		
-		public Node[] insideCircles;
-		
-	}
+	
 }

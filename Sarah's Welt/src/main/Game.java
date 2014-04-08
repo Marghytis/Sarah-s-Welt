@@ -10,12 +10,10 @@ public class Game {
 	public static Window window;
 	public static long time;
 	
-	public static WorldWindow world;
 	public static Menu menu;
 	public static boolean closeRequested = false;
 	
 	public static void main(String[] args){
-		
 		Game.window = new Window(1000, 500);
 		
 		//TODO save last active worlds name. for now just use TestWorld all the time

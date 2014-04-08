@@ -1,16 +1,11 @@
 package world;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import main.Window;
 
 import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
-import util.Cycle;
 import util.Tessellator;
-import world.WorldGenerator.Sector;
 
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
@@ -21,63 +16,27 @@ public class WorldWindow {
 		
 		public static int xSector;
 		public static WorldGenerator generator;
-		public static WorldDatabase database;
+//		public static WorldDatabase database;
 		public static Character character;
+		
+		public static Sector[] sectors = new Sector[3];
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
-			database = new WorldDatabase(worldName);
 			tessellator = new Tessellator();
 			generator = new WorldGenerator();
 
-			database.loadWorld();
-		}		
-		public static void plugSectorRight(Sector sec, Sector plug){
-			for(int i = 0; i < sec.openEndingsRight.length; i++){
-				
-				Node otherR = plug.openEndingsLeft[i].next;
-				Node otherL = sec.openEndingsRight[i].next;//correct
-				
-				sec.openEndingsRight[i].next = otherR;
-				otherR.last = sec.openEndingsRight[i];
-				
-				plug.openEndingsLeft[i].next = otherL;
-				otherL.last = plug.openEndingsLeft[i];
-				
-			}
-		}
-//		
-//		public void plugSectorLeft(Sector sec, Sector plug){
-//			for(int n = 0; n < sec.openEndingsRight.length; n++){
-//				if(sec.inOutRight[n]){
-//					sec.openEndingsLeft[n].last = plug.openEndingsRight[n];
-//					plug.openEndingsRight[n].next = sec.openEndingsLeft[n];
-//				} else {
-//					sec.openEndingsLeft[n].next = plug.openEndingsRight[n];
-//					plug.openEndingsRight[n].last = sec.openEndingsLeft[n];
-//				}
-//			}
-//		}
-		
-		/**
-		 * Load this world from the world file
-		 * @return if the world file exists
-		 */
-		private static boolean load(){
-			//TODO Evelyn? add method code
-//			+set the position of the world view
-
-//			File f = new File("worlds/" + name + "/" + x + ".field"); 
-//			if(!f.exists())return false;	so kannst du testen, ob eine Datei vorhanden ist
-			return false;
+//			database = new WorldDatabase(worldName);
+//			database.loadWorld();
+			load();
 		}
 		
-		private static void create(){
+		private static void load(){
 			character = new Character(10, 340);
-			sectors[0] = generator.generateLeft(); startWorldWindowWithSectorLines(sectors[0]);//!!! otherwise there will never be any lines in this window :P
+//			sectors[0] = generator.generateLeft();
 			sectors[1] = generator.generateRight();
 			sectors[2] = generator.generateRight();
-			plugSectorRight(sectors[1], sectors[2]);
+			sectors[1].switchConnection(sectors[2], true);
 		}
 		
 		public static void tick(float dTime){
@@ -87,7 +46,6 @@ public class WorldWindow {
 				if(playerX == xSector - 1){
 					step(false);
 				} else if (playerX == xSector + 1){
-					System.out.println("test");
 					step(true);
 				} else {
 					loadPosition(playerX);
@@ -104,15 +62,17 @@ public class WorldWindow {
 			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor3f(0, 0, 0);
 			
-			for(int mat = 0; mat < Material.values().length; mat++){
-				GL11.glColor4f(1, 1, 1, 1);
-				
-				Texture tex = Material.values()[mat].texture;
-				tex.bind();
-				{
-					tessellator.tessellateOneNode(lines[mat], tex.width, tex.height);
+			for(Sector sec : sectors){
+				if(sec != null) for(int mat = 0; mat < Material.values().length; mat++){
+					GL11.glColor4f(1, 1, 1, 1);
+					
+					Texture tex = Material.values()[mat].texture;
+					tex.bind();
+					{
+						tessellator.tessellateOneNode(sec.areas[mat].cycles, tex.width, tex.height);
+					}
+					tex.release();
 				}
-				tex.release();
 			}
 			
 //			for(Sector sec: sectors){
@@ -140,38 +100,13 @@ public class WorldWindow {
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
 				sectors[2] = generator.generateRight();//TODO or load
-				plugSectorRight(sectors[1], sectors[2]);
-//				plugSectorRight(sectors[1], sectors[2]);
+				sectors[1].switchConnection(sectors[2], true);
 			} else {
 				xSector--;
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
 				sectors[0] = generator.generateLeft();//TODO or load
-//				plugSectorLeft(sectors[1], sectors[0]);
-			}
-		}
-
-		/**
-		 * if its outside the rims, generate fresh terrain, otherwise load it from the database
-		 * @param pos
-		 * @return
-		 */
-		private static Sector sectorAt(int pos){
-			if(pos > rightRim){
-				
-				Sector newSector = new Sector(pos);
-				rightRimP = newSector.generateRight(rightRimP);
-				return newSector;
-				
-			} else if(pos < leftRim){
-				
-				Sector newSector = new Sector(pos);
-				leftRimP = newSector.generateLeft(leftRimP);
-				return newSector;
-				
-			} else {
-				//TODO call the sector from the database
-				return null;//for now
+				sectors[0].switchConnection(sectors[1], false);
 			}
 		}
 		
@@ -186,24 +121,6 @@ public class WorldWindow {
 //			plugSectorRight(sectors[0], sectors[1]);
 			sectors[2] = sectorAt(xSector + 1); 
 //			plugSectorRight(sectors[1], sectors[2]);
-		}
-		
-		public static void save(){
-			//save sectors TODO save character??
-			sectors[0].save();
-			sectors[1].save();
-			sectors[2].save();
-		}
-	
-	
-		public static void stepR(){
-			xSector++;
-			for(List<Area> list : areas){
-				for(Area area : list){
-					area.shiftR();
-				}
-			}
-		}
 
-		
+		}
 }

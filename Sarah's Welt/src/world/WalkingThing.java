@@ -1,8 +1,6 @@
 package world;
 
-import main.Game;
 import util.Geom;
-import world.WorldGenerator.Sector;
 
 public abstract class WalkingThing extends Thing{
 	
@@ -90,14 +88,6 @@ public abstract class WalkingThing extends Thing{
 				}
 			}
 			
-			if(node.p instanceof MultiNodePoint){
-				MultiNodePoint point = (MultiNodePoint) node.p;
-				for(Node n : point.nodes){
-					if(n.next.p.y > node.next.p.y){
-						node = n;
-					}
-				}
-			}
 			node = node.next;
 		}
 		if(intersection != null){
@@ -109,12 +99,12 @@ public abstract class WalkingThing extends Thing{
 	public void collision(){
 //		System.out.println("-- Character position: " + pos + "  Thought next position: " + nextPos);
 		float[] intersection = null;
-		for(Sector sector : Game.world.sectors){//	iterate columns
-			for(Material mat : Material.values()){//	iterate materials
+		for(Sector sector : WorldWindow.sectors){//	iterate columns
+			if(sector != null) for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
-					for(Line l : sector.lines[mat.ordinal()-1]){//	iterate lines
-						Node n = l.start;
-						 while(n != l.end && n != null) {
+					for(Node c : sector.areas[mat.ordinal()].cycles){//	iterate lines
+						Node n = c;
+						 do {
 							n = n.next;
 							Point inters = new Point();
 							boolean found = Geom.intersectionLines(pos, nextPos, n.last.p, n.p, inters);
@@ -131,7 +121,7 @@ public abstract class WalkingThing extends Thing{
 								acc.set(0, 0);
 								g = true;
 							}
-						}
+						} while (n != c);
 					}
 				}
 			}
