@@ -1,6 +1,9 @@
 package main;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 
 import world.World;
 
@@ -17,11 +20,20 @@ public class Game {
 	public static void main(String[] args){
 		
 		Game.window = new Window(1000, 500);
-		
-		//TODO save last active worlds name. for now just use TestWorld all the time
-		world = new World("TestWorld");
+		world = new World("TestWorld");//TODO save last active worlds name. for now just use TestWorld all the time
 		menu = Menu.MAIN;
 		
+
+		try {
+			Thread.sleep(4000);
+			System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+			Display.setDisplayMode(new DisplayMode(Window.WIDTH, Window.HEIGHT));
+		} catch (InterruptedException e){
+			e.printStackTrace();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+
 		Game.startLoop();
 	}
 	
