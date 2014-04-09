@@ -138,7 +138,7 @@ public class Sector{
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs too! :D)
 		while(lastPoint.x >= x*WIDTH){
 			float dx = -18 - (random.nextInt(3));
-			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
+		float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
 
 			lastPoint.add(dx, dy);
 //			if(lastPoint.x >= x*WIDTH){

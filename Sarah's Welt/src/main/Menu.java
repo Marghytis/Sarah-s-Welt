@@ -29,6 +29,9 @@ public enum Menu{
 			case "Continue":
 				Game.menu = EMPTY;
 				break;
+			case "Options":
+				Game.menu = OPTIONS;
+				break;
 			case "Exit":
 				Game.closeRequested = true;
 				break;
@@ -60,7 +63,25 @@ public enum Menu{
 			}
 			Game.world.character.flying = !Game.world.character.flying;
 		}
+	},
+	OPTIONS(true){
+		void setup(){
+			buttons = new Button[]{
+					new Button("Sound", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/8) - 20, 300, 60),
+					new Button("Back", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/8) - 20, 300, 60)
+			};
+					
+	}
+		void buttonPressed(Button b){
+			System.out.println(b.name);
+			switch(b.name){
+			case "Back":
+				Game.menu = MAIN;
+				break;
+			}
+		}
 	};
+	
 	
 	Button[] buttons;
 	
