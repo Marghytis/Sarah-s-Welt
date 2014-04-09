@@ -1,5 +1,6 @@
 package world.worldGen;
 
+import world.Connection;
 import world.Line;
 import world.Material;
 import world.Sector;
@@ -8,8 +9,7 @@ public class SurfaceGenL extends Surface {
 	
 	public Sector expand(Sector output, float xDest){
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
-//		output.openEndingsRight = new Node[]{grassT.end, earthT.end, stoneT.end, stoneB.end};
-
+		
 		grassT = new Line();
 		grassB = new Line();
 		earthT = new Line();
@@ -20,17 +20,27 @@ public class SurfaceGenL extends Surface {
 		while(baseEnd.x >= xDest){
 			step();
 		}
-//		output.openEndingsLeft = new Node[]{grassT.end.last, earthT.end.last, stoneT.end.last, stoneB.end.last};
-	
-		output.lines[Material.GRASS.ordinal()].add(grassT);
-		output.lines[Material.GRASS.ordinal()].add(grassB);
-		
-		output.lines[Material.EARTH.ordinal()].add(earthT);
-		output.lines[Material.EARTH.ordinal()].add(earthB);
-		
-		output.lines[Material.STONE.ordinal()].add(stoneT);
-		output.lines[Material.STONE.ordinal()].add(stoneB);
 
+		createCycle(grassT, grassB);
+		createCycle(earthT, earthB);
+		createCycle(stoneT, stoneB);
+		
+		output.areas[Material.GRASS.ordinal()].cycles.add(grassT.end);
+		output.areas[Material.EARTH.ordinal()].cycles.add(earthT.end);
+		output.areas[Material.STONE.ordinal()].cycles.add(stoneT.end);
+		
+		lastConns[0].nodeL = grassB.end;	output.connsR.add(lastConns[0]);
+		lastConns[1].nodeL = earthB.end;	output.connsR.add(lastConns[1]);
+		lastConns[2].nodeL = stoneB.end;	output.connsR.add(lastConns[2]);
+		
+		lastConns[0] = new Connection(null, grassT.end);
+		lastConns[1] = new Connection(null, earthT.end);
+		lastConns[2] = new Connection(null, stoneT.end);
+
+		output.connsL.add(lastConns[0]);
+		output.connsL.add(lastConns[1]);
+		output.connsL.add(lastConns[2]);
+		
 		return output;
 	}
 	

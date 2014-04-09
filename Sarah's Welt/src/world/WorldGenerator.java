@@ -35,9 +35,9 @@ public class WorldGenerator {
 		rimL--;
 		Sector output = new Sector();
 		
-//		surfaceLeft.expand(output, rimL*Sector.WIDTH);
+		surfaceLeft.expand(output, rimL*Sector.WIDTH);
 		
-		return null;
+		return output;
 	}
 	
 	

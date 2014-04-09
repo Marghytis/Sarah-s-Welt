@@ -33,9 +33,10 @@ public class WorldWindow {
 		
 		private static void load(){
 			character = new Character(10, 340);
-//			sectors[0] = generator.generateLeft();
+			sectors[0] = generator.generateLeft();
 			sectors[1] = generator.generateRight();
 			sectors[2] = generator.generateRight();
+//			sectors[0].switchConnection(sectors[1], true);
 			sectors[1].switchConnection(sectors[2], true);
 		}
 		
@@ -106,7 +107,7 @@ public class WorldWindow {
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
 				sectors[0] = generator.generateLeft();//TODO or load
-				sectors[0].switchConnection(sectors[1], false);
+				sectors[0].switchConnection(sectors[1], true);
 			}
 		}
 		
