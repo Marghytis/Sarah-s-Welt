@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 public class Texture {
 
-	public static final Texture MENU_BACKGROUND = new Texture("MainMenu");
+	public static final Texture TITEL = new Texture("Titel");
 	public static final Texture MENU_LIGHTMAP = new Texture("");
 	public static final StackedTexture MENU_BUTTON = new StackedTexture("Button", 1, 2);
 	

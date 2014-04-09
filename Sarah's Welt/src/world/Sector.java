@@ -6,15 +6,24 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
+import resources.StackedTexture;
 import resources.Texture;
+import util.Quad;
 import util.Tessellator;
 
 public class Sector{
 	/**The width of one sector, always the same*/
 	public static final int WIDTH = 1000;
 	public static Tessellator tessellator = new Tessellator();
+	Texture cloud = new Texture("Cloud");
 	
 	public Random random;
+	
+	public int randomnr(int min , int max){
+		int n = max - min + 1;
+		int i = min + random.nextInt(n);
+		return i;
+	}
 	
 	int x;
 	
@@ -23,9 +32,20 @@ public class Sector{
 	
 	public Sector(int x){
 		this.x = x;
-		random = new Random(x);
+		random = new Random();
 		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
+
+		
+		int breite = randomnr(130, 250);
+		int hoehe = breite - randomnr(-20, 80);
+		int cx = randomnr(x*Sector.WIDTH, (x+1)*Sector.WIDTH);
+		int cy = randomnr(330, 500);
+		
+		quad = new Quad(cx, cy, breite, hoehe);
 	}
+	
+
+	Quad quad;
 	
 	public void render(){
 		GL11.glColor4f(1, 1, 1, 0.1f);
@@ -33,6 +53,10 @@ public class Sector{
 		GL11.glVertex2f(x*WIDTH, -1000);
 		GL11.glVertex2f(x*WIDTH, 1000);
 		GL11.glEnd();
+		
+		
+		quad.draw(cloud); 
+		
 		
 		for(int mat = 1; mat < Material.values().length; mat++){
 			GL11.glColor4f(1, 1, 1, 1);
@@ -48,6 +72,7 @@ public class Sector{
 		Line base = new Line();
 		base.addPoints(new Point(lastPoint));
 		float segmentLength = 20;
+		
 
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
 		while(lastPoint.x <= (x+1)*WIDTH){
@@ -65,6 +90,7 @@ public class Sector{
 		Line soil = new Line();
 		Line grass = new Line();
 		
+		
 		Node n = base.end;
 		
 		while(n.last != null) {
@@ -74,6 +100,7 @@ public class Sector{
 			earth.addPoints(n.p.x, n.p.y - 15);
 			stone.addPoints(n.p.x, n.p.y - 100);
 			bottom.addPoints(n.p.x, n.p.y - 1000);
+			
 //			}
 			n = n.last;
 		}
@@ -82,6 +109,7 @@ public class Sector{
 		earth.addPoints(n.p.x, n.p.y - 15);
 		stone.addPoints(n.p.x, n.p.y - 100);
 		bottom.addPoints(n.p.x, n.p.y - 1000);
+		
 
 		//finalize the lines by adding the way back and closing each to a circle
 		grass.appendLine(soil, true);
@@ -110,7 +138,7 @@ public class Sector{
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs too! :D)
 		while(lastPoint.x >= x*WIDTH){
 			float dx = -18 - (random.nextInt(3));
-			float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
+		float dy = (float)Math.sqrt((segmentLength*segmentLength) - (dx*dx))*(random.nextBoolean() ? 1 : -1);
 
 			lastPoint.add(dx, dy);
 //			if(lastPoint.x >= x*WIDTH){

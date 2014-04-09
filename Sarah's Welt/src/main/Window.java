@@ -8,6 +8,8 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import resources.SimpleText;
+import resources.Texture;
+import util.Quad;
 
 public class Window {
 
@@ -22,6 +24,12 @@ public class Window {
 		WIDTH = width;
 		HEIGHT = height;
 		init();
+
+		GL11.glClearColor(0.5f, 0.5f, 1f, 1);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		(new Quad(0, 0, 600, 400)).draw(Texture.TITEL);
+		Display.update();
+		
 		font = new SimpleText(new Font("Russel Write TT", Font.BOLD, 45), true);
 	}
 	
@@ -46,10 +54,11 @@ public class Window {
 	 */
 	public void setupDisplay(){
 		try{
-			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.setTitle("OpenGL Test");
+			Display.setTitle("Sarahs Welt");
 			Display.setResizable(true);
-			Display.setInitialBackground(0.5f, 0.5f, 1f);
+			System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+			Display.setDisplayMode(new DisplayMode(600, 400));
+			Display.setVSyncEnabled(true);
 			Display.create();
 		} catch(LWJGLException e){
 			e.printStackTrace();
@@ -73,7 +82,7 @@ public class Window {
 	/**
 	 * Resize the Window
 	 */
-	public void resize(){
+	public static void resize(){
 		WIDTH = Display.getWidth();
 		HEIGHT = Display.getHeight();
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
