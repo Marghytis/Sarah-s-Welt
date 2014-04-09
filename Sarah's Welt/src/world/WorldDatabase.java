@@ -14,9 +14,6 @@ public class WorldDatabase extends Datenbank{
 		super("worlds/", worldName);
 		if(fresh){
 			createDB();
-//			WorldWindow.generator.generateLeft();
-			WorldWindow.generator.generateRight();
-			WorldWindow.generator.generateRight();
 		}
 	}
 	

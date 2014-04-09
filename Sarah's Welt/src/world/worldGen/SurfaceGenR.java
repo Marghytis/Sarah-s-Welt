@@ -6,6 +6,11 @@ import world.Material;
 import world.Sector;
 
 public class SurfaceGenR extends Surface {
+
+	public SurfaceGenR(Connection[] lastConns){
+		this.lastConns = lastConns;
+		System.out.println(lastConns[0].test);
+	}
 	
 	public Sector expand(Sector output, float xDest){
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
@@ -35,7 +40,7 @@ public class SurfaceGenR extends Surface {
 		lastConns[0].nodeR = grassT.end;	output.connsL.add(lastConns[0]);
 		lastConns[1].nodeR = earthT.end;	output.connsL.add(lastConns[1]);
 		lastConns[2].nodeR = stoneT.end;	output.connsL.add(lastConns[2]);
-		
+
 		//letzte verbindungen an den rechten Rand verschieben und schonmal mit dem linken Knoten füllen
 		lastConns[0] = new Connection(grassB.end, null);
 		lastConns[1] = new Connection(earthB.end, null);

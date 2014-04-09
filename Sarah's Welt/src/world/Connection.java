@@ -6,6 +6,8 @@ public class Connection{
 	
 	boolean connected = false;
 	
+	public String test;
+	
 	public Connection(Node nodeL, Node nodeR){
 		this.nodeL = nodeL;
 		this.nodeR = nodeR;

@@ -24,7 +24,6 @@ public class WorldWindow {
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
 			tessellator = new Tessellator();
-			generator = new WorldGenerator();
 
 //			database = new WorldDatabase(worldName);
 //			database.loadWorld();
@@ -33,10 +32,9 @@ public class WorldWindow {
 		
 		private static void load(){
 			character = new Character(10, 340);
-			sectors[0] = generator.generateLeft();
-			sectors[1] = generator.generateRight();
-			sectors[2] = generator.generateRight();
-//			sectors[0].switchConnection(sectors[1], true);
+			generator = new WorldGenerator();//already creates the first 3 sectors
+			
+			sectors[0].switchConnection(sectors[1], true);
 			sectors[1].switchConnection(sectors[2], true);
 		}
 		
@@ -122,6 +120,5 @@ public class WorldWindow {
 //			plugSectorRight(sectors[0], sectors[1]);
 			sectors[2] = sectorAt(xSector + 1); 
 //			plugSectorRight(sectors[1], sectors[2]);
-
 		}
 }

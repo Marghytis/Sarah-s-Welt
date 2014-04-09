@@ -10,7 +10,7 @@ public abstract class Surface {
 
 	Random random = new Random();
 	
-	public Connection[] lastConns = {new Connection(null, null), new Connection(null, null), new Connection(null, null)};
+	public Connection[] lastConns;
 	Point baseEnd = new Point(0, 300);
 
 	Line grassT = new Line(); int gTOffset = 0;
@@ -19,7 +19,7 @@ public abstract class Surface {
 	Line earthB = new Line(); int eBOffset = -100;
 	Line stoneT = new Line(); int sTOffset = -100;
 	Line stoneB = new Line(); int sBOffset = -1000;
-
+	
 	void shiftBaseEnd(boolean right){
 		float segmentLength = 20;
 		float dx = (right ? 1 : -1) * (16 + (random.nextInt(5)));

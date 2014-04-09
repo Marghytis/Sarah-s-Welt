@@ -6,6 +6,10 @@ import world.Material;
 import world.Sector;
 
 public class SurfaceGenL extends Surface {
+
+	public SurfaceGenL(Connection[] lastConns){
+		this.lastConns = lastConns;
+	}
 	
 	public Sector expand(Sector output, float xDest){
 //		while(base.end.p.x >= (x-0.5f)*columnWidth){ TODO add security for overhangs (+ overhangs themselves too! :D)
