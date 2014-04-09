@@ -1,13 +1,6 @@
 package main;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Frame;
-
-import javax.swing.JFrame;
-
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
 
 import world.WorldWindow;
 
@@ -21,19 +14,12 @@ public class Game{
 	public static boolean closeRequested = false;
 	
 	public static void main(String[] args){
-//		StartingWindow.show();
 		
+		window = new Window(1000, 500);
 		//TODO save last active worlds name. for now just use TestWorld all the time
 		WorldWindow.load("TestWelt");
 		menu = Menu.MAIN;
-//		try {
-//			Thread.sleep(10000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		StartingWindow.close();
 		
-		window = new Window(1000, 500);
 		Game.startLoop();
 	}
 	
