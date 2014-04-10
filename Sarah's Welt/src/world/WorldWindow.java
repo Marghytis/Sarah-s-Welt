@@ -47,7 +47,7 @@ public class WorldWindow {
 				} else if (playerX == xSector + 1){
 					step(true);
 				} else {
-					loadPosition(playerX);
+					//What??
 				}
 			}
 		}
@@ -98,27 +98,22 @@ public class WorldWindow {
 				xSector++;
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
-				sectors[2] = generator.generateRight();//TODO or load
+				if(xSector > generator.rimR-2){
+					sectors[2] = generator.generateRight();//TODO or load
+//				}
 				sectors[1].switchConnection(sectors[2], true);
+				}
 			} else {
 				xSector--;
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
+				if(xSector < generator.rimL+1){
 				sectors[0] = generator.generateLeft();//TODO or load
+//				}
 				sectors[0].switchConnection(sectors[1], true);
+				} else {
+//					database.loadSectorAt();TODO
+				}
 			}
-		}
-		
-		public static void loadPosition(int x){
-			xSector = x;
-//			if(sectors[0] != null) sectors[0].save();
-//			if(sectors[1] != null) sectors[1].save();
-//			if(sectors[2] != null) sectors[2].save();
-			sectors[0] = sectorAt(xSector - 1); 
-//			lines = sectors[0].lines;
-			sectors[1] = sectorAt(xSector); 
-//			plugSectorRight(sectors[0], sectors[1]);
-			sectors[2] = sectorAt(xSector + 1); 
-//			plugSectorRight(sectors[1], sectors[2]);
 		}
 }
