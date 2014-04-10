@@ -1,10 +1,11 @@
 package world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import main.Window;
 
 import org.lwjgl.opengl.GL11;
-
-import util.Quad;
 
 public class World{
 	/**The scale factor from meters to pixel*/
@@ -16,6 +17,8 @@ public class World{
 	public Point leftRimP, rightRimP;
 	public int leftRim = 0, rightRim = -1;
 	public WorldWindow view;
+	
+	public List<Thing> things = new ArrayList<>();
 	
 	public World(String name){
 		this.name = name;
@@ -90,6 +93,11 @@ public class World{
 					goTo(playerX);
 				}
 			}
+			for(Thing t: things){
+				if(t instanceof Butterfly){
+					((Butterfly) t).tick();
+				}
+			}
 		}
 		
 		public void mouseListening(){
@@ -109,6 +117,11 @@ public class World{
 			character.render();
 //			(new Quad((Window.WIDTH/2)-10, (Window.HEIGHT/2)-10, 20, 20)).outline();
 //			(new Point((Window.WIDTH/2), (Window.HEIGHT/2))).draw();
+			for(Thing t: things){
+				if(t instanceof Butterfly){
+					((Butterfly) t).render();
+				}
+			}
 		}
 		
 		public void refresh(){

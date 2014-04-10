@@ -1,5 +1,7 @@
 package world;
 
+import java.util.Random;
+
 
 
 public abstract class Thing {
@@ -7,6 +9,8 @@ public abstract class Thing {
 	public float surfaceX, surfaceY;
 //	public WorldLink link = new WorldLink();
 	public Node worldLink;
+	
+	public Random random = new Random();
 	
 	public Thing(float surfaceX, float surfaceY){
 		this.surfaceX = surfaceX;
