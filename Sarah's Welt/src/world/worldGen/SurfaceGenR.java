@@ -51,6 +51,10 @@ public class SurfaceGenR extends Surface {
 		output.connsR.add(lastConns[1]);
 		output.connsR.add(lastConns[2]);
 		
+		plantTrees(output);
+		spreadAnimals(output);
+		placeClouds(output);
+		
 		return output;
 	}
 	

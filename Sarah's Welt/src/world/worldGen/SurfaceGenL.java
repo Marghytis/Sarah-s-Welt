@@ -45,6 +45,10 @@ public class SurfaceGenL extends Surface {
 		output.connsL.add(lastConns[1]);
 		output.connsL.add(lastConns[2]);
 		
+		plantTrees(output);
+		spreadAnimals(output);
+		placeClouds(output);
+		
 		return output;
 	}
 	

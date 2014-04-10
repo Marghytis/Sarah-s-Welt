@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
 import util.Tessellator;
+import world.creatures.Creature;
 
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
@@ -50,6 +51,16 @@ public class WorldWindow {
 					//What??
 				}
 			}
+			for(Sector sec : sectors){
+				if(sec != null) {
+					for(Structure s : sec.structures){
+						s.tick(dTime);
+					}
+					for(Creature c : sec.creatures){
+						c.tick(dTime);
+					}
+				}
+			}
 		}
 		
 		public static void mouseListening(){
@@ -59,18 +70,31 @@ public class WorldWindow {
 		public static void render(){
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
-			GL11.glColor3f(0, 0, 0);
+			GL11.glColor4f(1, 1, 1, 1);
 			
 			for(Sector sec : sectors){
-				if(sec != null) for(int mat = 0; mat < Material.values().length; mat++){
-					GL11.glColor4f(1, 1, 1, 1);
-					
-					Texture tex = Material.values()[mat].texture;
-					tex.bind();
-					{
-						tessellator.tessellateOneNode(sec.areas[mat].cycles, tex.width, tex.height);
+				if(sec != null) {
+					for(Structure s : sec.structures){
+						s.render();
 					}
-					tex.release();
+					for(int mat = 0; mat < Material.values().length; mat++){
+						
+						Texture tex = Material.values()[mat].texture;
+						tex.bind();
+						{
+							tessellator.tessellateOneNode(sec.areas[mat].cycles, tex.width, tex.height);
+						}
+						tex.release();
+					}
+					for(Creature c : sec.creatures){
+						c.render();
+					}
+				}
+			}
+
+			for(Sector sec : sectors){
+				for(Creature c : sec.creatures){
+					c.render();
 				}
 			}
 			

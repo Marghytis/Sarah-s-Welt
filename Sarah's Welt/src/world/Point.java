@@ -70,6 +70,10 @@ public class Point {
 		return x*p.y - y*p.x;
 	}
 	
+	public float slope(){
+		return y/x;
+	}
+	
 	public void draw(){
 		GL11.glBegin(GL11.GL_POINTS);
 		GL11.glVertex2f(x, y);

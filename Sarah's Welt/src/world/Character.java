@@ -1,6 +1,9 @@
 package world;
 
+import main.Window;
+
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import resources.StackedTexture;
 import util.Quad;
@@ -91,6 +94,8 @@ public class Character extends WalkingThing{
 	boolean blickR = true;
 	
 	public void render(){
+		GL11.glLoadIdentity();
+		GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
 		
 		if(vP > 0 && g && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
 			blickR =true;
@@ -100,8 +105,7 @@ public class Character extends WalkingThing{
 			quad.draw(texrun, framesRunning[counter/time], 0);
 			
 			counter++;
-		} 
-		else if(vP < 0 && g && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+		} else if(vP < 0 && g && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
 			blickR = false;
 			int time = 3;
 			if(counter >= framesRunning.length*time) counter = 4;
@@ -109,9 +113,7 @@ public class Character extends WalkingThing{
 			quad.drawMirrored(texrun, framesRunning[counter/time], 0);
 			
 			counter++;
-		} 
-		
-		else if(vP > 0 && g){
+		} else if(vP > 0 && g){
 			blickR =true;
 			int time = 3;
 			if(counter >= framesWalking.length*time) counter = 4;
@@ -119,8 +121,7 @@ public class Character extends WalkingThing{
 			quad.draw(tex, framesWalking[counter/time], 0);
 			
 			counter++;
-		} 
-		else if(vP < 0 && g){
+		} else if(vP < 0 && g){
 			blickR = false;
 			int time = 3;
 			if(counter >= framesWalking.length*time) counter = 4;

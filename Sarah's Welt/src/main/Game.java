@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import world.World;
+import world.WorldWindow;
 
 
 public class Game {
@@ -25,7 +25,7 @@ public class Game {
 		
 
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(1000);
 			System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
 			Display.setDisplayMode(new DisplayMode(Window.WIDTH, Window.HEIGHT));
 		} catch (InterruptedException e){

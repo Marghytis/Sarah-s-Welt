@@ -9,6 +9,10 @@ public class Quad {
 
 	public float x, y, width, height;
 	
+	public Quad(){
+		this(0, 0);
+	}
+	
 	public Quad(float width, float height){
 		this(0, 0, width, height);
 	}

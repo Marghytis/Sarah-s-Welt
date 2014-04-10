@@ -24,20 +24,11 @@ public class WorldGenerator {
 			firstConns[0].test = "Huhu";
 			
 			surfaceLeft = new SurfaceGenL(new Connection[]{firstConns[0], firstConns[1], firstConns[2]});
-				Sector l = new Sector();
-				surfaceLeft.expand(l, -Sector.WIDTH);
-				rimL = -1;
+				WorldWindow.sectors[0] = generateLeft();
 			
 			surfaceRight = new SurfaceGenR(new Connection[]{firstConns[0], firstConns[1], firstConns[2]});
-				Sector r1 = new Sector();
-				Sector r2 = new Sector();
-				surfaceRight.expand(r1, Sector.WIDTH);
-				surfaceRight.expand(r2, Sector.WIDTH*2);
-				rimR = 2;
-
-			WorldWindow.sectors[0] = l;
-			WorldWindow.sectors[1] = r1;
-			WorldWindow.sectors[2] = r2;
+				WorldWindow.sectors[1] = generateRight();
+				WorldWindow.sectors[2] = generateRight();
 			
 		}/* else {
 			//TODO load the rims from the database
@@ -45,8 +36,8 @@ public class WorldGenerator {
 	}
 	
 	public Sector generateRight(){
+		Sector output = new Sector(rimR);
 		rimR++;
-		Sector output = new Sector();
 		
 		surfaceRight.expand(output, rimR*Sector.WIDTH); 
 		
@@ -54,8 +45,8 @@ public class WorldGenerator {
 	}
 	
 	public Sector generateLeft(){
+		Sector output = new Sector(rimL-1);
 		rimL--;
-		Sector output = new Sector();
 		
 		surfaceLeft.expand(output, rimL*Sector.WIDTH);
 		
