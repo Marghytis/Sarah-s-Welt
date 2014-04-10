@@ -1,6 +1,5 @@
 package world;
 
-import main.Game;
 import util.Geom;
 
 public abstract class WalkingThing extends Thing{
@@ -56,12 +55,12 @@ public abstract class WalkingThing extends Thing{
 	 */
 	public void doStepping(float d){
 		if(d == 0)return;
-		float v = d*World.measureScale;
+		float v = d*WorldWindow.measureScale;
 		Point intersection = null;
 		
 		Node node = worldLink.last.last.last.last.last.last.last.last;
 		Node finalNode = null;
-		
+		if(node == null)return;//TODO
 		for(int i = 0; i <= 16; i++){
 			//TODO make circleIntersection relative to the character, so I can just add it to the nextPos
 			if(node.p.x > node.next.p.x){
@@ -89,14 +88,6 @@ public abstract class WalkingThing extends Thing{
 				}
 			}
 			
-			if(node.p instanceof MultiNodePoint){
-				MultiNodePoint point = (MultiNodePoint) node.p;
-				for(Node n : point.nodes){
-					if(n.next.p.y > node.next.p.y){
-						node = n;
-					}
-				}
-			}
 			node = node.next;
 		}
 		if(intersection != null){
@@ -108,14 +99,15 @@ public abstract class WalkingThing extends Thing{
 	public void collision(){
 //		System.out.println("-- Character position: " + pos + "  Thought next position: " + nextPos);
 		float[] intersection = null;
-		for(Sector sector : Game.world.view.sectors){//	iterate columns
-			for(Material mat : Material.values()){//	iterate materials
+		for(Sector sector : WorldWindow.sectors){//	iterate columns
+			if(sector != null) for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
-					for(Line l : sector.lines[mat.ordinal()-1]){//	iterate lines
-						Node n = l.start;
-						do {
+					for(Node c : sector.areas[mat.ordinal()].cycles){//	iterate lines
+						Node n = c;
+						 do {
+							n = n.next;
 							Point inters = new Point();
-							boolean found = Geom.intersectionLines(pos, nextPos, n.p, n.next.p, inters);
+							boolean found = Geom.intersectionLines(pos, nextPos, n.last.p, n.p, inters);
 							if(found && (intersection == null || inters.y > intersection[1])){
 								if(intersection == null)intersection = new float[7];
 
@@ -129,8 +121,7 @@ public abstract class WalkingThing extends Thing{
 								acc.set(0, 0);
 								g = true;
 							}
-							n = n.next;
-						} while(!(n.equals(l.start) || n.next == null));
+						} while (n != c);
 					}
 				}
 			}

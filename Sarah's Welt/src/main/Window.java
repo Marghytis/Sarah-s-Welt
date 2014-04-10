@@ -92,7 +92,6 @@ public class Window {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
 		Menu.refresh();
-		Game.world.view.refresh();
 	}
 	
 	/**

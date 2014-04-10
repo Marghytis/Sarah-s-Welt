@@ -11,4 +11,12 @@ public class Node {
 		this.p = p;
 		this.last = last;
 	}
+	
+	public Node(Point p){
+		this.p = p;
+	}
+	
+	public Node(float x, float y){
+		this.p = new Point(x, y);
+	}
 }

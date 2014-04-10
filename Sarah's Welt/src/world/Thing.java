@@ -21,7 +21,7 @@ public abstract class Thing {
 		applyFriction(Material.AIR);
 		vel.add(acc.scaledBy(dTime));
 		//add test for to slow motion?
-		nextPos.add(vel.scaledBy(World.measureScale*dTime));
+		nextPos.add(vel.scaledBy(WorldWindow.measureScale*dTime));
 		acc.set(0, 0);
 	}
 	

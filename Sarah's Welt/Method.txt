@@ -1,0 +1,35 @@
+Node[][] rightEnds;
+Node[][] leftEnds;
+Node[][] middleSectorRightEnds;
+Node[][] middleSectorLeftEnds;
+
+public void right(){
+	Node[][][] newEnds = nextSectorRight();//newEnds[1] (rightEnds of the sector to the right) should have exactly the same structure as this leftEnds
+
+	for(int mat = 0; mat < Material.matCount; mat++){
+		for(int i = 0; i < leftEnds[mat].length; i++){
+			if(rightEnds[mat][i].next == null){
+				rightEnds[mat][i].next = newEnds[0][mat][i];
+				newEnds[mat][i].last = rightEnds[0][mat][i];
+			} else if(rightEnds[mat][i].last == null){
+				rightEnds[mat][i].last = newEnds[0][mat][i];
+				newEnds[mat][i].next = rightEnds[0][mat][i];
+			} else {
+				System.out.print("ERROR WHILE ADDING THE NEXT SECTOR TO THE WORLDVIEW!!!!!");
+			}
+		}
+	}
+	middleSectorRightEnds = rightEnds;
+	rightEnds = newEnds[1];
+	leftEnds = middleSectorLeftEnds;
+	applyLeftEnds();
+}
+
+void applyLeftEnds(){
+
+	for(int mat = 0; mat < Material.matCount; mat++){
+		for(int i = 0; i < leftEnds[mat].length; i++){
+			if()
+		}
+	}
+}

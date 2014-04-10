@@ -13,14 +13,14 @@ public class Game {
 	public static Window window;
 	public static long time;
 	
-	public static World world;
 	public static Menu menu;
 	public static boolean closeRequested = false;
 	
 	public static void main(String[] args){
 		
-		Game.window = new Window(1000, 500);
-		world = new World("TestWorld");//TODO save last active worlds name. for now just use TestWorld all the time
+		window = new Window(1000, 500);
+		//TODO save last active worlds name. for now just use TestWorld all the time
+		WorldWindow.load("TestWelt");
 		menu = Menu.MAIN;
 		
 
@@ -48,9 +48,9 @@ public class Game {
 			keyListening();
 			mouseListening();
 			
-			if(!menu.pauseWorld) world.view.tick((int)(newTime - time)/1000000.0f);
+			if(!menu.pauseWorld) WorldWindow.tick((int)(newTime - time)/1000000.0f);
 			
-			world.view.render();
+			WorldWindow.render();
 			menu.render();
 			
 			time = newTime;
@@ -75,12 +75,11 @@ public class Game {
 				}
 			}
 		}
-		
 	}
 	
 	public static void mouseListening(){
 		menu.mouseListening();
-		if(!menu.pauseWorld) world.view.mouseListening();
+		if(!menu.pauseWorld) WorldWindow.mouseListening();
 	}
 	
 	/**

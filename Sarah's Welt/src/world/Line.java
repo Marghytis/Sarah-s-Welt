@@ -8,44 +8,87 @@ public class Line{
 	
 	int id;
 	
-	public void appendLine(Line l, boolean inverted){
-		if(!inverted){
-			Node src = l.start;
-			
-			while(src.next != null){
-				Node n = new Node(src.p, end);
-				end.next = n;
-				end = n;
-				src = src.next;
-			}
-			Node n = new Node(src.p, end);
-			end.next = n;
-			end = n;
-		} else {
-			Node src = l.end;
+	/*
+	 * Adding means, that the line contains the added components afterwards
+	 * Appending on the other hand just connects the line to the components 
+	 */
+	
+	public Line(float... coords){
+		addPoints(coords);
+	}
+	
+	public void empty(){
+		start = null;
+		end = null;
+	}
+	
+	public void connect(Node from, Node to){
+		from.next = to;
+		to.last = from;
+	}
 
-			while(!src.equals(l.start) || src.last != null){
-				Node n = new Node(src.p, end);
-				end.next = n;
-				end = n;
-				src = src.last;
-			}
-			Node n = new Node(src.p, end);
-			end.next = n;
-			end = n;
+	/**
+	 * inserts the Node insert between the first and its next
+	 * @param first
+	 * @param insert
+	 */
+	public void insertNodeAfter(Node first, Node insert){
+		if(first.next != null){
+			Node second = first.next;
+			connect(first, insert);
+			connect(insert, second);
+		} else {
+			connect(first, insert);
 		}
 	}
 	
+	public void addPoint(float x, float y){
+		Node n = new Node(new Point(x, y));
+		if(end == null){
+			end = n;
+			start = n;
+		} else {
+			connect(end, n);
+			end = end.next;
+		}
+	}
+	
+	public void addPoint(Point p){
+		Node n = new Node(p);
+		if(end == null){
+			end = n;
+			start = n;
+		} else {
+			connect(end, n);
+			end = end.next;
+		}
+	}
+	
+	public void addPointBack(float x, float y){
+		Node n = new Node(new Point(x, y));
+		if(end == null){
+			end = n;
+			start = n;
+		} else {
+			connect(n, start);
+			start = n;
+		}
+	}
+
 	public void addPoints(float... coords){
+		if(coords.length <= 1){
+			//ERROR
+			return;
+		}
 		if(start == null){
 			start = new Node(new Point(coords[0], coords[1]), null);
 			end = start;
-			for(int p = 1; p < coords.length/2; p += 2){
-				end.next = new Node(new Point(coords[p], coords[p+1]), end);
+			for(int p = 2; p < coords.length; p += 2){
+				connect(end, new Node(coords[p], coords[p+1]));
 				end = end.next;
 			}
 		} else {
-			for(int p = 0; p < coords.length/2; p += 2){
+			for(int p = 0; p < coords.length; p += 2){
 				end.next = new Node(new Point(coords[p], coords[p+1]), end);
 				end = end.next;
 			}
@@ -68,18 +111,85 @@ public class Line{
 		}
 	}
 	
-	public void closeCircle(){
-		start.last = end;
-		end.next = start;
+	/**
+	 * clones the Line and either connects the clone the one way or the other at the end
+	 * @param l
+	 * @param inverted
+	 */
+	public void addNewLine(Line l, boolean inverted){
+		if(!inverted){
+			Node src = l.start;
+			
+			while(src != l.end){
+				Node n = new Node(src.p);
+				insertNodeAfter(end, n);
+				end = n;
+				src = src.next;
+			}
+			Node n = new Node(src.p);
+			insertNodeAfter(end, n);
+			end = n;
+		} else {
+			Node src = l.end;
+
+			while(src != l.start){
+				Node n = new Node(src.p);
+				insertNodeAfter(end, n);
+				end = n;
+				src = src.last;
+			}
+			Node n = new Node(src.p);
+			insertNodeAfter(end, n);
+			end = n;
+		}
 	}
 	
+	public void closeCircle(){
+		connect(end, start);
+	}
+	
+	public void addLine(Line l){
+		appendLine(l);
+		end = l.end;
+	}
+	
+	public boolean circleWithLine(Line l){
+		if(isCircle() || l.isCircle())return false;
+		
+		connect(end, l.start);
+		connect(l.end, start);
+		return true;
+	}
+	
+	public boolean isCircle(){
+//		return end.next == start;
+		return false;
+	}
+	
+	public boolean appendLine(Line l){
+		if(isCircle() || l.isCircle())return false;
+		connect(end, l.start);
+		return true;
+	}
+	
+	
 	public String toString(){
-		String string = "";
 		Node n = start;
-		do{
-			string += n.p.toString() + "  ";
+		String string = n.p.toString() + "  ";
+		while(n != end){
 			n = n.next;
-		} while(!(n == null || n.next == start));
+			string += n.p.toString() + "  ";
+		}
+		if(end.next == start){
+			string += "  circle O";
+		} else {
+			if(end.next != null){
+				string += "  -->  " + end.next.p + "  ...";
+			}
+			if(start.last != null){
+				string = "...  " + start.last.p + "<--  " + string;
+			}
+		}
 		return string;
 	}
 }

@@ -3,7 +3,7 @@ package main;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import world.World;
+import world.WorldWindow;
 
 public enum Menu{
 	EMPTY(false){
@@ -24,7 +24,7 @@ public enum Menu{
 			System.out.println(b.name);
 			switch(b.name){
 			case "New World":
-				Game.world = new World("TestWorld");
+				WorldWindow.load("TestWorld");
 				break;
 			case "Continue":
 				Game.menu = EMPTY;
@@ -43,25 +43,38 @@ public enum Menu{
 			buttons = new Button[]{
 				new Button("Flying", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/8) - 20, 300, 60){
 					public void render(){
-						if(Game.world.character.flying){
+						if(WorldWindow.character.flying){
 							name = "Flying enabled";
 						} else {
 							name = "Flying disabled";
 						}
 						super.render();
 					}
-				}
+				},
+				new Button("Textures", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/8) - 20, 300, 60){
+					public void render(){
+						if(Settings.debugView){
+							name = "Textures enabled";
+						} else {
+							name = "Textures disabled";
+						}
+						super.render();
+					}
+				},
 			};
 		}
 		
 		void buttonPressed(Button b){
-			System.out.println(b.name);
-			if(Game.world.character.flying){
-				b.name = "Flying disabled";
-			} else {
-				b.name = "Flying enabled";
+			if(b.name.contains("Flying")){
+				if(WorldWindow.character.flying){
+					b.name = "Flying disabled";
+				} else {
+					b.name = "Flying enabled";
+				}
+				WorldWindow.character.flying = !WorldWindow.character.flying;
+			} else if(b.name.contains("Textures")){
+				Settings.switchDebugView();
 			}
-			Game.world.character.flying = !Game.world.character.flying;
 		}
 	},
 	OPTIONS(true){
