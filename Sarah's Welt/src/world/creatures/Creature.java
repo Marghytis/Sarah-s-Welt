@@ -24,7 +24,7 @@ public class Creature extends Thing{
 	}
 	
 	public void tick(float dTime){
-		accelerate((0.5f - random.nextFloat())*0.00001f, (0.5f - random.nextFloat())*0.00001f);
+		accelerate((0.5f - random.nextFloat())*0.00003f, (0.5f - random.nextFloat())*0.00003f);
 		updateVel(dTime);
 		updatePos();
 	}
@@ -37,7 +37,11 @@ public class Creature extends Thing{
 		GL11.glPushMatrix();
 		GL11.glTranslatef(pos.x, pos.y, 0);
 		
-		type.box.draw(type.tex, type.frames[frame/10], 0);
+		if(vel.x < 0){
+			type.box.draw(type.tex, type.frames[frame/10], 0);
+		} else {
+			type.box.drawMirrored(type.tex, type.frames[frame/10], 0);
+		}
 		
 		GL11.glPopMatrix();
 		frame++; if(frame/10 >= type.frames.length)frame = 0;

@@ -25,7 +25,7 @@ public class Game {
 		
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(4000);
 			System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
 			Display.setDisplayMode(new DisplayMode(Window.WIDTH, Window.HEIGHT));
 		} catch (InterruptedException e){
