@@ -28,7 +28,7 @@ public class Sector{
 		for(Node n : areas[Material.GRASS.ordinal()].cycles){
 			Node h = n;
 			do {
-				if(h.p.x < x && h.next.p.x > x){
+				if(h.p.x > x && h.next.p.x < x){
 					float slope = h.next.p.minus(h.p).slope();
 					intersection.set(x, h.next.p.y + (slope*(x - h.next.p.x)));
 					return h;

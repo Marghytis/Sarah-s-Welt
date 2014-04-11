@@ -2,14 +2,15 @@ package world;
 
 import org.lwjgl.opengl.GL11;
 
-import resources.Texture;
+import resources.StackedTexture;
 import util.Quad;
 
-public class Structure {
+public abstract class Structure {
 	
 	public StructureType type;
 	public Point pos;
 	public Node worldLink;
+	public boolean showInFront = false;
 
 	public Structure(StructureType type, Point pos){
 		this.type = type;
@@ -31,22 +32,25 @@ public class Structure {
 		
 		type.box.draw(type.tex);
 		
+		
 		GL11.glPopMatrix();
 	}
 	
 	
-	public enum StructureType {
-		CLOUD(new Texture("Cloud"), -0.5f, -0.5f),
-		TREE_1(new Texture("tree1"), -0.5f, -0.3f),
-		TREE_2(new Texture("tree2"), -0.5f, -0.3f),
-		TREE_3(new Texture("tree3"), -0.5f, -0.3f);
+	public static enum StructureType {
+		CLOUD(new StackedTexture("Cloud", 1, 1), -0.5f, -0.5f),
+		TREE_1(new StackedTexture("tree1", 1, 1), -0.5f, -0.3f),
+		TREE_2(new StackedTexture("tree2", 1, 1), -0.5f, -0.3f),
+		TREE_3(new StackedTexture("tree3", 1, 1), -0.5f, -0.3f),
+		GRASS_TUFT(new StackedTexture("Grass_tuft", 4, 1), -0.5f, -0.2f);
 
-		public Texture tex;
+		public StackedTexture tex;
 		public Quad box;
 		
-		StructureType(Texture tex, float xOffset, float yOffset){
+		StructureType(StackedTexture tex, float xOffset, float yOffset){
 			this.tex = tex;
-			box = new Quad(xOffset*tex.width, yOffset*tex.height, tex.width, tex.height);
+			//xOffset*pieceWidth, yOffset*pieceHeight, pieceWidth, pieceHeight
+			box = new Quad(xOffset*((StackedTexture)tex).widthP*tex.width, yOffset*((StackedTexture)tex).heightP*tex.height, ((StackedTexture)tex).widthP*tex.width, ((StackedTexture)tex).heightP*tex.height);
 		}
 	}
 	

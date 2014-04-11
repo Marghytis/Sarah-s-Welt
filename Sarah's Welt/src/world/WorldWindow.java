@@ -75,7 +75,7 @@ public class WorldWindow {
 			for(Sector sec : sectors){
 				if(sec != null) {
 					for(Structure s : sec.structures){
-						s.render();
+						if(!s.showInFront)s.render();
 					}
 					for(int mat = 0; mat < Material.values().length; mat++){
 						
@@ -86,13 +86,13 @@ public class WorldWindow {
 						}
 						tex.release();
 					}
-					for(Creature c : sec.creatures){
-						c.render();
-					}
 				}
 			}
 
 			for(Sector sec : sectors){
+				for(Structure s : sec.structures){
+					if(s.showInFront)s.render();
+				}
 				for(Creature c : sec.creatures){
 					c.render();
 				}
@@ -120,6 +120,7 @@ public class WorldWindow {
 				//expand rightwards
 				//move rim etc.
 				xSector++;
+				sectors[0].switchConnection(sectors[1], true);
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
 				if(xSector > generator.rimR-2){
@@ -129,6 +130,7 @@ public class WorldWindow {
 				}
 			} else {
 				xSector--;
+				sectors[1].switchConnection(sectors[2], true);
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
 				if(xSector < generator.rimL+1){

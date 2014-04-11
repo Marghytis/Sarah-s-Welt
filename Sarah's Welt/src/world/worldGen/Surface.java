@@ -7,10 +7,11 @@ import world.Line;
 import world.Node;
 import world.Point;
 import world.Sector;
-import world.Structure;
-import world.Structure.StructureType;
 import world.creatures.Creature;
 import world.creatures.Creature.CreatureType;
+import world.structures.Cloud;
+import world.structures.Grass_tuft;
+import world.structures.Tree;
 
 public abstract class Surface {
 
@@ -27,13 +28,13 @@ public abstract class Surface {
 	Line stoneB = new Line(); int sBOffset = -1000;
 	
 	public void placeClouds(Sector sector){
-		for(int i = 0; i < 3; i++){
+		for(int i = 0; i < 1; i++){
 			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
 			Point intersection = new Point();
 			Node link = sector.findGrassPointAt(x, intersection);
-			intersection.y += 400;
+			intersection.y += 300 + random.nextInt(200);
 			
-			Structure cloud = new Structure(StructureType.CLOUD, intersection);
+			Cloud cloud = new Cloud(intersection);
 			cloud.worldLink = link;
 			
 			sector.structures.add(cloud);
@@ -60,11 +61,23 @@ public abstract class Surface {
 			Point intersection = new Point();
 			Node link = sector.findGrassPointAt(x, intersection);
 			
-			StructureType treeType = StructureType.values()[StructureType.TREE_1.ordinal() + random.nextInt(StructureType.TREE_3.ordinal())];
-			Structure tree = new Structure(treeType, intersection);
+			Tree tree = new Tree(random.nextInt(3), intersection);
 			tree.worldLink = link;
 			
 			sector.structures.add(tree);
+		}
+	}
+	
+	public void plantGrass(Sector sector){
+		for(int i = 0; i < 100; i++){
+			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
+			Point intersection = new Point();
+			Node link = sector.findGrassPointAt(x, intersection);
+			
+			Grass_tuft tuft = new Grass_tuft(intersection);
+			tuft.worldLink = link;
+			
+			sector.structures.add(tuft);
 		}
 	}
 	
