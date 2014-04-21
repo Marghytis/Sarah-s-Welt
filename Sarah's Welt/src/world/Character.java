@@ -107,7 +107,6 @@ public class Character extends WalkingThing {
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
-			maxSpeed = 0;
 			if (down == true) {
 				int time = 5;
 				if (counter >= framesKick.length * time) counter = 0;
