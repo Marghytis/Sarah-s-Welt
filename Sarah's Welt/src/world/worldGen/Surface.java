@@ -7,8 +7,7 @@ import world.Line;
 import world.Node;
 import world.Point;
 import world.Sector;
-import world.creatures.Creature;
-import world.creatures.Creature.CreatureType;
+import world.creatures.Butterfly;
 import world.structures.Cloud;
 import world.structures.Grass_tuft;
 import world.structures.Tree;
@@ -48,10 +47,10 @@ public abstract class Surface {
 			Node link = sector.findGrassPointAt(x, intersection);
 			intersection.y += 20;
 			
-			Creature butterfly = new Creature(CreatureType.BUTTERFLY, intersection);
-			butterfly.worldLink = link;
+			Butterfly but = new Butterfly(intersection);
+			but.worldLink = link;
 			
-			sector.creatures.add(butterfly);
+			sector.creatures.add(but);
 		}
 	}
 	

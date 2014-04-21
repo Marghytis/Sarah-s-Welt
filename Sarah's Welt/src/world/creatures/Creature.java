@@ -9,18 +9,25 @@ import world.Thing;
 
 public class Creature extends Thing{
 
+	public static StackedTexture BUTTERFLY  = new StackedTexture("butterfly1", 3, 1, -0.5f, -0.5f);
+	
+	public StackedTexture tex;
+	public Quad box;
+	
+	public boolean right;
+	int frame = 0;
+	
 
-	public CreatureType type;
-
-	public Creature(CreatureType type, Point pos){
+	public Creature(StackedTexture tex, Point pos){
 		super(1, 1);
-		this.type = type;
+		this.tex = tex;
 		this.pos = pos;
 		this.nextPos = new Point(pos);
+		box = new Quad(tex.xOffset, tex.yOffset, tex.width*tex.widthP, tex.height*tex.heightP);
 	}
 	
-	public Creature(CreatureType type, float x, float y){
-		this(type, new Point(x, y));
+	public Creature(StackedTexture tex, float x, float y){
+		this(tex, new Point(x, y));
 	}
 	
 	public void tick(float dTime){
@@ -29,36 +36,25 @@ public class Creature extends Thing{
 		updatePos();
 	}
 	
-	int frame = 0;
 	/**
 	 * World coordinates
 	 */
 	public void render(){
+		howToRender();
+		
 		GL11.glPushMatrix();
 		GL11.glTranslatef(pos.x, pos.y, 0);
 		
-		if(vel.x < 0){
-			type.box.draw(type.tex, type.frames[frame/10], 0);
+		if(right){
+			box.drawMirrored(tex, frame, 0);
 		} else {
-			type.box.drawMirrored(type.tex, type.frames[frame/10], 0);
+			box.draw(tex, frame, 0);
 		}
 		
 		GL11.glPopMatrix();
-		frame++; if(frame/10 >= type.frames.length)frame = 0;
 	}
 	
-	
-	public enum CreatureType {
-		BUTTERFLY(new StackedTexture("butterfly1", 3, 1), -0.5f, -0.5f, 0, 1, 2, 1);
 
-		public StackedTexture tex;
-		public Quad box;
-		int[] frames;
-		
-		CreatureType(StackedTexture tex, float xOffset, float yOffset, int... frames){
-			this.tex = tex;
-			box = new Quad(xOffset*tex.width, yOffset*tex.height, tex.widthP*tex.width, tex.heightP*tex.height);
-			this.frames = frames;
-		}
-	}
+	public void howToRender(){}
+	
 }

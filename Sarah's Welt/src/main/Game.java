@@ -17,6 +17,7 @@ public class Game {
 	public static boolean closeRequested = false;
 	
 	public static void main(String[] args){
+		
 		window = new Window(1000, 500);
 		//TODO save last active worlds name. for now just use TestWorld all the time
 		WorldWindow.load("TestWelt");
@@ -24,7 +25,7 @@ public class Game {
 		
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(4000);
 			System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
 			Display.setDisplayMode(new DisplayMode(Window.WIDTH, Window.HEIGHT));
 		} catch (InterruptedException e){

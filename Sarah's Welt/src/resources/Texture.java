@@ -15,6 +15,13 @@ public class Texture {
 	
 	public int handle;
 	public int width, height;
+	public float xOffset, yOffset;
+	
+	public Texture(String name, float xOffset, float yOffset){
+		this(name);
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+	}
 	
 	public Texture(String name){
 		if(name.equals("") || name.equals(null)){
