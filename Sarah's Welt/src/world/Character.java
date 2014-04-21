@@ -13,7 +13,8 @@ public class Character extends WalkingThing{
 	StackedTexture tex = new StackedTexture("Sarah", 11, 1);
 	StackedTexture texjump = new StackedTexture("sarah_jump_l", 7 , 1);
 	StackedTexture texrun = new StackedTexture("sarah_runs2_r", 9, 1);
-	
+	StackedTexture texdown = new StackedTexture("sarah_down", 4 , 1);
+	StackedTexture texbeat = new StackedTexture("sarah_beat_r", 9 , 1);
 	
 	public Character(float x, float y){
 		super(1f, 0.5f);
@@ -42,7 +43,10 @@ public class Character extends WalkingThing{
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				maxSpeed = 24;
-			} else {
+			}
+			else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+				maxSpeed = 6;
+			}else {
 				maxSpeed = 15;
 			}
 		
@@ -86,45 +90,81 @@ public class Character extends WalkingThing{
 	int[] framesWalking = {0, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6};
 	int[] framesJumping = {1, 2, 3, 4, 5, 6};
 	int[] framesRunning = {1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5};
+	int[] framesDown = {1, 2, 3, 4};
+	int[] framesBeat = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
 	boolean blickR = true;
 	
 	public void render(){
-		
-		if(vP > 0 && g && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-			blickR =true;
-			int time = 3;
-			if(counter >= framesRunning.length*time) counter = 4;
+		if (Keyboard.isKeyDown(Keyboard.KEY_J)){
+			int time = 5;
+			if(counter >= framesBeat.length*time) counter = 20;
 	
-			quad.draw(texrun, framesRunning[counter/time], 0);
+			if(blickR = false){			
+			quad.drawMirrored(texbeat, framesBeat[counter/time], 0);
 			
 			counter++;
-		} 
-		else if(vP < 0 && g && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+			}
+			else if(blickR = true){
+				quad.draw(texbeat, framesBeat[counter/time], 0);
+				
+			counter++;
+				}
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_S) && g){
+			int time = 10;
+			if(counter >= framesDown.length*time) counter = 0;
+	
+			if(vP < 0 ){
 			blickR = false;
-			int time = 3;
-			if(counter >= framesRunning.length*time) counter = 4;
-	
-			quad.drawMirrored(texrun, framesRunning[counter/time], 0);
+			quad.drawMirrored(texdown, framesDown[counter/time], 0);
 			
 			counter++;
+			}
+			else if(vP > 0 ){
+				blickR = true;
+				quad.draw(texdown, framesDown[counter/time], 0);
+				
+			counter++;
+				}
+			else if (vP == 0 && blickR ==true){
+				quad.draw(texdown, framesDown[counter/time], 0);
+				
+			}
+			else if (vP == 0 && blickR ==false){
+				quad.drawMirrored(texdown, framesDown[counter/time], 0);
+				
+			}
+			
 		} 
 		
 		else if(vP > 0 && g){
 			blickR =true;
 			int time = 3;
-			if(counter >= framesWalking.length*time) counter = 4;
-	
-			quad.draw(tex, framesWalking[counter/time], 0);
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+				if(counter >= framesRunning.length*time) counter = 4;	
+				quad.draw(texrun, framesRunning[counter/time], 0);
+			}
+			
+			else {
+				if(counter >= framesWalking.length*time) counter = 4;
+				quad.draw(tex, framesWalking[counter/time], 0);
+			}
 			
 			counter++;
 		} 
 		else if(vP < 0 && g){
 			blickR = false;
 			int time = 3;
-			if(counter >= framesWalking.length*time) counter = 4;
-	
-			quad.drawMirrored(tex, framesWalking[counter/time], 0);
 			
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+				if(counter >= framesRunning.length*time) counter = 4;
+				quad.drawMirrored(texrun, framesRunning[counter/time], 0);
+			}
+			else {
+				if(counter >= framesWalking.length*time) counter = 4;
+				quad.drawMirrored(tex, framesWalking[counter/time], 0);
+			}			
 			counter++;
 		} 
 		else if(vP == 0 && g){	
@@ -164,6 +204,6 @@ public class Character extends WalkingThing{
 			}
 			
 		} 
+		
 	}
-	
 }
