@@ -94,121 +94,142 @@ public class Sarah extends WalkingCreature{
 	int[] framesRunning = {1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5};
 	int[] framesDown = {1, 2, 3, 4};
 	int[] framesBeat = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+	int[] framesKick = { 1, 2, 3, 4, 5, 6 };
 	boolean blickR = true;
+	boolean down = false;
 	
 	public void render(){
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
-		
-		if (Keyboard.isKeyDown(Keyboard.KEY_J)){
-			int time = 5;
-			if(counter >= framesBeat.length*time) counter = 20;
-	
-			if(blickR = false){			
-			quad.drawMirrored(texbeat, framesBeat[counter/time], 0);
-			
-			counter++;
-			}
-			else if(blickR = true){
-				quad.draw(texbeat, framesBeat[counter/time], 0);
-				
-			counter++;
-				}
+
+		if (!Keyboard.isKeyDown(Keyboard.KEY_S)){
+			down = false;
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)){
+			down = true;
 		}
-		else if (Keyboard.isKeyDown(Keyboard.KEY_S) && g){
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
+			if (down == true) {
+				int time = 5;
+				if (counter >= framesKick.length * time) counter = 0;
+
+				if (blickR = false) {
+					quad.drawMirrored(texkick, framesKick[counter / time], 0);
+
+					counter++;
+				} else if (blickR = true) {
+					quad.draw(texkick, framesKick[counter / time], 0);
+
+					counter++;
+				}
+			} else if (down == false) {
+				int time = 5;
+
+				if (counter >= framesBeat.length * time) counter = 20;
+
+				if (blickR = false) {
+					quad.drawMirrored(texbeat, framesBeat[counter / time], 0);
+
+					counter++;
+				} else if (blickR = true) {
+					quad.draw(texbeat, framesBeat[counter / time], 0);
+
+					counter++;
+				}
+			}
+		} else if (down == true && g) {
 			int time = 10;
-			if(counter >= framesDown.length*time) counter = 0;
-	
-			if(vP < 0 ){
-			blickR = false;
-			quad.drawMirrored(texdown, framesDown[counter/time], 0);
-			
-			counter++;
-			}
-			else if(vP > 0 ){
+			if (counter >= framesDown.length * time)
+				counter = 0;
+
+			if (vP < 0) {
+				blickR = false;
+				quad.drawMirrored(texdown, framesDown[counter / time], 0);
+
+				counter++;
+			} else if (vP > 0) {
 				blickR = true;
-				quad.draw(texdown, framesDown[counter/time], 0);
-				
-			counter++;
-				}
-			else if (vP == 0 && blickR ==true){
-				quad.draw(texdown, framesDown[counter/time], 0);
-				
-			}
-			else if (vP == 0 && blickR ==false){
-				quad.drawMirrored(texdown, framesDown[counter/time], 0);
-				
-			}
-			
-		} 
-		
-		else if(vP > 0 && g){
-			blickR =true;
-			int time = 3;
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-				if(counter >= framesRunning.length*time) counter = 4;	
-				quad.draw(texrun, framesRunning[counter/time], 0);
-			}
-			
-			else {
-				if(counter >= framesWalking.length*time) counter = 4;
-				quad.draw(tex, framesWalking[counter/time], 0);
-			}
-			
-			counter++;
-		} 
-		else if(vP < 0 && g){
-			blickR = false;
-			int time = 3;
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-				if(counter >= framesRunning.length*time) counter = 4;
-				quad.drawMirrored(texrun, framesRunning[counter/time], 0);
-			}
-			else {
-				if(counter >= framesWalking.length*time) counter = 4;
-				quad.drawMirrored(tex, framesWalking[counter/time], 0);
-			}			
-			counter++;
-		} 
-		else if(vP == 0 && g){	
-			if(blickR==true){
-				quad.draw(tex, framesWalking[0],0);
-			}
-			else {
-				quad.drawMirrored(tex, framesWalking[0],0);
+				quad.draw(texdown, framesDown[counter / time], 0);
+
+				counter++;
+			} else if (vP == 0 && blickR == true) {
+				quad.draw(texdown, framesDown[counter / time], 0);
+
+			} else if (vP == 0 && blickR == false) {
+				quad.drawMirrored(texdown, framesDown[counter / time], 0);
+
 			}
 		}
-		
-		else if (!g){
-			int time = 4;
-			if(counter >= framesJumping.length*time) counter = 23;
-	
-			if(vP < 0 ){
+
+		else if (vP > 0 && g) {
+			blickR = true;
+			int time = 3;
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (counter >= framesRunning.length * time)
+					counter = 4;
+				quad.draw(texrun, framesRunning[counter / time], 0);
+			}
+
+			else {
+				if (counter >= framesWalking.length * time)
+					counter = 4;
+				quad.draw(tex, framesWalking[counter / time], 0);
+			}
+
+			counter++;
+		} else if (vP < 0 && g) {
 			blickR = false;
-			quad.draw(texjump, framesJumping[counter/time], 0);
-			
-			if (counter<23) counter++;
+			int time = 3;
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if (counter >= framesRunning.length * time)
+					counter = 4;
+				quad.drawMirrored(texrun, framesRunning[counter / time], 0);
+			} else {
+				if (counter >= framesWalking.length * time)
+					counter = 4;
+				quad.drawMirrored(tex, framesWalking[counter / time], 0);
 			}
-			else if(vP > 0 ){
+			counter++;
+		} else if (vP == 0 && g) {
+			if (blickR == true) {
+				quad.draw(tex, framesWalking[0], 0);
+			} else {
+				quad.drawMirrored(tex, framesWalking[0], 0);
+			}
+		}
+
+		else if (!g) {
+			int time = 4;
+			if (counter >= framesJumping.length * time)
+				counter = 23;
+
+			if (vP < 0) {
+				blickR = false;
+				quad.draw(texjump, framesJumping[counter / time], 0);
+
+				if (counter < 23)
+					counter++;
+			} else if (vP > 0) {
 				blickR = true;
-				quad.drawMirrored(texjump, framesJumping[counter/time], 0);
-				
-				if (counter<23) counter++;
-				}
-			else if (vP == 0 && blickR ==true){
-				quad.drawMirrored(texjump, framesJumping[counter/time], 0);
-				
-				if (counter<23) counter++;
+				quad.drawMirrored(texjump, framesJumping[counter / time], 0);
+
+				if (counter < 23)
+					counter++;
+			} else if (vP == 0 && blickR == true) {
+				quad.drawMirrored(texjump, framesJumping[counter / time], 0);
+
+				if (counter < 23)
+					counter++;
+			} else if (vP == 0 && blickR == false) {
+				quad.draw(texjump, framesJumping[counter / time], 0);
+
+				if (counter < 23)
+					counter++;
 			}
-			else if (vP == 0 && blickR ==false){
-				quad.draw(texjump, framesJumping[counter/time], 0);
-				
-				if (counter<23) counter++;
-			}
-			
-		} 
+
+		}
 		super.render();
 	}
 
