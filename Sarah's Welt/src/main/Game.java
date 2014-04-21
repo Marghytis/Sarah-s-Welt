@@ -25,7 +25,7 @@ public class Game {
 		
 
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(1000);
 			System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
 			Display.setDisplayMode(new DisplayMode(Window.WIDTH, Window.HEIGHT));
 		} catch (InterruptedException e){
@@ -59,22 +59,27 @@ public class Game {
 	}
 	
 	public static void keyListening(){
-		while(Keyboard.next()){
-			if(Keyboard.getEventKeyState() && Keyboard.getEventKey() == Keyboard.KEY_ESCAPE){
-				if(menu == Menu.MAIN){
-					menu = Menu.EMPTY;
-				} else {
-					menu = Menu.MAIN;
+		if(!menu.pauseWorld){
+			WorldWindow.keyListening();
+		} else {
+			while(Keyboard.next()){
+				if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
+					if(menu == Menu.MAIN){
+						menu = Menu.EMPTY;
+					} else {
+						menu = Menu.MAIN;
+					}
 				}
-			}
-			if(menu != Menu.MAIN && Keyboard.getEventKeyState()&& Keyboard.getEventKey() == Keyboard.KEY_G){
-				if(menu == Menu.DEBUG){
-					menu = Menu.EMPTY;
-				} else {
-					menu = Menu.DEBUG;
+				if(Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
+					if(menu == Menu.DEBUG){
+						menu = Menu.EMPTY;
+					} else {
+						menu = Menu.DEBUG;
+					}
 				}
 			}
 		}
+		
 	}
 	
 	public static void mouseListening(){

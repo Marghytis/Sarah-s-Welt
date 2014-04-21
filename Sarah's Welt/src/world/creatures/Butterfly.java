@@ -1,28 +1,29 @@
 package world.creatures;
 
+import world.Material;
+import world.Node;
 import world.Point;
 
 
 public class Butterfly extends Creature{
 	
-	static int[] flap = {0, 1, 2, 1};int cFlap = 0;
+	static int[] flap = {0, 1, 2, 1}; int cFlap = 0;
 	
-	public Butterfly(Point p){
-		super(Creature.BUTTERFLY, p);
+	public Butterfly(int type, Point p, Node worldLink){
+		super(type == 0 ? Creature.BUTTERFLY1 : Creature.BUTTERFLY2, p, worldLink);
+		front = true;
 	}
 	
-	public Butterfly(float x, float y){
-		super(Creature.BUTTERFLY, x, y);
+	public void tick(float dTime){
+		acc.add((0.5f - random.nextFloat())*0.00003f, (0.5f - random.nextFloat())*0.00003f);
+		applyFriction(Material.AIR);
+		super.tick(dTime);
 	}
 	
-	public void howToRender(){
-		if(vel.x > 0){
-			right = true;
-		} else if(vel.x < 0){
-			right = false;
-		}
+	protected void howToRender(){
+		super.howToRender();
 		
-		frame = cFlap/10;
+		frameX = cFlap/10;
 		
 		cFlap++;
 		if(cFlap/10 >= flap.length){

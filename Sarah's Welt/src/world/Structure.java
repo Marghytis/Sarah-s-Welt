@@ -1,57 +1,25 @@
 package world;
 
-import org.lwjgl.opengl.GL11;
-
 import resources.StackedTexture;
 import util.Quad;
 
-public abstract class Structure {
-	
-	public StructureType type;
-	public Point pos;
-	public Node worldLink;
-	public boolean showInFront = false;
+public abstract class Structure extends Thing{
 
-	public Structure(StructureType type, Point pos){
-		this.type = type;
-		this.pos = pos;
+	public static StackedTexture CLOUD = new StackedTexture("Cloud", 1, 1, -0.5f, -0.5f);
+	public static StackedTexture GRASS_TUFT = new StackedTexture("Grass_tuft", 4, 1, -0.5f, -0.2f);
+	public static StackedTexture[] TREE = {		new StackedTexture("tree1", 1, 1, -0.5f, -0.3f),
+												new StackedTexture("tree2", 1, 1, -0.5f, -0.3f),
+												new StackedTexture("tree3", 1, 1, -0.5f, -0.3f)
+											};
+	public static StackedTexture[] BUSH = {		new StackedTexture("bush1", 1, 1, -0.5f, -0.2f),
+												new StackedTexture("bush2", 1, 1, -0.5f, -0.2f)
+											};
+	public static StackedTexture[] FLOWER = {	new StackedTexture("flower1", 1, 1, -0.5f, 0f),
+												new StackedTexture("flower2", 1, 1, -0.5f, 0f),
+												new StackedTexture("flower3", 1, 1, -0.5f, 0f)
+											};
+	
+	public Structure(StackedTexture tex, Point pos, Node worldLink){
+		super(pos, worldLink, tex, new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS));
 	}
-	
-	public Structure(StructureType type, float x, float y){
-		this(type, new Point(x, y));
-	}
-	
-	public void tick(float dTime){}
-	
-	/**
-	 * World coordinates
-	 */
-	public void render(){
-		GL11.glPushMatrix();
-		GL11.glTranslatef(pos.x, pos.y, 0);
-		
-		type.box.draw(type.tex);
-		
-		
-		GL11.glPopMatrix();
-	}
-	
-	
-	public static enum StructureType {
-		CLOUD(new StackedTexture("Cloud", 1, 1), -0.5f, -0.5f),
-		TREE_1(new StackedTexture("tree1", 1, 1), -0.5f, -0.3f),
-		TREE_2(new StackedTexture("tree2", 1, 1), -0.5f, -0.3f),
-		TREE_3(new StackedTexture("tree3", 1, 1), -0.5f, -0.3f),
-		GRASS_TUFT(new StackedTexture("Grass_tuft", 4, 1), -0.5f, -0.2f);
-
-		public StackedTexture tex;
-		public Quad box;
-		
-		StructureType(StackedTexture tex, float xOffset, float yOffset){
-			this.tex = tex;
-			//xOffset*pieceWidth, yOffset*pieceHeight, pieceWidth, pieceHeight
-			box = new Quad(xOffset*((StackedTexture)tex).widthP*tex.width, yOffset*((StackedTexture)tex).heightP*tex.height, ((StackedTexture)tex).widthP*tex.width, ((StackedTexture)tex).heightP*tex.height);
-		}
-	}
-	
 }

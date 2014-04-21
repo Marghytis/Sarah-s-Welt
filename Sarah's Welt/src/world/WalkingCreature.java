@@ -1,11 +1,11 @@
 package world;
 
 import util.Geom;
+import world.creatures.Creature;
 
-public abstract class WalkingThing extends Thing{
+public abstract class WalkingCreature extends Creature{
 	
 	public boolean g = false;
-	public float aP;
 	public static final int framesPerStep = 10;
 	public float maxSpeed = 15;
 	public float velocityUnit = 0.00035f;
@@ -13,8 +13,8 @@ public abstract class WalkingThing extends Thing{
 	
 	public int frame;
 
-	public WalkingThing(float AX, float AY){
-		super(AX, AY);
+	public WalkingCreature(Point p, Node worldLink){
+		super(Creature.SARAH, p, worldLink);
 	}
 	
 	public void accelerateFromGround(Point vec){
@@ -25,10 +25,6 @@ public abstract class WalkingThing extends Thing{
 			g = false;
 		}
 	}
-//	
-//	public void applyForceP(float strength){
-//		aP += strength/m;//	aY = FY / m
-//	}
 	
 	public void calculateSpeed(int acc){
 		if(acc == 0){//decelerate
@@ -54,7 +50,10 @@ public abstract class WalkingThing extends Thing{
 	 * @param d distance to step
 	 */
 	public void doStepping(float d){
-		if(d == 0)return;
+		if(d == 0){
+			vel.set(0, 0);
+			return;
+		}
 		float v = d*WorldWindow.measureScale;
 		Point intersection = null;
 		
@@ -62,7 +61,7 @@ public abstract class WalkingThing extends Thing{
 		Node finalNode = null;
 		if(node == null)return;//TODO
 		for(int i = 0; i <= 16; i++){
-			//TODO make circleIntersection relative to the character, so I can just add it to the nextPos
+			//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
 			if(node.p.x > node.next.p.x){
 				Point[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
 	
@@ -91,13 +90,13 @@ public abstract class WalkingThing extends Thing{
 			node = node.next;
 		}
 		if(intersection != null){
-			nextPos.set(intersection);
+			vel.set(intersection.minus(pos));
 			worldLink = finalNode;
 		}
 	}
 	
 	public void collision(){
-//		System.out.println("-- Character position: " + pos + "  Thought next position: " + nextPos);
+//		System.out.println("-- Sarah position: " + pos + "  Thought next position: " + nextPos);
 		float[] intersection = null;
 		for(Sector sector : WorldWindow.sectors){//	iterate columns
 			if(sector != null) for(Material mat : Material.values()){//	iterate materials
@@ -107,15 +106,12 @@ public abstract class WalkingThing extends Thing{
 						 do {
 							n = n.next;
 							Point inters = new Point();
-							boolean found = Geom.intersectionLines(pos, nextPos, n.last.p, n.p, inters);
+							boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.last.p, n.p, inters);
 							if(found && (intersection == null || inters.y > intersection[1])){
-								if(intersection == null)intersection = new float[7];
-
-//								System.out.println("-- Found collision: " + inters + "     Material: " + mat.name + ", First point: " + n.p.toString() + ", second point: " + n.next.p.toString());
-								
+								if(intersection == null)intersection = new float[2];
 								intersection[0] = inters.x;
 								intersection[1] = inters.y;
-								nextPos.set(inters);
+								pos.set(inters);
 								worldLink = n;
 								vel.set(0, 0);
 								acc.set(0, 0);

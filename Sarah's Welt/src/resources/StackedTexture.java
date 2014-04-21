@@ -2,12 +2,12 @@ package resources;
 
 public class StackedTexture extends Texture{
 	
-	public float widthP, heightP;//width/height of equals parts of the Texture
+	public float widthS, heightS;//width/height of equals parts of the Texture
 
 	public StackedTexture(String name, int xParts, int yParts, float xOffset, float yOffset){
 		super(name, xOffset, yOffset);
-		this.widthP = 1f/xParts;
-		this.heightP = 1f/yParts;
+		this.widthS = (float)width/xParts;
+		this.heightS = (float)height/yParts;
 	}
 	
 	public StackedTexture(String name, int xParts, int yParts) {

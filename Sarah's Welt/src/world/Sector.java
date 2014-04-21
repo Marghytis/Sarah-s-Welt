@@ -24,13 +24,13 @@ public class Sector{
 		}
 	}
 	
-	public Node findGrassPointAt(float x, Point intersection){
+	public Node findGrassPointAt(float x, Point intersection, float yOffset){
 		for(Node n : areas[Material.GRASS.ordinal()].cycles){
 			Node h = n;
 			do {
 				if(h.p.x > x && h.next.p.x < x){
 					float slope = h.next.p.minus(h.p).slope();
-					intersection.set(x, h.next.p.y + (slope*(x - h.next.p.x)));
+					intersection.set(x, h.next.p.y + (slope*(x - h.next.p.x)) + yOffset);
 					return h;
 				}
 				h = h.next;

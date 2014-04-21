@@ -1,60 +1,53 @@
 package world.creatures;
 
-import org.lwjgl.opengl.GL11;
+import java.util.Random;
 
 import resources.StackedTexture;
 import util.Quad;
+import world.Material;
+import world.Node;
 import world.Point;
 import world.Thing;
+import world.WorldWindow;
 
-public class Creature extends Thing{
+public abstract class Creature extends Thing {
+	
+	public static Random random = new Random();
+	
+	public static StackedTexture SARAH  = new StackedTexture("Sarah", 11, 1, -0.5f, -0.5f);
 
-	public static StackedTexture BUTTERFLY  = new StackedTexture("butterfly1", 3, 1, -0.5f, -0.5f);
+	public static StackedTexture BUTTERFLY1  = new StackedTexture("butterfly1", 3, 1, -0.5f, -0.5f);
+	public static StackedTexture BUTTERFLY2  = new StackedTexture("butterfly2", 3, 1, -0.5f, -0.5f);
 	
-	public StackedTexture tex;
-	public Quad box;
+	protected Point acc = new Point();
+	protected Point vel = new Point();
 	
-	public boolean right;
-	int frame = 0;
-	
-
-	public Creature(StackedTexture tex, Point pos){
-		super(1, 1);
-		this.tex = tex;
-		this.pos = pos;
-		this.nextPos = new Point(pos);
-		box = new Quad(tex.xOffset, tex.yOffset, tex.width*tex.widthP, tex.height*tex.heightP);
-	}
-	
-	public Creature(StackedTexture tex, float x, float y){
-		this(tex, new Point(x, y));
+	public Creature(StackedTexture tex, Point pos, Node worldLink){
+		super(pos, worldLink, tex, new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS));
 	}
 	
 	public void tick(float dTime){
-		accelerate((0.5f - random.nextFloat())*0.00003f, (0.5f - random.nextFloat())*0.00003f);
-		updateVel(dTime);
-		updatePos();
+		pos.add(vel);
+		
+		vel.add(acc.scaledBy(dTime).scaledBy(WorldWindow.measureScale*dTime));
+		acc.set(0, 0);
 	}
 	
 	/**
-	 * World coordinates
+	 * Applies the friction of the specified material to the acceleration
+	 * @param mat
 	 */
-	public void render(){
-		howToRender();
-		
-		GL11.glPushMatrix();
-		GL11.glTranslatef(pos.x, pos.y, 0);
-		
-		if(right){
-			box.drawMirrored(tex, frame, 0);
-		} else {
-			box.draw(tex, frame, 0);
-		}
-		
-		GL11.glPopMatrix();
+	public void applyFriction(Material mat){
+		acc.x -= mat.decelerationFactor*(vel.x*vel.x) * (vel.x > 0 ? 1 : -1);
+		acc.y -= mat.decelerationFactor*(vel.y*vel.y) * (vel.y > 0 ? 1 : -1);
 	}
 	
-
-	public void howToRender(){}
-	
+	@Override
+	protected void howToRender(){
+		if(vel.x > 0){
+			mirrored = true;
+		} else if(vel.x < 0){
+			mirrored = false;
+		}
+	}
 }

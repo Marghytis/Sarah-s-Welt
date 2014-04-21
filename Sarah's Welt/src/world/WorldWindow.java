@@ -1,7 +1,10 @@
 package world;
 
+import main.Game;
+import main.Menu;
 import main.Window;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
@@ -18,7 +21,7 @@ public class WorldWindow {
 		public static int xSector;
 		public static WorldGenerator generator;
 //		public static WorldDatabase database;
-		public static Character character;
+		public static Sarah sarah;
 		
 		public static Sector[] sectors = new Sector[3];
 	
@@ -32,16 +35,20 @@ public class WorldWindow {
 		}
 		
 		private static void load(){
-			character = new Character(10, 340);
 			generator = new WorldGenerator();//already creates the first 3 sectors
+			
+			Point intersection = new Point();
+			Node playerWorldLink = sectors[1].findGrassPointAt(10, intersection, 100);
+			sarah = new Sarah(intersection, playerWorldLink);
 			
 			sectors[0].switchConnection(sectors[1], true);
 			sectors[1].switchConnection(sectors[2], true);
 		}
 		
 		public static void tick(float dTime){
-			character.tick(dTime);
-			int playerX = (int)(character.pos.x/Sector.WIDTH) - (character.pos.x < 0 ? 1 : 0);
+			sarah.tick(dTime);
+			
+			int playerX = (int)(sarah.pos.x/Sector.WIDTH) - (sarah.pos.x < 0 ? 1 : 0);
 			if(playerX != xSector){
 				if(playerX == xSector - 1){
 					step(false);
@@ -67,16 +74,33 @@ public class WorldWindow {
 			//add later
 		}
 		
+		public static void keyListening(){
+			while(Keyboard.next()){
+				if(Game.menu != Menu.DEBUG && Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
+					Game.menu = Menu.DEBUG;
+				}
+				if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
+					Game.menu = Menu.MAIN;
+				}
+			}
+		}
+		
 		public static void render(){
 			GL11.glLoadIdentity();
-			GL11.glTranslatef(- character.pos.x + (Window.WIDTH/2.0f), - character.pos.y + (Window.HEIGHT/2.0f), 0);
+			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
 			
+			//back
 			for(Sector sec : sectors){
 				if(sec != null) {
+					
 					for(Structure s : sec.structures){
-						if(!s.showInFront)s.render();
+						if(!s.front)s.render();
 					}
+					for(Creature c : sec.creatures){
+						if(!c.front)c.render();
+					}
+					
 					for(int mat = 0; mat < Material.values().length; mat++){
 						
 						Texture tex = Material.values()[mat].texture;
@@ -89,29 +113,19 @@ public class WorldWindow {
 				}
 			}
 
+			GL11.glPushMatrix();
+			sarah.render();
+			GL11.glPopMatrix();
+			
+			//front
 			for(Sector sec : sectors){
 				for(Structure s : sec.structures){
-					if(s.showInFront)s.render();
+					if(s.front)s.render();
 				}
 				for(Creature c : sec.creatures){
-					c.render();
+					if(c.front)c.render();
 				}
 			}
-			
-//			for(Sector sec: sectors){
-//				for(int mat = 1; mat < Material.values().length; mat++){
-//					GL11.glColor4f(1, 1, 1, 1);
-//					
-//					Texture tex = Material.values()[mat].texture;
-//					tex.bind();
-//					{
-//						tessellator.tessellate(sec.lines[mat], tex.width, tex.height);
-//					}
-//					tex.release();
-//				}
-//			}
-//	
-			character.render();
 		}
 				
 		public static void step(boolean rightwards){

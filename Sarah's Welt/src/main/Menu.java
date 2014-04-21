@@ -43,7 +43,7 @@ public enum Menu{
 			buttons = new Button[]{
 				new Button("Flying", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/8) - 20, 300, 60){
 					public void render(){
-						if(WorldWindow.character.flying){
+						if(WorldWindow.sarah.flying){
 							name = "Flying enabled";
 						} else {
 							name = "Flying disabled";
@@ -66,12 +66,12 @@ public enum Menu{
 		
 		void buttonPressed(Button b){
 			if(b.name.contains("Flying")){
-				if(WorldWindow.character.flying){
+				if(WorldWindow.sarah.flying){
 					b.name = "Flying disabled";
 				} else {
 					b.name = "Flying enabled";
 				}
-				WorldWindow.character.flying = !WorldWindow.character.flying;
+				WorldWindow.sarah.flying = !WorldWindow.sarah.flying;
 			} else if(b.name.contains("Textures")){
 				Settings.switchDebugView();
 			}

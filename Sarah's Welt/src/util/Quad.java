@@ -60,15 +60,17 @@ public class Quad {
 	public void draw(StackedTexture texture, int xPart, int yPart){
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.handle);
 		
-		float yOffset = yPart*texture.heightP;
-		float xOffset = xPart*texture.widthP;
+		float texHeight = (texture.heightS/texture.height);
+		float texWidth = (texture.widthS/texture.width);
+		float yOffset = yPart*texHeight;
+		float xOffset = xPart*texWidth;
 		
 		GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(xOffset, yOffset + texture.heightP);
+			GL11.glTexCoord2f(xOffset, yOffset + texHeight);
 			GL11.glVertex2f(x, y);
-			GL11.glTexCoord2f(xOffset + texture.widthP, yOffset + texture.heightP);
+			GL11.glTexCoord2f(xOffset + texWidth, yOffset + texHeight);
 			GL11.glVertex2f(x + width, y);
-			GL11.glTexCoord2f(xOffset + texture.widthP, yOffset);
+			GL11.glTexCoord2f(xOffset + texWidth, yOffset);
 			GL11.glVertex2f(x + width, y + height);
 			GL11.glTexCoord2f(xOffset, yOffset);
 			GL11.glVertex2f(x, y + height);
@@ -76,18 +78,20 @@ public class Quad {
 	}
 	public void drawMirrored(StackedTexture texture, int xPart, int yPart){
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.handle);
-		
-		float yOffset = yPart*texture.heightP;
-		float xOffset = xPart*texture.widthP;
+
+		float texHeight = (texture.heightS/texture.height);
+		float texWidth = (texture.widthS/texture.width);
+		float yOffset = yPart*texHeight;
+		float xOffset = xPart*texWidth;
 		
 		GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(xOffset + texture.widthP, yOffset + texture.heightP);
+			GL11.glTexCoord2f(xOffset + texWidth, yOffset + texHeight);
 			GL11.glVertex2f(x, y);
-			GL11.glTexCoord2f(xOffset, yOffset + texture.heightP);
+			GL11.glTexCoord2f(xOffset, yOffset + texHeight);
 			GL11.glVertex2f(x + width, y);
 			GL11.glTexCoord2f(xOffset , yOffset);
 			GL11.glVertex2f(x + width, y + height);
-			GL11.glTexCoord2f(xOffset + texture.widthP, yOffset);
+			GL11.glTexCoord2f(xOffset + texWidth, yOffset);
 			GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
 	}

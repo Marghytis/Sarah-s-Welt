@@ -1,12 +1,13 @@
 package world.structures;
 
+import world.Node;
 import world.Point;
 import world.Structure;
 
 public class Tree extends Structure{
 
-	public Tree(int type, Point pos){
-		super(StructureType.values()[StructureType.TREE_1.ordinal() + type], pos);
+	public Tree(int type, Point pos, Node worldLink){
+		super(Structure.TREE[type], pos, worldLink);
 	}
 	
 }

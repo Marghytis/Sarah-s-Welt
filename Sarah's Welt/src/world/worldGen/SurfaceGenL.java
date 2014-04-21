@@ -47,6 +47,8 @@ public class SurfaceGenL extends Surface {
 		
 		plantTrees(output);
 		plantGrass(output);
+		plantBushes(output);
+		plantFlowers(output);
 		spreadAnimals(output);
 		placeClouds(output);
 		

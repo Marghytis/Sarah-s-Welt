@@ -1,49 +1,51 @@
 package world;
 
-import java.util.Random;
+import org.lwjgl.opengl.GL11;
 
-
+import resources.StackedTexture;
+import util.Quad;
 
 public abstract class Thing {
-	public Point pos = new Point(), vel = new Point(), acc = new Point();
-	public float surfaceX, surfaceY;
-//	public WorldLink link = new WorldLink();
+	//Position
+	public Point pos = new Point();
 	public Node worldLink;
 	
-	public Random random = new Random();
+	//For rendering
+	protected StackedTexture tex;
+	protected Quad box;
+	protected int frameX = 0;
+	protected int frameY = 0;
 	
-	public Thing(float surfaceX, float surfaceY){
-		this.surfaceX = surfaceX;
-		this.surfaceY = surfaceY;
+	protected boolean mirrored = false;
+	public boolean front = false;
+	
+	public Thing(Point pos, Node worldLink, StackedTexture tex, Quad box){
+		this.pos = pos;
+		this.worldLink = worldLink;
+		
+		this.tex = tex;
+		this.box = box;
 	}
-	
-	public void updateVel(float dTime){
-		applyFriction(Material.AIR);
-		vel.add(acc.scaledBy(dTime));
-		//add test for to slow motion?
-		nextPos.add(vel.scaledBy(WorldWindow.measureScale*dTime));
-		acc.set(0, 0);
-	}
-	
-	protected Point nextPos = new Point();
-	
-	public void updatePos(){
-		pos.set(nextPos);
-	}
-	
-	public void accelerate(float x, float y){
-//		acc.x += vec.x;
-//		acc.y += vec.y;
-		acc.add(x, y);//   Isn't this great? :D
-	}
+
+	public void tick(float dTime){}
 	
 	/**
-	 * Applies the friction of the specified material to the velocity
-	 * @param mat
+	 * World coordinates
 	 */
-	public void applyFriction(Material mat){
-		//apply forces
-		acc.x += surfaceX*mat.decelerationFactor*(vel.x*vel.x) * (vel.x > 0 ? -1 : 1);
-		acc.y += surfaceY*mat.decelerationFactor*(vel.y*vel.y) * (vel.y > 0 ? -1 : 1);
+	public void render(){
+		howToRender();
+		
+		GL11.glPushMatrix();
+		GL11.glTranslatef(pos.x, pos.y, 0);
+		
+		if(mirrored){
+			box.drawMirrored(tex, frameX, frameY);
+		} else {
+			box.draw(tex, frameX, frameY);
+		}
+		pos.draw();
+		GL11.glPopMatrix();
 	}
+
+	protected void howToRender(){}
 }

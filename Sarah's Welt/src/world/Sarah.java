@@ -9,9 +9,9 @@ import resources.StackedTexture;
 import util.Quad;
 
 
-public class Character extends WalkingThing{
+public class Sarah extends WalkingCreature{
 	
-	public float keyAcc = 0.00005f;//the acceleration the Character experiences on the pressure of a movement key
+	public float keyAcc = 0.00005f;//the acceleration the Sarah experiences on the pressure of a movement key
 	public boolean flying = false;
 	StackedTexture tex = new StackedTexture("Sarah", 11, 1);
 	StackedTexture texjump = new StackedTexture("sarah_jump_l", 7 , 1);
@@ -20,10 +20,8 @@ public class Character extends WalkingThing{
 	StackedTexture texbeat = new StackedTexture("sarah_beat_r", 9 , 1);
 	
 	
-	public Character(float x, float y){
-		super(1f, 0.5f);
-		pos.set(x, y);
-		nextPos.set(x, y);
+	public Sarah(Point pos, Node worldLink){
+		super(pos, worldLink);
 	}
 	
 	public void tick(float dTime){
@@ -33,7 +31,6 @@ public class Character extends WalkingThing{
 			//apply keyboard force
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 				pos.y++;
-				nextPos.y++;
 				accelerateFromGround(new Point(0, 0.001f));
 			}
 			
@@ -60,35 +57,34 @@ public class Character extends WalkingThing{
 			doMotion(dTime);
 		} else {
 			//apply gravity
-			if(!flying) accelerate(0, -0.00005f);
+			if(!flying) acc.add(0, -0.00005f);
 			
 			//apply keyboard force
 			if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-				accelerate(keyAcc, 0);
+				acc.add(keyAcc, 0);
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-				accelerate(-keyAcc, 0);
+				acc.add(-keyAcc, 0);
 			}
 			if(flying){
 				if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-					accelerate(0, keyAcc);
+					acc.add(0, keyAcc);
 				}
 				if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-					accelerate(0, -keyAcc);
+					acc.add(0, -keyAcc);
 				}
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				keyAcc = 0.00009f;
+				keyAcc = 0.00006f;
 			} else {
-				keyAcc = 0.00005f;
+				keyAcc = 0.00003f;
 			}
+			applyFriction(Material.AIR);
 			
 			//do movement in air
-			updateVel(dTime);
 			if(!flying) collision();
 		}
-		//set the character to the new location
-		updatePos();
+		super.tick(dTime);
 	}
 	
 	Quad quad = new Quad(-25, -7, 50, 75);
@@ -213,6 +209,16 @@ public class Character extends WalkingThing{
 			}
 			
 		} 
-		
+		super.render();
+	}
+
+	@Override
+	protected void howToRender(){
+		System.out.println("test");
+		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+			mirrored = true;
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+			mirrored = false;
+		}
 	}
 }

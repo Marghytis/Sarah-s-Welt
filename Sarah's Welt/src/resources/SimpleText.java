@@ -38,7 +38,7 @@ public class SimpleText {
 	/** Array that holds necessary information about the font characters */
 	private IntObject[] charArray = new IntObject[256];
 	
-	/** Map of user defined font characters (Character <-> IntObject) */
+	/** Map of user defined font characters (Sarah <-> IntObject) */
 	private Map<Character, IntObject> customChars = new HashMap<>();
 
 	/** Boolean flag on whether AntiAliasing is enabled or not */
@@ -69,16 +69,16 @@ public class SimpleText {
 	private int correctL = 9, correctR = 8;
 	
 	private class IntObject {
-		/** Character's width */
+		/** Sarah's width */
 		public int width;
 
-		/** Character's height */
+		/** Sarah's height */
 		public int height;
 
-		/** Character's stored x position */
+		/** Sarah's stored x position */
 		public int storedX;
 
-		/** Character's stored y position */
+		/** Sarah's stored y position */
 		public int storedY;
 	}
 
@@ -107,7 +107,7 @@ public class SimpleText {
 		}
 	}
 	private BufferedImage getFontImage(char ch) {
-		// Create a temporary image to extract the character's size
+		// Create a temporary image to extract the sarah's size
 		BufferedImage tempfontImage = new BufferedImage(1, 1,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = (Graphics2D) tempfontImage.getGraphics();
@@ -127,7 +127,7 @@ public class SimpleText {
 			charheight = fontSize;
 		}
 
-		// Create another image holding the character we are creating
+		// Create another image holding the sarah we are creating
 		BufferedImage fontImage;
 		fontImage = new BufferedImage(charwidth, charheight,
 				BufferedImage.TYPE_INT_ARGB);
@@ -156,7 +156,7 @@ public class SimpleText {
 		
 		// In any case this should be done in other way. Texture with size 512x512
 		// can maintain only 256 characters with resolution of 32x32. The texture
-		// size should be calculated dynamicaly by looking at character sizes. 
+		// size should be calculated dynamicaly by looking at sarah sizes. 
 		
 		try {
 			
