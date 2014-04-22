@@ -1,8 +1,10 @@
 package world.creatures;
 
+import main.Settings;
 import main.Window;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.StackedTexture;
@@ -12,7 +14,7 @@ import world.Node;
 import world.Point;
 
 
-public class Sarah extends WalkingCreature{
+public class Sarah extends WalkingCreature {
 	
 	public float keyAcc = 0.00005f;//the acceleration the Sarah experiences on the pressure of a movement key
 	public boolean flying = false;
@@ -23,9 +25,13 @@ public class Sarah extends WalkingCreature{
 	StackedTexture texbeat = new StackedTexture("sarah_beat_r", 9 , 1);
 	StackedTexture texkick = new StackedTexture("sarah_kick", 6 , 1);
 	
+	public static StackedTexture SARAH  = new StackedTexture("Sarah", 11, 1, -0.5f, 0);
+	
 	
 	public Sarah(Point pos, Node worldLink){
-		super(Creature.SARAH, pos, worldLink);
+		super(SARAH, pos, worldLink);
+		hitradius = 80;
+		punchStrength = 2;
 	}
 	
 	public void tick(float dTime){
@@ -102,7 +108,8 @@ public class Sarah extends WalkingCreature{
 			down = true;
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
+//		if (Keyboard.isKeyDown(Keyboard.KEY_J)) {
+		if (Mouse.isButtonDown(0)) {
 			if (down == true) {
 				int time = 5;
 				if (counter >= framesKick.length * time) counter = 0;
@@ -222,7 +229,14 @@ public class Sarah extends WalkingCreature{
 				if (counter < 23)
 					counter++;
 			}
-
+		}
+		if(hit > 0){
+			hit--;
+		}
+		if(Settings.hitbox){
+			GL11.glColor3f(1, 1, 0);
+			box.outline();
+			GL11.glColor3f(1, 1, 1);
 		}
 	}
 	

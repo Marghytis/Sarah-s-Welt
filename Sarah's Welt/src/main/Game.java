@@ -4,6 +4,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import world.WorldWindow;
 
@@ -17,15 +18,10 @@ public class Game {
 	public static boolean closeRequested = false;
 	
 	public static void main(String[] args){
-//		Line l = new Line(0,1,2,3,4,5,6,7,8,9,10,11);
-//		l.end.next = l.start;
-//		l.start.last = l.end;
-//		Cycle.iterate(l.start, (Node n) -> System.out.print(n.p.toString()));
 		window = new Window(1000, 500);
 		//TODO save last active worlds name. for now just use TestWorld all the time
 		WorldWindow.load("TestWelt");
 		menu = Menu.MAIN;
-		
 
 		try {
 			Thread.sleep(1000);
@@ -40,26 +36,32 @@ public class Game {
 		Game.startLoop();
 	}
 	
+	static long timeLastWorldTick;
+	
 	/**
 	 * Starts the game loop, which ticks and renders the game
 	 */
 	public static void startLoop(){
 		while(window.nextFrame() && !closeRequested){
 			
-			long newTime = System.nanoTime();
-			
 			keyListening();
 			mouseListening();
 			
-			if(!menu.pauseWorld) WorldWindow.tick((int)(newTime - time)/1000000.0f);
+			long dTime = System.nanoTime() - timeLastWorldTick;
+			if(!menu.pauseWorld) WorldWindow.tick((int)dTime/1000000.0f);
+			timeLastWorldTick += dTime;
 			
 			WorldWindow.render();
 			menu.render();
 			
-			time = newTime;
+			GL11.glColor4f(1, 1, 1, 1);
+			if(fpsC <= 0){fpsC = 20; fpsT = dTime;}fpsC--;
+			Window.font.drawString(0, 0, "fps -- " + 1000000000/fpsT, 1, 1);
 		}
 		exit();
 	}
+	static long fpsT;
+	static int fpsC;
 	
 	public static void keyListening(){
 		if(!menu.pauseWorld){
@@ -86,8 +88,11 @@ public class Game {
 	}
 	
 	public static void mouseListening(){
-		menu.mouseListening();
-		if(!menu.pauseWorld) WorldWindow.mouseListening();
+		if(menu.pauseWorld){
+			menu.mouseListening();
+		} else {
+			WorldWindow.mouseListening();
+		}
 	}
 	
 	/**

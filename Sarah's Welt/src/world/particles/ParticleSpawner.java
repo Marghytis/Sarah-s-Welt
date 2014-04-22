@@ -1,16 +1,15 @@
 package world.particles;
 
 
-import main.GL;
-import world.particles.Particle.ParticleType;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
+import world.particles.Particle.ParticleType;
+
 public class ParticleSpawner {
 
-	public static float gravityAcceleration = -0.05f;
-	public static float sideWaysAcceleration = 0.002f;
+	public static float gravityAcceleration = -0.000005f;
+	public static float sideWaysAcceleration = 0.0000002f;
 
 	public Particle[] particles;
 	public int index = 0;
@@ -24,8 +23,7 @@ public class ParticleSpawner {
 		}
 	}
 	
-	public void createParticle(ParticleType type, float x, float y){
-		index++;
+	public void createParticle(float x, float y){
 		if(index == particles.length){
 			index = 0;
 		}
@@ -34,9 +32,10 @@ public class ParticleSpawner {
 		}
 		particles[index].set(type.lifeTime, new Vector2f(x, y));
 		
+		index++;
 	}
 	
-	public void createParticle(ParticleType type, float x, float y, float sX, float sY){
+	public void createParticle(float x, float y, float sX, float sY){
 		index++;
 		if(index == particles.length){
 			index = 0;
@@ -55,16 +54,21 @@ public class ParticleSpawner {
 	
 	public void render(){
 		GL11.glClearColor(0.6f, 0.3f, 0.4f, 0.5f);
+//		GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+		GL11.glColor4f(type.color.x, type.color.y, type.color.z, type.color.w);
+//		type.tex.bind();
 		
-		type.applyRenderInformation();
-		
-		GL11.glBegin(GL11.GL_QUADS);
 		for(Particle p : particles){
 			if(p.inUse){
-				GL.drawQuadTex(p.pos.x - type.size, p.pos.y - type.size, p.pos.x + type.size, p.pos.y + type.size, 0, 0, 1, 1);
+				GL11.glPushMatrix();
+				GL11.glTranslatef(p.pos.x, p.pos.y, 0);
+				type.quad.draw();
+				GL11.glPopMatrix();
 			}
 		}
-		GL11.glEnd();
+		
+//		type.tex.release();
 	}
 	
 }

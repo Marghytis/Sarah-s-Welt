@@ -41,7 +41,7 @@ public enum Menu{
 	DEBUG(true){
 		void setup(){
 			buttons = new Button[]{
-				new Button("Flying", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/8) - 20, 300, 60){
+				new Button("Flying", (Window.WIDTH/2) - 150, (Window.HEIGHT*7/8) - 20, 300, 60){
 					public void render(){
 						if(WorldWindow.sarah.flying){
 							name = "Flying enabled";
@@ -51,7 +51,7 @@ public enum Menu{
 						super.render();
 					}
 				},
-				new Button("Textures", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/8) - 20, 300, 60){
+				new Button("Textures", (Window.WIDTH/2) - 150, (Window.HEIGHT*5/8) - 20, 300, 60){
 					public void render(){
 						if(Settings.debugView){
 							name = "Textures enabled";
@@ -61,19 +61,38 @@ public enum Menu{
 						super.render();
 					}
 				},
+				new Button("Hitbox", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/8) - 20, 300, 60){
+					public void render(){
+						if(Settings.debugView){
+							name = "Hitbox shown";
+						} else {
+							name = "Hitbox hidden";
+						}
+						super.render();
+					}
+				},
+				new Button("Health", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/8) - 20, 300, 60){
+					public void render(){
+						if(Settings.health){
+							name = "Health shown";
+						} else {
+							name = "Health hidden";
+						}
+						super.render();
+					}
+				},
 			};
 		}
 		
 		void buttonPressed(Button b){
 			if(b.name.contains("Flying")){
-				if(WorldWindow.sarah.flying){
-					b.name = "Flying disabled";
-				} else {
-					b.name = "Flying enabled";
-				}
 				WorldWindow.sarah.flying = !WorldWindow.sarah.flying;
 			} else if(b.name.contains("Textures")){
 				Settings.switchDebugView();
+			} else if(b.name.contains("Hitbox")){
+				Settings.hitbox = !Settings.hitbox;
+			} else if(b.name.contains("Health")){
+				Settings.health = !Settings.health;
 			}
 		}
 	},

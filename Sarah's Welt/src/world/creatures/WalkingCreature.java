@@ -11,18 +11,27 @@ import world.WorldWindow;
 public abstract class WalkingCreature extends Creature{
 	
 	public boolean g = false;
-	public static final int framesPerStep = 10;
-	public float maxSpeed = 15;
+	public float maxSpeed = 10;
 	public float velocityUnit = 0.00035f;
 	public int vP;// distance per stepping frame (in acceleration
-	
-	public int frame;
 
 	public WalkingCreature(StackedTexture tex, Point p, Node worldLink){
 		super(tex, p, worldLink);
 	}
 	
 	public void walkingAI(float dTime){}
+	
+	public boolean hitBy(Creature c){
+		if(super.hitBy(c)){
+			if(g){
+				float xVec = c.pos.x < pos.x ? 0.0005f : -0.0005f;
+				float yVec = 0.0007f;
+				accelerateFromGround(new Point(xVec, yVec));
+			}
+			return true;
+		}
+		return false;
+	}
 	
 	protected void applyDirection(int dir){
 		if(dir == 0){//decelerate
@@ -40,6 +49,7 @@ public abstract class WalkingCreature extends Creature{
 	}
 	
 	public void accelerateFromGround(Point vec){
+		pos.y++;
 		Point linkVec = worldLink.p.minus(worldLink.next.p);
 		if(linkVec.cross(vec) > 0){
 			acc.set(vec);

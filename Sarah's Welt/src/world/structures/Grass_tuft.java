@@ -5,10 +5,11 @@ import world.Point;
 
 public class Grass_tuft extends Structure{
 	
-	int[] wave = {0, 1, 2, 3, 2, 1}; int cWave = 0;
+	public static int[] wave = {0, 1, 2, 3, 2, 1}; int cWave = 0;
 
-	public Grass_tuft(Point pos, Node worldLink){
+	public Grass_tuft(Point pos, Node worldLink, int wavingPos){
 		super(Structure.GRASS_TUFT, pos, worldLink);
+		cWave = wavingPos*14;
 	}
 	
 	protected void howToRender(){

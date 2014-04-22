@@ -34,7 +34,8 @@ public abstract class Surface {
 	}
 		
 	public void placeClouds(Sector sector){
-		for(int i = 0; i < 2; i++){
+		int count = random.nextInt(3);
+		for(int i = 0; i < count; i++){
 			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
 			Point intersection = new Point();
 			Node link = sector.findGrassPointAt(x, intersection, 300 + random.nextInt(200));
@@ -99,7 +100,7 @@ public abstract class Surface {
 			Point intersection = new Point();
 			Node link = sector.findGrassPointAt(x, intersection, 0);
 			
-			Grass_tuft tuft = new Grass_tuft(intersection, link);
+			Grass_tuft tuft = new Grass_tuft(intersection, link, random.nextInt(Grass_tuft.wave.length));
 			
 			sector.structures.add(tuft);
 		}

@@ -1,7 +1,5 @@
 package world.creatures;
 
-import java.util.Random;
-
 import resources.StackedTexture;
 import util.Quad;
 import world.Material;
@@ -12,18 +10,14 @@ import world.WorldWindow;
 
 public abstract class Creature extends Thing {
 	
-	public static Random random = new Random();
-	
-	public static StackedTexture SARAH  = new StackedTexture("Sarah", 11, 1, -0.5f, 0);
-
-	public static StackedTexture BUTTERFLY1  = new StackedTexture("butterfly1", 5, 1, -0.5f, -0.5f);
-	public static StackedTexture BUTTERFLY2  = new StackedTexture("butterfly2", 5, 1, -0.5f, -0.5f);
-
-	public static StackedTexture RABBIT  = new StackedTexture("rabbit", 5, 2, -0.5f, -0.2f);
-	public static StackedTexture SNAIL  = new StackedTexture("snail_", 5, 1, -0.5f, -0.1f);
-	
 	protected Point acc = new Point();
 	protected Point vel = new Point();
+	
+	//combat
+	public int hit = 0;
+	public int hitradius = 100; //only relevant, if its aggressive
+	public int health = 20;
+	public int punchStrength = 1;
 	
 	public Creature(StackedTexture tex, Point pos, Node worldLink){
 		super(pos, worldLink, tex, new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS));
@@ -34,6 +28,15 @@ public abstract class Creature extends Thing {
 		
 		vel.add(acc.scaledBy(dTime).scaledBy(WorldWindow.measureScale*dTime));
 		acc.set(0, 0);
+	}
+	
+	public boolean hitBy(Creature c){
+		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
+			hit = 40;
+			health -= c.punchStrength;
+			return true;
+		}
+		return false;
 	}
 	
 	/**

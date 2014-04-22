@@ -1,17 +1,24 @@
 package world.creatures;
 
-import util.Quad;
+import resources.StackedTexture;
 import world.Material;
 import world.Node;
 import world.Point;
+import world.Sector;
 import world.WorldWindow;
+import world.structures.Cloud;
+import world.structures.Structure;
 
 public class Snail extends WalkingCreature {
+
+	public static StackedTexture STAND_WALK  = new StackedTexture("snail_", 5, 1, -0.5f, -0.1f);
+	public static StackedTexture BEAT_HIT  = new StackedTexture("snail_beats", 8, 1, -0.5f, -0.1f);
+	
 	static int[] walk = {0, 1, 2, 3, 4, 3, 2, 1}; int cWalk = 0;
 	
 	public Snail(Point p, Node worldLink){
-		super(Creature.SNAIL, p, worldLink);
-		maxSpeed = 5;
+		super(STAND_WALK, p, worldLink);
+		hitradius = 50;
 	}
 	
 	public void tick(float dTime){
@@ -33,48 +40,86 @@ public class Snail extends WalkingCreature {
 	int dir = 0;
 	boolean agro = false;
 	public void walkingAI(float dTime){
-		if(pos.minus(WorldWindow.sarah.pos).length() < 10000){
-			agro = true;
-		} else {
-			agro = false;
-		}
-		if(agro){
-			if(WorldWindow.sarah.pos.x > pos.x){
-				dir = 1;
-			} else if(WorldWindow.sarah.pos.x < pos.x){
-				dir = -1;
-			}
-			Quad sarah = new Quad(WorldWindow.sarah.box);
-			sarah.x += WorldWindow.sarah.pos.x;
-			sarah.y += WorldWindow.sarah.pos.y;
-			Quad me = new Quad(box);
-			me.x += pos.x;
-			me.y += pos.y;
-			if(me.contains(sarah.x, sarah.y) || me.contains(sarah.x + sarah.width, sarah.y + sarah.height) || sarah.contains(me.x, me.y) || sarah.contains(me.x + me.width, me.y + me.height)){
-				dir = 0;//TODO hit
-			}
-		} else if(random.nextInt(100)<1){
-			dir = random.nextInt(3)-1;
-		}
+		if(!findSarah() && !findNextCloud())wanderAbout();
 		
 		applyDirection(dir);
 		doStepping(velocityUnit*vP*dTime);
 	}
 	
+	public boolean findSarah(){
+		if(pos.minus(WorldWindow.sarah.pos).length() < 150){
+			if(WorldWindow.sarah.pos.x + WorldWindow.sarah.box.x > pos.x){
+				dir = 1;
+			} else if(WorldWindow.sarah.pos.x + WorldWindow.sarah.box.x + WorldWindow.sarah.box.width < pos.x){
+				dir = -1;
+			} else {
+				dir = 0;//TODO punch
+				WorldWindow.sarah.hitBy(this);
+			}
+			maxSpeed = 6;
+			return true;
+		} else {
+			maxSpeed = 3;
+			return false;
+		}
+	}
+	
+	public boolean findNextCloud(){
+		Cloud c = null; float distance = 1000;
+		for(Sector sec: WorldWindow.sectors){
+			for(Structure s : sec.structures){
+				if(s instanceof Cloud){
+					float dist = pos.minus(s.pos).length();
+					if(dist < distance){
+						c = (Cloud)s;
+						distance = dist; 
+					}
+				}
+			}
+		}
+		if(c != null){
+			if(c.pos.x-10 > pos.x){
+				dir = 1;
+			} else if(c.pos.x+10 < pos.x){
+				dir = -1;
+			} else {
+				dir = 0;
+			}
+			maxSpeed = 6;
+			return true;
+		} else {
+			maxSpeed = 3;
+			return false;
+		}
+	}
+	
+	public void wanderAbout(){
+		if(random.nextInt(100)<1){
+			dir = random.nextInt(3)-1;
+		}
+	}
+	
 	protected void howToRender(){
 		super.howToRender();
 		
-		
-		if(vP != 0){
-			frameX = cWalk/10;
-			
-			cWalk++;
-			if(cWalk/10 >= walk.length){
-				cWalk = 0;
-			}
-		} else {
-			frameX = 0;
+		if(hit > 0){
+			tex = BEAT_HIT;
+			hit--;
+			frameX = 7;
 			frameY = 0;
+		} else {
+			tex = STAND_WALK;
+			frameY = 0;
+			if(vP != 0){
+				frameX = cWalk/10;
+				
+				cWalk++;
+				if(cWalk/10 >= walk.length){
+					cWalk = 0;
+				}
+			} else {
+				frameX = 0;
+			}
 		}
 	}
 

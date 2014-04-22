@@ -1,10 +1,11 @@
 package world.particles;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
-import resources.ResLoader;
+import resources.StackedTexture;
+import resources.Texture;
+import util.Quad;
 
 public class Particle {
 
@@ -36,8 +37,8 @@ public class Particle {
 	public void update(int dTime, ParticleType type){
 		if(life > 0){
 			life -= dTime;
-			vel.x = (vel.x*type.friction) + ParticleSpawner.sideWaysAcceleration;
-			vel.y = (vel.y*type.friction) + ParticleSpawner.gravityAcceleration;
+			vel.x += (vel.x*type.friction) + ParticleSpawner.sideWaysAcceleration;
+			vel.y += (vel.y*type.friction) + ParticleSpawner.gravityAcceleration;
 			pos.x += vel.x*dTime;
 			pos.y += vel.y*dTime;
 		} else {
@@ -46,31 +47,24 @@ public class Particle {
 	}
 	
 	public enum ParticleType{
-		RAIN(2, new Vector4f(0, 0.5f, 1f, 0.5f), 5000, "", new Vector2f(0, -0.8f), 0.99f),
-		SNOW(4, new Vector4f(0.8f, 0.8f, 0.8f, 0.5f), 8000, "Snow2", new Vector2f(0.125f, -0.1f), 0.2f);
+		RAIN(new Quad(-2, -2, 2, 20), new Vector4f(0.8f, 0.8f, 0.8f, 0.4f), 5000, new StackedTexture("", 0, 0), new Vector2f(0, -0.8f), 0f);
 
-		public float size;
+		public Quad quad;
 		public Vector4f color;
 		public int lifeTime;//in milliseconds
-		public int texture;
+		public Texture tex;
 		
 		public Vector2f acc;
 		public float friction;
 		
 		
-		ParticleType(float size, Vector4f color, int lifeTime, String textureName, Vector2f acc, float friction){
+		ParticleType(Quad quad, Vector4f color, int lifeTime, StackedTexture tex, Vector2f acc, float friction){
 			this.friction = friction;
 			this.acc = acc;
-			this.size = size;
+			this.quad = quad;
 			this.color = color;
 			this.lifeTime = lifeTime;
-			texture = ResLoader.loadPNGTexture(textureName);//TODO create a new Texture, not a handle
-		}
-		
-		public void applyRenderInformation(){
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glColor4f(color.x, color.y, color.z, color.w);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+			this.tex = tex;
 		}
 	}
 }

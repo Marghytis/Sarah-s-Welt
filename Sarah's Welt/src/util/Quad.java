@@ -38,12 +38,25 @@ public class Quad {
 	}
 	
 	public void draw(){
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glBegin(GL11.GL_QUADS);
 			GL11.glVertex2f(x, y);
 			GL11.glVertex2f(x + width, y);
 			GL11.glVertex2f(x + width, y + height);
 			GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	public void outline(){
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+			GL11.glVertex2f(x, y);
+			GL11.glVertex2f(x + width, y);
+			GL11.glVertex2f(x + width, y + height);
+			GL11.glVertex2f(x, y + height);
+		GL11.glEnd();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
 	public void draw(Texture texture){
@@ -97,15 +110,6 @@ public class Quad {
 			GL11.glVertex2f(x + width, y + height);
 			GL11.glTexCoord2f(xOffset + texWidth, yOffset);
 			GL11.glVertex2f(x, y + height);
-		GL11.glEnd();
-	}
-	
-	public void outline(){
-		GL11.glBegin(GL11.GL_LINE_LOOP);
-		GL11.glVertex2f(x, y);
-		GL11.glVertex2f(x + width, y);
-		GL11.glVertex2f(x + width, y + height);
-		GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
 	}
 	

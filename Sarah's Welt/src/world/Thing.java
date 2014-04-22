@@ -1,11 +1,19 @@
 package world;
 
+import java.util.Random;
+
+import main.Settings;
+
 import org.lwjgl.opengl.GL11;
 
 import resources.StackedTexture;
 import util.Quad;
+import world.creatures.Creature;
+import world.structures.Structure;
 
 public abstract class Thing {
+	
+	public static Random random = new Random();
 	//Position
 	public Point pos = new Point();
 	public Node worldLink;
@@ -43,7 +51,16 @@ public abstract class Thing {
 		} else {
 			box.draw(tex, frameX, frameY);
 		}
-		pos.draw();
+		if(Settings.hitbox){
+			if(this instanceof Structure){
+				GL11.glColor3f(0, 1, 1);
+				box.outline();
+			} else if(this instanceof Creature){
+				GL11.glColor3f(1, 0, 0);
+				box.outline();
+			}
+			GL11.glColor3f(1, 1, 1);
+		}
 		GL11.glPopMatrix();
 	}
 
