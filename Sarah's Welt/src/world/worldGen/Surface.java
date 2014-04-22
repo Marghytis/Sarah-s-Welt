@@ -100,7 +100,7 @@ public abstract class Surface {
 			Point intersection = new Point();
 			Node link = sector.findGrassPointAt(x, intersection, 0);
 			
-			Grass_tuft tuft = new Grass_tuft(intersection, link, random.nextInt(Grass_tuft.wave.length));
+			Grass_tuft tuft = new Grass_tuft(intersection, link, random.nextInt(Grass_tuft.wave.sequence.length));
 			
 			sector.structures.add(tuft);
 		}

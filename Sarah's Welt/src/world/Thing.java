@@ -7,6 +7,8 @@ import main.Settings;
 import org.lwjgl.opengl.GL11;
 
 import resources.StackedTexture;
+import util.Animation;
+import util.Animator;
 import util.Quad;
 import world.creatures.Creature;
 import world.structures.Structure;
@@ -19,20 +21,21 @@ public abstract class Thing {
 	public Node worldLink;
 	
 	//For rendering
-	protected StackedTexture tex;
 	public Quad box;
-	protected int frameX = 0;
-	protected int frameY = 0;
+	public StackedTexture tex;
+	public Animator animator;
 	
 	protected boolean mirrored = false;
 	public boolean front = false;
 	
-	public Thing(Point pos, Node worldLink, StackedTexture tex, Quad box){
+	public Thing(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink, Quad box){
+		this.tex = tex;
 		this.pos = pos;
 		this.worldLink = worldLink;
 		
-		this.tex = tex;
 		this.box = box;
+		animator = new Animator(box);
+		animator.setAnimation(defaultAni);
 	}
 
 	public void tick(float dTime){}
@@ -46,11 +49,8 @@ public abstract class Thing {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(pos.x, pos.y, 0);
 		
-		if(mirrored){
-			box.drawMirrored(tex, frameX, frameY);
-		} else {
-			box.draw(tex, frameX, frameY);
-		}
+		animator.animate(tex, mirrored);
+		
 		if(Settings.hitbox){
 			if(this instanceof Structure){
 				GL11.glColor3f(0, 1, 1);

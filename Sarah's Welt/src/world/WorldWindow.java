@@ -107,6 +107,7 @@ public class WorldWindow {
 							}
 						}
 					}
+					sarah.punch();
 				}
 			}
 		}
@@ -118,6 +119,16 @@ public class WorldWindow {
 				}
 				if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
 					Game.menu = Menu.MAIN;
+				} else {
+					if(Keyboard.getEventKeyState()){
+						switch(Keyboard.getEventKey()){
+						case Keyboard.KEY_D : sarah.mirrored = true; break;
+						case Keyboard.KEY_A : sarah.mirrored = false; break;
+						case Keyboard.KEY_W: sarah.jump(); break;
+						}
+					} else {
+						
+					}
 				}
 			}
 		}

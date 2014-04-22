@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Toolkit;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -18,7 +20,7 @@ public class Game {
 	public static boolean closeRequested = false;
 	
 	public static void main(String[] args){
-		window = new Window(1000, 500);
+		window = new Window((int)(Toolkit.getDefaultToolkit().getScreenSize().width*0.8f), 700);
 		//TODO save last active worlds name. for now just use TestWorld all the time
 		WorldWindow.load("TestWelt");
 		menu = Menu.MAIN;

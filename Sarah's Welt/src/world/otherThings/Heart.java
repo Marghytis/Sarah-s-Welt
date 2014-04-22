@@ -1,6 +1,7 @@
 package world.otherThings;
 
 import resources.StackedTexture;
+import util.Animation;
 import world.Node;
 import world.Point;
 import world.creatures.WalkingCreature;
@@ -9,10 +10,10 @@ public class Heart extends WalkingCreature{
 	
 	public static StackedTexture tex = new StackedTexture("heart", 4, 1, -0.5f, -0.2f);
 
-	static int[] flap = {0, 1, 2, 3, 2, 1}; int cFlap = 0;
+	static Animation flap = new Animation(10, 0, 0, 1, 2, 3, 2, 1);
 
 	public Heart(Point pos, Node worldLink) {
-		super(tex, pos, worldLink);
+		super(tex, flap, pos, worldLink);
 		vel.y = -0.2f;
 		health = 2000;
 	}
@@ -23,16 +24,5 @@ public class Heart extends WalkingCreature{
 		}
 		health--;
 		super.tick(dTime);
-	}
-
-	protected void howToRender(){
-		super.howToRender();
-		
-		frameX = flap[cFlap/10];
-		
-		cFlap++;
-		if(cFlap/10 >= flap.length){
-			cFlap = 0;
-		}
 	}
 }

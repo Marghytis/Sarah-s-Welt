@@ -1,6 +1,7 @@
 package world.creatures;
 
 import resources.StackedTexture;
+import util.Animation;
 import world.Material;
 import world.Node;
 import world.Point;
@@ -8,11 +9,13 @@ import world.Point;
 public class Rabbit extends WalkingCreature {
 
 	public static StackedTexture RABBIT  = new StackedTexture("rabbit", 5, 2, -0.5f, -0.2f);
-	
-	static int[] walk = {1, 2, 3, 4, 3, 2}; int cWalk = 0;
+
+	static Animation stand = new Animation(0, 0);
+	static Animation hitt = new Animation(0, 1);
+	static Animation walk = new Animation(10, 0, 1, 2, 3, 4, 3, 2);
 	
 	public Rabbit(Point p, Node worldLink){
-		super(RABBIT, p, worldLink);
+		super(RABBIT, stand, p, worldLink);
 		maxSpeed = 5;
 		health = 10;
 	}
@@ -46,21 +49,14 @@ public class Rabbit extends WalkingCreature {
 		super.howToRender();
 		
 		if(hit > 0){
-			frameX = 0;
-			frameY = 1;
+			animator.setAnimation(hitt);
 			hit--;
 		} else {
 			if(vP != 0){
-				frameX = cWalk/10;
-				
-				cWalk++;
-				if(cWalk/10 >= walk.length){
-					cWalk = 0;
-				}
+				animator.setAnimation(walk);
 			} else {
-				frameX = 0;
+				animator.setAnimation(stand);
 			}
-			frameY = 0;
 		}
 	}
 }

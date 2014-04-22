@@ -1,6 +1,7 @@
 package world.structures;
 
 import resources.StackedTexture;
+import util.Animation;
 import util.Quad;
 import world.Node;
 import world.Point;
@@ -22,7 +23,7 @@ public abstract class Structure extends Thing{
 												new StackedTexture("flower3", 1, 1, -0.5f, 0f)
 											};
 	
-	public Structure(StackedTexture tex, Point pos, Node worldLink){
-		super(pos, worldLink, tex, new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS));
+	public Structure(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink){
+		super(tex, defaultAni, pos, worldLink, new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS));
 	}
 }

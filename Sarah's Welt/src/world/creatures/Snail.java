@@ -1,6 +1,8 @@
 package world.creatures;
 
+import main.Settings;
 import resources.StackedTexture;
+import util.Animation;
 import world.Material;
 import world.Node;
 import world.Point;
@@ -13,11 +15,14 @@ public class Snail extends WalkingCreature {
 
 	public static StackedTexture STAND_WALK  = new StackedTexture("snail_", 5, 1, -0.5f, -0.1f);
 	public static StackedTexture BEAT_HIT  = new StackedTexture("snail_beats", 8, 1, -0.5f, -0.1f);
-	
-	static int[] walk = {0, 1, 2, 3, 4, 3, 2, 1}; int cWalk = 0;
+
+	static Animation walk = new Animation(10, 0, 0, 1, 2, 3, 4, 3, 2, 1);
+	static Animation punch = new Animation(10, 0, 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1);
+	static Animation stand = new Animation(0, 0);
+	static Animation hitt = new Animation(7, 0);
 	
 	public Snail(Point p, Node worldLink){
-		super(STAND_WALK, p, worldLink);
+		super(STAND_WALK, stand, p, worldLink);
 		hitradius = 50;
 	}
 	
@@ -40,7 +45,7 @@ public class Snail extends WalkingCreature {
 	int dir = 0;
 	boolean agro = false;
 	public void walkingAI(float dTime){
-		if(!findSarah() && !findNextCloud())wanderAbout();
+		if((!Settings.agro || !findSarah()) && !findNextCloud())wanderAbout();
 		
 		applyDirection(dir);
 		doStepping(velocityUnit*vP*dTime);
@@ -104,21 +109,13 @@ public class Snail extends WalkingCreature {
 		
 		if(hit > 0){
 			tex = BEAT_HIT;
-			hit--;
-			frameX = 7;
-			frameY = 0;
+			animator.setAnimation(hitt);
 		} else {
 			tex = STAND_WALK;
-			frameY = 0;
 			if(vP != 0){
-				frameX = cWalk/10;
-				
-				cWalk++;
-				if(cWalk/10 >= walk.length){
-					cWalk = 0;
-				}
+				animator.setAnimation(walk);
 			} else {
-				frameX = 0;
+				animator.setAnimation(stand);
 			}
 		}
 	}

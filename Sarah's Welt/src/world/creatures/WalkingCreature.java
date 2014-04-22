@@ -1,6 +1,7 @@
 package world.creatures;
 
 import resources.StackedTexture;
+import util.Animation;
 import util.Geom;
 import world.Material;
 import world.Node;
@@ -15,8 +16,8 @@ public abstract class WalkingCreature extends Creature{
 	public float velocityUnit = 0.00035f;
 	public int vP;// distance per stepping frame (in acceleration
 
-	public WalkingCreature(StackedTexture tex, Point p, Node worldLink){
-		super(tex, p, worldLink);
+	public WalkingCreature(StackedTexture tex, Animation defaultAni, Point p, Node worldLink){
+		super(tex, defaultAni, p, worldLink);
 	}
 	
 	public void walkingAI(float dTime){}
@@ -108,9 +109,10 @@ public abstract class WalkingCreature extends Creature{
 		}
 	}
 	
-	public void collision(){
+	public boolean collision(){
 //		System.out.println("-- Sarah position: " + pos + "  Thought next position: " + nextPos);
 		float[] intersection = null;
+		boolean foundOne = false;
 		for(Sector sector : WorldWindow.sectors){//	iterate columns
 			if(sector != null) for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
@@ -129,11 +131,13 @@ public abstract class WalkingCreature extends Creature{
 								vel.set(0, 0);
 								acc.set(0, 0);
 								g = true;
+								foundOne = true;
 							}
 						} while (n != c);
 					}
 				}
 			}
 		}
+		return foundOne;
 	}
 }

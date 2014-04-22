@@ -2,6 +2,7 @@ package world.structures;
 
 import org.lwjgl.opengl.GL11;
 
+import util.Animation;
 import world.Node;
 import world.Point;
 import world.particles.Particle.ParticleType;
@@ -12,7 +13,7 @@ public class Cloud extends Structure{
 	private ParticleSpawner spawner;
 	
 	public Cloud(Point pos, Node worldLink, float xSize, float ySize){
-		super(Structure.CLOUD, pos, worldLink);
+		super(Structure.CLOUD, new Animation(1, 1), pos, worldLink);
 		box.x*=xSize;
 		box.y*=ySize;
 		box.width*=xSize;
