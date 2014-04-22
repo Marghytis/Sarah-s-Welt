@@ -2,14 +2,19 @@ package world;
 
 import main.Game;
 import main.Menu;
+import main.Settings;
 import main.Window;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
+import util.Cycle;
 import util.Tessellator;
 import world.creatures.Creature;
+import world.creatures.Sarah;
+import world.structures.Structure;
+import world.worldGen.WorldGenerator;
 
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
@@ -97,18 +102,24 @@ public class WorldWindow {
 					for(Structure s : sec.structures){
 						if(!s.front)s.render();
 					}
-					for(Creature c : sec.creatures){
-						if(!c.front)c.render();
-					}
 					
 					for(int mat = 0; mat < Material.values().length; mat++){
 						
 						Texture tex = Material.values()[mat].texture;
 						tex.bind();
-						{
+						if(Settings.debugView){
 							tessellator.tessellateOneNode(sec.areas[mat].cycles, tex.width, tex.height);
+						} else {
+							for(Node n : sec.areas[mat].cycles){
+								GL11.glBegin(GL11.GL_LINE_LOOP);
+								Cycle.iterate(n, (Node h) -> GL11.glVertex2f(h.p.x, h.p.y));
+								GL11.glEnd();
+							}
 						}
 						tex.release();
+					}
+					for(Creature c : sec.creatures){
+						if(!c.front)c.render();
 					}
 				}
 			}

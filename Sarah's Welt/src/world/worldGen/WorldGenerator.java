@@ -1,7 +1,7 @@
-package world;
+package world.worldGen;
 
-import world.worldGen.SurfaceGenL;
-import world.worldGen.SurfaceGenR;
+import world.Sector;
+import world.WorldWindow;
 
 public class WorldGenerator {
 
@@ -15,7 +15,8 @@ public class WorldGenerator {
 
 	public SurfaceGenR surfaceRight;
 	public SurfaceGenL surfaceLeft;
-	int rimR = 0, rimL = 0;
+	public int rimR = 0;
+	public int rimL = 0;
 	
 	public WorldGenerator(){
 		if(/*the rims are at zero*/true){

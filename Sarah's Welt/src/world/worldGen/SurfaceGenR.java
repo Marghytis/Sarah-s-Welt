@@ -1,7 +1,6 @@
 package world.worldGen;
 
-import world.Connection;
-import world.Line;
+import util.Line;
 import world.Material;
 import world.Sector;
 
@@ -55,7 +54,9 @@ public class SurfaceGenR extends Surface {
 		plantGrass(output);
 		plantBushes(output);
 		plantFlowers(output);
-		spreadAnimals(output);
+		spreadButterflies(output);
+		spreadRabbits(output);
+		spreadSnails(output);
 		placeClouds(output);
 		
 		return output;

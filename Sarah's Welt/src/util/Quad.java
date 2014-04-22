@@ -17,6 +17,10 @@ public class Quad {
 		this(0, 0, width, height);
 	}
 	
+	public Quad(Quad quad){
+		this(quad.x, quad.y, quad.width, quad.height);
+	}
+	
 	public Quad(float x, float y, float width, float height){
 		this.x = x;
 		this.y = y;

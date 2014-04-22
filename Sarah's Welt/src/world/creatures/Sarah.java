@@ -1,4 +1,4 @@
-package world;
+package world.creatures;
 
 import main.Window;
 
@@ -7,6 +7,9 @@ import org.lwjgl.opengl.GL11;
 
 import resources.StackedTexture;
 import util.Quad;
+import world.Material;
+import world.Node;
+import world.Point;
 
 
 public class Sarah extends WalkingCreature{
@@ -18,10 +21,11 @@ public class Sarah extends WalkingCreature{
 	StackedTexture texrun = new StackedTexture("sarah_runs2_r", 9, 1);
 	StackedTexture texdown = new StackedTexture("sarah_down", 4 , 1);
 	StackedTexture texbeat = new StackedTexture("sarah_beat_r", 9 , 1);
+	StackedTexture texkick = new StackedTexture("sarah_kick", 6 , 1);
 	
 	
 	public Sarah(Point pos, Node worldLink){
-		super(pos, worldLink);
+		super(Creature.SARAH, pos, worldLink);
 	}
 	
 	public void tick(float dTime){
@@ -33,28 +37,16 @@ public class Sarah extends WalkingCreature{
 				pos.y++;
 				accelerateFromGround(new Point(0, 0.001f));
 			}
-			
-			int walkingAcceleration = 0;
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-				walkingAcceleration++;
-			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-				walkingAcceleration--;
-			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				maxSpeed = 24;
-			}
-			else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
 				maxSpeed = 6;
-			}else {
+			} else {
 				maxSpeed = 15;
 			}
-		
 			
-			//do movement on ground
-			calculateSpeed(walkingAcceleration);
-			doMotion(dTime);
+			walkingAI(dTime);
+			
 		} else {
 			//apply gravity
 			if(!flying) acc.add(0, -0.00005f);
@@ -99,6 +91,8 @@ public class Sarah extends WalkingCreature{
 	boolean down = false;
 	
 	public void render(){
+		howToRender();
+		
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
 
@@ -230,16 +224,25 @@ public class Sarah extends WalkingCreature{
 			}
 
 		}
-		super.render();
+	}
+	
+	public void walkingAI(float dTime){
+
+		int keyDir = 0;
+		if(Keyboard.isKeyDown(Keyboard.KEY_D)) keyDir++;
+		if(Keyboard.isKeyDown(Keyboard.KEY_A)) keyDir--;
+		
+		applyDirection(keyDir);
+		
+		doStepping(velocityUnit*vP*dTime);
 	}
 
 	@Override
 	protected void howToRender(){
-		System.out.println("test");
 		if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-			mirrored = true;
+			blickR = true;
 		} else if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-			mirrored = false;
+			blickR = false;
 		}
 	}
 }

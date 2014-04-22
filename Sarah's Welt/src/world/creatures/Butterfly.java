@@ -7,7 +7,7 @@ import world.Point;
 
 public class Butterfly extends Creature{
 	
-	static int[] flap = {0, 1, 2, 1}; int cFlap = 0;
+	static int[] flap = {0, 1, 2, 3, 3, 2, 1}; int cFlap = 0;
 	
 	public Butterfly(int type, Point p, Node worldLink){
 		super(type == 0 ? Creature.BUTTERFLY1 : Creature.BUTTERFLY2, p, worldLink);
@@ -23,10 +23,10 @@ public class Butterfly extends Creature{
 	protected void howToRender(){
 		super.howToRender();
 		
-		frameX = cFlap/10;
+		frameX = cFlap/5;
 		
 		cFlap++;
-		if(cFlap/10 >= flap.length){
+		if(cFlap/5 >= flap.length){
 			cFlap = 0;
 		}
 	}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import world.creatures.Creature;
+import world.structures.Structure;
+import world.worldGen.Connection;
 
 public class Sector{
 	/**The width of one sector, always the same*/

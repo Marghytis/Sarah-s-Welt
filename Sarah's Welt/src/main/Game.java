@@ -17,7 +17,10 @@ public class Game {
 	public static boolean closeRequested = false;
 	
 	public static void main(String[] args){
-		
+//		Line l = new Line(0,1,2,3,4,5,6,7,8,9,10,11);
+//		l.end.next = l.start;
+//		l.start.last = l.end;
+//		Cycle.iterate(l.start, (Node n) -> System.out.print(n.p.toString()));
 		window = new Window(1000, 500);
 		//TODO save last active worlds name. for now just use TestWorld all the time
 		WorldWindow.load("TestWelt");

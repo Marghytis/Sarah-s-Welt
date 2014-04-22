@@ -9,7 +9,6 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.GLUtessellator;
 import org.lwjgl.util.glu.GLUtessellatorCallbackAdapter;
 
-import world.Line;
 import world.Node;
 
 public class Tessellator {

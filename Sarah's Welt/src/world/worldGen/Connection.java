@@ -1,4 +1,6 @@
-package world;
+package world.worldGen;
+
+import world.Node;
 
 public class Connection{
 	public Node nodeL;

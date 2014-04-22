@@ -14,10 +14,13 @@ public abstract class Creature extends Thing {
 	
 	public static Random random = new Random();
 	
-	public static StackedTexture SARAH  = new StackedTexture("Sarah", 11, 1, -0.5f, -0.5f);
+	public static StackedTexture SARAH  = new StackedTexture("Sarah", 11, 1, -0.5f, 0);
 
-	public static StackedTexture BUTTERFLY1  = new StackedTexture("butterfly1", 3, 1, -0.5f, -0.5f);
-	public static StackedTexture BUTTERFLY2  = new StackedTexture("butterfly2", 3, 1, -0.5f, -0.5f);
+	public static StackedTexture BUTTERFLY1  = new StackedTexture("butterfly1", 5, 1, -0.5f, -0.5f);
+	public static StackedTexture BUTTERFLY2  = new StackedTexture("butterfly2", 5, 1, -0.5f, -0.5f);
+
+	public static StackedTexture RABBIT  = new StackedTexture("rabbit", 5, 2, -0.5f, -0.2f);
+	public static StackedTexture SNAIL  = new StackedTexture("snail_", 5, 1, -0.5f, -0.1f);
 	
 	protected Point acc = new Point();
 	protected Point vel = new Point();

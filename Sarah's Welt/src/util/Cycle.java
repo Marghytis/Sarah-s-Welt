@@ -1,6 +1,7 @@
 package util;
 
-import world.Line;
+import java.util.function.Consumer;
+
 import world.Node;
 import world.Point;
 
@@ -20,6 +21,14 @@ public class Cycle {
 			start.last = lines[lines.length - 1].end;
 			lines[lines.length - 1].end.next = start;
 		}
+	}
+	
+	public static void iterate (Node n, Consumer<Node> cons) {
+		Node h = n;
+		do{
+			cons.accept(h);
+			h = h.next;
+		} while(h!=n);
 	}
 	
 	public static void fuseCycles(Node here, Node there){
@@ -49,12 +58,8 @@ public class Cycle {
 	}
 	
 	public String toString(){
-		Node n = start;
-		String string = "";
-		do {
-			string += n.p.toString();
-			n = n.next;
-		} while(n != start);
-		return string;
+		StringBuilder b = new StringBuilder();
+		iterate(start, (Node n) -> b.append(n.p.toString()));
+		return b.toString();
 	}
 }

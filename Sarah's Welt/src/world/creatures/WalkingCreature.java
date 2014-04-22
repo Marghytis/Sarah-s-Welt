@@ -1,7 +1,12 @@
-package world;
+package world.creatures;
 
+import resources.StackedTexture;
 import util.Geom;
-import world.creatures.Creature;
+import world.Material;
+import world.Node;
+import world.Point;
+import world.Sector;
+import world.WorldWindow;
 
 public abstract class WalkingCreature extends Creature{
 	
@@ -13,8 +18,25 @@ public abstract class WalkingCreature extends Creature{
 	
 	public int frame;
 
-	public WalkingCreature(Point p, Node worldLink){
-		super(Creature.SARAH, p, worldLink);
+	public WalkingCreature(StackedTexture tex, Point p, Node worldLink){
+		super(tex, p, worldLink);
+	}
+	
+	public void walkingAI(float dTime){}
+	
+	protected void applyDirection(int dir){
+		if(dir == 0){//decelerate
+			if(vP > 0){
+				vP--;
+			} else if(vP < 0){
+				vP++;
+			}
+		} else {//accelerate in the specific direction if it doesn't become greater than the max speed
+			int newSpeed = vP + dir;
+			if(Math.abs(newSpeed) < maxSpeed){
+				vP = newSpeed;
+			}
+		}
 	}
 	
 	public void accelerateFromGround(Point vec){
@@ -24,25 +46,6 @@ public abstract class WalkingCreature extends Creature{
 			vP = 0;
 			g = false;
 		}
-	}
-	
-	public void calculateSpeed(int acc){
-		if(acc == 0){//decelerate
-			if(vP > 0){
-				vP--;
-			} else if(vP < 0){
-				vP++;
-			}
-		} else {//accelerate in the specific direction if it doesn't become greater than the max speed
-			int newSpeed = vP + acc;
-			if(Math.abs(newSpeed) < maxSpeed){
-				vP = newSpeed;
-			}
-		}
-	}
-	
-	public void doMotion(float dTime){
-		doStepping(velocityUnit*vP*dTime);
 	}
 	
 	/**

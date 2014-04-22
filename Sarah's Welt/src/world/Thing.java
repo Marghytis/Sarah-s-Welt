@@ -12,7 +12,7 @@ public abstract class Thing {
 	
 	//For rendering
 	protected StackedTexture tex;
-	protected Quad box;
+	public Quad box;
 	protected int frameX = 0;
 	protected int frameY = 0;
 	

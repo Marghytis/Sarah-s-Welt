@@ -1,7 +1,10 @@
-package world;
+package world.structures;
 
 import resources.StackedTexture;
 import util.Quad;
+import world.Node;
+import world.Point;
+import world.Thing;
 
 public abstract class Structure extends Thing{
 
