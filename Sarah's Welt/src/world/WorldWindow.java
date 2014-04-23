@@ -14,14 +14,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
-import resources.Shader;
 import resources.Texture;
 import util.Cycle;
 import util.Tessellator;
 import world.creatures.Creature;
 import world.creatures.Sarah;
 import world.otherThings.Heart;
-import world.structures.Flower;
 import world.structures.Structure;
 import world.worldGen.WorldGenerator;
 
@@ -135,8 +133,8 @@ public class WorldWindow {
 				} else {
 					if(Keyboard.getEventKeyState()){
 						switch(Keyboard.getEventKey()){
-						case Keyboard.KEY_D : sarah.mirrored = true; break;
-						case Keyboard.KEY_A : sarah.mirrored = false; break;
+						case Keyboard.KEY_D : sarah.mirrored = false; break;
+						case Keyboard.KEY_A : sarah.mirrored = true; break;
 						case Keyboard.KEY_W: sarah.jump(); break;
 						}
 					} else {
@@ -202,22 +200,7 @@ public class WorldWindow {
 			}
 			
 			GL11.glLoadIdentity();
-			light.bind();
-				for(Sector sec : sectors){
-					for(Structure s : sec.structures){
-						if(s.tex == Structure.FLOWER[0]){
-							Shader.BRIGHT.drawLight(s.pos.x - sarah.pos.x + Window.WIDTH/2, -(s.pos.y - sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 1, 0);
-						} else if(s.tex == Structure.FLOWER[1]){
-							Shader.BRIGHT.drawLight(s.pos.x - sarah.pos.x + Window.WIDTH/2, -(s.pos.y - sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 0, 0);
-						} else if(s.tex == Structure.FLOWER[2]){
-							Shader.BRIGHT.drawLight(s.pos.x - sarah.pos.x + Window.WIDTH/2, -(s.pos.y - sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 1, 1);
-						}
-					}
-				}
-//			light.drawLight(Window.WIDTH/2, Window.HEIGHT/2, 1, Shader.SMOOTH);
-			light.release();
 			light.draw();
-			
 			light.bind();
 			light.resetDark(lightLevel);
 			light.release();

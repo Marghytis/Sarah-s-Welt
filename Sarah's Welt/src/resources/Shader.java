@@ -12,7 +12,6 @@ import main.Game;
 
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.GL11;
 
 public enum Shader {
 	SMOOTH("LightingShader.frag"), POCKET_LAMP("LightingShader2.frag"), BRIGHT("AngelShader.frag"){

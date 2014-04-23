@@ -17,25 +17,25 @@ public class Sarah extends WalkingCreature {
 	
 	public static StackedTexture STAND_WALK = new StackedTexture("Sarah", 11, 1, -0.5f, -0.1f);
 	static Animation stand = new Animation(0, 0);
-	static Animation walk = new Animation(3, 0, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
+	static Animation walk = new Animation(3, 0, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
 	
 	public static StackedTexture JUMP = new StackedTexture("sarah_jump_l", 7 , 1, -0.5f, -0.1f);
-	static Animation jump = new Animation(5, 0, () -> WorldWindow.sarah.animator.animation = stand, 	1, 2, 3, 4, 5, 6);
+	static Animation jump = new Animation(5, 0, false, 	1, 2, 3, 4, 5, 6);
 	static Animation fly = new Animation(6, 0);
-	static Animation land = new Animation(2, 0, () -> WorldWindow.sarah.animator.animation = stand, 	5, 4, 3, 2, 1);
+	static Animation land = new Animation(2, 0, false, 	5, 4, 3, 2, 1);
 	
 	public static StackedTexture RUN = new StackedTexture("sarah_runs2_r", 9, 1, -0.5f, -0.1f);
-	static Animation run = new Animation(3, 0, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
+	static Animation run = new Animation(3, 0, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
 	
 	public static StackedTexture DOWN = new StackedTexture("sarah_down", 4 , 1, -0.5f, -0.1f);
-	static Animation sneak = new Animation(10, 0, 	1, 2, 3, 4);
+	static Animation sneak = new Animation(10, 0, true, 	1, 2, 3, 4);
 	static Animation crouch = new Animation(0, 0);
 	
 	public static StackedTexture PUNCH = new StackedTexture("sarah_beat_r", 9 , 1, -0.5f, -0.1f);
-	static Animation punch = new Animation(1, 0, () -> WorldWindow.sarah.animator.animation = stand, 	1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
+	static Animation punch = new Animation(1, 0, false, 	1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
 	
 	public static StackedTexture KICK = new StackedTexture("sarah_kick", 6 , 1, -0.5f, -0.1f);
-	static Animation kick = new Animation(3, 0, () -> WorldWindow.sarah.animator.animation = stand, 	1, 2, 3, 4, 5, 6);
+	static Animation kick = new Animation(3, 0, false, 	1, 2, 3, 4, 5, 6);
 	
 	
 	public Sarah(Point pos, Node worldLink){
@@ -43,6 +43,7 @@ public class Sarah extends WalkingCreature {
 		hitradius = 80;
 		punchStrength = 2;
 		maxSpeed = 10;
+		animator.doOnReady = () -> WorldWindow.sarah.animator.animation = stand;
 	}
 	
 	public void tick(float dTime){
