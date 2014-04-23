@@ -149,7 +149,7 @@ public class WorldWindow {
 			
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
-			
+
 			//back
 			for(Sector sec : sectors){
 				if(sec != null) {
@@ -199,12 +199,13 @@ public class WorldWindow {
 				GL11.glColor3f(1, 1, 1);
 			}
 			
-			GL11.glLoadIdentity();
-			light.draw();
-			light.bind();
-			light.resetDark(lightLevel);
-			light.release();
-			
+			if(Settings.shader){
+				GL11.glLoadIdentity();
+				light.draw();
+				light.bind();
+				light.resetDark(lightLevel);
+				light.release();
+			}
 		}
 				
 		public static void step(boolean rightwards){

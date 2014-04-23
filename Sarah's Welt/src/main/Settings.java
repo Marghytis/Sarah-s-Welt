@@ -11,6 +11,7 @@ public class Settings {
 	public static boolean hitbox = false;
 	public static boolean health = false;
 	public static boolean agro = true;
+	public static boolean shader = false;
 	
 	public void disableFlying(){}
 	

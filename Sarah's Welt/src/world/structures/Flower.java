@@ -2,6 +2,7 @@ package world.structures;
 
 import org.lwjgl.opengl.GL11;
 
+import main.Settings;
 import main.Window;
 import resources.Shader;
 import util.Animation;
@@ -20,16 +21,18 @@ public class Flower extends Structure {
 	
 	public void render(){
 		super.render();
-		GL11.glPushMatrix();
-		GL11.glLoadIdentity();
-		WorldWindow.light.bind();
-		switch(type){
-		case 0: Shader.BRIGHT.drawLight(pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2, -(pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 1, 0); break;
-		case 1: Shader.BRIGHT.drawLight(pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2, -(pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 0, 0); break;
-		case 2: Shader.BRIGHT.drawLight(pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2, -(pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 1, 1); break;
+		if(Settings.shader){
+			GL11.glPushMatrix();
+			GL11.glLoadIdentity();
+			WorldWindow.light.bind();
+			switch(type){
+			case 0: Shader.BRIGHT.drawLight(pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2, (pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 + 20, 1f, 1, 0); break;
+			case 1: Shader.BRIGHT.drawLight(pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2, (pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 + 20, 1f, 0, 0); break;
+			case 2: Shader.BRIGHT.drawLight(pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2, (pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 + 20, 1f, 1, 1); break;
+			}
+			WorldWindow.light.release();
+			GL11.glPopMatrix();
 		}
-		WorldWindow.light.release();
-		GL11.glPopMatrix();
 	}
 	
 }
