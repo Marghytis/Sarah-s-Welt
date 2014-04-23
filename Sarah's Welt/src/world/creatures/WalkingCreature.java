@@ -25,8 +25,8 @@ public abstract class WalkingCreature extends Creature{
 	public boolean hitBy(Creature c){
 		if(super.hitBy(c)){
 			if(g){
-				float xVec = c.pos.x < pos.x ? 0.0005f : -0.0005f;
-				float yVec = 0.0007f;
+				float xVec = c.pos.x < pos.x ? 0.0002f : -0.0002f;
+				float yVec = 0.0005f;
 				accelerateFromGround(new Point(xVec, yVec));
 			}
 			return true;
