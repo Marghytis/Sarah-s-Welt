@@ -10,13 +10,15 @@ import org.lwjgl.opengl.GL11;
 import resources.SimpleText;
 import resources.Texture;
 import util.Quad;
+import world.WorldWindow;
 
 public class Window {
 
 	public static int WIDTH;
 	public static int HEIGHT;
-	
+
 	public static SimpleText font;
+	public static SimpleText arial;
 	
 	public long lastTime;
 	
@@ -31,6 +33,7 @@ public class Window {
 		Display.update();
 		
 		font = new SimpleText(new Font("Russel Write TT", Font.BOLD, 45), true);
+		arial = new SimpleText(new Font("", Font.BOLD, 45), true);
 	}
 	
 	/**
@@ -92,6 +95,7 @@ public class Window {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
 		Menu.refresh();
+		WorldWindow.refresh();
 	}
 	
 	/**

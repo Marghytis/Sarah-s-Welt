@@ -30,7 +30,6 @@ public class Cloud extends Structure{
 			spawner.createParticle(x, pos.y + box.y + (box.height/2), random.nextFloat()*0.01f-0.003f, -0.4f);
 		}
 		spawner.update((int)dTime);
-		System.out.println("test");
 	}
 	
 	public void render(){

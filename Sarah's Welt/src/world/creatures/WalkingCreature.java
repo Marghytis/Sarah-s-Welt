@@ -110,7 +110,6 @@ public abstract class WalkingCreature extends Creature{
 	}
 	
 	public boolean collision(){
-//		System.out.println("-- Sarah position: " + pos + "  Thought next position: " + nextPos);
 		float[] intersection = null;
 		boolean foundOne = false;
 		for(Sector sector : WorldWindow.sectors){//	iterate columns

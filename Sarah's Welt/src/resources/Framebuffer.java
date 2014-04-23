@@ -41,7 +41,7 @@ public class Framebuffer {
 		
 		//create texture
 		texture = tex;
-		texture.set(GL11.glGenTextures(), texture.width, texture.width);
+		texture.set(GL11.glGenTextures(), texture.width, texture.height);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.handle);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);

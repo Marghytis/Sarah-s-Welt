@@ -9,6 +9,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import world.WorldWindow;
+import world.time.Calendar;
 
 
 public class Game {
@@ -52,6 +53,8 @@ public class Game {
 			long dTime = System.nanoTime() - timeLastWorldTick;
 			if(!menu.pauseWorld) WorldWindow.tick((int)dTime/1000000.0f);
 			timeLastWorldTick += dTime;
+			
+			Calendar.tick();
 			
 			WorldWindow.render();
 			menu.render();

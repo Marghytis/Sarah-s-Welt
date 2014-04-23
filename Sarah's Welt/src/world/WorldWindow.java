@@ -13,12 +13,15 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import resources.Lightmap;
+import resources.Shader;
 import resources.Texture;
 import util.Cycle;
 import util.Tessellator;
 import world.creatures.Creature;
 import world.creatures.Sarah;
 import world.otherThings.Heart;
+import world.structures.Flower;
 import world.structures.Structure;
 import world.worldGen.WorldGenerator;
 
@@ -36,10 +39,16 @@ public class WorldWindow {
 		public static Sarah sarah;
 		
 		public static Sector[] sectors = new Sector[3];
+		
+		public static Lightmap light;
+		
+		public static float lightLevel = 1;
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
 			tessellator = new Tessellator();
+			light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
+//			System.out.println(Window.WIDTH + "  " + Window.HEIGHT);
 
 //			database = new WorldDatabase(worldName);
 //			database.loadWorld();
@@ -55,6 +64,10 @@ public class WorldWindow {
 			Point intersection = new Point();
 			Node playerWorldLink = sectors[1].findGrassPointAt(500, intersection, 100);
 			sarah = new Sarah(intersection, playerWorldLink);
+		}
+		
+		public static void refresh(){
+			light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
 		}
 		
 		public static void tick(float dTime){
@@ -135,6 +148,7 @@ public class WorldWindow {
 		
 		public static void render(){
 			GL11.glLoadIdentity();
+			
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
 			
@@ -186,6 +200,28 @@ public class WorldWindow {
 				Window.font.drawString(sarah.pos.x - (Window.font.getWidth(sarah.health + "")/3), sarah.pos.y + 60, sarah.health + "", 0.5f, 0.5f);
 				GL11.glColor3f(1, 1, 1);
 			}
+			
+			GL11.glLoadIdentity();
+			light.bind();
+				for(Sector sec : sectors){
+					for(Structure s : sec.structures){
+						if(s.tex == Structure.FLOWER[0]){
+							Shader.BRIGHT.drawLight(s.pos.x - sarah.pos.x + Window.WIDTH/2, -(s.pos.y - sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 1, 0);
+						} else if(s.tex == Structure.FLOWER[1]){
+							Shader.BRIGHT.drawLight(s.pos.x - sarah.pos.x + Window.WIDTH/2, -(s.pos.y - sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 0, 0);
+						} else if(s.tex == Structure.FLOWER[2]){
+							Shader.BRIGHT.drawLight(s.pos.x - sarah.pos.x + Window.WIDTH/2, -(s.pos.y - sarah.pos.y) + Window.HEIGHT/2 - 20, 1f, 1, 1);
+						}
+					}
+				}
+//			light.drawLight(Window.WIDTH/2, Window.HEIGHT/2, 1, Shader.SMOOTH);
+			light.release();
+			light.draw();
+			
+			light.bind();
+			light.resetDark(lightLevel);
+			light.release();
+			
 		}
 				
 		public static void step(boolean rightwards){

@@ -111,18 +111,46 @@ public enum Menu{
 	OPTIONS(true){
 		void setup(){
 			buttons = new Button[]{
+					new Button("Controls", (Window.WIDTH/2) - 150, (Window.HEIGHT*5/8) - 20, 300, 60),
 					new Button("Sound", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/8) - 20, 300, 60),
 					new Button("Back", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/8) - 20, 300, 60)
 			};
 					
 	}
 		void buttonPressed(Button b){
-			System.out.println(b.name);
+			switch(b.name){
+			case "Back":
+				Game.menu = MAIN;
+				break;
+			case "Controls":
+				Game.menu = CONTROLS;
+				break;
+			}
+		}
+	},
+	CONTROLS(true){
+		void setup(){
+			buttons = new Button[]{ new Button("Back", (Window.WIDTH*6/8) - 150, (Window.HEIGHT*1/8) - 20, 300, 60)};
+		}
+		void buttonPressed(Button b){
 			switch(b.name){
 			case "Back":
 				Game.menu = MAIN;
 				break;
 			}
+		}
+		String text = 	"ESC : Main menu\n"
+				+ 	"A : left\n"
+				+ 	"D : right\n"
+				+ 	"   + S : crouch\n"
+				+ 	"   + LSHIFT : crouch\n"
+				+ 	"W : jump\n"
+				+ 	"SPACE : punch/kick\n";
+		public void render(){
+			super.render();
+			GL11.glColor3f(0.6f, 0.8f, 0.8f);
+			Window.arial.drawString(20, Window.HEIGHT -100, text, 1, 1);
+			GL11.glColor3f(1, 1, 1);
 		}
 	};
 	

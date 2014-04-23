@@ -17,6 +17,17 @@ public class Texture {
 	public int width, height;
 	public float xOffset, yOffset;
 	
+	/**
+	 * Empty Texture
+	 * @param width
+	 * @param height
+	 */
+	public Texture(int width, int height){
+		this.handle = 0;
+		this.width = width;
+		this.height = height;
+	}
+	
 	public Texture(String name, float xOffset, float yOffset){
 		this(name);
 		this.xOffset = xOffset;

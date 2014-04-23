@@ -13,17 +13,11 @@ public class Lightmap extends Framebuffer{
 		super(tex);
 	}
 	
-	public void resetDark(){
-		GL11.glColor4f(0.1f, 0.1f, 0.1f, 1f);
+	public void resetDark(float howDark){
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glColor4f(howDark, howDark, howDark, 1f);
 		Game.window.fill();
 		GL11.glColor4f(1, 1, 1, 1);
-	}
-	
-	public void drawLight(float x, float y, float strength, Shader shader){
-		ARBShaderObjects.glUseProgramObjectARB(shader.handle);
-			ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(shader.handle, "lightLocation"), x, y);
-			ARBShaderObjects.glUniform1fARB(glGetUniformLocationARB(shader.handle, "lightStrength"), strength);
-			Game.window.fill();
-		glUseProgramObjectARB(0);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 	}
 }
