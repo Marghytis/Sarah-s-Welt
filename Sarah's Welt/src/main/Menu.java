@@ -41,7 +41,7 @@ public enum Menu{
 	DEBUG(true){
 		void setup(){
 			buttons = new Button[]{
-				new Button("Flying", (Window.WIDTH/2) - 150, (Window.HEIGHT*9/10) - 20, 300, 60){
+				new Button("Flying", (Window.WIDTH/2) - 150, (Window.HEIGHT*11/12) - 20, 300, 60){
 					public void render(){
 						if(WorldWindow.sarah.flying){
 							name = "Flying enabled";
@@ -51,7 +51,7 @@ public enum Menu{
 						super.render();
 					}
 				},
-				new Button("Textures", (Window.WIDTH/2) - 150, (Window.HEIGHT*7/10) - 20, 300, 60){
+				new Button("Textures", (Window.WIDTH/2) - 150, (Window.HEIGHT*9/12) - 20, 300, 60){
 					public void render(){
 						if(Settings.debugView){
 							name = "Textures enabled";
@@ -61,7 +61,7 @@ public enum Menu{
 						super.render();
 					}
 				},
-				new Button("Hitbox", (Window.WIDTH/2) - 150, (Window.HEIGHT*5/10) - 20, 300, 60){
+				new Button("Hitbox", (Window.WIDTH/2) - 150, (Window.HEIGHT*7/12) - 20, 300, 60){
 					public void render(){
 						if(Settings.debugView){
 							name = "Hitbox shown";
@@ -71,7 +71,7 @@ public enum Menu{
 						super.render();
 					}
 				},
-				new Button("Health", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/10) - 20, 300, 60){
+				new Button("Health", (Window.WIDTH/2) - 150, (Window.HEIGHT*5/12) - 20, 300, 60){
 					public void render(){
 						if(Settings.health){
 							name = "Health shown";
@@ -81,12 +81,22 @@ public enum Menu{
 						super.render();
 					}
 				},
-				new Button("Creatures", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/10) - 20, 300, 60){
+				new Button("Creatures", (Window.WIDTH/2) - 150, (Window.HEIGHT*3/12) - 20, 300, 60){
 					public void render(){
 						if(Settings.agro){
 							name = "Creatures agressive";
 						} else {
 							name = "Creatures friendly";
+						}
+						super.render();
+					}
+				},
+				new Button("Shader", (Window.WIDTH/2) - 150, (Window.HEIGHT*1/12) - 20, 300, 60){
+					public void render(){
+						if(Settings.shader){
+							name = "Shader active";
+						} else {
+							name = "Shader inactive";
 						}
 						super.render();
 					}
@@ -105,6 +115,8 @@ public enum Menu{
 				Settings.health = !Settings.health;
 			} else if(b.name.contains("Creatures")){
 				Settings.agro = !Settings.agro;
+			} else if(b.name.contains("Shader")){
+				Settings.shader = !Settings.shader;
 			}
 		}
 	},

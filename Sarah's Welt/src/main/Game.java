@@ -46,7 +46,6 @@ public class Game {
 	 */
 	public static void startLoop(){
 		while(window.nextFrame() && !closeRequested){
-			
 			keyListening();
 			mouseListening();
 			
@@ -62,6 +61,7 @@ public class Game {
 			GL11.glColor4f(1, 1, 1, 1);
 			if(fpsC <= 0){fpsC = 20; fpsT = dTime;}fpsC--;
 			Window.font.drawString(0, 0, "fps -- " + 1000000000/fpsT, 1, 1);
+			
 		}
 		exit();
 	}
