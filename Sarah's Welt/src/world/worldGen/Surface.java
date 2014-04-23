@@ -62,7 +62,7 @@ public abstract class Surface {
 		for(int i = 0; i < 1; i++){
 			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
 			Point intersection = new Point();
-			Node link = sector.findGrassPointAt(x, intersection, 100);
+			Node link = sector.findGrassPointAt(x, intersection, 5);
 			
 			Rabbit rab = new Rabbit(intersection, link);
 			
@@ -74,7 +74,7 @@ public abstract class Surface {
 		for(int i = 0; i < 1; i++){
 			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
 			Point intersection = new Point();
-			Node link = sector.findGrassPointAt(x, intersection, 100);
+			Node link = sector.findGrassPointAt(x, intersection, 5);
 			
 			Snail snail = new Snail(intersection, link);
 			

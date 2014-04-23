@@ -43,15 +43,15 @@ public class Calendar implements Runnable{
 	}
 	
 	public static void tick(){
-		float step = 0.9f/32;
+		float step = 0.8f/32;
 		if(our == 0){
-			WorldWindow.lightLevel = 0.1f + (min*step);
+			WorldWindow.lightLevel = 0.2f + (min*step);
 		} else if(our == 6){
 			WorldWindow.lightLevel = 1f - (min*step);
 		} else if(our < 6){
 			WorldWindow.lightLevel = 1;
 		} else if(our > 6){
-			WorldWindow.lightLevel = 0.1f;
+			WorldWindow.lightLevel = 0.2f;
 		}
 //		switch(our){
 //		case 0: WorldWindow.lightLevel = 1; break;
