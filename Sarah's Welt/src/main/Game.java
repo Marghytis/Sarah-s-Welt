@@ -23,9 +23,9 @@ public class Game {
 	
 	public static void main(String[] args){
 		window = new Window((int)(Toolkit.getDefaultToolkit().getScreenSize().width*0.8f), 700);
-//		//TODO save last active worlds name. for now just use TestWorld all the time
-//		WorldWindow.load("TestWelt");
-//		menu = Menu.MAIN;
+		//TODO save last active worlds name. for now just use TestWorld all the time
+		WorldWindow.load("TestWelt");
+		menu = Menu.MAIN;
 
 		try {
 			Thread.sleep(1000);
@@ -38,20 +38,7 @@ public class Game {
 			e.printStackTrace();
 		}
 		
-		FireEffect fire = new FireEffect();
-		fire.start();
-		
-		long time = System.currentTimeMillis();
-		while(window.nextFrame() && !closeRequested){
-			
-			long nextTime = System.currentTimeMillis();
-			fire.tick((int)(nextTime - time));
-			time = nextTime;
-		}
-		fire.stop();
-		exit();
-
-//		Game.startLoop();
+		Game.startLoop();
 	}
 	
 	static long timeLastWorldTick;

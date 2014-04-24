@@ -17,13 +17,14 @@ public class FireEffect {
 
 	public ParticleEmitter smoke = new ParticleEmitter(1000, 10){
 
-		Texture tex = new Texture("Fire");
+		Texture tex = new Texture("Smoke");
 		int startLife = 2000;
 		
 		public void renderParticle(Particle p) {
 			tex.bind();
 			Shader.Test.bind();
 			ARBShaderObjects.glUniform4fARB(glGetUniformLocationARB(Shader.Test.handle, "particleColor"), p.col.r, p.col.g, p.col.b, p.col.a);
+			System.out.println(p.col);
 			GL11.glPushMatrix();
 			GL11.glTranslatef(p.pos.x, p.pos.y, 0);
 			GL11.glRotatef(p.rot, 0, 0, 1);
@@ -41,7 +42,7 @@ public class FireEffect {
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.05f, 0.1f);
-			p.col.set(0.3f, 0.3f, 0.3f, 0.3f);
+			p.col.set(0.4f, 0.4f, 0.4f, 1f);
 			p.live = startLife;
 		}
 
