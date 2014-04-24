@@ -9,6 +9,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import world.WorldWindow;
+import world.particles2.FireEffect;
 import world.time.Calendar;
 
 
@@ -22,21 +23,35 @@ public class Game {
 	
 	public static void main(String[] args){
 		window = new Window((int)(Toolkit.getDefaultToolkit().getScreenSize().width*0.8f), 700);
-		//TODO save last active worlds name. for now just use TestWorld all the time
-		WorldWindow.load("TestWelt");
-		menu = Menu.MAIN;
+//		//TODO save last active worlds name. for now just use TestWorld all the time
+//		WorldWindow.load("TestWelt");
+//		menu = Menu.MAIN;
 
 		try {
 			Thread.sleep(1000);
 			System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
 			Display.setDisplayMode(new DisplayMode(Window.WIDTH, Window.HEIGHT));
+			Window.resize();
 		} catch (InterruptedException e){
 			e.printStackTrace();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
+		
+		FireEffect fire = new FireEffect();
+		fire.start();
+		
+		long time = System.currentTimeMillis();
+		while(window.nextFrame() && !closeRequested){
+			
+			long nextTime = System.currentTimeMillis();
+			fire.tick((int)(nextTime - time));
+			time = nextTime;
+		}
+		fire.stop();
+		exit();
 
-		Game.startLoop();
+//		Game.startLoop();
 	}
 	
 	static long timeLastWorldTick;

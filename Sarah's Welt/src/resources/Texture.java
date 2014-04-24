@@ -82,9 +82,9 @@ public class Texture {
 		this.width = width;
 		this.height = height;
 	}
-	
+	static int currentTex = 0;
 	public void bind(){
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, handle);
+		if(currentTex != handle) GL11.glBindTexture(GL11.GL_TEXTURE_2D, handle);
 	}
 	
 	public void release(){

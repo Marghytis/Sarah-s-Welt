@@ -78,7 +78,7 @@ public class Window {
 		GL11.glClearColor(0.5f, 0.5f, 1f, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		if(Display.wasResized()) resize();
-		Display.sync(60);
+		Display.sync(600);
 		return !Display.isCloseRequested();
 	}
 	

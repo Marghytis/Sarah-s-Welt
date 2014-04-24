@@ -1,9 +1,12 @@
 package util;
 
+import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 
 import resources.StackedTexture;
 import resources.Texture;
+import world.Point;
 
 public class Quad {
 
@@ -28,6 +31,32 @@ public class Quad {
 		this.height = height;
 	}
 	
+	public static void draw(float x, float y, float width, float height){
+			GL11.glVertex2f(x, y);
+			GL11.glVertex2f(x + width, y);
+			GL11.glVertex2f(x + width, y + height);
+			GL11.glVertex2f(x, y + height);
+	}
+	
+	public Point randomPoint(Random random){
+		return new Point(random.nextFloat()*width + x, random.nextFloat()*height + y);
+	}
+	
+	public static void drawTex(Texture texture, float x, float y, float width, float height){
+		texture.bind();
+				
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glTexCoord2f(0, 1);
+			GL11.glVertex2f(x, y);
+			GL11.glTexCoord2f(1, 1);
+			GL11.glVertex2f(x + width, y);
+			GL11.glTexCoord2f(1, 0);
+			GL11.glVertex2f(x + width, y + height);
+			GL11.glTexCoord2f(0, 0);
+			GL11.glVertex2f(x, y + height);
+		GL11.glEnd();
+	}
+	
 	public void draw(float x, float y){
 		GL11.glBegin(GL11.GL_QUADS);
 			GL11.glVertex2f(x, y);
@@ -46,6 +75,13 @@ public class Quad {
 			GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	public void draw2(){
+		GL11.glVertex2f(x, y);
+		GL11.glVertex2f(x + width, y);
+		GL11.glVertex2f(x + width, y + height);
+		GL11.glVertex2f(x, y + height);
 	}
 	
 	public void outline(){
@@ -115,5 +151,9 @@ public class Quad {
 	
 	public boolean contains(float x, float y){
 		return x > this.x && x < this.x + width && y > this.y && y < this.y + height;
+	}
+	
+	public String toString(){
+		return "Quad[" + x + "|" + y + " -- " + width + "|" + height + "]";
 	}
 }

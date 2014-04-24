@@ -4,8 +4,10 @@ import world.WorldWindow;
 
 public class Calendar implements Runnable{
 
+	public static Thread thread = new Thread(new Calendar());
+	
 	static {
-		(new Thread(new Calendar())).start();
+		thread.start();
 	}
 	
 	public static boolean stop = false;

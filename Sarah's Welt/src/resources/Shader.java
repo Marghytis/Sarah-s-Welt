@@ -14,7 +14,7 @@ import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
 
 public enum Shader {
-	SMOOTH("LightingShader.frag"), POCKET_LAMP("LightingShader2.frag"), BRIGHT("AngelShader.frag"){
+	Test("Test.frag"), SMOOTH("LightingShader.frag"), POCKET_LAMP("LightingShader2.frag"), BRIGHT("AngelShader.frag"){
 		public void drawLight(float... data){
 			ARBShaderObjects.glUseProgramObjectARB(handle);
 				ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(handle, "lightLocation"), data[0], data[1]);
@@ -22,7 +22,25 @@ public enum Shader {
 				Game.window.fill();
 			glUseProgramObjectARB(0);
 		}
+	}, PARTICLE("ParticleShader.frag"){
+		public void drawLight(float... data){
+			ARBShaderObjects.glUseProgramObjectARB(handle);
+				ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(handle, "location"), data[0], data[1]);
+				ARBShaderObjects.glUniform4fARB(glGetUniformLocationARB(handle, "color"), data[2], data[3], data[4], data[5]);
+				ARBShaderObjects.glUniform1fARB(glGetUniformLocationARB(handle, "radius"), data[6]);
+				Game.window.fill();
+			glUseProgramObjectARB(0);
+		}
 	};
+	
+	static int currentShader = 0;
+	public void bind(){
+		ARBShaderObjects.glUseProgramObjectARB(handle);
+	}
+	
+	public void release(){
+		ARBShaderObjects.glUseProgramObjectARB(0);
+	}
 	
 	public int handle;
 	
@@ -39,27 +57,32 @@ public enum Shader {
 	}
 	
 	public void setup(String name){
-		//create shaders
+		//create program
+		int program = ARBShaderObjects.glCreateProgramObjectARB();
+		
+		//create shader
 		int fShader = ARBShaderObjects.glCreateShaderObjectARB(ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
 		
-		//add Source and compile shaders
+		//add Source and compile shader
 		try {
-			ARBShaderObjects.glShaderSourceARB(fShader, readFile("res/shader/" + name));
-			ARBShaderObjects.glCompileShaderARB(fShader);
+			ARBShaderObjects.glShaderSourceARB(fShader, readFile("res/shader/" + name));glSlang_GetInfoLog(fShader);
+			ARBShaderObjects.glCompileShaderARB(fShader);glSlang_GetInfoLog(fShader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		//create program
-		int program = ARBShaderObjects.glCreateProgramObjectARB();
-
-		//add shaders to program
+		//add shader to program and delete the object
 		ARBShaderObjects.glAttachObjectARB(program, fShader);
+		ARBShaderObjects.glDeleteObjectARB(fShader);
 		
 		//link program
 		ARBShaderObjects.glLinkProgramARB(program);
 		
 		handle = program;
+	}
+	
+	public void glSlang_GetInfoLog(int shader){
+		System.out.println(ARBShaderObjects.glGetInfoLogARB(shader, 1000));
 	}
 
 	public String readFile(String name) throws IOException{
