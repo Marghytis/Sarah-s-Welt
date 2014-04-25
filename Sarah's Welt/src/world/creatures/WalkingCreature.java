@@ -6,7 +6,6 @@ import util.Geom;
 import world.Material;
 import world.Node;
 import world.Point;
-import world.Sector;
 import world.WorldWindow;
 
 public abstract class WalkingCreature extends Creature{

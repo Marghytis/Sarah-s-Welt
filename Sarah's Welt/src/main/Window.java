@@ -17,8 +17,8 @@ public class Window {
 	public static int WIDTH;
 	public static int HEIGHT;
 
-	public static SimpleText font;
-	public static SimpleText arial;
+	public static SimpleText font = new SimpleText(new Font("Russel Write TT", Font.BOLD, 45), true);
+	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
 	
 	public long lastTime;
 	

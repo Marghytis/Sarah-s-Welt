@@ -57,8 +57,6 @@ public class Game {
 //		test.cycles.add(n1);
 		
 		while(window.nextFrame() && !closeRequested){
-			T.start______________________________O();
-//			System.out.println(Display.isVisible());
 			keyListening();
 			mouseListening();
 
@@ -66,18 +64,11 @@ public class Game {
 			if(!menu.pauseWorld) WorldWindow.tick((int)dTime);
 			timeLastWorldTick += dTime;
 
-			Calendar.tick();
-
-			WorldWindow.render();
-			menu.render();
 
 			
 			GL11.glColor4f(1, 1, 1, 1);
 			if(fpsC <= 0){fpsC = 20; fpsT = dTime;}fpsC--;
 			Window.font.drawString(0, 0, "fps -- " + 1000000000/fpsT, 1, 1);
-			if(T.stop() > 10000000){
-				System.out.println("WARNING " + WorldWindow.xSector);
-			}
 		}
 		exit();
 	}
