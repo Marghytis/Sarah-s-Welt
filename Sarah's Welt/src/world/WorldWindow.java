@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 import resources.Lightmap;
 import resources.Texture;
 import util.Cycle;
+import util.T;
 import util.Tessellator;
 import world.creatures.Creature;
 import world.creatures.Sarah;
@@ -112,6 +113,7 @@ public class WorldWindow {
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
 					for(Sector sec : sectors){
+						if(sec == null) continue;
 						for(Creature c : sec.creatures){
 							if((c.pos.x + c.box.x < x && c.pos.x + c.box.x + c.box.width > x) && (c.pos.y + c.box.y < y && c.pos.y + c.box.y + c.box.height > y)){
 								c.hitBy(sarah);
@@ -150,16 +152,18 @@ public class WorldWindow {
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
 
+//			T.start______________________________O();
 			//back
 			for(Sector sec : sectors){
-				if(sec != null) {
+				if(sec == null) continue;
+				
+				for(Structure s : sec.structures){
+					if(!s.front)s.render();
+				}
+				
+				for(int mat = 0; mat < Material.values().length; mat++){
 					
-					for(Structure s : sec.structures){
-						if(!s.front)s.render();
-					}
-					
-					for(int mat = 0; mat < Material.values().length; mat++){
-						
+					if(sec.areas[mat].cycles.size() > 0){
 						Texture tex = Material.values()[mat].texture;
 						tex.bind();
 						if(Settings.debugView){
@@ -173,18 +177,21 @@ public class WorldWindow {
 						}
 						tex.release();
 					}
-					for(Creature c : sec.creatures){
-						if(!c.front)c.render();
-					}
 				}
+				for(Creature c : sec.creatures){
+					if(!c.front)c.render();
+				}
+				
 			}
+//			T.print______________________________O();
 
 			GL11.glPushMatrix();
 			sarah.render();
 			GL11.glPopMatrix();
-			
+
 			//front
 			for(Sector sec : sectors){
+				if(sec == null) continue;
 				for(Structure s : sec.structures){
 					if(s.front)s.render();
 				}
@@ -197,13 +204,14 @@ public class WorldWindow {
 				GL11.glColor3f(1, 0, 0);
 				Window.font.drawString(sarah.pos.x - (Window.font.getWidth(sarah.health + "")/3), sarah.pos.y + 60, sarah.health + "", 0.5f, 0.5f);
 				GL11.glColor3f(1, 1, 1);
-			}
-			
+			}			
+
+
 			if(Settings.shader){
 				GL11.glLoadIdentity();
-				light.draw();
+				light.draw(Game.window);
 				light.bind();
-				light.resetDark(lightLevel);
+				light.resetDark(Game.window, lightLevel);
 				light.release();
 			}
 		}
@@ -218,22 +226,23 @@ public class WorldWindow {
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
 				if(xSector > generator.rimR-2){
-					sectors[2] = generator.generateRight();//TODO or load
-//				}
-				sectors[1].switchConnection(sectors[2], true);
+					sectors[2] = generator.generateRight();
+				} else {
+					sectors[2] = null;//TODO load
 				}
+				sectors[1].switchConnection(sectors[2], true);
 			} else {
 				xSector--;
 				sectors[1].switchConnection(sectors[2], true);
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
+				
 				if(xSector < generator.rimL+1){
-				sectors[0] = generator.generateLeft();//TODO or load
-//				}
-				sectors[0].switchConnection(sectors[1], true);
+					sectors[0] = generator.generateLeft();
 				} else {
-//					database.loadSectorAt();TODO
+					sectors[0] = null;//database.loadSectorAt();TODO
 				}
+				sectors[0].switchConnection(sectors[1], true);
 			}
 		}
 }

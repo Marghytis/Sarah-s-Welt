@@ -108,6 +108,7 @@ public class Quad {
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 	
 	public void draw(StackedTexture texture, int xPart, int yPart){

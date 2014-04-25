@@ -1,4 +1,4 @@
-package world.particles2;
+package particles;
 
 import util.Color;
 import world.Point;

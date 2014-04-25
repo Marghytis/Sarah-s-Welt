@@ -79,6 +79,7 @@ public class Snail extends WalkingCreature {
 	public boolean findNextCloud(){
 		Cloud c = null; float distance = 1000;
 		for(Sector sec: WorldWindow.sectors){
+			if(sec == null) continue;
 			for(Structure s : sec.structures){
 				if(s instanceof Cloud){
 					float dist = pos.minus(s.pos).length();

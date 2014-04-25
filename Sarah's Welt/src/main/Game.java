@@ -9,7 +9,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import world.WorldWindow;
-import world.particles2.FireEffect;
 import world.time.Calendar;
 
 
@@ -50,20 +49,20 @@ public class Game {
 		while(window.nextFrame() && !closeRequested){
 			keyListening();
 			mouseListening();
-			
+
 			long dTime = System.nanoTime() - timeLastWorldTick;
 			if(!menu.pauseWorld) WorldWindow.tick((int)dTime/1000000.0f);
 			timeLastWorldTick += dTime;
-			
+
 			Calendar.tick();
-			
+
 			WorldWindow.render();
 			menu.render();
+
 			
 			GL11.glColor4f(1, 1, 1, 1);
 			if(fpsC <= 0){fpsC = 20; fpsT = dTime;}fpsC--;
 			Window.font.drawString(0, 0, "fps -- " + 1000000000/fpsT, 1, 1);
-			
 		}
 		exit();
 	}

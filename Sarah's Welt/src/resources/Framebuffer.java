@@ -2,7 +2,7 @@ package resources;
 
 import java.nio.ByteBuffer;
 
-import main.Game;
+import main.Window;
 
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -16,22 +16,23 @@ public class Framebuffer {
 	public void bind(){
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, handle);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+//		GL11.glDisable(GL11.GL_TEXTURE_2D);
 	}
 	
 	public void release(){
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+//		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 	}
 	
 	/**
 	 * Draws the (hopefully) updated frame buffer on the screen
 	 */
-	public void draw(){
+	public void draw(Window w){
 		GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
 		texture.bind();
-		Game.window.fill();
+		w.fill();
+		texture.release();
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
