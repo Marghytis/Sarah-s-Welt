@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import main.Game;
-import main.Menu;
 import main.Settings;
 import main.Window;
 
@@ -21,6 +20,8 @@ import world.creatures.Sarah;
 import world.otherThings.Heart;
 import world.structures.Structure;
 import world.worldGen.WorldGenerator;
+import core.Menu;
+import core.Menu.View;
 
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
@@ -123,11 +124,11 @@ public class WorldWindow {
 		
 		public static void keyListening(){
 			while(Keyboard.next()){
-				if(Game.menu != Menu.DEBUG && Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
-					Game.menu = Menu.DEBUG;
+				if(Menu.view != View.DEBUG && Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
+					Menu.view = View.DEBUG;
 				}
 				if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
-					Game.menu = Menu.MAIN;
+					Menu.view = View.MAIN;
 				} else {
 					if(Keyboard.getEventKeyState()){
 						switch(Keyboard.getEventKey()){

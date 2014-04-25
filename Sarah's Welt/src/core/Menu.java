@@ -11,7 +11,7 @@ import world.WorldWindow;
 
 public class Menu {
 
-	static View view = View.EMPTY;
+	public static View view = View.EMPTY;
 	
 	public static void set(View newView){
 		view = newView;
@@ -119,6 +119,7 @@ public class Menu {
 					+ 	"   + LSHIFT : crouch\n"
 					+ 	"W : jump\n"
 					+ 	"SPACE : punch/kick\n";
+			@Override
 			public void render(){
 				super.render();
 				GL11.glColor3f(0.6f, 0.8f, 0.8f);
