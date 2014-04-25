@@ -9,8 +9,8 @@ import world.Point;
 
 public class Butterfly extends Creature{
 
-	public static StackedTexture BROUN  = new StackedTexture("butterfly1", 5, 1, -0.5f, -0.5f);
-	public static StackedTexture BLUE  = new StackedTexture("butterfly2", 5, 1, -0.5f, -0.5f);
+	public static StackedTexture BROUN  = new StackedTexture("creatures/Butterfly1", 5, 1, -0.5f, -0.5f);
+	public static StackedTexture BLUE  = new StackedTexture("creatures/Butterfly2", 5, 1, -0.5f, -0.5f);
 	
 	static Animation flap = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
 	

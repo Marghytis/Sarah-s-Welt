@@ -6,10 +6,10 @@ import resources.Texture;
 public enum Material {
 
 	AIR("", 0.0000005f, false),
-	STONE("Stone_g", 2f, true),
-	EARTH("Earth", 3f, true),
-	GRASS("Grass", 3f, true),
-	SOIL("Soil", 3f, true);
+	STONE("materials/Stone", 2f, true),
+	EARTH("materials/Earth", 3f, true),
+	GRASS("materials/Grass", 3f, true),
+	SOIL("materials/Soil", 3f, true);
 	
 	public String name;
 	public Texture texture;

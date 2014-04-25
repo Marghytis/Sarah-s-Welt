@@ -13,10 +13,10 @@ import world.structures.Structure;
 
 public class Snail extends WalkingCreature {
 
-	public static StackedTexture STAND_WALK  = new StackedTexture("snail_", 5, 1, -0.5f, -0.1f);
+	public static StackedTexture STAND_WALK  = new StackedTexture("creatures/Snail_", 5, 1, -0.5f, -0.1f);
 		static Animation walk = new Animation(10, 0, true,	0, 1, 2, 3, 4, 3, 2, 1);
 		static Animation stand = new Animation(0, 0);
-	public static StackedTexture BEAT_HIT  = new StackedTexture("snail_beats", 8, 1, -0.5f, -0.1f);
+	public static StackedTexture BEAT_HIT  = new StackedTexture("creatures/Snail_beats", 8, 1, -0.5f, -0.1f);
 		static Animation punch = new Animation(3, 0, false, 1, 2, 3, 4, 5, 6, 5);
 		static Animation hitt = new Animation(7, 0);
 

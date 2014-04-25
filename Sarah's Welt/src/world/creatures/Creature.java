@@ -2,7 +2,6 @@ package world.creatures;
 
 import resources.StackedTexture;
 import util.Animation;
-import util.Quad;
 import world.Material;
 import world.Node;
 import world.Point;
@@ -21,7 +20,7 @@ public abstract class Creature extends Thing {
 	public int punchStrength = 1;
 	
 	public Creature(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink){
-		super(tex, defaultAni, pos, worldLink, new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS));
+		super(tex, defaultAni, pos, worldLink);
 	}
 	
 	public void tick(float dTime){

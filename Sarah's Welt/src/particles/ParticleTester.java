@@ -11,7 +11,7 @@ import resources.Lightmap;
 import resources.Texture;
 import util.Quad;
 import world.Point;
-import world.structures.Structure;
+import world.structures.Cloud;
 
 public class ParticleTester {
 	
@@ -62,7 +62,7 @@ public class ParticleTester {
 			rain.render();
 			time = nextTime;
 			GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
-			cloud.draw(Structure.CLOUD);
+			cloud.draw(Cloud.CLOUD);
 			
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
 			leftWindow.draw(lightmap.texture);

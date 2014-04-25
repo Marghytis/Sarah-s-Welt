@@ -15,26 +15,26 @@ public class Sarah extends WalkingCreature {
 	public float keyAcc = 0.00005f;//the acceleration the Sarah experiences on the pressure of a movement key
 	public boolean flying = false;
 	
-	public static StackedTexture STAND_WALK = new StackedTexture("Sarah", 11, 1, -0.5f, -0.1f);
+	public static StackedTexture STAND_WALK = new StackedTexture("sarah/Sarah", 11, 1, -0.5f, -0.1f);
 	static Animation stand = new Animation(0, 0);
 	static Animation walk = new Animation(3, 0, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
 	
-	public static StackedTexture JUMP = new StackedTexture("sarah_jump_l", 7 , 1, -0.5f, -0.1f);
+	public static StackedTexture JUMP = new StackedTexture("sarah/Sarah_jump_l", 7 , 1, -0.5f, -0.1f);
 	static Animation jump = new Animation(5, 0, false, 	1, 2, 3, 4, 5, 6);
 	static Animation fly = new Animation(6, 0);
 	static Animation land = new Animation(2, 0, false, 	5, 4, 3, 2, 1);
 	
-	public static StackedTexture RUN = new StackedTexture("sarah_runs2_r", 9, 1, -0.5f, -0.1f);
+	public static StackedTexture RUN = new StackedTexture("sarah/Sarah_runs2_r", 9, 1, -0.5f, -0.1f);
 	static Animation run = new Animation(3, 0, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
 	
-	public static StackedTexture DOWN = new StackedTexture("sarah_down", 4 , 1, -0.5f, -0.1f);
+	public static StackedTexture DOWN = new StackedTexture("sarah/Sarah_down", 4 , 1, -0.5f, -0.1f);
 	static Animation sneak = new Animation(10, 0, true, 	1, 2, 3, 4);
 	static Animation crouch = new Animation(0, 0);
 	
-	public static StackedTexture PUNCH = new StackedTexture("sarah_beat_r", 9 , 1, -0.5f, -0.1f);
+	public static StackedTexture PUNCH = new StackedTexture("sarah/Sarah_beat_r", 9 , 1, -0.5f, -0.1f);
 	static Animation punch = new Animation(1, 0, false, 	1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
 	
-	public static StackedTexture KICK = new StackedTexture("sarah_kick", 6 , 1, -0.5f, -0.1f);
+	public static StackedTexture KICK = new StackedTexture("sarah/Sarah_kick", 6 , 1, -0.5f, -0.1f);
 	static Animation kick = new Animation(3, 0, false, 	1, 2, 3, 4, 5, 6);
 	
 	

@@ -3,17 +3,18 @@ package world.structures;
 import org.lwjgl.opengl.GL11;
 
 import particles.RainEffect;
+import resources.StackedTexture;
 import util.Animation;
 import world.Node;
 import world.Point;
 
 public class Cloud extends Structure{
 
-//	private ParticleSpawner spawner;
+	public static StackedTexture CLOUD = new StackedTexture("structures/Cloud", 1, 1, -0.5f, -0.5f);
 	private RainEffect effect;
 	
 	public Cloud(Point pos, Node worldLink, float xSize, float ySize){
-		super(Structure.CLOUD, new Animation(1, 1), pos, worldLink);
+		super(CLOUD, new Animation(1, 1), pos, worldLink);
 		box.x*=xSize;
 		box.y*=ySize;
 		box.width*=xSize;

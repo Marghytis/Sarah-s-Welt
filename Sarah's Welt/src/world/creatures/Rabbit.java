@@ -8,7 +8,7 @@ import world.Point;
 
 public class Rabbit extends WalkingCreature {
 
-	public static StackedTexture RABBIT  = new StackedTexture("rabbit", 5, 2, -0.5f, -0.2f);
+	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 2, -0.5f, -0.2f);
 
 	static Animation stand = new Animation(0, 0);
 	static Animation hitt = new Animation(0, 1);

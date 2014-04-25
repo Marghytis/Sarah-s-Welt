@@ -69,9 +69,7 @@ public class Menu {
 	}
 
 	public static void render(){
-		for(Button b : view.buttons){
-			b.render();
-		}
+		view.render();
 	}
 	
 	public enum View {
@@ -81,10 +79,10 @@ public class Menu {
 		MAIN(true){
 			void setup(){
 				buttons = new Button[]{
-					new Button("New World", 3/16.0f, 7/8.0f, () -> WorldWindow.load("TestWorld")),
-					new Button("Continue", 3/16.0f, 5/8.0f, () -> view = EMPTY),
-					new Button("Options", 3/16.0f, 3/8.0f, () -> view = OPTIONS),
-					new Button("Exit", 3/16.0f, 1/8.0f, () -> Main.beenden = true)
+					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){WorldWindow.load("TestWorld");}}),
+					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = EMPTY;}}),
+					new Button("Options", 3/16.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
+					new Button("Exit", 3/16.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
 				};
 			}
 		},
@@ -102,15 +100,15 @@ public class Menu {
 		OPTIONS(true){
 			void setup(){
 				buttons = new Button[]{
-						new Button("Controls", 1/2.0f, 5/8.0f, () -> view = CONTROLS),
-						new Button("Sound", 1/2.0f, 3/8.0f),
-						new Button("Back", 1/2.0f, 1/8.0f, () -> view = MAIN)
+						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = CONTROLS;}}),
+						new Button("Sound", 1/2.0f, 3/8.0f, new Runnable(){public void run(){}}),
+						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){Menu.view = MAIN;}})
 				};
 			}
 		},
 		CONTROLS(true){
 			void setup(){
-				buttons = new Button[]{ new Button("Back", 6/8.0f, 1/8.0f, () -> view = MAIN)};
+				buttons = new Button[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){view = MAIN;}})};
 			}
 			String text = 	"ESC : Main menu\n"
 					+ 	"A : left\n"
@@ -123,7 +121,7 @@ public class Menu {
 			public void render(){
 				super.render();
 				GL11.glColor3f(0.6f, 0.8f, 0.8f);
-				Window.arial.drawString(20, Window.HEIGHT -100, text, 1, 1);
+				Res.arial.drawString(20, Window.HEIGHT -100, text, 1, 1);
 				GL11.glColor3f(1, 1, 1);
 			}
 		};
@@ -137,9 +135,15 @@ public class Menu {
 		}
 		
 		abstract void setup();
+		
+		public void render(){
+			for(Button b : buttons){
+				b.render();
+			}
+		}
 	}
 	
-	public class Button extends Quad{
+	public static class Button extends Quad{
 		
 		static StackedTexture tex = Texture.MENU_BUTTON;
 		
@@ -163,7 +167,7 @@ public class Menu {
 		}
 	}
 	
-	public class ToggleButton extends Button {
+	public static class ToggleButton extends Button {
 		
 		public String name1;
 		public String name2;

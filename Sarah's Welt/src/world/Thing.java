@@ -28,12 +28,12 @@ public abstract class Thing {
 	protected boolean mirrored = false;
 	public boolean front = false;
 	
-	public Thing(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink, Quad box){
+	public Thing(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink){
 		this.tex = tex;
 		this.pos = pos;
 		this.worldLink = worldLink;
 		
-		this.box = box;
+		this.box = new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS);
 		animator = new Animator(box);
 		animator.setAnimation(defaultAni);
 	}

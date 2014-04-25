@@ -1,6 +1,7 @@
 package core;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 
 import world.WorldWindow;
 import world.time.Calendar;
@@ -16,15 +17,17 @@ public class Main {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		Window.createFullScreen("Sarahs Welt");
+		Window.create("Sarahs Welt", 1000, 500);
 
 		long timeLastWorldTick = System.currentTimeMillis();
-		while(!Display.isCloseRequested() || beenden){
+		while(!Display.isCloseRequested() && !beenden){
 			Display.sync(60);
 			
 			int delta = (int)(System.currentTimeMillis() - timeLastWorldTick);
 			timeLastWorldTick += delta;
 			
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			GL11.glClearColor(0.5f, 0.5f, 1, 1);
 			render();
 			Display.update();
 			
