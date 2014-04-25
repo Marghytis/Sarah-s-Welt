@@ -22,8 +22,6 @@ public class WorldGenerator {
 		if(/*the rims are at zero*/true){
 			Connection[] firstConns = {new Connection(null, null), new Connection(null, null), new Connection(null, null)};
 			
-			firstConns[0].test = "Huhu";
-			
 			surfaceLeft = new SurfaceGenL(new Connection[]{firstConns[0], firstConns[1], firstConns[2]});
 				WorldWindow.sectors[0] = generateLeft();
 			

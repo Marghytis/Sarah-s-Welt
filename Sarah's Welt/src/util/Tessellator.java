@@ -2,6 +2,7 @@ package util;
 
 import static org.lwjgl.util.glu.GLU.gluNewTess;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -11,23 +12,32 @@ import org.lwjgl.util.glu.GLUtessellatorCallbackAdapter;
 
 import world.Node;
 
-public class Tessellator {
+public class Tessellator extends GLUtessellatorCallbackAdapter{
 	
 	public GLUtessellator tessellator;
 	
 	public Tessellator(){
 		tessellator = gluNewTess();
-		Callback callback = new Callback();
-		tessellator.gluTessCallback(GLU.GLU_TESS_BEGIN, callback);
-		tessellator.gluTessCallback(GLU.GLU_TESS_END, callback);
-		tessellator.gluTessCallback(GLU.GLU_TESS_VERTEX, callback);
-		tessellator.gluTessCallback(GLU.GLU_TESS_EDGE_FLAG, callback);
-		tessellator.gluTessCallback(GLU.GLU_TESS_ERROR, callback);
-		tessellator.gluTessCallback(GLU.GLU_TESS_COMBINE, callback);
+		tessellator.gluTessCallback(GLU.GLU_TESS_BEGIN, this);
+		tessellator.gluTessCallback(GLU.GLU_TESS_END, this);
+		tessellator.gluTessCallback(GLU.GLU_TESS_VERTEX, this);
+		tessellator.gluTessCallback(GLU.GLU_TESS_EDGE_FLAG, this);
+		tessellator.gluTessCallback(GLU.GLU_TESS_ERROR, this);
+		tessellator.gluTessCallback(GLU.GLU_TESS_COMBINE, this);
 //		tessellator.gluTessProperty(GLU.GLU_TESS_WINDING_RULE, GLU.GLU_TESS_WINDING_POSITIVE);
+//		tessellator.gluTessProperty(GLU.GLU_TESS_BOUNDARY_ONLY, GL11.GL_TRUE);
 	}
+	List<Float> vertices;
+	List<Integer> indices;
+	float texWidth, texHeight;
+	int count = 0;
 	
-	public void tessellateOneNode(List<Node> nodes, float texWidth, float texHeight){
+	public float[] tessellateOneNode(List<Node> nodes, float texWidth, float texHeight, List<Integer> indices){
+		vertices = new ArrayList<>();
+		this.indices = indices;
+		this.texWidth = texWidth;
+		this.texHeight = texHeight;
+		
 		tessellator.gluTessBeginPolygon(null);
 		{
 			for(int i1 = 0; i1 < nodes.size(); i1++){
@@ -36,9 +46,13 @@ public class Tessellator {
 				{
 					Node n = nodes.get(i1);
 					do {
+						
 						double[] coords = new double[]{n.p.x, n.p.y, 0};
-						float[] vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
-						tessellator.gluTessVertex(coords, 0, vertexData);
+						vertices.add(n.p.x/texWidth);
+						vertices.add(-n.p.y/texHeight);
+						vertices.add(n.p.x);
+						vertices.add(n.p.y);
+						tessellator.gluTessVertex(coords, 0, count++);
 						n = n.next;
 					} while(n != nodes.get(i1));
 				}
@@ -47,67 +61,25 @@ public class Tessellator {
 			}
 		}
 		tessellator.gluTessEndPolygon();
+		float[] vertices2 = new float[vertices.size()];
+		for(int i = 0; i < vertices.size(); i++)vertices2[i] = vertices.get(i);
+		return vertices2;
 	}
 	
-	public void tessellate(List<Line> lines, float texWidth, float texHeight){
-		tessellator.gluTessBeginPolygon(null);
-		{
-			for(int i1 = 0; i1 < lines.size(); i1++){
-				if(lines.get(i1).start != null){
-				tessellator.gluTessBeginContour();
-				{
-					Node n = lines.get(i1).start;
-					double[] coords = new double[]{n.p.x, n.p.y, 0};
-					float[] vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
-					tessellator.gluTessVertex(coords, 0, vertexData);
-					while(n != lines.get(i1).end) {
-						n = n.next;
-						coords = new double[]{n.p.x, n.p.y, 0};
-						vertexData = new float[]{n.p.x, n.p.y, 0, n.p.x/texWidth, -n.p.y/texHeight};
-						tessellator.gluTessVertex(coords, 0, vertexData);
-					}
-				}
-				tessellator.gluTessEndContour();
-				}
-			}
-		}
-		tessellator.gluTessEndPolygon();
-//		GL11.glColor3f(0, 0, 0);
-//		for(Line line : lines){
-//			GL11.glBegin(GL11.GL_LINE_LOOP);
-//			for(Point p : line.vertices){
-//				GL11.glVertex2f(p.x, p.y);
-//			}
-//			GL11.glEnd();
-//		}
+	public void begin(int type){}
+	
+	public void end(){}
+	
+	public void vertex(Object index) {
+		indices.add((int)index);
 	}
 	
-	public class Callback extends GLUtessellatorCallbackAdapter{
-		
-		public void begin(int type) {
-			GL11.glBegin(type);
-		}
-		public void end(){
-			GL11.glEnd();
-		}
-	
-		public void vertex(Object vertexData) {
-			float[] data = (float[])vertexData;
-			GL11.glTexCoord2f(data[3], data[4]);
-			GL11.glVertex3f(data[0], data[1], data[2]);
-		}
-		
 
-		public void combine(double[] coords, Object[] data, float[] weight, Object[] outData){
-			double[] newVertex = new double[5];
-
-            newVertex[0] = coords[0];
-            newVertex[1] = coords[1];
-            newVertex[2] = coords[2];
-            newVertex[3] = ((float[]) data[0])[3];
-            newVertex[4] = ((float[]) data[0])[4];
-            outData = new Object[]{newVertex};
-
-		}
+	public void combine(double[] coords, Object[] data, float[] weight, Object outData){
+		vertices.add((float)coords[0]/texWidth);
+		vertices.add(-(float)coords[1]/texHeight);
+		vertices.add((float)coords[0]);
+		vertices.add((float)coords[1]);
+		outData = count++;
 	}
 }

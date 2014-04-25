@@ -8,6 +8,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
+import util.T;
 import world.WorldWindow;
 import world.time.Calendar;
 
@@ -33,10 +34,10 @@ public class Game {
 			Window.resize();
 		} catch (InterruptedException e){
 			e.printStackTrace();
-		} catch (LWJGLException e) {
+		} 
+		catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-		
 		Game.startLoop();
 	}
 	
@@ -46,12 +47,23 @@ public class Game {
 	 * Starts the game loop, which ticks and renders the game
 	 */
 	public static void startLoop(){
+//		Node n1 = new Node(0, 0);
+//		Node n2 = new Node(10, 0); n1.next = n2; n2.last = n1;
+//		Node n3 = new Node(10, 10); n2.next = n3; n3.last = n2;
+//		Node n4 = new Node(0, 10); n3.next = n4; n4.last = n3;
+//		n4.next = n1; n1.last = n4;
+//		
+//		MatArea test = new MatArea();
+//		test.cycles.add(n1);
+		
 		while(window.nextFrame() && !closeRequested){
+			T.start______________________________O();
+//			System.out.println(Display.isVisible());
 			keyListening();
 			mouseListening();
 
-			long dTime = System.nanoTime() - timeLastWorldTick;
-			if(!menu.pauseWorld) WorldWindow.tick((int)dTime/1000000.0f);
+			int dTime = (int)(System.currentTimeMillis() - timeLastWorldTick);
+			if(!menu.pauseWorld) WorldWindow.tick((int)dTime);
 			timeLastWorldTick += dTime;
 
 			Calendar.tick();
@@ -63,6 +75,9 @@ public class Game {
 			GL11.glColor4f(1, 1, 1, 1);
 			if(fpsC <= 0){fpsC = 20; fpsT = dTime;}fpsC--;
 			Window.font.drawString(0, 0, "fps -- " + 1000000000/fpsT, 1, 1);
+			if(T.stop() > 10000000){
+				System.out.println("WARNING " + WorldWindow.xSector);
+			}
 		}
 		exit();
 	}

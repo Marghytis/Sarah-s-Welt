@@ -8,11 +8,21 @@ public class Connection{
 	
 	boolean connected = false;
 	
-	public String test;
-	
 	public Connection(Node nodeL, Node nodeR){
 		this.nodeL = nodeL;
 		this.nodeR = nodeR;
+	}
+	
+	public void link(){
+		if(!connected){
+			switchConnection();
+		}
+	}
+	
+	public void partiate(){
+		if(connected){
+			switchConnection();
+		}
 	}
 	
 	public void switchConnection(){

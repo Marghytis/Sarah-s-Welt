@@ -54,9 +54,9 @@ public enum Menu{
 				new Button("Textures", (Window.WIDTH/2) - 150, (Window.HEIGHT*9/12) - 20, 300, 60){
 					public void render(){
 						if(Settings.debugView){
-							name = "Textures enabled";
-						} else {
 							name = "Textures disabled";
+						} else {
+							name = "Textures enabled";
 						}
 						super.render();
 					}

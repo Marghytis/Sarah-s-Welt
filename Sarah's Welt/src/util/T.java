@@ -25,6 +25,15 @@ public class T {
 		System.out.println(stop()/1000);
 	}
 	
+	public static void print______________________________O(int i){
+		int count = stop()/(1000*i);
+		String string = "\n";
+		for(int i2 = 0; i2 < count; i2++){
+			string += " |";
+		}
+		System.out.println(string);
+	}
+	
 	public static void resetAverage(){
 		count = 0;
 		sum = 0;

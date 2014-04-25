@@ -82,7 +82,7 @@ public enum Shader {
 	}
 	
 	public void glSlang_GetInfoLog(int shader){
-		System.out.println(ARBShaderObjects.glGetInfoLogARB(shader, 1000));
+//		System.out.println(ARBShaderObjects.glGetInfoLogARB(shader, 1000));
 	}
 
 	public String readFile(String name) throws IOException{

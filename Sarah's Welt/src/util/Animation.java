@@ -1,6 +1,5 @@
 package util;
 
-import world.Point;
 
 public class Animation {
 
@@ -37,16 +36,13 @@ public class Animation {
 		}
 	}
 	
-	public Point getPoint(int frame){
+	public int getPoint(int frame){
 		if(speed == 0){
-			return new Point(sequence[0], y);
+			return sequence[0];
 		} else if(frame == -1){
-			return new Point(sequence[sequence.length-1], y);
+			return sequence[sequence.length-1];
 		} else {
-			Point out = new Point();
-			out.x = sequence[frame/speed];
-			out.y = y;
-			return out;
+			return sequence[frame/speed];
 		}
 	}
 	

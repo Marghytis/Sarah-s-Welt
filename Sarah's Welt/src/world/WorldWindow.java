@@ -15,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
 import resources.Texture;
-import util.Cycle;
-import util.T;
 import util.Tessellator;
 import world.creatures.Creature;
 import world.creatures.Sarah;
@@ -42,6 +40,9 @@ public class WorldWindow {
 		public static Lightmap light;
 		
 		public static float lightLevel = 1;
+		
+		public static List<Structure> structures = new ArrayList<>();
+		public static List<Creature> creatures = new ArrayList<>();
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
@@ -57,11 +58,17 @@ public class WorldWindow {
 		private static void load(){
 			generator = new WorldGenerator();//already creates the first 3 sectors
 			
-			sectors[0].switchConnection(sectors[1], true);
-			sectors[1].switchConnection(sectors[2], true);
+			sectors[1].connectTo(sectors[0]);
+			sectors[1].connectTo(sectors[2]);
+
+			takeThingsFrom(sectors[0]);
+			takeThingsFrom(sectors[1]);
+			takeThingsFrom(sectors[2]);
+
+			for(int i = 0; i < sectors[1].areas.length; i++) sectors[1].areas[i].tessellationNeeded = true;
 			
-			Point intersection = new Point();
-			Node playerWorldLink = sectors[1].findGrassPointAt(500, intersection, 100);
+			Point intersection = new Point(10, 0);
+			Node playerWorldLink = sectors[1].findGrassPointAt(10, intersection, 100);
 			sarah = new Sarah(intersection, playerWorldLink);
 		}
 		
@@ -82,26 +89,18 @@ public class WorldWindow {
 					//What??
 				}
 			}
-			for(Sector sec : sectors){
-				if(sec != null) {
-					//spawn hearts
-					if(random.nextInt(2000) < 1){
-						Point inter = new Point();
-						Node link = sec.findGrassPointAt((sec.x + random.nextFloat())*Sector.WIDTH, inter, 100);
-						sec.creatures.add(new Heart(inter, link));
-					}
-					
-					for(Structure s : sec.structures){
-						s.tick(dTime);
-					}
-					List<Creature> deadCreas = new ArrayList<>();
-					for(Creature c : sec.creatures){
-						c.tick(dTime);
-						if(c.health <= 0){
-							deadCreas.add(c);
-						}
-					}
-					deadCreas.forEach((Creature c) -> sec.creatures.remove(c));
+			if(random.nextInt(2000) < 1){
+				Point inter = new Point();
+				int sec = random.nextInt(3);
+				Node link = (sectors[sec].findGrassPointAt((sectors[sec].x + random.nextFloat())*Sector.WIDTH, inter, 100));
+				creatures.add(new Heart(inter, link));
+			}
+			structures.forEach(s -> s.tick(dTime));
+			for(int i = 0; i < creatures.size(); i++){
+				Creature c = creatures.get(i);
+				c.tick(dTime);
+				if(c.health <= 0){
+					creatures.remove(c);
 				}
 			}
 		}
@@ -112,12 +111,9 @@ public class WorldWindow {
 				if(Mouse.getEventButtonState() && Mouse.getEventButton() == 0){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					for(Sector sec : sectors){
-						if(sec == null) continue;
-						for(Creature c : sec.creatures){
-							if((c.pos.x + c.box.x < x && c.pos.x + c.box.x + c.box.width > x) && (c.pos.y + c.box.y < y && c.pos.y + c.box.y + c.box.height > y)){
-								c.hitBy(sarah);
-							}
+					for(Creature c : creatures){
+						if((c.pos.x + c.box.x < x && c.pos.x + c.box.x + c.box.width > x) && (c.pos.y + c.box.y < y && c.pos.y + c.box.y + c.box.height > y)){
+							c.hitBy(sarah);
 						}
 					}
 					sarah.punch();
@@ -148,65 +144,46 @@ public class WorldWindow {
 		
 		public static void render(){
 			GL11.glLoadIdentity();
-			
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
 
-//			T.start______________________________O();
 			//back
-			for(Sector sec : sectors){
-				if(sec == null) continue;
-				
-				for(Structure s : sec.structures){
-					if(!s.front)s.render();
-				}
+			for(Structure s : structures){
+				if(!s.front)s.render();
+			}
+//			for(Sector sec : sectors){
+			{Sector sec = sectors[1];
+//				if(sec == null) continue;
 				
 				for(int mat = 0; mat < Material.values().length; mat++){
-					
-					if(sec.areas[mat].cycles.size() > 0){
-						Texture tex = Material.values()[mat].texture;
-						tex.bind();
-						if(Settings.debugView){
-							tessellator.tessellateOneNode(sec.areas[mat].cycles, tex.width, tex.height);
-						} else {
-							for(Node n : sec.areas[mat].cycles){
-								GL11.glBegin(GL11.GL_LINE_LOOP);
-								Cycle.iterate(n, (Node h) -> GL11.glVertex2f(h.p.x, h.p.y));
-								GL11.glEnd();
-							}
-						}
-						tex.release();
-					}
-				}
-				for(Creature c : sec.creatures){
-					if(!c.front)c.render();
+						sec.areas[mat].render(Material.values()[mat].texture);
 				}
 				
 			}
-//			T.print______________________________O();
+			
+			//front
+			for(Structure s : structures){
+				if(s.front)s.render();
+			}
+			
+			creatures.forEach(c -> c.render());
 
 			GL11.glPushMatrix();
 			sarah.render();
 			GL11.glPopMatrix();
 
-			//front
-			for(Sector sec : sectors){
-				if(sec == null) continue;
-				for(Structure s : sec.structures){
-					if(s.front)s.render();
-				}
-				for(Creature c : sec.creatures){
-					if(c.front)c.render();
-					if(Settings.health)Window.font.drawString(c.pos.x - (Window.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f);
-				}
-			}
+			
+			//render health on creatures
+			if(Settings.health) creatures.forEach(c -> Window.font.drawString(c.pos.x - (Window.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f));
+			
+			//health on sarah
 			if(Settings.health){
 				GL11.glColor3f(1, 0, 0);
 				Window.font.drawString(sarah.pos.x - (Window.font.getWidth(sarah.health + "")/3), sarah.pos.y + 60, sarah.health + "", 0.5f, 0.5f);
 				GL11.glColor3f(1, 1, 1);
-			}			
-
-
+			}
+			
+			//draw the darkness of the night (or not)
 			if(Settings.shader){
 				GL11.glLoadIdentity();
 				light.draw(Game.window);
@@ -222,7 +199,8 @@ public class WorldWindow {
 				//expand rightwards
 				//move rim etc.
 				xSector++;
-				sectors[0].switchConnection(sectors[1], true);
+				putThingsTo(sectors[0]);
+				sectors[0].partiateFrom(sectors[1]);
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
 				if(xSector > generator.rimR-2){
@@ -230,10 +208,13 @@ public class WorldWindow {
 				} else {
 					sectors[2] = null;//TODO load
 				}
-				sectors[1].switchConnection(sectors[2], true);
+				sectors[1].connectTo(sectors[2]);
+				takeThingsFrom(sectors[2]);
+//				for(int i = 0; i < sectors[1].areas.length; i++) sectors[1].areas[i].tessellationNeeded = true;
 			} else {
 				xSector--;
-				sectors[1].switchConnection(sectors[2], true);
+				sectors[2].partiateFrom(sectors[1]);
+				putThingsTo(sectors[2]);
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
 				
@@ -242,7 +223,35 @@ public class WorldWindow {
 				} else {
 					sectors[0] = null;//database.loadSectorAt();TODO
 				}
-				sectors[0].switchConnection(sectors[1], true);
+				if(sectors[0] != null){
+					sectors[0].connectTo(sectors[1]);
+					takeThingsFrom(sectors[0]);
+				}
 			}
+		}
+		
+		public static void putThingsTo(Sector s){
+			for(int i = 0; i < creatures.size(); i++){
+				Creature c = creatures.get(i);
+				if(c.pos.x > s.x*Sector.WIDTH && c.pos.x < (s.x + 1)*Sector.WIDTH){
+					s.creatures.add(c);
+					creatures.remove(i);
+					i--;
+				}
+			}
+			for(int i = 0; i < structures.size(); i++){
+				Structure c = structures.get(i);
+				if(c.pos.x > s.x*Sector.WIDTH && c.pos.x < (s.x + 1)*Sector.WIDTH){
+					s.structures.add(c);
+					structures.remove(i);
+					i--;
+				}
+			}
+		}
+		
+		public static void takeThingsFrom(Sector s){
+			
+			structures.addAll(s.structures); s.structures.clear();
+			creatures.addAll(s.creatures); s.creatures.clear();
 		}
 }

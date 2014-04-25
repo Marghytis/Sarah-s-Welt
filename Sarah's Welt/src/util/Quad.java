@@ -114,17 +114,15 @@ public class Quad {
 	public void draw(StackedTexture texture, int xPart, int yPart){
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.handle);
 		
-		float texHeight = (texture.heightS/texture.height);
-		float texWidth = (texture.widthS/texture.width);
-		float yOffset = yPart*texHeight;
-		float xOffset = xPart*texWidth;
+		float xOffset = xPart*texture.widthT;
+		float yOffset = yPart*texture.heightT;
 		
 		GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(xOffset, yOffset + texHeight);
+			GL11.glTexCoord2f(xOffset, yOffset + texture.heightT);
 			GL11.glVertex2f(x, y);
-			GL11.glTexCoord2f(xOffset + texWidth, yOffset + texHeight);
+			GL11.glTexCoord2f(xOffset + texture.widthT, yOffset + texture.heightT);
 			GL11.glVertex2f(x + width, y);
-			GL11.glTexCoord2f(xOffset + texWidth, yOffset);
+			GL11.glTexCoord2f(xOffset + texture.widthT, yOffset);
 			GL11.glVertex2f(x + width, y + height);
 			GL11.glTexCoord2f(xOffset, yOffset);
 			GL11.glVertex2f(x, y + height);
@@ -132,20 +130,18 @@ public class Quad {
 	}
 	public void drawMirrored(StackedTexture texture, int xPart, int yPart){
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.handle);
-
-		float texHeight = (texture.heightS/texture.height);
-		float texWidth = (texture.widthS/texture.width);
-		float yOffset = yPart*texHeight;
-		float xOffset = xPart*texWidth;
+		
+		float xOffset = xPart*texture.widthT;
+		float yOffset = yPart*texture.heightT;
 		
 		GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(xOffset + texWidth, yOffset + texHeight);
+			GL11.glTexCoord2f(xOffset + texture.widthT, yOffset + texture.heightT);
 			GL11.glVertex2f(x, y);
-			GL11.glTexCoord2f(xOffset, yOffset + texHeight);
+			GL11.glTexCoord2f(xOffset, yOffset + texture.heightT);
 			GL11.glVertex2f(x + width, y);
-			GL11.glTexCoord2f(xOffset , yOffset);
+			GL11.glTexCoord2f(xOffset, yOffset);
 			GL11.glVertex2f(x + width, y + height);
-			GL11.glTexCoord2f(xOffset + texWidth, yOffset);
+			GL11.glTexCoord2f(xOffset + texture.widthT, yOffset);
 			GL11.glVertex2f(x, y + height);
 		GL11.glEnd();
 	}

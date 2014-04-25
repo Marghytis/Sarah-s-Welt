@@ -8,7 +8,6 @@ public class SurfaceGenR extends Surface {
 
 	public SurfaceGenR(Connection[] lastConns){
 		this.lastConns = lastConns;
-		System.out.println(lastConns[0].test);
 	}
 	
 	public Sector expand(Sector output, float xDest){
@@ -34,7 +33,7 @@ public class SurfaceGenR extends Surface {
 		output.areas[Material.GRASS.ordinal()].cycles.add(grassT.end);
 		output.areas[Material.EARTH.ordinal()].cycles.add(earthT.end);
 		output.areas[Material.STONE.ordinal()].cycles.add(stoneT.end);
-
+		
 		//die letzte (linke) Verbindung vervollständigen und in den Sektor hinzufügen
 		lastConns[0].nodeR = grassT.end;	output.connsL.add(lastConns[0]);
 		lastConns[1].nodeR = earthT.end;	output.connsL.add(lastConns[1]);

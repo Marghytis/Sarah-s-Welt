@@ -7,7 +7,7 @@ import world.WorldWindow;
 
 public class Settings {
 	
-	public static boolean debugView = true;
+	public static boolean debugView = false;
 	public static boolean hitbox = false;
 	public static boolean health = false;
 	public static boolean agro = true;

@@ -19,7 +19,6 @@ public class Test {
 	public int WIDTH = 1000, HEIGHT = 500;
 	
 	public Test() {
-		
 		createDisplay();
 		
 		setup();
@@ -56,11 +55,15 @@ public class Test {
 	
 	public void setup(){
 		//set arrays
-		float[] vertices = {100, 100, 200, 100, 200, 200, 100, 200}; vertexCount = 4;
-		int[] indices = {0, 1, 2, 3}; indexCount = 4;
+		float[] vertices = {
+				1, 0, 0, 100, 100,
+				0, 1, 0, 200, 100,
+				0, 0, 1, 200, 200,
+				1, 1, 0, 100, 200}; vertexCount = 4;
+		int[] indices = {0, 1, 2, 2, 3, 0}; indexCount = 6;
 		
 		//create VBO
-		FloatBuffer vertexBuffer = BufferUtil.newFloatBuffer(vertexCount*2);
+		FloatBuffer vertexBuffer = BufferUtil.newFloatBuffer(19);
 		vertexBuffer.put(vertices);
 		vertexBuffer.flip();
 		
@@ -86,12 +89,18 @@ public class Test {
 	public void loop(){
 		//Enable vertex buffer
 		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-		GL11.glVertexPointer(2, GL11.GL_FLOAT, 0, 0);
+		GL11.glColorPointer(3, GL11.GL_FLOAT, 20, 0);
+		GL11.glVertexPointer(2, GL11.GL_FLOAT, 20, 12);
 		
 		//Draw vertices with index buffer
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
-		GL11.glDrawElements(GL11.GL_QUADS, indexCount, GL11.GL_UNSIGNED_INT, 0);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, indexCount, GL11.GL_UNSIGNED_INT, 0);
+		
+		//draw vertices without index buffer
+//		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);
 		
 		//release buffers
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);

@@ -1,7 +1,6 @@
 package util;
 
 import resources.StackedTexture;
-import world.Point;
 
 public class Animator {
 
@@ -20,13 +19,13 @@ public class Animator {
 	}
 	
 	public void animate(StackedTexture tex, boolean mirrored){
-		
-		Point texPos = animation.getPoint(frame);
+
+		int texPos = animation.getPoint(frame);
 		
 		if(mirrored){
-			texBox.drawMirrored(tex, (int)texPos.x, (int)texPos.y);
+			texBox.drawMirrored(tex, texPos, animation.y);
 		} else {
-			texBox.draw(tex, (int)texPos.x, (int)texPos.y);
+			texBox.draw(tex, texPos, animation.y);
 		}
 
 		if(frame != -1){

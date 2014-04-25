@@ -1,9 +1,10 @@
 package world.structures;
 
-import org.lwjgl.opengl.GL11;
-
 import main.Settings;
 import main.Window;
+
+import org.lwjgl.opengl.GL11;
+
 import resources.Shader;
 import util.Animation;
 import world.Node;

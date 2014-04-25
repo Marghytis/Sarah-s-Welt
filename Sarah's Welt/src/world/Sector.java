@@ -16,8 +16,8 @@ public class Sector{
 	public List<Structure> structures = new ArrayList<>();
 	public List<Creature> creatures = new ArrayList<>();
 	
-	public List<Connection> connsR = new ArrayList<>(); public int indexR = 0;
-	public List<Connection> connsL = new ArrayList<>(); public int indexL = 0;
+	public List<Connection> connsR = new ArrayList<>();
+	public List<Connection> connsL = new ArrayList<>();
 	
 	public Sector(int x){
 		this.x = x;
@@ -30,7 +30,7 @@ public class Sector{
 		for(Node n : areas[Material.GRASS.ordinal()].cycles){
 			Node h = n;
 			do {
-				if(h.p.x > x && h.next.p.x < x){
+				if(h.p.x >= x && h.next.p.x <= x){
 					float slope = h.next.p.minus(h.p).slope();
 					intersection.set(x, h.next.p.y + (slope*(x - h.next.p.x)) + yOffset);
 					return h;
@@ -41,37 +41,24 @@ public class Sector{
 		return null;
 	}
 	
-	public void switchConnection(Sector other, boolean right){
-		if(right){
-			for(Connection c : connsR){
-				c.switchConnection();
-			}
+	public void connectTo(Sector other){
+		if(other.x == x + 1){
+			connsR.forEach( c -> c.link());
+		} else if(other.x == x - 1){
+			System.out.println("test");
+			connsL.forEach( c -> c.link());
 		} else {
-			for(Connection c : connsL){
-				c.switchConnection();
-			}
+			(new Exception("Can't connect to the specified Sector!")).printStackTrace();
 		}
 	}
 	
-//	public Random random;
-//	
-//	public int randomnr(int min , int max){
-//		int n = max - min + 1;
-//		int i = min + random.nextInt(n);
-//		return i;
-//	}
-//	
-//	public Sector(int x){
-//		this.x = x;
-//		random = new Random();
-//		for(int i = 0; i < lines.length; i++) lines[i] = new ArrayList<>();
-//
-//		
-//		int breite = randomnr(130, 250);
-//		int hoehe = breite - randomnr(-20, 80);
-//		int cx = randomnr(x*Sector.WIDTH, (x+1)*Sector.WIDTH);
-//		int cy = randomnr(330, 500);
-//		
-//		quad = new Quad(cx, cy, breite, hoehe);
-//	}
+	public void partiateFrom(Sector other){
+		if(other.x == x + 1){
+			connsR.forEach( c -> c.partiate());
+		} else if(other.x == x - 1){
+			connsL.forEach( c -> c.partiate());
+		} else {
+			(new Exception("Can't partiate from the specified Sector!")).printStackTrace();
+		}
+	}
 }

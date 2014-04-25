@@ -112,10 +112,11 @@ public abstract class WalkingCreature extends Creature{
 	public boolean collision(){
 		float[] intersection = null;
 		boolean foundOne = false;
-		for(Sector sector : WorldWindow.sectors){//	iterate columns
-			if(sector != null) for(Material mat : Material.values()){//	iterate materials
+//		for(Sector sector : WorldWindow.sectors){//	iterate columns
+//			if(sector != null) 
+				for(Material mat : Material.values()){//	iterate materials
 				if(mat.solid){
-					for(Node c : sector.areas[mat.ordinal()].cycles){//	iterate lines
+					for(Node c : WorldWindow.sectors[1].areas[mat.ordinal()].cycles){//	iterate lines
 						Node n = c;
 						 do {
 							n = n.next;
@@ -135,7 +136,7 @@ public abstract class WalkingCreature extends Creature{
 						} while (n != c);
 					}
 				}
-			}
+//			}
 		}
 		return foundOne;
 	}
