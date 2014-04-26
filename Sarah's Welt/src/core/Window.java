@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -15,15 +17,18 @@ import resources.PNGDecoder;
 public class Window {
 
 	public static int WIDTH, HEIGHT;
-	private static ByteBuffer icon16 = loadTexture("icons/icon16.png"), icon32 = loadTexture("icons/icon32.png");
+	private static ByteBuffer icon16 = loadTexture("icons/icon16.png"), icon32 = loadTexture("icons/icon32.png"), icon64 = loadTexture("icons/icon64.png");
 	
 	public static void createFullScreen(String name){
 		
 		if(Display.isCreated()){
 			Display.destroy();
+			Mouse.destroy();
+			Keyboard.destroy();
 		}
 
 		Display.setTitle(name);
+		Display.setVSyncEnabled(true);
 		try {
 			Display.setFullscreen(true);
 		} catch (LWJGLException e) {
@@ -39,6 +44,8 @@ public class Window {
 		
 		if(Display.isCreated()){
 			Display.destroy();
+			Mouse.destroy();
+			Keyboard.destroy();
 		}
 		
 		Display.setTitle(name);
@@ -51,6 +58,8 @@ public class Window {
 
 		if(Display.isCreated()){
 			Display.destroy();
+			Mouse.destroy();
+			Keyboard.destroy();
 		}
 		
 		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
@@ -67,9 +76,11 @@ public class Window {
 	}
 	
 	private static void create(){
-		Display.setIcon(new ByteBuffer[] {icon16, icon32});
+		Display.setIcon(new ByteBuffer[] {icon16, icon32, icon64});
 		try{
 			Display.create();
+			Mouse.create();
+			Keyboard.create();
 			setupOpenGL();
 		} catch(LWJGLException e){
 			e.printStackTrace();
@@ -84,6 +95,8 @@ public class Window {
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
 	public static void setSize(int w, int h){
@@ -106,6 +119,15 @@ public class Window {
 			GL11.glTexCoord2f(0, 0);	GL11.glVertex2i(0, HEIGHT);
 		GL11.glEnd();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	}
+	
+	public static void fill(){
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glVertex2i(0, 0);
+			GL11.glVertex2i(WIDTH, 0);
+			GL11.glVertex2i(WIDTH, HEIGHT);
+			GL11.glVertex2i(0, HEIGHT);
+		GL11.glEnd();
 	}
 
     private static ByteBuffer loadTexture(String pathInRes){

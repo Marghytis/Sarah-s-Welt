@@ -60,7 +60,6 @@ public class Sarah extends WalkingCreature {
 			walkingAI(dTime);
 			
 		} else {
-			System.out.println(vel.x);
 			//apply gravity
 			if(!flying) acc.add(0, -0.00005f);
 			

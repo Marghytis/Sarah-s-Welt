@@ -11,22 +11,20 @@ import resources.Texture;
 
 import com.sun.scenario.effect.impl.BufferUtil;
 
-public class ParticleEmitter implements Runnable{
+public class ParticleEmitter{
 
-	public int rate;//in millis
-	Thread thread;
-	boolean conti = true;
+	public int interval;//interval between two emits
 	protected Texture tex;
+	public boolean emitting = true;
 	public int vbo;
 	int startLife;
 	
 	public ParticleEmitter(int particleAmount, int spawnRate, Texture tex, int startLife){
-		thread = new Thread(this);
 		particles = new Particle[particleAmount];
 		for(int i = 0; i < particles.length; i++){
 			particles[i] = new Particle();
 		}
-		this.rate = spawnRate;
+		this.interval = 1000/spawnRate;
 		this.tex = tex;
 		this.startLife = startLife;
 
@@ -51,34 +49,17 @@ public class ParticleEmitter implements Runnable{
 				1, 0, + wH, + hH,
 				0, 0, - wH, + hH};
 	}
-	
-	public void run(){
-		while(conti){
-			long time = System.currentTimeMillis();
-			emittParticle();
-			long nextTime = System.currentTimeMillis();
-			try {
-				Thread.sleep(Math.max(1, rate - (nextTime - time))); 
-			} catch (InterruptedException e) {e.printStackTrace();}
-		}
-	}
-	
-	public void startEmitting(){
-		thread.start();
-	}
-	
-	public void stopEmitting(){
-		conti = false;
-	}
-	
 
 	public Particle[] particles;
 	public Random random = new Random();
 	
 	int index;
-	public void emittParticle(){
-		makeParticle(particles[index++]);
-		if(index == particles.length) index = 0;
+	public void emittParticle(int age){
+		Particle p = particles[index++];
+		makeParticle(p);
+		tickParticle(p, age);
+		p.justSpawned = true;
+		if(index == particles.length)index = 0;
 	}
 	
 	public void makeParticle(Particle p){};
@@ -87,17 +68,32 @@ public class ParticleEmitter implements Runnable{
 	public void rotationInterpolator(Particle p){};
 	public void radiusInterpolator(Particle p){};
 	
-	public void tick(int dTime){
+	int overFlow;
+	public void tick(int delta){
+		if(emitting){
+			int timePassed = delta+overFlow;
+			int count = timePassed/interval;
+			for(int i = 0; i < count; i++){
+				emittParticle(timePassed - (count*interval));
+			}
+			overFlow = timePassed%interval;
+		}
 		for(Particle p : particles){
-			if(p.live > 0){
-				velocityInterpolator(p);
-				colorInterpolator(p);
-				rotationInterpolator(p);
-				radiusInterpolator(p);
-				p.pos.add(p.vel.scaledBy(dTime));
-				p.live -= dTime;
+			if(p.justSpawned){
+				p.justSpawned = false;
+			} else if(p.live > 0){
+				tickParticle(p, delta);
 			}
 		}
+	}
+	
+	public void tickParticle(Particle p, int delta){
+		velocityInterpolator(p);
+		colorInterpolator(p);
+		rotationInterpolator(p);
+		radiusInterpolator(p);
+		p.pos.add(p.vel.scaledBy(delta));
+		p.live -= delta;
 	}
 
 	public void render(){

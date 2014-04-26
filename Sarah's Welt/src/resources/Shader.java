@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import main.Game;
-
 import org.lwjgl.opengl.ARBFragmentShader;
 import org.lwjgl.opengl.ARBShaderObjects;
+
+import core.Window;
 
 public enum Shader {
 	Test("Test.frag"), SMOOTH("LightingShader.frag"), POCKET_LAMP("LightingShader2.frag"), BRIGHT("AngelShader.frag"){
@@ -19,7 +19,7 @@ public enum Shader {
 			ARBShaderObjects.glUseProgramObjectARB(handle);
 				ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(handle, "lightLocation"), data[0], data[1]);
 				ARBShaderObjects.glUniform3fARB(glGetUniformLocationARB(handle, "lightColor"), data[2], data[3], data[4]);
-				Game.window.fill();
+				Window.fill(0);
 			glUseProgramObjectARB(0);
 		}
 	}, PARTICLE("ParticleShader.frag"){
@@ -28,7 +28,7 @@ public enum Shader {
 				ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(handle, "location"), data[0], data[1]);
 				ARBShaderObjects.glUniform4fARB(glGetUniformLocationARB(handle, "color"), data[2], data[3], data[4], data[5]);
 				ARBShaderObjects.glUniform1fARB(glGetUniformLocationARB(handle, "radius"), data[6]);
-				Game.window.fill();
+				Window.fill(0);
 			glUseProgramObjectARB(0);
 		}
 	};
@@ -52,7 +52,7 @@ public enum Shader {
 		ARBShaderObjects.glUseProgramObjectARB(handle);
 			ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(handle, "lightLocation"), data[0], data[1]);
 			ARBShaderObjects.glUniform1fARB(glGetUniformLocationARB(handle, "lightStrength"), data[2]);
-			Game.window.fill();
+			Window.fill(0);
 		glUseProgramObjectARB(0);
 	}
 	

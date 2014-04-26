@@ -2,10 +2,10 @@ package resources;
 
 import java.nio.ByteBuffer;
 
-import main.Window;
-
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
+
+import core.Window;
 
 public class Framebuffer {
 
@@ -28,11 +28,9 @@ public class Framebuffer {
 	/**
 	 * Draws the (hopefully) updated frame buffer on the screen
 	 */
-	public void draw(Window w){
+	public void draw(){
 		GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
-		texture.bind();
-		w.fill();
-		texture.release();
+		Window.fill(texture.handle);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
 	

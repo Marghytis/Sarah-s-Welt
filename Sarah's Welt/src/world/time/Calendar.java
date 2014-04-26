@@ -14,7 +14,7 @@ public class Calendar{
 	static float lightLevelStep = 0.8f/32;
 	
 	public static void tick(int delta){
-		min += delta/100;
+		min += delta/10;
 			our += min/32;
 				day += our/12;
 					sea += day/12;
@@ -23,15 +23,19 @@ public class Calendar{
 		day %= 12;
 		sea %= 4;
 		
-		if(our < 6){
-			WorldWindow.lightLevel = 1;
-		} else if(our > 6){
-			WorldWindow.lightLevel = 0.2f;
-		} else if(our == 0){
+		if(our == 0){
 			WorldWindow.lightLevel = 0.2f + (min*lightLevelStep);
+		} else if(our < 6){
+			WorldWindow.lightLevel = 1;
 		} else if(our == 6){
 			WorldWindow.lightLevel = 1f - (min*lightLevelStep);
+		} else if(our > 6){
+			WorldWindow.lightLevel = 0.2f;
 		}
+	}
+	
+	public static String getTime(){
+		return our + ":" + min + " O' clock, day " + day + " of the " + sea + "th season";
 	}
 	
 }

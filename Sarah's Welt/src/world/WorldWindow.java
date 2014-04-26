@@ -1,27 +1,33 @@
 package world;
 
+import static org.lwjgl.opengl.ARBShaderObjects.glGetUniformLocationARB;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import main.Game;
 import main.Settings;
-import main.Window;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
+import resources.Shader;
 import resources.Texture;
+import util.Color;
 import util.Tessellator;
 import world.creatures.Creature;
 import world.creatures.Sarah;
 import world.otherThings.Heart;
+import world.structures.Flower;
 import world.structures.Structure;
 import world.worldGen.WorldGenerator;
 import core.Menu;
 import core.Menu.View;
+import core.Res;
+import core.Window;
 
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
@@ -161,6 +167,35 @@ public class WorldWindow {
 				}
 				
 			}
+			if(Settings.shader){
+				GL11.glPushMatrix();
+				GL11.glLoadIdentity();
+				light.bind();
+				Shader.BRIGHT.bind();
+					Color c = new Color();
+				for(Structure s: structures){
+					if(s instanceof Flower){
+						switch(((Flower)s).type){
+						case 0: c.set(1, 1, 0, 1); break;
+						case 1: c.set(1, 0, 0, 1); break;
+						case 2: c.set(1, 1, 1, 1); break;
+						}
+						float x = s.pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2;
+						float y = -(s.pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 - 20;
+						ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(Shader.BRIGHT.handle, "lightLocation"), x, y);
+						ARBShaderObjects.glUniform3fARB(glGetUniformLocationARB(Shader.BRIGHT.handle, "lightColor"), c.r, c.g, c.b);
+						GL11.glBegin(GL11.GL_QUADS);
+							GL11.glVertex2f(x - 100, y - 100);
+							GL11.glVertex2f(x + 100, y - 100);
+							GL11.glVertex2f(x + 100, y + 100);
+							GL11.glVertex2f(x - 100, y + 100);
+						GL11.glEnd();
+					}
+				}
+				Shader.BRIGHT.release();
+				light.release();
+				GL11.glPopMatrix();
+			}
 			
 			//front
 			for(Structure s : structures){
@@ -175,21 +210,21 @@ public class WorldWindow {
 
 			
 			//render health on creatures
-			if(Settings.health) creatures.forEach(c -> Window.font.drawString(c.pos.x - (Window.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f));
+			if(Settings.health) creatures.forEach(c -> Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f));
 			
 			//health on sarah
 			if(Settings.health){
 				GL11.glColor3f(1, 0, 0);
-				Window.font.drawString(sarah.pos.x - (Window.font.getWidth(sarah.health + "")/3), sarah.pos.y + 60, sarah.health + "", 0.5f, 0.5f);
+				Res.font.drawString(sarah.pos.x - (Res.font.getWidth(sarah.health + "")/3), sarah.pos.y + 60, sarah.health + "", 0.5f, 0.5f);
 				GL11.glColor3f(1, 1, 1);
 			}
-			
+
 			//draw the darkness of the night (or not)
 			if(Settings.shader){
 				GL11.glLoadIdentity();
-				light.draw(Game.window);
+				light.draw();
 				light.bind();
-				light.resetDark(Game.window, lightLevel);
+				light.resetDark(lightLevel);
 				light.release();
 			}
 		}

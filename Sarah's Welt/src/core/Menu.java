@@ -1,17 +1,19 @@
 package core;
 
+import main.Settings;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import core.geom.Quad;
 import resources.StackedTexture;
 import resources.Texture;
 import world.WorldWindow;
+import core.geom.Quad;
 
 public class Menu {
 
-	public static View view = View.EMPTY;
+	public static View view = View.MAIN;
 	
 	public static void set(View newView){
 		view = newView;
@@ -41,6 +43,7 @@ public class Menu {
 	}
 	
 	public static void mouseListening(){
+		GL11.glLoadIdentity();
 		while(Mouse.next()){
 			if(Mouse.getEventButton() == 0){
 				
@@ -49,6 +52,7 @@ public class Menu {
 						if(b.contains(Mouse.getEventX(), Mouse.getEventY())){
 							if(b instanceof ToggleButton){
 								b.state = !b.state;
+								b.onClick.run();
 							} else {
 								b.state = true;
 							}
@@ -87,14 +91,13 @@ public class Menu {
 			}
 		},
 		DEBUG(true){
-			public ToggleButton flying = new ToggleButton("Flying disabled", "Flying enabled", 				1/2.0f, 	11/12.0f);
-			public ToggleButton landscape = new ToggleButton("Textures enabled", "Textures disabled", 		1/2.0f, 	9/12.0f);
-			public ToggleButton hitbox = new ToggleButton("Hitbox hidden", "Hitbox shown", 					1/2.0f, 	7/12.0f);
-			public ToggleButton health = new ToggleButton("Health hidden", "Health shown", 					1/2.0f, 	5/12.0f);
-			public ToggleButton creatures = new ToggleButton("Creatures agressive", "Creatures friendly", 	1/2.0f, 	3/12.0f);
-			public ToggleButton shader = new ToggleButton("Shader inactive", "Shader active", 				1/2.0f, 	1/12.0f);
 			void setup(){
-				buttons = new Button[]{flying, landscape, hitbox, health, creatures, shader};
+				buttons = new Button[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, () -> WorldWindow.sarah.flying = !WorldWindow.sarah.flying),
+										new ToggleButton("Textures enabled", "Textures disabled", true,		1/2.0f, 	9/12.0f, () -> Settings.debugView = !Settings.debugView),
+										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, () -> Settings.hitbox = !Settings.hitbox),
+										new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	5/12.0f, () -> Settings.health = !Settings.health),
+										new ToggleButton("Creatures agressive", "Creatures friendly", true,	1/2.0f, 	3/12.0f, () -> Settings.agro = !Settings.agro),
+										new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	1/12.0f, () -> Settings.shader = !Settings.shader)};
 			}
 		},
 		OPTIONS(true){
@@ -159,11 +162,18 @@ public class Menu {
 		
 		public void render(){
 			GL11.glPushMatrix();
-			GL11.glTranslatef((x*Window.WIDTH) - size.x/2, (y*Window.HEIGHT) - size.y/2, 0);
+			GL11.glTranslatef((x*Window.WIDTH) - (size.x/2), (y*Window.HEIGHT) - (size.y/2), 0);
 			drawTex(tex, 0, state ? 1 : 0);
 			float xText = x + (size.x/2) - (Res.font.getWidth(name)/3);
 			float yText = y + (size.y/2) - (Res.font.getHeight()/2);
 			Res.font.drawString(xText, yText, name, 1, 1);
+			GL11.glPopMatrix();
+		}
+		
+		public boolean contains(float x, float y){
+			float realX = (this.x*Window.WIDTH) - (size.x/2);
+			float realY = (this.y*Window.HEIGHT) - (size.y/2);
+			return x > realX && x < realX + size.x && y > realY && y < realY + size.y;
 		}
 	}
 	
@@ -172,14 +182,15 @@ public class Menu {
 		public String name1;
 		public String name2;
 		
-		public ToggleButton(String name1, String name2, float x, float y){
-			super(name1, x, y, null);
+		public ToggleButton(String name1, String name2, boolean state, float x, float y, Runnable onClick){
+			super(name1, x, y, onClick);
 			this.name1 = name1;
 			this.name2 = name2;
+			this.state = state;
 		}
 
 		public void render(){
-			if(!state){
+			if(state){
 				name = name1;
 			} else {
 				name = name2;

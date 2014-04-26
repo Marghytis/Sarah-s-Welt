@@ -11,4 +11,5 @@ public class Particle {
 	public float rot;
 	public float rad;
 	public int live;//millis
+	public boolean justSpawned = true;
 }

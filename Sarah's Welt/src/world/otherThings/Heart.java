@@ -8,7 +8,7 @@ import world.creatures.WalkingCreature;
 
 public class Heart extends WalkingCreature{
 	
-	public static StackedTexture tex = new StackedTexture("heart", 4, 1, -0.5f, -0.2f);
+	public static StackedTexture tex = new StackedTexture("creatures/Heart", 4, 1, -0.5f, -0.2f);
 
 	static Animation flap = new Animation(10, 0, true, 0, 1, 2, 3, 2, 1);
 

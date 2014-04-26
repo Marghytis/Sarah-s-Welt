@@ -20,7 +20,6 @@ public class Cloud extends Structure{
 		box.width*=xSize;
 		box.height*=ySize;
 		effect = new RainEffect(new Point(pos.x + (box.x/2), pos.y + box.y), box.width/2, box.height/2);
-		effect.start();
 		front = true;
 	}
 	

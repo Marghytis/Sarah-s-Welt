@@ -1,7 +1,6 @@
 package particles;
 
 import static org.lwjgl.opengl.ARBShaderObjects.glGetUniformLocationARB;
-import main.Window;
 
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
@@ -10,10 +9,11 @@ import resources.Lightmap;
 import resources.Shader;
 import resources.Texture;
 import world.Point;
+import core.Window;
 
 public class FireEffect {
 
-	public ParticleEmitter smoke = new ParticleEmitter(1000, 10, new Texture("particles/Smoke"), 2000){
+	public ParticleEmitter smoke = new ParticleEmitter(1000, 100, new Texture("particles/Smoke"), 2000){
 		
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
@@ -36,7 +36,7 @@ public class FireEffect {
 		
 	};
 	
-	public ParticleEmitter flame = new ParticleEmitter(10000, 20, new Texture("particles/Flame"), 1000){
+	public ParticleEmitter flame = new ParticleEmitter(10000, 50, new Texture("particles/Flame"), 1000){
 
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
@@ -70,7 +70,7 @@ public class FireEffect {
 		
 	};
 	
-	public ParticleEmitter spark = new ParticleEmitter(1000, 200, new Texture("particles/Spark"), 2000){
+	public ParticleEmitter spark = new ParticleEmitter(1000, 5, new Texture("particles/Spark"), 2000){
 
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
@@ -103,7 +103,7 @@ public class FireEffect {
 		}
 	};
 	
-	public ParticleEmitter light = new ParticleEmitter(1000, 200, new Texture("particles/Fire"), 1000){
+	public ParticleEmitter light = new ParticleEmitter(1000, 5, new Texture("particles/Fire"), 1000){
 		
 		public void renderParticles(){
 			tex.bind();
@@ -135,6 +135,7 @@ public class FireEffect {
 			p.col.set(1f, 1f, 1f, 1f);
 			p.rad = 1 + (random.nextFloat()*2);
 			p.live = startLife;
+			
 		}
 
 		public void colorInterpolator(Particle p) {
@@ -146,18 +147,10 @@ public class FireEffect {
 	public Point pos = new Point(Window.WIDTH/4, Window.HEIGHT/2);
 	public int size = 20;
 	public Lightmap lightmap;
-	public Texture lightTex = new Texture("Fire");
 	
 	public FireEffect(float x, float y, Lightmap lightmap){
 		pos.set(x, y);
 		this.lightmap = lightmap;
-	}
-	
-	public void start(){
-		smoke.startEmitting();
-		flame.startEmitting();
-		spark.startEmitting();
-		light.startEmitting();
 	}
 	
 	public void tick(int dTime){
@@ -174,11 +167,11 @@ public class FireEffect {
 		light.render();
 	}
 	
-	public void stop(){
-		smoke.stopEmitting(); smoke.finalize();
-		flame.stopEmitting(); flame.finalize();
-		spark.stopEmitting(); spark.finalize();
-		light.stopEmitting(); light.finalize();
+	public void finalize(){
+		smoke.finalize();
+		flame.finalize();
+		spark.finalize();
+		light.finalize();
 	}
 	
 }
