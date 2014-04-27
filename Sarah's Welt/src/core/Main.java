@@ -25,11 +25,12 @@ public class Main {
 		new Quad(Window.WIDTH/2 - 600, Window.HEIGHT/2 - 400, 1200, 800).drawTex(new Texture("Titel", 0, 0));
 		Display.update();
 		WorldWindow.load("TestWelt");
-		AL10.alSourcePlay(Res.test.source);
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
 			Display.sync(60);
+			
+			if(Settings.sound && !Res.test.playing) Res.test.play();
 
 			render();
 			

@@ -52,6 +52,23 @@ public class Sound {
 	      return;
 	    }
 	}
+	
+	public boolean playing = false;
+	
+	public void play(){
+		playing = true;
+		AL10.alSourcePlay(source);
+	}
+	
+	public void pause(){
+		playing = false;
+		AL10.alSourcePause(source);
+	}
+	
+	public void stop(){
+		playing = false;
+		AL10.alSourceStop(source);
+	}
 
 	  /**
 	   * boolean LoadALData()

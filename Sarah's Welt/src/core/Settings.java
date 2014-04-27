@@ -13,6 +13,7 @@ public class Settings {
 	public static boolean agro = true;
 	public static boolean shader = true;
 	public static boolean time = true;
+	public static boolean sound = false;
 	
 	public void disableFlying(){}
 	
