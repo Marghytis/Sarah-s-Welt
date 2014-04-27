@@ -51,7 +51,7 @@ public class WorldWindow {
 		public static List<Structure> structures = new ArrayList<>();
 		public static List<Creature> creatures = new ArrayList<>();
 		
-		public static int[] sky = {0, 0, 500};
+		public static int[] sky = {0, 0, 100};
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
@@ -103,8 +103,10 @@ public class WorldWindow {
 			if(random.nextInt(2000) < 1){
 				Point inter = new Point();
 				int sec = random.nextInt(3);
-				Node link = (sectors[sec].findGrassPointAt((sectors[sec].x + random.nextFloat())*Sector.WIDTH, inter, 100));
-				creatures.add(new Heart(inter, link));
+				if(sectors[sec] != null){
+					Node link = (sectors[sec].findGrassPointAt((sectors[sec].x + random.nextFloat())*Sector.WIDTH, inter, 100));
+					creatures.add(new Heart(inter, link));
+				}
 			}
 			structures.forEach(s -> s.tick(dTime));
 			for(int i = 0; i < creatures.size(); i++){
@@ -164,14 +166,14 @@ public class WorldWindow {
 				sky[(color + 2) % 3] -= 1;
 			}
 			colorCounter += 1;
-			if(colorCounter >= 500){
+			if(colorCounter >= 1000){
 				if(!turnUp){
 					color = (color + 1) % 3;
 				}
 				turnUp = !turnUp;
 				colorCounter = 0;
 			}
-			GL11.glClearColor(sky[0]/1000.0f, sky[1]/1000.0f, sky[2]/1000.0f, 1);
+			GL11.glClearColor(sky[0]/10000.0f + 0.4f, sky[1]/10000.0f + 0.4f, sky[2]/10000.0f + 0.4f, 1);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);

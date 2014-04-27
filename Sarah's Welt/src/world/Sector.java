@@ -42,7 +42,9 @@ public class Sector{
 	}
 	
 	public void connectTo(Sector other){
-		if(other.x == x + 1){
+		if(other == null){
+			(new Exception("Can't connect to the specified Sector! (null)")).printStackTrace();
+		} else if(other.x == x + 1){
 			connsR.forEach( c -> c.link());
 		} else if(other.x == x - 1){
 			System.out.println("test");
@@ -53,7 +55,9 @@ public class Sector{
 	}
 	
 	public void partiateFrom(Sector other){
-		if(other.x == x + 1){
+		if(other == null){
+			(new Exception("Can't partiate from the specified Sector! (null)")).printStackTrace();
+		} else if(other.x == x + 1){
 			connsR.forEach( c -> c.partiate());
 		} else if(other.x == x - 1){
 			connsL.forEach( c -> c.partiate());
