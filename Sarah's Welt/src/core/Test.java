@@ -1,4 +1,4 @@
-package main;
+package core;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -19,7 +19,12 @@ public class Test {
 	public int WIDTH = 1000, HEIGHT = 500;
 	
 	public Test() {
-		System.out.println(-1 % 3);
+		try {
+			java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL("file://c:/res/twolf.wav"));
+			clip.loop();
+		} catch (java.net.MalformedURLException murle) {
+			System.out.println(murle);
+		}
 //		createDisplay();
 //		
 //		setup();

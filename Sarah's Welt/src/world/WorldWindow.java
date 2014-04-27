@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import main.Settings;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
+import resources.Res;
 import resources.Shader;
 import resources.Texture;
 import util.Color;
@@ -26,7 +25,7 @@ import world.structures.Structure;
 import world.worldGen.WorldGenerator;
 import core.Menu;
 import core.Menu.View;
-import core.Res;
+import core.Settings;
 import core.Window;
 
 public class WorldWindow {

@@ -1,15 +1,14 @@
 package core;
 
-import main.Settings;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import resources.Res;
 import resources.StackedTexture;
 import resources.Texture;
+import world.Calendar;
 import world.WorldWindow;
-import world.time.Calendar;
 import core.geom.Quad;
 
 public class Menu {

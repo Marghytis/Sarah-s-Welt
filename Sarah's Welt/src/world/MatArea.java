@@ -5,8 +5,6 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.Settings;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
@@ -15,6 +13,8 @@ import util.Cycle;
 import util.Tessellator;
 
 import com.sun.scenario.effect.impl.BufferUtil;
+
+import core.Settings;
 
 public class MatArea {
 	

@@ -1,6 +1,6 @@
 package world.creatures;
 
-import main.Settings;
+import core.Settings;
 import resources.StackedTexture;
 import util.Animation;
 import world.Material;

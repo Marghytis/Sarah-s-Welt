@@ -1,8 +1,6 @@
-package core;
+package resources;
 
 import java.awt.Font;
-
-import resources.SimpleText;
 
 public class Res {
 

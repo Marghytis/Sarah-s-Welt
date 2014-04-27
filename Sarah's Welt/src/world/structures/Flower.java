@@ -2,8 +2,8 @@ package world.structures;
 
 import org.lwjgl.opengl.GL11;
 
+import core.Settings;
 import core.Window;
-import main.Settings;
 import resources.Shader;
 import resources.StackedTexture;
 import resources.Texture;

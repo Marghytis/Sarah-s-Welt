@@ -2,10 +2,9 @@ package world;
 
 import java.util.Random;
 
-import main.Settings;
-
 import org.lwjgl.opengl.GL11;
 
+import core.Settings;
 import resources.StackedTexture;
 import util.Animation;
 import util.Animator;

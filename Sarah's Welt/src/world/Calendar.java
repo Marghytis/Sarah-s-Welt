@@ -1,7 +1,6 @@
-package world.time;
+package world;
 
-import main.Settings;
-import world.WorldWindow;
+import core.Settings;
 
 public class Calendar{
 	

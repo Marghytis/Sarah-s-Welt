@@ -4,8 +4,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import resources.Texture;
+import world.Calendar;
 import world.WorldWindow;
-import world.time.Calendar;
 import core.geom.Quad;
 
 public class Main {
