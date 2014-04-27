@@ -19,27 +19,6 @@ public class Window {
 	public static int WIDTH, HEIGHT;
 	private static ByteBuffer icon16 = loadTexture("icons/icon16.png"), icon32 = loadTexture("icons/icon32.png"), icon64 = loadTexture("icons/icon64.png");
 	
-	public static void createFullScreen(String name){
-		
-		if(Display.isCreated()){
-			Display.destroy();
-			Mouse.destroy();
-			Keyboard.destroy();
-		}
-
-		Display.setTitle(name);
-		Display.setVSyncEnabled(true);
-		try {
-			Display.setFullscreen(true);
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
-		WIDTH = Display.getWidth();
-		HEIGHT = Display.getHeight();
-
-		create();
-	}
-	
 	public static void create(String name, int width, int height){
 		
 		if(Display.isCreated()){
@@ -51,6 +30,27 @@ public class Window {
 		Display.setTitle(name);
 		setSize(width, height);
 		
+		create();
+	}
+	
+	public static void createFullScreen(String name){
+		
+		if(Display.isCreated()){
+			Display.destroy();
+			Mouse.destroy();
+			Keyboard.destroy();
+		}
+
+		Display.setTitle(name);
+		try {
+			Display.setFullscreen(true);
+			Display.setVSyncEnabled(true);
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+		WIDTH = Display.getWidth();
+		HEIGHT = Display.getHeight();
+
 		create();
 	}
 	
@@ -133,10 +133,10 @@ public class Window {
     private static ByteBuffer loadTexture(String pathInRes){
         try {
         	InputStream in = new FileInputStream("res/" + pathInRes);
-            PNGDecoder decoder = new PNGDecoder(in);
-            ByteBuffer bb = ByteBuffer.allocateDirect(decoder.getWidth()*decoder.getHeight()*4);
-            decoder.decode(bb, decoder.getWidth()*4, PNGDecoder.RGBA);
-            bb.flip();
+	            PNGDecoder decoder = new PNGDecoder(in);
+	            ByteBuffer bb = ByteBuffer.allocateDirect(decoder.getWidth()*decoder.getHeight()*4);
+	            decoder.decode(bb, decoder.getWidth()*4, PNGDecoder.RGBA);
+	            bb.flip();
         	in.close();
             return bb;
         } catch (IOException e){
@@ -145,7 +145,7 @@ public class Window {
 		return null;
     }
     
-    private static int createTexture(String pathInRes){
+    public static int createTexture(String pathInRes){
 
 		// Create a new texture object in memory and bind it
     	int handle = GL11.glGenTextures();
@@ -158,8 +158,8 @@ public class Window {
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, WIDTH, HEIGHT, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, loadTexture(pathInRes));
 				
 		// Setup what to do when the texture has to be scaled
-//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); 
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+//		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); 
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 		
 		return handle;

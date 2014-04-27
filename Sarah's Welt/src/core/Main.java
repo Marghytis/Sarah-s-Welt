@@ -3,29 +3,31 @@ package core;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
-import util.T;
+import resources.Texture;
 import world.WorldWindow;
 import world.time.Calendar;
+import core.geom.Quad;
 
 public class Main {
 
 	public static void main(String[] args){
-		Window.createSplash("Titel.png", 600, 400);
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		Window.createSplash("Titel.png", 600, 400);
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		int titelTex = Window.createTexture("Titel.png");
+		
 		Window.createFullScreen("Sarahs Welt");
+		new Quad(Window.WIDTH/2 - 600, Window.HEIGHT/2 - 400, 1200, 800).drawTex(new Texture("Titel", 0, 0));
+		Display.update();
 		WorldWindow.load("TestWelt");
-
+		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
 			Display.sync(60);
 
-			GL11.glClearColor(0.5f, 0.5f, 1f, 1);
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			render();
 			
 			listening();

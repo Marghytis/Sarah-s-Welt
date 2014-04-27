@@ -1,37 +1,61 @@
 package world.time;
 
+import main.Settings;
 import world.WorldWindow;
 
 public class Calendar{
 	
 	public static boolean stop = false;
 	
+	public static int sec;
 	public static int min;
 	public static int our;
 	public static int day;
 	public static int sea;
+	public static int yea;
 
-	static float lightLevelStep = 0.8f/32;
+	static int secsPerMin = 100;//seconds are actually milliseconds
+	static int minsPerOur = 32;
+	static int oursPerDay = 12;
+	static int daysPerSea = 12;
+	static int seasPerYea = 4;
+
+	static float lightLevelStep = 0.9f/minsPerOur;
 	
 	public static void tick(int delta){
-		min += delta/10;
-			our += min/32;
-				day += our/12;
-					sea += day/12;
-		min %= 32;
-		our %= 12;
-		day %= 12;
-		sea %= 4;
+		if(Settings.time){
+			sec += delta;
+				min += sec/secsPerMin;
+					our += min/minsPerOur;
+						day += our/oursPerDay;
+							sea += day/daysPerSea;
+								yea += sea/seasPerYea;
+			sec %= secsPerMin;
+			min %= minsPerOur;
+			our %= oursPerDay;
+			day %= daysPerSea;
+			sea %= seasPerYea;
+		}
 		
 		if(our == 0){
-			WorldWindow.lightLevel = 0.2f + (min*lightLevelStep);
-		} else if(our < 6){
+			WorldWindow.lightLevel = 0.1f + (min*lightLevelStep);
+		} else if(our < oursPerDay/2){
 			WorldWindow.lightLevel = 1;
-		} else if(our == 6){
+		} else if(our == oursPerDay/2){
 			WorldWindow.lightLevel = 1f - (min*lightLevelStep);
-		} else if(our > 6){
-			WorldWindow.lightLevel = 0.2f;
+		} else if(our > oursPerDay/2){
+			WorldWindow.lightLevel = 0.1f;
 		}
+	}
+	
+	public static void setMorning(){
+		min = 0;
+		our = 0;
+	}
+	
+	public static void setEvening(){
+		min = 0;
+		our = oursPerDay/2;
 	}
 	
 	public static String getTime(){

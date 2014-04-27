@@ -60,9 +60,9 @@ public class Snail extends WalkingCreature {
 	
 	public boolean findSarah(){
 		if(pos.minus(WorldWindow.sarah.pos).length() < 150){
-			if(WorldWindow.sarah.pos.x + WorldWindow.sarah.box.x > pos.x){
+			if(WorldWindow.sarah.pos.x + WorldWindow.sarah.tex.box.x > pos.x){
 				dir = 1;
-			} else if(WorldWindow.sarah.pos.x + WorldWindow.sarah.box.x + WorldWindow.sarah.box.width < pos.x){
+			} else if(WorldWindow.sarah.pos.x + WorldWindow.sarah.tex.box.x + WorldWindow.sarah.tex.box.width < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
@@ -78,15 +78,12 @@ public class Snail extends WalkingCreature {
 	
 	public boolean findNextCloud(){
 		Cloud c = null; float distance = 1000;
-		for(Sector sec: WorldWindow.sectors){
-			if(sec == null) continue;
-			for(Structure s : sec.structures){
-				if(s instanceof Cloud){
-					float dist = pos.minus(s.pos).length();
-					if(dist < distance){
-						c = (Cloud)s;
-						distance = dist; 
-					}
+		for(Structure s : WorldWindow.structures){
+			if(s instanceof Cloud){
+				float dist = pos.minus(s.pos).length();
+				if(dist < distance){
+					c = (Cloud)s;
+					distance = dist; 
 				}
 			}
 		}
@@ -112,8 +109,8 @@ public class Snail extends WalkingCreature {
 		}
 	}
 	
-	protected void howToRender(){
-		super.howToRender();
+	protected void beforeRender(){
+		super.beforeRender();
 		
 		if(hit > 0){
 			tex = BEAT_HIT;

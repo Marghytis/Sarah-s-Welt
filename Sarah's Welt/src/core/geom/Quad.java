@@ -20,16 +20,19 @@ public class Quad extends Vec{
 	}
 
 	public void drawTex(Texture tex){
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex.handle);
+		tex.bind();
+		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, 			y);
 		GL11.glTexCoord2f(1, 1); GL11.glVertex2f(x + size.x, 	y);
 		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + size.x, 	y + size.y);
 		GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
+		tex.release();
 	}
 
 	public void drawTex(StackedTexture tex, int x, int y){
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex.handle);
+		
+		tex.bind();
 		
 		float xOffset = x*tex.widthT;
 		float yOffset = y*tex.heightT;
@@ -41,7 +44,7 @@ public class Quad extends Vec{
 			GL11.glTexCoord2f(xOffset, 				yOffset);				GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+		tex.release();
 	}
 	
 	public boolean contains(float x, float y){

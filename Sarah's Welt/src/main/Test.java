@@ -19,17 +19,18 @@ public class Test {
 	public int WIDTH = 1000, HEIGHT = 500;
 	
 	public Test() {
-		createDisplay();
-		
-		setup();
-		
-		while (!Display.isCloseRequested()) {
-			loop();
-			Display.sync(60);
-			Display.update();
-		}
-		
-		Display.destroy();
+		System.out.println(-1 % 3);
+//		createDisplay();
+//		
+//		setup();
+//		
+//		while (!Display.isCloseRequested()) {
+//			loop();
+//			Display.sync(60);
+//			Display.update();
+//		}
+//		
+//		Display.destroy();
 	}
 	
 	private void createDisplay() {		

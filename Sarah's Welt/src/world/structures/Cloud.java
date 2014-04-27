@@ -12,14 +12,14 @@ public class Cloud extends Structure{
 
 	public static StackedTexture CLOUD = new StackedTexture("structures/Cloud", 1, 1, -0.5f, -0.5f);
 	private RainEffect effect;
+	public float xSize;
+	public float ySize;
 	
 	public Cloud(Point pos, Node worldLink, float xSize, float ySize){
 		super(CLOUD, new Animation(1, 1), pos, worldLink);
-		box.x*=xSize;
-		box.y*=ySize;
-		box.width*=xSize;
-		box.height*=ySize;
-		effect = new RainEffect(new Point(pos.x + (box.x/2), pos.y + box.y), box.width/2, box.height/2);
+		this.xSize = xSize;
+		this.ySize = ySize;
+		effect = new RainEffect(new Point(pos.x + ((tex.box.x*xSize)/2), pos.y + (tex.box.y*xSize)), (tex.box.width*xSize)/2, (tex.box.height*xSize)/2);
 		front = true;
 	}
 	
@@ -30,10 +30,12 @@ public class Cloud extends Structure{
 	}
 	
 	public void render(){
-		GL11.glPushMatrix();
 		effect.render();
-		GL11.glPopMatrix();
 		GL11.glColor4f(1, 1, 1, 1);
 		super.render();
+	}
+	
+	public void beforeRender(){
+		GL11.glScalef(xSize, ySize, 0);
 	}
 }

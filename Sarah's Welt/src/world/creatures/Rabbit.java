@@ -45,8 +45,8 @@ public class Rabbit extends WalkingCreature {
 		doStepping(velocityUnit*vP*dTime);
 	}
 	
-	protected void howToRender(){
-		super.howToRender();
+	protected void beforeRender(){
+		super.beforeRender();
 		
 		if(hit > 0){
 			animator.setAnimation(hitt);

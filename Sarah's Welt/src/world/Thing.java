@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import resources.StackedTexture;
 import util.Animation;
 import util.Animator;
-import util.Quad;
 import world.creatures.Creature;
 import world.structures.Structure;
 
@@ -21,7 +20,6 @@ public abstract class Thing {
 	public Node worldLink;
 	
 	//For rendering
-	public Quad box;
 	public StackedTexture tex;
 	public Animator animator;
 	
@@ -32,9 +30,8 @@ public abstract class Thing {
 		this.tex = tex;
 		this.pos = pos;
 		this.worldLink = worldLink;
-		
-		this.box = new Quad(tex.xOffset*tex.widthS, tex.yOffset*tex.heightS, tex.widthS, tex.heightS);
-		animator = new Animator(box);
+
+		animator = new Animator(tex.box);
 		animator.setAnimation(defaultAni);
 	}
 
@@ -44,25 +41,29 @@ public abstract class Thing {
 	 * World coordinates
 	 */
 	public void render(){
-		howToRender();
-		
 		GL11.glPushMatrix();
 		GL11.glTranslatef(pos.x, pos.y, 0);
+		
+		beforeRender();
 		
 		animator.animate(tex, mirrored);
 		
 		if(Settings.hitbox){
 			if(this instanceof Structure){
 				GL11.glColor3f(0, 1, 1);
-				box.outline();
+				tex.box.outline();
 			} else if(this instanceof Creature){
 				GL11.glColor3f(1, 0, 0);
-				box.outline();
+				tex.box.outline();
 			}
 			GL11.glColor3f(1, 1, 1);
 		}
+		afterRender();
+		
 		GL11.glPopMatrix();
 	}
 
-	protected void howToRender(){}
+	protected void beforeRender(){}
+
+	protected void afterRender(){}
 }

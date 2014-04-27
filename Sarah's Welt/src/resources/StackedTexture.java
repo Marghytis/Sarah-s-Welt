@@ -1,5 +1,7 @@
 package resources;
 
+import util.Quad;
+
 public class StackedTexture extends Texture{
 	
 	public int widthS, heightS;//width/height of equals parts of the Texture
@@ -11,6 +13,7 @@ public class StackedTexture extends Texture{
 		heightT = 1.0f/yParts;
 		this.widthS = width/xParts;
 		this.heightS = height/yParts;
+		box.set(xOffset*widthS, yOffset*heightS, widthS, heightS);
 	}
 	
 	public StackedTexture(String name, int xParts, int yParts) {

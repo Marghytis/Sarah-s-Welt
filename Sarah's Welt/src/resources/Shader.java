@@ -33,7 +33,6 @@ public enum Shader {
 		}
 	};
 	
-	static int currentShader = 0;
 	public void bind(){
 		ARBShaderObjects.glUseProgramObjectARB(handle);
 	}

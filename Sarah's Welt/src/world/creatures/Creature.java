@@ -51,7 +51,7 @@ public abstract class Creature extends Thing {
 	}
 	
 	@Override
-	protected void howToRender(){
+	protected void beforeRender(){
 		if(vel.x > 0){
 			mirrored = true;
 		} else if(vel.x < 0){

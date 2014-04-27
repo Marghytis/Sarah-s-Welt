@@ -109,7 +109,7 @@ public class Sarah extends WalkingCreature {
 	}
 	
 	public int walkMode;
-	protected void howToRender(){
+	protected void beforeRender(){
 		setKeyDirection();
 		
 		walkMode = 1;

@@ -46,10 +46,12 @@ public class WorldWindow {
 		
 		public static Lightmap light;
 		
-		public static float lightLevel = 1;
+		public static float lightLevel = 0.1f;
 		
 		public static List<Structure> structures = new ArrayList<>();
 		public static List<Creature> creatures = new ArrayList<>();
+		
+		public static int[] sky = {0, 0, 500};
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
@@ -72,7 +74,9 @@ public class WorldWindow {
 			takeThingsFrom(sectors[1]);
 			takeThingsFrom(sectors[2]);
 
-			for(int i = 0; i < sectors[1].areas.length; i++) sectors[1].areas[i].tessellationNeeded = true;
+			for(int i = 0; i < sectors[1].areas.length; i++){
+				sectors[1].areas[i].tess(Material.values()[i].texture);
+			}
 			
 			Point intersection = new Point(10, 0);
 			Node playerWorldLink = sectors[1].findGrassPointAt(10, intersection, 100);
@@ -119,7 +123,7 @@ public class WorldWindow {
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
 					for(Creature c : creatures){
-						if((c.pos.x + c.box.x < x && c.pos.x + c.box.x + c.box.width > x) && (c.pos.y + c.box.y < y && c.pos.y + c.box.y + c.box.height > y)){
+						if((c.pos.x + c.tex.box.x < x && c.pos.x + c.tex.box.x + c.tex.box.width > x) && (c.pos.y + c.tex.box.y < y && c.pos.y + c.tex.box.y + c.tex.box.height > y)){
 							c.hitBy(sarah);
 						}
 					}
@@ -149,7 +153,26 @@ public class WorldWindow {
 			}
 		}
 		
+		static int color = 0;
+		static boolean turnUp = true;
+		static int colorCounter;
+		
 		public static void render(){
+			if(turnUp){
+				sky[color] += 1;
+			} else {
+				sky[(color + 2) % 3] -= 1;
+			}
+			colorCounter += 1;
+			if(colorCounter >= 500){
+				if(!turnUp){
+					color = (color + 1) % 3;
+				}
+				turnUp = !turnUp;
+				colorCounter = 0;
+			}
+			GL11.glClearColor(sky[0]/1000.0f, sky[1]/1000.0f, sky[2]/1000.0f, 1);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
@@ -166,35 +189,6 @@ public class WorldWindow {
 						sec.areas[mat].render(Material.values()[mat].texture);
 				}
 				
-			}
-			if(Settings.shader){
-				GL11.glPushMatrix();
-				GL11.glLoadIdentity();
-				light.bind();
-				Shader.BRIGHT.bind();
-					Color c = new Color();
-				for(Structure s: structures){
-					if(s instanceof Flower){
-						switch(((Flower)s).type){
-						case 0: c.set(1, 1, 0, 1); break;
-						case 1: c.set(1, 0, 0, 1); break;
-						case 2: c.set(1, 1, 1, 1); break;
-						}
-						float x = s.pos.x - WorldWindow.sarah.pos.x + Window.WIDTH/2;
-						float y = -(s.pos.y - WorldWindow.sarah.pos.y) + Window.HEIGHT/2 - 20;
-						ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(Shader.BRIGHT.handle, "lightLocation"), x, y);
-						ARBShaderObjects.glUniform3fARB(glGetUniformLocationARB(Shader.BRIGHT.handle, "lightColor"), c.r, c.g, c.b);
-						GL11.glBegin(GL11.GL_QUADS);
-							GL11.glVertex2f(x - 100, y - 100);
-							GL11.glVertex2f(x + 100, y - 100);
-							GL11.glVertex2f(x + 100, y + 100);
-							GL11.glVertex2f(x - 100, y + 100);
-						GL11.glEnd();
-					}
-				}
-				Shader.BRIGHT.release();
-				light.release();
-				GL11.glPopMatrix();
 			}
 			
 			//front

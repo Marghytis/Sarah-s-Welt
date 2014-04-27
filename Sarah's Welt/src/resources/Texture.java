@@ -7,6 +7,8 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.opengl.GL11;
 
+import util.Quad;
+
 public class Texture {
 
 	public static final Texture TITEL = new Texture("Titel");
@@ -15,7 +17,7 @@ public class Texture {
 	
 	public int handle;
 	public int width, height;
-	public float xOffset, yOffset;
+	public Quad box;
 	
 	/**
 	 * Empty Texture
@@ -28,13 +30,11 @@ public class Texture {
 		this.height = height;
 	}
 	
-	public Texture(String name, float xOffset, float yOffset){
-		this(name);
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
+	public Texture(String name){
+		this(name, 0, 0);
 	}
 	
-	public Texture(String name){
+	public Texture(String name, float xOffset, float yOffset){
 		if(name.equals("") || name.equals(null)){
 			handle = 0;
 		} else {
@@ -75,6 +75,7 @@ public class Texture {
 			GL11.glTexParameterf( GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST); 
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 		}
+		box = new Quad(xOffset*width, yOffset*height, width, height);
 	}
 	
 	public void set(int handle, int width, int height){
@@ -82,9 +83,8 @@ public class Texture {
 		this.width = width;
 		this.height = height;
 	}
-	static int currentTex = 0;
 	public void bind(){
-		if(currentTex != handle) GL11.glBindTexture(GL11.GL_TEXTURE_2D, handle);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, handle);
 	}
 	
 	public void release(){

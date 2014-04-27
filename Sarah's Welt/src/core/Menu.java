@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import resources.StackedTexture;
 import resources.Texture;
 import world.WorldWindow;
+import world.time.Calendar;
 import core.geom.Quad;
 
 public class Menu {
@@ -92,12 +93,16 @@ public class Menu {
 		},
 		DEBUG(true){
 			void setup(){
-				buttons = new Button[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, () -> WorldWindow.sarah.flying = !WorldWindow.sarah.flying),
-										new ToggleButton("Textures enabled", "Textures disabled", true,		1/2.0f, 	9/12.0f, () -> Settings.debugView = !Settings.debugView),
-										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, () -> Settings.hitbox = !Settings.hitbox),
-										new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	5/12.0f, () -> Settings.health = !Settings.health),
-										new ToggleButton("Creatures agressive", "Creatures friendly", true,	1/2.0f, 	3/12.0f, () -> Settings.agro = !Settings.agro),
-										new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	1/12.0f, () -> Settings.shader = !Settings.shader)};
+				buttons = new Button[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, () -> WorldWindow.sarah.flying = View.DEBUG.buttons[0].state),
+										new ToggleButton("Textures enabled", "Textures disabled", true,		1/2.0f, 	9/12.0f, () -> Settings.debugView = View.DEBUG.buttons[1].state),
+										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, () -> Settings.hitbox = View.DEBUG.buttons[2].state),
+										new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	5/12.0f, () -> Settings.health = View.DEBUG.buttons[3].state),
+										new ToggleButton("Creatures agressive", "Creatures friendly", true,	1/2.0f, 	3/12.0f, () -> Settings.agro = View.DEBUG.buttons[4].state),
+										new ToggleButton("Shader active", "Shader inactive", true, 			1/2.0f, 	1/12.0f, () -> Settings.shader = View.DEBUG.buttons[5].state),
+										
+										new ToggleButton("Time running", "Time stopped", true, 				3/4.0f, 	9/12.0f, () -> Settings.time = View.DEBUG.buttons[6].state),
+										new Button("Set morning",								 			3/4.0f, 	7/12.0f, () -> Calendar.setMorning()),
+										new Button("Set evening",											3/4.0f, 	5/12.0f, () -> Calendar.setEvening())};
 			}
 		},
 		OPTIONS(true){
