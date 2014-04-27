@@ -108,7 +108,7 @@ public class Menu {
 			void setup(){
 				buttons = new Button[]{
 						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = CONTROLS;}}),
-						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> Settings.sound = View.DEBUG.buttons[1].state),
+						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; Res.test.stop();}),
 						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){Menu.view = MAIN;}})
 				};
 			}

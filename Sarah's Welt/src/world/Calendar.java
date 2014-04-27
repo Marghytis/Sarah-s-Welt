@@ -14,8 +14,8 @@ public class Calendar{
 	public static int yea;
 
 	static int secsPerMin = 100;//seconds are actually milliseconds
-	static int minsPerOur = 32;
-	static int oursPerDay = 12;
+	static int minsPerOur = 100;
+	static int oursPerDay = 10;
 	static int daysPerSea = 12;
 	static int seasPerYea = 4;
 

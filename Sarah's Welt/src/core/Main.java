@@ -25,6 +25,7 @@ public class Main {
 		new Quad(Window.WIDTH/2 - 600, Window.HEIGHT/2 - 400, 1200, 800).drawTex(new Texture("Titel", 0, 0));
 		Display.update();
 		WorldWindow.load("TestWelt");
+		Res.load();
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
@@ -40,8 +41,9 @@ public class Main {
 			calculate(delta);
 			Display.update();
 		}
-		
-		AL10.alSourceStop(Res.test.source);
+
+		Res.test.stop();
+		Res.unload();
 		Display.destroy();
 	}
 	
