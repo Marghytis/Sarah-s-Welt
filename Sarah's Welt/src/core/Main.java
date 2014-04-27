@@ -1,8 +1,10 @@
 package core;
 
+import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
+import resources.Res;
 import resources.Texture;
 import world.Calendar;
 import world.WorldWindow;
@@ -23,6 +25,7 @@ public class Main {
 		new Quad(Window.WIDTH/2 - 600, Window.HEIGHT/2 - 400, 1200, 800).drawTex(new Texture("Titel", 0, 0));
 		Display.update();
 		WorldWindow.load("TestWelt");
+		AL10.alSourcePlay(Res.test.source);
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
@@ -36,6 +39,8 @@ public class Main {
 			calculate(delta);
 			Display.update();
 		}
+		
+		AL10.alSourceStop(Res.test.source);
 		Display.destroy();
 	}
 	

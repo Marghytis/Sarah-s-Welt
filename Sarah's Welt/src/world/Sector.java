@@ -10,7 +10,7 @@ import world.worldGen.Connection;
 
 public class Sector{
 	/**The width of one sector, always the same*/
-	public static final int WIDTH = 200;
+	public static final int WIDTH = 1000;
 	
 	public int x;
 	public MatArea[] areas = new MatArea[Material.values().length];

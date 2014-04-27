@@ -8,6 +8,8 @@ import java.nio.ByteBuffer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -82,6 +84,7 @@ public class Window {
 			Mouse.create();
 			Keyboard.create();
 			setupOpenGL();
+			setupOpenAL();
 		} catch(LWJGLException e){
 			e.printStackTrace();
 		}
@@ -97,6 +100,16 @@ public class Window {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	}
+	
+	private static void setupOpenAL(){
+	    try {
+	    	AL.create(null, 15, 22050, true);
+	    } catch (LWJGLException le) {
+	    	le.printStackTrace();
+	      return;
+	    }
+	    AL10.alGetError();
 	}
 	
 	public static void setSize(int w, int h){
