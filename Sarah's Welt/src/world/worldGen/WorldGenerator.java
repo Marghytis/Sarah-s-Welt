@@ -34,11 +34,15 @@ public class WorldGenerator {
 		}*/
 	}
 	
+	public boolean rim(int x){
+		return x == rimR || x == rimL - 1;
+	}
+	
 	public Sector generateRight(){
 		Sector output = new Sector(rimR);
 		rimR++;
 		
-		surfaceRight.expand(output, rimR*Sector.WIDTH); 
+		surfaceRight.expand(output, rimR*Sector.WIDTH);
 		
 		return output;
 	}

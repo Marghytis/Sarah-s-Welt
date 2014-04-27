@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.ARBShaderObjects.glGetUniformLocationARB;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
+import particles.Particle.ParticleType;
 import resources.Lightmap;
 import resources.Shader;
 import resources.Texture;
@@ -13,7 +14,9 @@ import core.Window;
 
 public class FireEffect {
 
-	public ParticleEmitter smoke = new ParticleEmitter(1000, 100, new Texture("particles/Smoke"), 2000){
+	public static final ParticleType SMOKE = new ParticleType(new Texture("particles/Smoke"));
+
+	public ParticleEmitter smoke = new ParticleEmitter(1000, 100, SMOKE, 2000){
 		
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
@@ -36,7 +39,9 @@ public class FireEffect {
 		
 	};
 	
-	public ParticleEmitter flame = new ParticleEmitter(10000, 50, new Texture("particles/Flame"), 1000){
+	public static final ParticleType FLAME = new ParticleType(new Texture("particles/Flame"));
+	
+	public ParticleEmitter flame = new ParticleEmitter(10000, 50, FLAME, 1000){
 
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
@@ -70,7 +75,9 @@ public class FireEffect {
 		
 	};
 	
-	public ParticleEmitter spark = new ParticleEmitter(1000, 5, new Texture("particles/Spark"), 2000){
+	public static final ParticleType SPARK = new ParticleType(new Texture("particles/Spark"));
+	
+	public ParticleEmitter spark = new ParticleEmitter(1000, 5, SPARK, 2000){
 
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
@@ -103,10 +110,12 @@ public class FireEffect {
 		}
 	};
 	
-	public ParticleEmitter light = new ParticleEmitter(1000, 5, new Texture("particles/Fire"), 1000){
+	public static final ParticleType LIGHT = new ParticleType(new Texture("particles/Fire"));
+	
+	public ParticleEmitter light = new ParticleEmitter(1000, 5, LIGHT, 1000){
 		
 		public void renderParticles(){
-			tex.bind();
+			type.tex.bind();
 				Shader.Test.bind();
 					lightmap.bind();
 						for(Particle p : particles){
@@ -116,7 +125,7 @@ public class FireEffect {
 						}
 					lightmap.release();
 				Shader.Test.release();
-			tex.release();
+			type.tex.release();
 		}
 		
 		public void renderParticle(Particle p){

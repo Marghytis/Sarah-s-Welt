@@ -1,53 +1,28 @@
 package particles;
 
-import java.nio.FloatBuffer;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
+import particles.Particle.ParticleType;
 import resources.Shader;
-import resources.Texture;
-
-import com.sun.scenario.effect.impl.BufferUtil;
 
 public class ParticleEmitter{
 
 	public int interval;//interval between two emits
-	protected Texture tex;
+	public ParticleType type;
 	public boolean emitting = true;
-	public int vbo;
 	int startLife;
 	
-	public ParticleEmitter(int particleAmount, int spawnRate, Texture tex, int startLife){
+	public ParticleEmitter(int particleAmount, int spawnRate, ParticleType type, int startLife){
 		particles = new Particle[particleAmount];
 		for(int i = 0; i < particles.length; i++){
 			particles[i] = new Particle();
 		}
 		this.interval = 1000/spawnRate;
-		this.tex = tex;
+		this.type = type;
 		this.startLife = startLife;
-
-		float[] vertices = initialize();
-		//create VBO
-		FloatBuffer buffer = BufferUtil.newFloatBuffer(vertices.length*4);
-		buffer.put(vertices);
-		buffer.flip();
-		
-		vbo = GL15.glGenBuffers();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-	}
-	
-	public float[] initialize(){
-		float wH = tex.width/2;
-		float hH = tex.height/2;
-		return new float[]{
-				0, 1, - wH, - hH,
-				1, 1, + wH, - hH,
-				1, 0, + wH, + hH,
-				0, 0, - wH, + hH};
 	}
 
 	public Particle[] particles;
@@ -101,7 +76,7 @@ public class ParticleEmitter{
 		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 		GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 		
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, type.vbo);
 		
 		GL11.glVertexPointer(2, GL11.GL_FLOAT, 16, 8);
 		GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 16, 0);
@@ -112,7 +87,7 @@ public class ParticleEmitter{
 	}
 	
 	public void renderParticles(){
-		tex.bind();
+		type.tex.bind();
 			Shader.Test.bind();
 				for(Particle p : particles){
 					if(p.live > 0){
@@ -120,7 +95,7 @@ public class ParticleEmitter{
 					}
 				}
 			Shader.Test.release();
-		tex.release();
+		type.tex.release();
 	}
 
 	public void renderParticle(Particle p) {
@@ -134,6 +109,6 @@ public class ParticleEmitter{
 	}
 	
 	public void finalize(){
-		GL15.glDeleteBuffers(vbo);
+		GL15.glDeleteBuffers(type.vbo);
 	}
 }

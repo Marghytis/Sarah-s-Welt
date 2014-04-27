@@ -34,6 +34,10 @@ public class WorldDatabase extends Datenbank{
         }
 	}
 	
+	public Sector loadSector(int x){
+		return null;
+	}
+	
 //	public MatArea loadAreasAt(int xSector){
 //		try {
 //            Statement sql = conn.createStatement();

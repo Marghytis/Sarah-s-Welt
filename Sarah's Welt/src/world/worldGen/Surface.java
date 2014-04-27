@@ -36,7 +36,7 @@ public abstract class Surface {
 	public void placeClouds(Sector sector){
 		int count = random.nextInt(3);
 		for(int i = 0; i < count; i++){
-			int x = (int)((sector.x + random.nextFloat())*Sector.WIDTH);
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 300 + random.nextInt(200));
 			
@@ -48,7 +48,7 @@ public abstract class Surface {
 	
 	public void spreadButterflies(Sector sector){
 		for(int i = 0; i < 3; i++){
-			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 20);
 			
@@ -60,7 +60,7 @@ public abstract class Surface {
 	
 	public void spreadRabbits(Sector sector){
 		for(int i = 0; i < 1; i++){
-			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 5);
 			
@@ -72,7 +72,7 @@ public abstract class Surface {
 	
 	public void spreadSnails(Sector sector){
 		for(int i = 0; i < 1; i++){
-			float x = (sector.x + random.nextFloat())*Sector.WIDTH;
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 5);
 			
@@ -84,7 +84,7 @@ public abstract class Surface {
 	
 	public void plantTrees(Sector sector){
 		for(int i = 0; i < 10; i++){
-			int x = sector.x*Sector.WIDTH + random.nextInt(Sector.WIDTH);
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 0);
 			
@@ -96,7 +96,7 @@ public abstract class Surface {
 	
 	public void plantGrass(Sector sector){
 		for(int i = 0; i < 100; i++){
-			int x = sector.x*Sector.WIDTH + random.nextInt(Sector.WIDTH);
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 0);
 			
@@ -108,7 +108,7 @@ public abstract class Surface {
 	
 	public void plantFlowers(Sector sector){
 		for(int i = 0; i < 25; i++){
-			int x = sector.x*Sector.WIDTH + random.nextInt(Sector.WIDTH);
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 0);
 			
@@ -120,7 +120,7 @@ public abstract class Surface {
 	
 	public void plantBushes(Sector sector){
 		for(int i = 0; i < 10; i++){
-			int x = sector.x*Sector.WIDTH + random.nextInt(Sector.WIDTH);
+			int x = sector.getGoodSpawnPos(random);
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 0);
 			

@@ -1,11 +1,14 @@
 package particles;
 
+import particles.Particle.ParticleType;
 import resources.Texture;
 import world.Point;
 
 public class RainEffect {
 	
-	public ParticleEmitter drops = new ParticleEmitter(200, 50, new Texture("particles/Raindrop"), 2000){
+	public static final ParticleType RAINDROP = new ParticleType(new Texture("particles/Raindrop"));
+	
+	public ParticleEmitter drops = new ParticleEmitter(200, 50, RAINDROP, 2000){
 
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt((int)size.x), pos.y + random.nextInt((int)size.y));

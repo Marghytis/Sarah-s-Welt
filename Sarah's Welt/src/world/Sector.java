@@ -2,6 +2,7 @@ package world;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import world.creatures.Creature;
 import world.structures.Structure;
@@ -9,7 +10,7 @@ import world.worldGen.Connection;
 
 public class Sector{
 	/**The width of one sector, always the same*/
-	public static final int WIDTH = 1000;
+	public static final int WIDTH = 200;
 	
 	public int x;
 	public MatArea[] areas = new MatArea[Material.values().length];
@@ -39,6 +40,10 @@ public class Sector{
 			} while(h != n);
 		}
 		return null;
+	}
+	
+	public int getGoodSpawnPos(Random r){
+		return (x*WIDTH) + r.nextInt(WIDTH - 1) + 1;//ones because it shouldn't spawn at the border
 	}
 	
 	public void connectTo(Sector other){

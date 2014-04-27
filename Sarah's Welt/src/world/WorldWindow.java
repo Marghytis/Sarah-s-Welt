@@ -1,26 +1,20 @@
 package world;
 
-import static org.lwjgl.opengl.ARBShaderObjects.glGetUniformLocationARB;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
 import resources.Res;
-import resources.Shader;
 import resources.Texture;
-import util.Color;
 import util.Tessellator;
 import world.creatures.Creature;
 import world.creatures.Sarah;
 import world.otherThings.Heart;
-import world.structures.Flower;
 import world.structures.Structure;
 import world.worldGen.WorldGenerator;
 import core.Menu;
@@ -65,6 +59,8 @@ public class WorldWindow {
 		
 		private static void load(){
 			generator = new WorldGenerator();//already creates the first 3 sectors
+			WorldLoader.load(2, true);
+			WorldLoader.load(-2, false);
 			
 			sectors[1].connectTo(sectors[0]);
 			sectors[1].connectTo(sectors[2]);
@@ -91,13 +87,14 @@ public class WorldWindow {
 			
 			int playerX = (int)(sarah.pos.x/Sector.WIDTH) - (sarah.pos.x < 0 ? 1 : 0);
 			if(playerX != xSector){
-				if(playerX == xSector - 1){
-					step(false);
-				} else if (playerX == xSector + 1){
-					step(true);
+				boolean dir = playerX == xSector + 1;
+				xSector += dir ? 1 : -1;
+				if(WorldLoader.ready(dir)){
+					step(dir);
 				} else {
-					//What??
+					System.out.println("ERROR: WorldLoader to the " + (dir ? "right" : "left") + " was not ready to step!");
 				}
+				WorldLoader.load(xSector + (dir ? 2 : -2), dir);
 			}
 			if(random.nextInt(2000) < 1){
 				Point inter = new Point();
@@ -223,37 +220,26 @@ public class WorldWindow {
 				light.release();
 			}
 		}
-				
+		
 		public static void step(boolean rightwards){
 			//if !load(x)
 			if(rightwards){
 				//expand rightwards
 				//move rim etc.
-				xSector++;
 				putThingsTo(sectors[0]);
 				sectors[0].partiateFrom(sectors[1]);
 				sectors[0] = sectors[1];
 				sectors[1] = sectors[2];
-				if(xSector > generator.rimR-2){
-					sectors[2] = generator.generateRight();
-				} else {
-					sectors[2] = null;//TODO load
-				}
+				sectors[2] = WorldLoader.right.sector;
 				sectors[1].connectTo(sectors[2]);
 				takeThingsFrom(sectors[2]);
 //				for(int i = 0; i < sectors[1].areas.length; i++) sectors[1].areas[i].tessellationNeeded = true;
 			} else {
-				xSector--;
-				sectors[2].partiateFrom(sectors[1]);
 				putThingsTo(sectors[2]);
+				sectors[2].partiateFrom(sectors[1]);
 				sectors[2] = sectors[1];
 				sectors[1] = sectors[0];
-				
-				if(xSector < generator.rimL+1){
-					sectors[0] = generator.generateLeft();
-				} else {
-					sectors[0] = null;//database.loadSectorAt();TODO
-				}
+				sectors[0] = WorldLoader.left.sector;
 				if(sectors[0] != null){
 					sectors[0].connectTo(sectors[1]);
 					takeThingsFrom(sectors[0]);
@@ -264,7 +250,7 @@ public class WorldWindow {
 		public static void putThingsTo(Sector s){
 			for(int i = 0; i < creatures.size(); i++){
 				Creature c = creatures.get(i);
-				if(c.pos.x > s.x*Sector.WIDTH && c.pos.x < (s.x + 1)*Sector.WIDTH){
+				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
 					s.creatures.add(c);
 					creatures.remove(i);
 					i--;
@@ -272,7 +258,7 @@ public class WorldWindow {
 			}
 			for(int i = 0; i < structures.size(); i++){
 				Structure c = structures.get(i);
-				if(c.pos.x > s.x*Sector.WIDTH && c.pos.x < (s.x + 1)*Sector.WIDTH){
+				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
 					s.structures.add(c);
 					structures.remove(i);
 					i--;
