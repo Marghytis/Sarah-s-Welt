@@ -4,10 +4,14 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
+
+import sound.Lesson1;
 
 import com.sun.scenario.effect.impl.BufferUtil;
 
@@ -17,25 +21,28 @@ public class Test {
 	}
 	
 	public int WIDTH = 1000, HEIGHT = 500;
-	
+	Lesson1 test;
 	public Test() {
-		try {
-			java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL("file://c:/res/twolf.wav"));
-			clip.loop();
-		} catch (java.net.MalformedURLException murle) {
-			System.out.println(murle);
-		}
-//		createDisplay();
-//		
-//		setup();
-//		
-//		while (!Display.isCloseRequested()) {
-//			loop();
-//			Display.sync(60);
-//			Display.update();
+//		try {
+//			java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL("file://c:/res/twolf.wav"));
+//			clip.loop();
+//		} catch (java.net.MalformedURLException murle) {
+//			System.out.println(murle);
 //		}
-//		
-//		Display.destroy();
+		test = new Lesson1();
+		test.execute();
+		
+		createDisplay();
+		
+		setup();
+		
+		while (!Display.isCloseRequested()) {
+			loop();
+			Display.sync(60);
+			Display.update();
+		}
+		
+		Display.destroy();
 	}
 	
 	private void createDisplay() {		
@@ -69,7 +76,7 @@ public class Test {
 		int[] indices = {0, 1, 2, 2, 3, 0}; indexCount = 6;
 		
 		//create VBO
-		FloatBuffer vertexBuffer = BufferUtil.newFloatBuffer(19);
+		FloatBuffer vertexBuffer = BufferUtil.newFloatBuffer(20);
 		vertexBuffer.put(vertices);
 		vertexBuffer.flip();
 		
@@ -93,6 +100,22 @@ public class Test {
 	}
 	
 	public void loop(){
+		update();
+		render();
+	}
+	
+	public void update(){
+		while(Keyboard.next()){
+			if(Keyboard.getEventKeyState())
+			switch(Keyboard.getEventKey()){
+			case Keyboard.KEY_P: AL10.alSourcePlay(test.source.get(0)); break;
+			case Keyboard.KEY_S: AL10.alSourceStop(test.source.get(0)); break;
+			case Keyboard.KEY_SPACE: AL10.alSourcePause(test.source.get(0)); break;
+			}
+		}
+	}
+	
+	public void render(){
 		//Enable vertex buffer
 		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 		GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
@@ -111,5 +134,6 @@ public class Test {
 		//release buffers
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+		
 	}
 }

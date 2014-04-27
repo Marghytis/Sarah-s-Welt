@@ -1,8 +1,10 @@
 package core;
 
+import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
+import resources.Res;
 import resources.Texture;
 import world.Calendar;
 import world.WorldWindow;
@@ -27,6 +29,8 @@ public class Main {
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
 			Display.sync(60);
+			
+			if(Settings.sound && !Res.test.playing) Res.test.play();
 
 			render();
 			
@@ -36,6 +40,8 @@ public class Main {
 			calculate(delta);
 			Display.update();
 		}
+		
+		AL10.alSourceStop(Res.test.source);
 		Display.destroy();
 	}
 	
