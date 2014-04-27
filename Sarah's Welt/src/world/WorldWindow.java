@@ -246,7 +246,7 @@ public class WorldWindow {
 				}
 			}
 		}
-		
+	
 		public static void putThingsTo(Sector s){
 			for(int i = 0; i < creatures.size(); i++){
 				Creature c = creatures.get(i);
