@@ -8,11 +8,16 @@ import java.nio.ByteBuffer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+<<<<<<< HEAD
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
+=======
+import org.lwjgl.opengl.ContextAttribs;
+>>>>>>> branch 'master' of https://github.com/Marghytis/Sarah-s-Welt.git
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.PixelFormat;
 
 import resources.PNGDecoder;
 
@@ -31,7 +36,6 @@ public class Window {
 		
 		Display.setTitle(name);
 		setSize(width, height);
-		
 		create();
 	}
 	
@@ -52,6 +56,7 @@ public class Window {
 		}
 		WIDTH = Display.getWidth();
 		HEIGHT = Display.getHeight();
+
 
 		create();
 	}
