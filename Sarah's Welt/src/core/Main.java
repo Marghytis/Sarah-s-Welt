@@ -19,7 +19,7 @@ public class Main {
 //		}
 //		int titelTex = Window.createTexture("Titel.png");
 		
-		Window.createFullScreen("Sarahs Welt");
+		Window.create("Sarahs Welt", 1000, 500);
 		new Quad(Window.WIDTH/2 - 600, Window.HEIGHT/2 - 400, 1200, 800).drawTex(new Texture("Titel", 0, 0));
 		Display.update();
 		WorldWindow.load("TestWelt");
