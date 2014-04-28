@@ -23,12 +23,13 @@ public class Butterfly extends WalkingCreature{
 	}
 	
 
-	public static StackedTexture BROUN  = new StackedTexture("creatures/Butterfly1", 5, 1, -0.5f, -0.5f);
-	public static StackedTexture BLUE  = new StackedTexture("creatures/Butterfly2", 5, 1, -0.5f, -0.5f);
+	public static StackedTexture BUTTERFLY  = new StackedTexture("creatures/Butterfly", 5, 2, -0.5f, -0.5f);
+
+	public static Animation flap1 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
+	public static Animation flap2 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
 	
-	public static Animation flap = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
 	public Butterfly(int type, Point p, Node worldLink, int frame){
-		super(type == 0 ? BROUN : BLUE, flap, p, worldLink);
+		super(BUTTERFLY, type == 0 ? flap1 : flap2, p, worldLink);
 		front = true;
 		health = 5;
 		animator.frame = frame;

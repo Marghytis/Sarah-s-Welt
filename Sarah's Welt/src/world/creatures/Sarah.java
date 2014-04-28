@@ -15,35 +15,37 @@ public class Sarah extends WalkingCreature {
 	public float keyAcc = 0.00005f;//the acceleration the Sarah experiences on the pressure of a movement key
 	public boolean flying = false;
 	
-	public static StackedTexture STAND_WALK = new StackedTexture("sarah/Sarah", 11, 1, -0.5f, -0.1f);
+	public static Sarah sarah;
+	
+	public static void updateSarah(int dTime){
+		sarah.tick(dTime);
+	}
+	
+	public static void renderSarah(){
+		sarah.render();
+	}
+	
+	public static StackedTexture SARAH = new StackedTexture("Sarah", 11, 7, -0.5f, -0.1f);
+	
 	static Animation stand = new Animation(0, 0);
-	static Animation walk = new Animation(3, 0, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
-	
-	public static StackedTexture JUMP = new StackedTexture("sarah/Sarah_jump_l", 7 , 1, -0.5f, -0.1f);
-	static Animation jump = new Animation(5, 0, false, 	1, 2, 3, 4, 5, 6);
-	static Animation fly = new Animation(6, 0);
-	static Animation land = new Animation(2, 0, false, 	5, 4, 3, 2, 1);
-	
-	public static StackedTexture RUN = new StackedTexture("sarah/Sarah_runs2_r", 9, 1, -0.5f, -0.1f);
-	static Animation run = new Animation(3, 0, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
-	
-	public static StackedTexture DOWN = new StackedTexture("sarah/Sarah_down", 4 , 1, -0.5f, -0.1f);
-	static Animation sneak = new Animation(10, 0, true, 	1, 2, 3, 4);
-	static Animation crouch = new Animation(0, 0);
-	
-	public static StackedTexture PUNCH = new StackedTexture("sarah/Sarah_beat_r", 9 , 1, -0.5f, -0.1f);
-	static Animation punch = new Animation(1, 0, false, 	1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
-	
-	public static StackedTexture KICK = new StackedTexture("sarah/Sarah_kick", 6 , 1, -0.5f, -0.1f);
-	static Animation kick = new Animation(3, 0, false, 	1, 2, 3, 4, 5, 6);
+	static Animation walk = new Animation(3, 1, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
+	static Animation jump = new Animation(5, 3, false, 	1, 2, 3, 4, 5, 6);
+	static Animation fly = new Animation(6, 3);
+	static Animation land = new Animation(2, 3, false, 	5, 4, 3, 2, 1);
+	static Animation run = new Animation(3, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
+	static Animation sneak = new Animation(10, 5, true, 1, 2, 3, 4);
+	static Animation crouch = new Animation(0, 5);
+	static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
+	static Animation kick = new Animation(3, 6, false, 	1, 2, 3, 4, 5, 6);
 	
 	
 	public Sarah(Point pos, Node worldLink){
-		super(STAND_WALK, stand, pos, worldLink);
+		super(SARAH, stand, pos, worldLink);
 		hitradius = 80;
 		punchStrength = 2;
 		maxSpeed = 10;
 		animator.doOnReady = () -> WorldWindow.sarah.animator.animation = stand;
+		sarah = this;
 	}
 	
 	public void tick(int dTime){
@@ -94,7 +96,6 @@ public class Sarah extends WalkingCreature {
 	public boolean collision(){
 		if(super.collision()){
 			animator.setAnimation(land);
-			tex = JUMP;
 			return true;
 		}
 		return false;
@@ -120,19 +121,19 @@ public class Sarah extends WalkingCreature {
 			if(g){
 				if(keyDir != 0){
 					switch(walkMode){
-					case 0: animator.setAnimation(sneak); tex = DOWN; break;
-					case 1: animator.setAnimation(walk); tex = STAND_WALK; break;
-					case 2: animator.setAnimation(run); tex = RUN; break;
+					case 0: animator.setAnimation(sneak); break;
+					case 1: animator.setAnimation(walk); break;
+					case 2: animator.setAnimation(run); break;
 					}
 				} else {
 					switch(walkMode){
-					case 0: animator.setAnimation(crouch); tex = DOWN; break;
+					case 0: animator.setAnimation(crouch); break;
 					case 1: 
-					case 2: animator.setAnimation(stand); tex = STAND_WALK; break;
+					case 2: animator.setAnimation(stand); break;
 					}
 				}
 			} else {
-				animator.setAnimation(fly); tex = JUMP;
+				animator.setAnimation(fly);
 			}
 		}
 	}
@@ -147,15 +148,15 @@ public class Sarah extends WalkingCreature {
 		if(g){
 			pos.y++;
 			accelerateFromGround(new Point(0, 0.001f));
-			animator.setAnimation(jump); tex = JUMP;
+			animator.setAnimation(jump);
 		}
 	}
 	
 	public void punch(){
 		switch(walkMode){
-		case 0: animator.setAnimation(kick); tex = KICK; break;
+		case 0: animator.setAnimation(kick); break;
 		case 1:
-		case 2: animator.setAnimation(punch); tex = PUNCH; break;
+		case 2: animator.setAnimation(punch); break;
 		}
 	}
 }

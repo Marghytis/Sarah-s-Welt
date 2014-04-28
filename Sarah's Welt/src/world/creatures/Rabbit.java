@@ -24,10 +24,10 @@ public class Rabbit extends WalkingCreature {
 	}
 	
 	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 2, -0.5f, -0.2f);
-
-	static Animation stand = new Animation(0, 0);
-	static Animation hitt = new Animation(0, 1);
-	static Animation walk = new Animation(10, 0, true, 1, 2, 3, 4, 3, 2);
+		static Animation stand = new Animation(0, 0);
+		static Animation hitt = new Animation(2, 0);
+		static Animation walk = new Animation(10, 0, true, 1, 2, 3, 4, 3, 2);
+		static Animation punch = new Animation(10, 1, true, 1, 2, 3, 4, 1);
 	
 	public Rabbit(Point p, Node worldLink){
 		super(RABBIT, stand, p, worldLink);

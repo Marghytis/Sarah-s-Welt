@@ -3,41 +3,39 @@ package world.creatures;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.Settings;
 import resources.StackedTexture;
 import util.Animation;
 import world.Material;
 import world.Node;
 import world.Point;
-import world.Sector;
 import world.WorldWindow;
 import world.structures.Cloud;
 import world.structures.Structure;
+import core.Settings;
 
 public class Snail extends WalkingCreature {
 	
-	public static List<Rabbit> l_i_s_t = new ArrayList<>();
+	public static List<Snail> l_i_s_t = new ArrayList<>();
 	
 	public static void updateAll(int dTime){
 		l_i_s_t.forEach((b) -> b.tick(dTime));
 	}
 	
 	public static void renderAll(){
-		RABBIT.bind();
+		SNAIL.bind();
 			l_i_s_t.forEach((b) -> b.render());
-		RABBIT.release();
+		SNAIL.release();
 	}
 
-	public static StackedTexture STAND_WALK  = new StackedTexture("creatures/Snail_", 5, 1, -0.5f, -0.1f);
+	public static StackedTexture SNAIL  = new StackedTexture("creatures/Snail", 7, 3, -0.5f, -0.1f);
 		static Animation walk = new Animation(10, 0, true,	0, 1, 2, 3, 4, 3, 2, 1);
 		static Animation stand = new Animation(0, 0);
-	public static StackedTexture BEAT_HIT  = new StackedTexture("creatures/Snail_beats", 8, 1, -0.5f, -0.1f);
-		static Animation punch = new Animation(3, 0, false, 1, 2, 3, 4, 5, 6, 5);
-		static Animation hitt = new Animation(7, 0);
+		static Animation punch = new Animation(3, 1, false, 1, 2, 3, 4, 5, 6, 5);
+		static Animation hitt = new Animation(0, 2);
 
 	
 	public Snail(Point p, Node worldLink){
-		super(STAND_WALK, stand, p, worldLink);
+		super(SNAIL, stand, p, worldLink);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
 		front = true;
@@ -70,7 +68,7 @@ public class Snail extends WalkingCreature {
 	
 	public void donePunch(){
 		WorldWindow.sarah.hitBy(this);
-		animator.setAnimation(stand); tex = STAND_WALK;
+		animator.setAnimation(stand);
 	}
 	
 	public boolean findSarah(){
@@ -81,7 +79,7 @@ public class Snail extends WalkingCreature {
 				dir = -1;
 			} else {
 				dir = 0;
-				animator.setAnimation(punch); tex = BEAT_HIT;
+				animator.setAnimation(punch);
 			}
 			maxSpeed = 6;
 			return true;
@@ -128,14 +126,12 @@ public class Snail extends WalkingCreature {
 		super.beforeRender();
 		
 		if(hit > 0){
-			tex = BEAT_HIT;
-			animator.setAnimation(hitt); tex = BEAT_HIT;
+			animator.setAnimation(hitt);
 		} else if(!animator.animation.equals(punch)){
-			tex = STAND_WALK;
 			if(vP != 0){
-				animator.setAnimation(walk); tex = STAND_WALK;
+				animator.setAnimation(walk);
 			} else {
-				animator.setAnimation(stand); tex = STAND_WALK;
+				animator.setAnimation(stand);
 			}
 		}
 	}

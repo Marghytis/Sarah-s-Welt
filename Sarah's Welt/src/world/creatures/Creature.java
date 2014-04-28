@@ -7,8 +7,25 @@ import world.Node;
 import world.Point;
 import world.Thing;
 import world.WorldWindow;
+import world.otherThings.Heart;
 
 public abstract class Creature extends Thing {
+	
+	public static void updateEveryCreature(int dTime){
+		Butterfly.updateAll(dTime);
+		Rabbit.updateAll(dTime);
+		Snail.updateAll(dTime);
+		Sarah.updateSarah(dTime);
+		Heart.updateAll(dTime);
+	}
+	
+	public static void renderEveryCreature(){
+		Butterfly.renderAll();
+		Rabbit.renderAll();
+		Snail.renderAll();
+		Sarah.renderSarah();
+		Heart.renderAll();
+	}
 	
 	protected Point acc = new Point();
 	protected Point vel = new Point();
