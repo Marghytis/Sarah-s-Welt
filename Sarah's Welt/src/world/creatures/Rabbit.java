@@ -14,7 +14,13 @@ public class Rabbit extends WalkingCreature {
 	public static List<Rabbit> l_i_s_t = new ArrayList<>();
 	
 	public static void updateAll(int dTime){
-		l_i_s_t.forEach((b) -> b.tick(dTime));
+		for(int i = 0; i < l_i_s_t.size(); i++){
+			Rabbit c = l_i_s_t.get(i);
+			c.tick(dTime);
+			if(c.health <= 0){
+				l_i_s_t.remove(c);
+			}
+		}
 	}
 	
 	public static void renderAll(){

@@ -1,5 +1,9 @@
 package world.creatures;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 import resources.StackedTexture;
 import util.Animation;
 import world.Material;
@@ -10,6 +14,9 @@ import world.WorldWindow;
 import world.otherThings.Heart;
 
 public abstract class Creature extends Thing {
+
+	public static List<Runnable> render = new ArrayList<>();
+	public static List<Consumer<Integer>> update = new ArrayList<>();
 	
 	public static void updateEveryCreature(int dTime){
 		Butterfly.updateAll(dTime);
@@ -17,6 +24,15 @@ public abstract class Creature extends Thing {
 		Snail.updateAll(dTime);
 		Sarah.updateSarah(dTime);
 		Heart.updateAll(dTime);
+		try {
+			creatureTypes.get(0).getDeclaredMethod("updateAll");
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void renderEveryCreature(){
@@ -25,6 +41,14 @@ public abstract class Creature extends Thing {
 		Snail.renderAll();
 		Sarah.renderSarah();
 		Heart.renderAll();
+	}
+	
+	public static void forEach(Consumer<Creature> consumer){
+		Butterfly.l_i_s_t.forEach(consumer);
+		Rabbit.l_i_s_t.forEach(consumer);
+		Snail.l_i_s_t.forEach(consumer);
+		consumer.accept(Sarah.sarah);
+		Heart.l_i_s_t.forEach(consumer);
 	}
 	
 	protected Point acc = new Point();

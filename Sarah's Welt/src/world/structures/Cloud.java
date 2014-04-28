@@ -1,5 +1,8 @@
 package world.structures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import particles.RainEffect;
@@ -9,6 +12,18 @@ import world.Node;
 import world.Point;
 
 public class Cloud extends Structure{
+	
+	public static List<Cloud> l_i_s_t = new ArrayList<>();
+	
+	public static void updateAll(int dTime){
+		l_i_s_t.forEach((b) -> b.tick(dTime));
+	}
+	
+	public static void renderAll(){
+		Res.CLOUD.bind();
+			l_i_s_t.forEach((b) -> b.render());
+		Res.CLOUD.release();
+	}
 
 	private RainEffect effect;
 	public float xSize;

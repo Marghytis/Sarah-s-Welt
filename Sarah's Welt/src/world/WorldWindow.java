@@ -1,7 +1,5 @@
 package world;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
@@ -40,9 +38,6 @@ public class WorldWindow {
 		public static Lightmap light;
 		
 		public static float lightLevel = 0.1f;
-		
-		public static List<Structure> structures = new ArrayList<>();
-		public static List<Creature> creatures = new ArrayList<>();
 		
 		public static int[] sky = {0, 0, 100};
 	
@@ -101,17 +96,11 @@ public class WorldWindow {
 				int sec = random.nextInt(3);
 				if(sectors[sec] != null){
 					Node link = (sectors[sec].findGrassPointAt((sectors[sec].x + random.nextFloat())*Sector.WIDTH, inter, 100));
-					creatures.add(new Heart(inter, link));
+					new Heart(inter, link);
 				}
 			}
-			structures.forEach(s -> s.tick(dTime));
-			for(int i = 0; i < creatures.size(); i++){
-				Creature c = creatures.get(i);
-				c.tick(dTime);
-				if(c.health <= 0){
-					creatures.remove(c);
-				}
-			}
+			Structure.updateEveryStructure(dTime);
+			Creature.updateEveryCreature(dTime);
 		}
 		
 		public static void mouseListening(){
@@ -120,11 +109,11 @@ public class WorldWindow {
 				if(Mouse.getEventButtonState() && Mouse.getEventButton() == 0){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					for(Creature c : creatures){
+					Creature.forEach((c) -> {
 						if((c.pos.x + c.tex.box.x < x && c.pos.x + c.tex.box.x + c.tex.box.width > x) && (c.pos.y + c.tex.box.y < y && c.pos.y + c.tex.box.y + c.tex.box.height > y)){
 							c.hitBy(sarah);
 						}
-					}
+					});
 					sarah.punch();
 				}
 			}
@@ -176,25 +165,16 @@ public class WorldWindow {
 			GL11.glColor4f(1, 1, 1, 1);
 
 			//back
-			for(Structure s : structures){
-				if(!s.front)s.render();
-			}
-//			for(Sector sec : sectors){
-			{Sector sec = sectors[1];
-//				if(sec == null) continue;
-				
-				for(int mat = 0; mat < Material.values().length; mat++){
-						sec.areas[mat].render(Material.values()[mat].texture);
-				}
-				
+			Structure.forEach((s) -> {if(!s.front){s.render();}});
+			
+			for(int mat = 0; mat < Material.values().length; mat++){
+				sectors[1].areas[mat].render(Material.values()[mat].texture);
 			}
 			
 			//front
-			for(Structure s : structures){
-				if(s.front)s.render();
-			}
+			Structure.forEach((s) -> {if(s.front){s.render();}});
 			
-			creatures.forEach(c -> c.render());
+			Creature.forEach(c -> c.render());
 
 //			GL11.glPushMatrix();
 //			sarah.render();
@@ -202,7 +182,7 @@ public class WorldWindow {
 
 			
 			//render health on creatures
-			if(Settings.health) creatures.forEach(c -> Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f));
+			if(Settings.health) Creature.forEach(c -> Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f));
 			
 			//health on sarah
 			if(Settings.health){
@@ -248,27 +228,27 @@ public class WorldWindow {
 		}
 	
 		public static void putThingsTo(Sector s){
-			for(int i = 0; i < creatures.size(); i++){
-				Creature c = creatures.get(i);
-				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
-					s.creatures.add(c);
-					creatures.remove(i);
-					i--;
-				}
-			}
-			for(int i = 0; i < structures.size(); i++){
-				Structure c = structures.get(i);
-				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
-					s.structures.add(c);
-					structures.remove(i);
-					i--;
-				}
-			}
+//			for(int i = 0; i < creatures.size(); i++){
+//				Creature c = creatures.get(i);
+//				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
+//					s.creatures.add(c);
+//					creatures.remove(i);
+//					i--;
+//				}
+//			}
+//			for(int i = 0; i < structures.size(); i++){
+//				Structure c = structures.get(i);
+//				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
+//					s.structures.add(c);
+//					structures.remove(i);
+//					i--;
+//				}
+//			}
 		}
 		
 		public static void takeThingsFrom(Sector s){
 			
-			structures.addAll(s.structures); s.structures.clear();
-			creatures.addAll(s.creatures); s.creatures.clear();
+//			structures.addAll(s.structures); s.structures.clear();
+//			creatures.addAll(s.creatures); s.creatures.clear();
 		}
 }

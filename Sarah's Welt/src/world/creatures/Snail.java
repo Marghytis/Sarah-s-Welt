@@ -17,6 +17,11 @@ public class Snail extends WalkingCreature {
 	
 	public static List<Snail> l_i_s_t = new ArrayList<>();
 	
+	static {
+		Creature.render.add(Snail::renderAll);
+		Creature.update.add(Snail::updateAll);
+	}
+	
 	public static void updateAll(int dTime){
 		l_i_s_t.forEach((b) -> b.tick(dTime));
 	}

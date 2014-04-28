@@ -19,7 +19,9 @@ public class Butterfly extends WalkingCreature{
 	}
 	
 	public static void renderAll(){
+		BUTTERFLY.bind();
 		l_i_s_t.forEach((b) -> b.render());
+		BUTTERFLY.release();
 	}
 	
 
