@@ -8,11 +8,15 @@ import sound.Sound;
 
 public class Res {
 
+	public static StackedTexture CLOUD;
+	
 	public static SimpleText font;
 	public static SimpleText arial;
 	public static Sound test;
 	
 	public static void load(){
+		CLOUD = new StackedTexture("structures/Cloud", 1, 1, -0.5f, -0.5f);
+		
 		font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT
 		arial = new SimpleText(new Font("", Font.BOLD, 45), true);
 		test = new Sound("69569__digifishmusic__syyyymphonica.wav");

@@ -1,46 +1,56 @@
 package core;
 
-import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
 import resources.Texture;
+import util.T;
 import world.Calendar;
 import world.WorldWindow;
-import core.geom.Quad;
 
 public class Main {
 
 	public static void main(String[] args){
-//		Window.createSplash("Titel.png", 600, 400);
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		int titelTex = Window.createTexture("Titel.png");
 		
-		Window.create("Sarahs Welt", 1000, 500);
-		new Quad(Window.WIDTH/2 - 600, Window.HEIGHT/2 - 400, 1200, 800).drawTex(new Texture("Titel", 0, 0));
+		Window.create("Sarahs Welt", 1000, 300);
+//		Window.createFullScreen("Sarahs Welt");
+		Window.fill(new Texture("titelbild", 0, 0).handle);
 		Display.update();
-		WorldWindow.load("TestWelt");
 		Res.load();
+		WorldWindow.load("TestWelt");
+		long endTime = System.currentTimeMillis() + 20000;
+		int counter = 0;
+		int heapCounter = 0;
+		int max = 0;
+		int sum = 0;
 		
 		long timeLastWorldTick = System.currentTimeMillis();
-		while(!Display.isCloseRequested() && !beenden){
-			Display.sync(60);
+		while(timeLastWorldTick < endTime && !Display.isCloseRequested() && !beenden){
+			long testTime = System.currentTimeMillis();
+//			Display.sync(1000);
 			
 			if(Settings.sound && !Res.test.playing) Res.test.play();
 
 			render();
 			
 			listening();
-			int delta = (int)(System.currentTimeMillis() - timeLastWorldTick);
-			timeLastWorldTick += delta;
-			calculate(delta);
+			long t = System.currentTimeMillis();
+			calculate((int)(t - timeLastWorldTick));
+			timeLastWorldTick = t;
+			
+			int delta = (int)(System.currentTimeMillis() - testTime);
+			 if(delta > 17){
+				 System.out.print("-----");
+				 heapCounter++;
+				 if(counter != 0)max = Math.max(delta, max);
+			 } System.out.println(delta);
+			 counter++;
+			 if(counter != 1)sum += delta;
 			Display.update();
 		}
+		
+		System.out.println("\nExtremwerte: " + heapCounter + "  Durchläufe: " + counter + "  Maximum: " + max + "  Average: " + (sum/counter));
 
 		Res.test.stop();
 		Res.unload();

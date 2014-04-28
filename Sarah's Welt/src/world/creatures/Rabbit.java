@@ -1,5 +1,8 @@
 package world.creatures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import resources.StackedTexture;
 import util.Animation;
 import world.Material;
@@ -7,7 +10,19 @@ import world.Node;
 import world.Point;
 
 public class Rabbit extends WalkingCreature {
-
+	
+	public static List<Rabbit> l_i_s_t = new ArrayList<>();
+	
+	public static void updateAll(int dTime){
+		l_i_s_t.forEach((b) -> b.tick(dTime));
+	}
+	
+	public static void renderAll(){
+		RABBIT.bind();
+			l_i_s_t.forEach((b) -> b.render());
+		RABBIT.release();
+	}
+	
 	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 2, -0.5f, -0.2f);
 
 	static Animation stand = new Animation(0, 0);
@@ -20,7 +35,7 @@ public class Rabbit extends WalkingCreature {
 		health = 10;
 	}
 	
-	public void tick(float dTime){
+	public void tick(int dTime){
 		if(g){
 //			pos.y++;
 //			accelerateFromGround(new Point(0, 0.001f));

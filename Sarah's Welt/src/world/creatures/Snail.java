@@ -1,5 +1,8 @@
 package world.creatures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import core.Settings;
 import resources.StackedTexture;
 import util.Animation;
@@ -12,6 +15,18 @@ import world.structures.Cloud;
 import world.structures.Structure;
 
 public class Snail extends WalkingCreature {
+	
+	public static List<Rabbit> l_i_s_t = new ArrayList<>();
+	
+	public static void updateAll(int dTime){
+		l_i_s_t.forEach((b) -> b.tick(dTime));
+	}
+	
+	public static void renderAll(){
+		RABBIT.bind();
+			l_i_s_t.forEach((b) -> b.render());
+		RABBIT.release();
+	}
 
 	public static StackedTexture STAND_WALK  = new StackedTexture("creatures/Snail_", 5, 1, -0.5f, -0.1f);
 		static Animation walk = new Animation(10, 0, true,	0, 1, 2, 3, 4, 3, 2, 1);
@@ -28,7 +43,7 @@ public class Snail extends WalkingCreature {
 		front = true;
 	}
 	
-	public void tick(float dTime){
+	public void tick(int dTime){
 		if(g){
 //			pos.y++;
 //			accelerateFromGround(new Point(0, 0.001f));

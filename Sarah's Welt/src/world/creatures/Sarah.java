@@ -46,7 +46,7 @@ public class Sarah extends WalkingCreature {
 		animator.doOnReady = () -> WorldWindow.sarah.animator.animation = stand;
 	}
 	
-	public void tick(float dTime){
+	public void tick(int dTime){
 		if(flying) g = false;
 		if(g){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {

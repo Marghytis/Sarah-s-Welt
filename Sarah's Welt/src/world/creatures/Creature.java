@@ -23,7 +23,7 @@ public abstract class Creature extends Thing {
 		super(tex, defaultAni, pos, worldLink);
 	}
 	
-	public void tick(float dTime){
+	public void tick(int dTime){
 		pos.add(vel);
 		
 		vel.add(acc.scaledBy(dTime).scaledBy(WorldWindow.measureScale*dTime));

@@ -82,7 +82,7 @@ public class WorldWindow {
 			light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
 		}
 		
-		public static void tick(float dTime){
+		public static void tick(int dTime){
 			sarah.tick(dTime);
 			
 			int playerX = (int)(sarah.pos.x/Sector.WIDTH) - (sarah.pos.x < 0 ? 1 : 0);
@@ -196,9 +196,9 @@ public class WorldWindow {
 			
 			creatures.forEach(c -> c.render());
 
-			GL11.glPushMatrix();
-			sarah.render();
-			GL11.glPopMatrix();
+//			GL11.glPushMatrix();
+//			sarah.render();
+//			GL11.glPopMatrix();
 
 			
 			//render health on creatures

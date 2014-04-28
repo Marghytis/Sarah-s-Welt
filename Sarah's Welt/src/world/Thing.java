@@ -34,7 +34,7 @@ public abstract class Thing {
 		animator.setAnimation(defaultAni);
 	}
 
-	public void tick(float dTime){}
+	public void tick(int dTime){}
 	
 	/**
 	 * World coordinates

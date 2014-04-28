@@ -9,6 +9,7 @@ import world.Sector;
 import world.creatures.Butterfly;
 import world.creatures.Rabbit;
 import world.creatures.Snail;
+import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cloud;
 import world.structures.Flower;
@@ -52,7 +53,7 @@ public abstract class Surface {
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 20);
 			
-			Butterfly but = new Butterfly(random.nextInt(2), intersection, link);
+			Butterfly but = new Butterfly(random.nextInt(2), intersection, link, random.nextInt(Butterfly.flap.sequence.length));
 			
 			sector.creatures.add(but);
 		}
@@ -125,6 +126,18 @@ public abstract class Surface {
 			Node link = sector.findGrassPointAt(x, intersection, 0);
 			
 			Bush bush = new Bush(random.nextInt(2), intersection, link, random.nextBoolean());
+			
+			sector.structures.add(bush);
+		}
+	}
+	
+	public void plantBamboo(Sector sector){
+		for(int i = 0; i < 10; i++){
+			int x = sector.getGoodSpawnPos(random);
+			Point intersection = new Point(x, 0);
+			Node link = sector.findGrassPointAt(x, intersection, 0);
+			
+			Bamboo bush = new Bamboo(random.nextInt(2), intersection, link, random.nextBoolean());
 			
 			sector.structures.add(bush);
 		}

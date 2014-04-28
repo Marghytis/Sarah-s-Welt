@@ -2,7 +2,12 @@ package particles;
 
 import particles.Particle.ParticleType;
 import resources.Texture;
+import world.Material;
+import world.Node;
 import world.Point;
+import world.WorldWindow;
+
+import com.sun.javafx.geom.Line2D;
 
 public class RainEffect {
 	
@@ -20,6 +25,7 @@ public class RainEffect {
 
 		public void velocityInterpolator(Particle p) {
 			p.vel.y -= 0.01f;
+			collision(p);
 		}
 
 		public void colorInterpolator(Particle p) {}
@@ -28,6 +34,23 @@ public class RainEffect {
 
 		public void radiusInterpolator(Particle p) {}
 		
+		public void collision(Particle p){
+//			for(Material mat : Material.values()){//	iterate materials
+//				if(mat.solid){
+//					for(Node c : WorldWindow.sectors[1].areas[mat.ordinal()].cycles){//	iterate lines
+//						Node n = c;
+//						 do {
+//							n = n.next;
+//							if(Line2D.linesIntersect(p.pos.x, p.pos.y, pos.plus(p.vel).x, pos.plus(p.vel).y, n.last.p.x, n.last.p.y, n.p.x, n.p.y)){
+//								p.live = 0;//TODO destroy drop with other particles/little animation
+//								p.vel.scale(-2f);
+//								break;
+//							}
+//						} while (n != c);
+//					}
+//				}
+//			}
+		}
 	};
 
 	public Point pos;
