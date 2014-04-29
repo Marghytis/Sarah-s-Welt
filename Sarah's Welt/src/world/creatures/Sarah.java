@@ -2,8 +2,9 @@ package world.creatures;
 
 import org.lwjgl.input.Keyboard;
 
-import resources.StackedTexture;
+import resources.Res;
 import util.Animation;
+import util.Animator;
 import world.Material;
 import world.Node;
 import world.Point;
@@ -14,18 +15,6 @@ public class Sarah extends WalkingCreature {
 	
 	public float keyAcc = 0.00005f;//the acceleration the Sarah experiences on the pressure of a movement key
 	public boolean flying = false;
-	
-	public static Sarah sarah;
-	
-	public static void updateSarah(int dTime){
-		sarah.tick(dTime);
-	}
-	
-	public static void renderSarah(){
-		sarah.render();
-	}
-	
-	public static StackedTexture SARAH = new StackedTexture("Sarah", 11, 7, -0.5f, -0.1f);
 	
 	static Animation stand = new Animation(0, 0);
 	static Animation walk = new Animation(3, 1, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
@@ -40,15 +29,14 @@ public class Sarah extends WalkingCreature {
 	
 	
 	public Sarah(Point pos, Node worldLink){
-		super(SARAH, stand, pos, worldLink);
+		super(new Animator(Res.SARAH, stand), pos, worldLink);
 		hitradius = 80;
 		punchStrength = 2;
 		maxSpeed = 10;
 		animator.doOnReady = () -> WorldWindow.sarah.animator.animation = stand;
-		sarah = this;
 	}
 	
-	public void tick(int dTime){
+	public void update(int dTime){
 		if(flying) g = false;
 		if(g){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -90,7 +78,7 @@ public class Sarah extends WalkingCreature {
 			//do movement in air
 			if(!flying) collision();
 		}
-		super.tick(dTime);
+		super.update(dTime);
 	}
 	
 	public boolean collision(){

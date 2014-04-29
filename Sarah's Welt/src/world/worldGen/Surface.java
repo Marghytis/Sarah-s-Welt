@@ -53,7 +53,7 @@ public abstract class Surface {
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 20);
 			
-			Butterfly but = new Butterfly(random.nextInt(2), intersection, link, random.nextInt(Butterfly.flap.sequence.length));
+			Butterfly but = new Butterfly(random.nextInt(2), intersection, link, random.nextInt(Butterfly.flap1.sequence.length));
 			
 			sector.creatures.add(but);
 		}

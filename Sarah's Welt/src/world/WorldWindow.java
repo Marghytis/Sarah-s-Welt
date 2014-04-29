@@ -1,5 +1,6 @@
 package world;
 
+import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
@@ -10,9 +11,11 @@ import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
 import util.Tessellator;
+import world.creatures.Butterfly;
 import world.creatures.Creature;
 import world.creatures.Sarah;
 import world.otherThings.Heart;
+import world.structures.Bamboo;
 import world.structures.Structure;
 import world.worldGen.WorldGenerator;
 import core.Menu;
@@ -78,7 +81,7 @@ public class WorldWindow {
 		}
 		
 		public static void tick(int dTime){
-			sarah.tick(dTime);
+			sarah.update(dTime);
 			
 			int playerX = (int)(sarah.pos.x/Sector.WIDTH) - (sarah.pos.x < 0 ? 1 : 0);
 			if(playerX != xSector){
@@ -99,8 +102,8 @@ public class WorldWindow {
 					new Heart(inter, link);
 				}
 			}
-			Structure.updateEveryStructure(dTime);
-			Creature.updateEveryCreature(dTime);
+			Structure.updateStructures(dTime);
+			Creature.updateCreatures(dTime);
 		}
 		
 		public static void mouseListening(){
@@ -109,11 +112,11 @@ public class WorldWindow {
 				if(Mouse.getEventButtonState() && Mouse.getEventButton() == 0){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					Creature.forEach((c) -> {
-						if((c.pos.x + c.tex.box.x < x && c.pos.x + c.tex.box.x + c.tex.box.width > x) && (c.pos.y + c.tex.box.y < y && c.pos.y + c.tex.box.y + c.tex.box.height > y)){
+					for(List<Creature> list : Creature.creatures) for(Creature c : list){
+						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
 							c.hitBy(sarah);
 						}
-					});
+					}
 					sarah.punch();
 				}
 			}
@@ -165,24 +168,31 @@ public class WorldWindow {
 			GL11.glColor4f(1, 1, 1, 1);
 
 			//back
-			Structure.forEach((s) -> {if(!s.front){s.render();}});
+			for(List<Structure> list : Structure.structures) for(Structure s : list){
+				if(!s.front) s.render();
+			}
 			
 			for(int mat = 0; mat < Material.values().length; mat++){
 				sectors[1].areas[mat].render(Material.values()[mat].texture);
 			}
-			
 			//front
-			Structure.forEach((s) -> {if(s.front){s.render();}});
-			
-			Creature.forEach(c -> c.render());
+			for(List<Structure> list : Structure.structures) for(Structure s : list){
+				if(s.front) s.render();
+			}
+		
+			for(List<Creature> list : Creature.creatures) for(Creature c : list){
+				c.render();
+			}
 
-//			GL11.glPushMatrix();
-//			sarah.render();
-//			GL11.glPopMatrix();
+			GL11.glPushMatrix();
+			sarah.render();
+			GL11.glPopMatrix();
 
 			
 			//render health on creatures
-			if(Settings.health) Creature.forEach(c -> Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f));
+			if(Settings.health) for(List<Creature> list : Creature.creatures) for(Creature c : list){
+				Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f);
+			}
 			
 			//health on sarah
 			if(Settings.health){
@@ -247,7 +257,16 @@ public class WorldWindow {
 		}
 		
 		public static void takeThingsFrom(Sector s){
-			
+			for(Structure str : s.structures){
+				if(str instanceof Bamboo){
+					Structure.structures.get(Bamboo.typeId).add(str);
+				}
+			}
+			for(Creature str : s.creatures){
+				if(str instanceof Butterfly){
+					Creature.creatures.get(Butterfly.typeId).add(str);
+				}
+			}
 //			structures.addAll(s.structures); s.structures.clear();
 //			creatures.addAll(s.creatures); s.creatures.clear();
 		}

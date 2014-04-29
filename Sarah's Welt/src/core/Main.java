@@ -5,7 +5,6 @@ import org.lwjgl.opengl.GL11;
 
 import resources.Res;
 import resources.Texture;
-import util.T;
 import world.Calendar;
 import world.WorldWindow;
 

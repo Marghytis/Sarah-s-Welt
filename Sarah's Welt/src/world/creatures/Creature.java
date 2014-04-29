@@ -2,10 +2,11 @@ package world.creatures;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
+import resources.Res;
 import resources.StackedTexture;
-import util.Animation;
+import resources.Texture;
+import util.Animator;
 import world.Material;
 import world.Node;
 import world.Point;
@@ -15,40 +16,28 @@ import world.otherThings.Heart;
 
 public abstract class Creature extends Thing {
 
-	public static List<Runnable> render = new ArrayList<>();
-	public static List<Consumer<Integer>> update = new ArrayList<>();
+	public static List<ArrayList<Creature>> creatures = new ArrayList<>();
+	public static ArrayList<StackedTexture> creatureTextures = new ArrayList<>();
 	
-	public static void updateEveryCreature(int dTime){
-		Butterfly.updateAll(dTime);
-		Rabbit.updateAll(dTime);
-		Snail.updateAll(dTime);
-		Sarah.updateSarah(dTime);
-		Heart.updateAll(dTime);
-		try {
-			creatureTypes.get(0).getDeclaredMethod("updateAll");
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	static {
+		int id = 0;
+		Snail.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.SNAIL);
+		Butterfly.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.BUTTERFLY);
+		Heart.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.HEART);
+		Rabbit.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.RABBIT);
+	}
+	
+	public static void renderCreatures(){
+		for(int i = 0; i < creatures.size(); i++){
+			creatureTextures.get(i).bind();
+			creatures.get(i).forEach((c) -> c.render());
 		}
+		Texture.bindNone();
 	}
 	
-	public static void renderEveryCreature(){
-		Butterfly.renderAll();
-		Rabbit.renderAll();
-		Snail.renderAll();
-		Sarah.renderSarah();
-		Heart.renderAll();
-	}
-	
-	public static void forEach(Consumer<Creature> consumer){
-		Butterfly.l_i_s_t.forEach(consumer);
-		Rabbit.l_i_s_t.forEach(consumer);
-		Snail.l_i_s_t.forEach(consumer);
-		consumer.accept(Sarah.sarah);
-		Heart.l_i_s_t.forEach(consumer);
+	public static void updateCreatures(int delta){
+		for(List<Creature> list : creatures)
+			list.forEach((c) -> c.update(delta));
 	}
 	
 	protected Point acc = new Point();
@@ -60,11 +49,11 @@ public abstract class Creature extends Thing {
 	public int health = 20;
 	public int punchStrength = 1;
 	
-	public Creature(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink){
-		super(tex, defaultAni, pos, worldLink);
+	public Creature(Animator ani, Point pos, Node worldLink){
+		super(ani, pos, worldLink);
 	}
 	
-	public void tick(int dTime){
+	public void update(int dTime){
 		pos.add(vel);
 		
 		vel.add(acc.scaledBy(dTime).scaledBy(WorldWindow.measureScale*dTime));

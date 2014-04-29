@@ -1,12 +1,12 @@
 package resources;
 
-import util.Quad;
+import util.QuadOld;
 
 public class PackedTexture extends Texture {
 
-	public Quad[] parts;
+	public QuadOld[] parts;
 	
-	PackedTexture(String name, Quad... parts) {
+	PackedTexture(String name, QuadOld... parts) {
 		super(name);
 		this.parts = parts;
 	}

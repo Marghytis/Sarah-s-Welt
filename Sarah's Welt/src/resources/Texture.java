@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 
 import org.lwjgl.opengl.GL11;
 
-import util.Quad;
+import core.geom.Quad;
 
 public class Texture {
 
@@ -88,6 +88,10 @@ public class Texture {
 	}
 	
 	public void release(){
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	}
+	
+	public static void bindNone(){
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 	

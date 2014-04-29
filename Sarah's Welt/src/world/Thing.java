@@ -4,12 +4,9 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import core.Settings;
-import resources.StackedTexture;
-import util.Animation;
+import resources.Texture;
 import util.Animator;
-import world.creatures.Creature;
-import world.structures.Structure;
+import core.Settings;
 
 public abstract class Thing {
 	
@@ -19,22 +16,18 @@ public abstract class Thing {
 	public Node worldLink;
 	
 	//For rendering
-	public StackedTexture tex;
 	public Animator animator;
 	
 	protected boolean mirrored = false;
 	public boolean front = false;
 	
-	public Thing(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink){
-		this.tex = tex;
+	public Thing(Animator ani, Point pos, Node worldLink){
 		this.pos = pos;
 		this.worldLink = worldLink;
-
-		animator = new Animator(tex.box);
-		animator.setAnimation(defaultAni);
+		this.animator = ani;
 	}
 
-	public void tick(int dTime){}
+	public void update(int dTime){}
 	
 	/**
 	 * World coordinates
@@ -44,18 +37,12 @@ public abstract class Thing {
 		GL11.glTranslatef(pos.x, pos.y, 0);
 		
 		beforeRender();
-		
-		animator.animate(tex, mirrored);
+		animator.tex.bind();
+		animator.animate(mirrored);
+		Texture.bindNone();
 		
 		if(Settings.hitbox){
-			if(this instanceof Structure){
-				GL11.glColor3f(0, 1, 1);
-				tex.box.outline();
-			} else if(this instanceof Creature){
-				GL11.glColor3f(1, 0, 0);
-				tex.box.outline();
-			}
-			GL11.glColor3f(1, 1, 1);
+			animator.tex.box.outline();
 		}
 		afterRender();
 		

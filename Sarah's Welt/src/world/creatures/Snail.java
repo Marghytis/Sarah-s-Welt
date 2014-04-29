@@ -1,10 +1,8 @@
 package world.creatures;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import resources.StackedTexture;
+import resources.Res;
 import util.Animation;
+import util.Animator;
 import world.Material;
 import world.Node;
 import world.Point;
@@ -14,39 +12,23 @@ import world.structures.Structure;
 import core.Settings;
 
 public class Snail extends WalkingCreature {
-	
-	public static List<Snail> l_i_s_t = new ArrayList<>();
-	
-	static {
-		Creature.render.add(Snail::renderAll);
-		Creature.update.add(Snail::updateAll);
-	}
-	
-	public static void updateAll(int dTime){
-		l_i_s_t.forEach((b) -> b.tick(dTime));
-	}
-	
-	public static void renderAll(){
-		SNAIL.bind();
-			l_i_s_t.forEach((b) -> b.render());
-		SNAIL.release();
-	}
 
-	public static StackedTexture SNAIL  = new StackedTexture("creatures/Snail", 7, 3, -0.5f, -0.1f);
-		static Animation walk = new Animation(10, 0, true,	0, 1, 2, 3, 4, 3, 2, 1);
-		static Animation stand = new Animation(0, 0);
-		static Animation punch = new Animation(3, 1, false, 1, 2, 3, 4, 5, 6, 5);
-		static Animation hitt = new Animation(0, 2);
+	public static int typeId;
+	
+	static Animation walk = new Animation(10, 0, true,	0, 1, 2, 3, 4, 3, 2, 1);
+	static Animation stand = new Animation(0, 0);
+	static Animation punch = new Animation(3, 1, false, 1, 2, 3, 4, 5, 6, 5);
+	static Animation hitt = new Animation(0, 2);
 
 	
 	public Snail(Point p, Node worldLink){
-		super(SNAIL, stand, p, worldLink);
+		super(new Animator(Res.SNAIL, stand), p, worldLink);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
 		front = true;
 	}
 	
-	public void tick(int dTime){
+	public void update(int dTime){
 		if(g){
 //			pos.y++;
 //			accelerateFromGround(new Point(0, 0.001f));
@@ -59,7 +41,7 @@ public class Snail extends WalkingCreature {
 			//do movement in air
 			collision();
 		}
-		super.tick(dTime);
+		super.update(dTime);
 	}
 	
 	int dir = 0;
@@ -78,9 +60,9 @@ public class Snail extends WalkingCreature {
 	
 	public boolean findSarah(){
 		if(pos.minus(WorldWindow.sarah.pos).length() < 150){
-			if(WorldWindow.sarah.pos.x + WorldWindow.sarah.tex.box.x > pos.x){
+			if(WorldWindow.sarah.pos.x + WorldWindow.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
-			} else if(WorldWindow.sarah.pos.x + WorldWindow.sarah.tex.box.x + WorldWindow.sarah.tex.box.width < pos.x){
+			} else if(WorldWindow.sarah.pos.x + WorldWindow.sarah.animator.tex.box.x + WorldWindow.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
@@ -95,20 +77,18 @@ public class Snail extends WalkingCreature {
 	}
 	
 	public boolean findNextCloud(){
-		Cloud c = null; float distance = 1000;
-		for(Structure s : WorldWindow.structures){
-			if(s instanceof Cloud){
-				float dist = pos.minus(s.pos).length();
-				if(dist < distance){
-					c = (Cloud)s;
-					distance = dist; 
-				}
+		Cloud find = null; float distance = 1000;
+		for(Structure c : Structure.structures.get(Cloud.typeId)){
+			float dist = pos.minus(c.pos).length();
+			if(dist < distance){
+				find = (Cloud)c;
+				distance = dist; 
 			}
 		}
-		if(c != null){
-			if(c.pos.x-10 > pos.x){
+		if(find != null){
+			if(find.pos.x-10 > pos.x){
 				dir = 1;
-			} else if(c.pos.x+10 < pos.x){
+			} else if(find.pos.x+10 < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;

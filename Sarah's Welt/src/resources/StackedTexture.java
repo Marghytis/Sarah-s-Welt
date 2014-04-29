@@ -1,6 +1,5 @@
 package resources;
 
-import util.Quad;
 
 public class StackedTexture extends Texture{
 	

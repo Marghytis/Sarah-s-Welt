@@ -1,43 +1,48 @@
 package world.structures;
 
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
+import resources.Res;
 import resources.StackedTexture;
-import util.Animation;
+import resources.Texture;
+import util.Animator;
 import world.Node;
 import world.Point;
 import world.Thing;
 
 public abstract class Structure extends Thing{
+
+	protected static int typeIdCounter;
 	
-	public static void updateEveryStructure(int dTime){
-		Tree.updateAll(dTime);
-		Grass_tuft.updateAll(dTime);
-		Flower.updateAll(dTime);
-		Cloud.updateAll(dTime);
-		Bush.updateAll(dTime);
-		Bamboo.updateAll(dTime);
+	public static Vector<ArrayList<Structure>> structures = new Vector<>();
+	public static ArrayList<StackedTexture> structuresTextures = new ArrayList<>();
+	
+	static {
+		int id = 0;
+		Tree.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.TREE);
+		Bush.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.BUSH);
+		Flower.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.FLOWER);
+		Bamboo.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.BAMBOO);
+		Grass_tuft.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.GRASS_TUFT);
+		Cloud.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.CLOUD);
 	}
 	
-	public static void renderEveryStructure(){
-		Tree.renderAll();
-		Grass_tuft.renderAll();
-		Flower.renderAll();
-		Cloud.renderAll();
-		Bush.renderAll();
-		Bamboo.renderAll();
+	public static void renderStructures(){
+		for(int i = 0; i < structures.size(); i++){
+			structuresTextures.get(i).bind();
+			structures.get(i).forEach((c) -> c.render());
+		}
+		Texture.bindNone();
 	}
 	
-	public static void forEach(Consumer<Structure> consumer){
-		Tree.l_i_s_t.forEach(consumer);
-		Grass_tuft.l_i_s_t.forEach(consumer);
-		Flower.l_i_s_t.forEach(consumer);
-		Cloud.l_i_s_t.forEach(consumer);
-		Bush.l_i_s_t.forEach(consumer);
-		Bamboo.l_i_s_t.forEach(consumer);
+	public static void updateStructures(int delta){
+		for(List<Structure> list : structures)
+			list.forEach((c) -> c.update(delta));
 	}
 
-	public Structure(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink){
-		super(tex, defaultAni, pos, worldLink);
+	public Structure(Animator ani, Point pos, Node worldLink){
+		super(ani, pos, worldLink);
 	}
 }

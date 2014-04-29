@@ -1,43 +1,31 @@
 package world.structures;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
 
 import particles.RainEffect;
 import resources.Res;
 import util.Animation;
+import util.Animator;
 import world.Node;
 import world.Point;
 
 public class Cloud extends Structure{
-	
-	public static List<Cloud> l_i_s_t = new ArrayList<>();
-	
-	public static void updateAll(int dTime){
-		l_i_s_t.forEach((b) -> b.tick(dTime));
-	}
-	
-	public static void renderAll(){
-		Res.CLOUD.bind();
-			l_i_s_t.forEach((b) -> b.render());
-		Res.CLOUD.release();
-	}
+
+	public static int typeId;
 
 	private RainEffect effect;
 	public float xSize;
 	public float ySize;
 	
 	public Cloud(Point pos, Node worldLink, float xSize, float ySize){
-		super(Res.CLOUD, new Animation(1, 1), pos, worldLink);
+		super(new Animator(Res.CLOUD, new Animation(1, 1)), pos, worldLink);
 		this.xSize = xSize;
 		this.ySize = ySize;
-		effect = new RainEffect(new Point(pos.x + ((tex.box.x*xSize)/2), pos.y + (tex.box.y*xSize)), (tex.box.width*xSize)/2, (tex.box.height*xSize)/2);
+		effect = new RainEffect(new Point(pos.x + ((animator.tex.box.x*xSize)/2), pos.y + (animator.tex.box.y*xSize)), (animator.tex.box.size.x*xSize)/2, (animator.tex.box.size.y*xSize)/2);
 		front = false;
 	}
 	
-	public void tick(float dTime){
+	public void update(int dTime){
 		pos.x += 0.1f;
 		effect.pos.x += 0.1f;
 		effect.tick((int)dTime*1);
