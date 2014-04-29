@@ -13,10 +13,17 @@ import resources.Texture;
 import util.Tessellator;
 import world.creatures.Butterfly;
 import world.creatures.Creature;
+import world.creatures.Rabbit;
 import world.creatures.Sarah;
+import world.creatures.Snail;
 import world.otherThings.Heart;
 import world.structures.Bamboo;
+import world.structures.Bush;
+import world.structures.Cloud;
+import world.structures.Flower;
+import world.structures.Grass_tuft;
 import world.structures.Structure;
+import world.structures.Tree;
 import world.worldGen.WorldGenerator;
 import core.Menu;
 import core.Menu.View;
@@ -99,7 +106,7 @@ public class WorldWindow {
 				int sec = random.nextInt(3);
 				if(sectors[sec] != null){
 					Node link = (sectors[sec].findGrassPointAt((sectors[sec].x + random.nextFloat())*Sector.WIDTH, inter, 100));
-					new Heart(inter, link);
+					Creature.creatures.get(Heart.typeId).add(new Heart(inter, link));
 				}
 			}
 			Structure.updateStructures(dTime);
@@ -168,21 +175,15 @@ public class WorldWindow {
 			GL11.glColor4f(1, 1, 1, 1);
 
 			//back
-			for(List<Structure> list : Structure.structures) for(Structure s : list){
-				if(!s.front) s.render();
-			}
+			Structure.renderStructures(false);
 			
 			for(int mat = 0; mat < Material.values().length; mat++){
 				sectors[1].areas[mat].render(Material.values()[mat].texture);
 			}
 			//front
-			for(List<Structure> list : Structure.structures) for(Structure s : list){
-				if(s.front) s.render();
-			}
+			Structure.renderStructures(true);
 		
-			for(List<Creature> list : Creature.creatures) for(Creature c : list){
-				c.render();
-			}
+			Creature.renderCreatures();
 
 			GL11.glPushMatrix();
 			sarah.render();
@@ -258,13 +259,30 @@ public class WorldWindow {
 		
 		public static void takeThingsFrom(Sector s){
 			for(Structure str : s.structures){
-				if(str instanceof Bamboo){
-					Structure.structures.get(Bamboo.typeId).add(str);
+//				if(str instanceof Bamboo){
+//					Structure.structures.get(Bamboo.typeId).add(str);
+//				} else 
+					if(str instanceof Tree){
+					Structure.structures.get(Tree.typeId).add(str);
+				} else if(str instanceof Bush){
+					Structure.structures.get(Bush.typeId).add(str);
+				} else if(str instanceof Flower){
+					Structure.structures.get(Flower.typeId).add(str);
+				} else if(str instanceof Grass_tuft){
+					Structure.structures.get(Grass_tuft.typeId).add(str);
+				} else if(str instanceof Cloud){
+					Structure.structures.get(Cloud.typeId).add(str);
 				}
 			}
 			for(Creature str : s.creatures){
 				if(str instanceof Butterfly){
 					Creature.creatures.get(Butterfly.typeId).add(str);
+				} else if(str instanceof Snail){
+					Creature.creatures.get(Snail.typeId).add(str);
+				} else if(str instanceof Heart){
+					Creature.creatures.get(Heart.typeId).add(str);
+				} else if(str instanceof Rabbit){
+					Creature.creatures.get(Rabbit.typeId).add(str);
 				}
 			}
 //			structures.addAll(s.structures); s.structures.clear();

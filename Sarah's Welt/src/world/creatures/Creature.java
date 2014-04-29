@@ -3,6 +3,9 @@ package world.creatures;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
+import core.Settings;
 import resources.Res;
 import resources.StackedTexture;
 import resources.Texture;
@@ -33,6 +36,16 @@ public abstract class Creature extends Thing {
 			creatures.get(i).forEach((c) -> c.render());
 		}
 		Texture.bindNone();
+		if(Settings.hitbox){
+			for(int i = 0; i < creatures.size(); i++){
+				creatures.get(i).forEach((c) -> {
+					GL11.glPushMatrix();
+					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
+					c.animator.tex.box.outline();
+					GL11.glPopMatrix();
+				});
+			}
+		}
 	}
 	
 	public static void updateCreatures(int delta){

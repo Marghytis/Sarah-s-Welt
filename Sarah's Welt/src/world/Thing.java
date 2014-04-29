@@ -40,10 +40,6 @@ public abstract class Thing {
 		animator.tex.bind();
 		animator.animate(mirrored);
 		Texture.bindNone();
-		
-		if(Settings.hitbox){
-			animator.tex.box.outline();
-		}
 		afterRender();
 		
 		GL11.glPopMatrix();

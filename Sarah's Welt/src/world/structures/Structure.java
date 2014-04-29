@@ -29,10 +29,10 @@ public abstract class Structure extends Thing{
 		Cloud.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.CLOUD);
 	}
 	
-	public static void renderStructures(){
+	public static void renderStructures(boolean front){
 		for(int i = 0; i < structures.size(); i++){
 			structuresTextures.get(i).bind();
-			structures.get(i).forEach((c) -> c.render());
+			structures.get(i).forEach((c) -> {if(front == c.front){c.render();}});
 		}
 		Texture.bindNone();
 	}

@@ -12,22 +12,17 @@ public class Main {
 
 	public static void main(String[] args){
 		
-		Window.create("Sarahs Welt", 1000, 300);
+		Window.create("Sarahs Welt", 1000, 600);
 //		Window.createFullScreen("Sarahs Welt");
 		Window.fill(new Texture("titelbild", 0, 0).handle);
 		Display.update();
 		Res.load();
 		WorldWindow.load("TestWelt");
-		long endTime = System.currentTimeMillis() + 20000;
-		int counter = 0;
-		int heapCounter = 0;
-		int max = 0;
-		int sum = 0;
 		
 		long timeLastWorldTick = System.currentTimeMillis();
-		while(timeLastWorldTick < endTime && !Display.isCloseRequested() && !beenden){
+		while(!Display.isCloseRequested() && !beenden){
 			long testTime = System.currentTimeMillis();
-//			Display.sync(1000);
+//			Display.sync(500);
 			
 			if(Settings.sound && !Res.test.playing) Res.test.play();
 
@@ -35,22 +30,18 @@ public class Main {
 			
 			listening();
 			long t = System.currentTimeMillis();
-			calculate((int)(t - timeLastWorldTick));
+			calculate(Math.min((int)(t - timeLastWorldTick), 20));
 			timeLastWorldTick = t;
 			
-			int delta = (int)(System.currentTimeMillis() - testTime);
-			 if(delta > 17){
-				 System.out.print("-----");
-				 heapCounter++;
-				 if(counter != 0)max = Math.max(delta, max);
-			 } System.out.println(delta);
-			 counter++;
-			 if(counter != 1)sum += delta;
 			Display.update();
+			try {
+				Thread.sleep(17 - (System.currentTimeMillis() - testTime));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch(IllegalArgumentException e){}
+			System.out.println(System.currentTimeMillis() - testTime);
 		}
 		
-		System.out.println("\nExtremwerte: " + heapCounter + "  Durchläufe: " + counter + "  Maximum: " + max + "  Average: " + (sum/counter));
-
 		Res.test.stop();
 		Res.unload();
 		Display.destroy();

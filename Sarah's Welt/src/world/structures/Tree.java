@@ -11,7 +11,7 @@ public class Tree extends Structure{
 	public static int typeId;
 	
 	public Tree(int type, Point pos, Node worldLink){
-		super(new Animator(Res.TREE, new Animation(type, 1)), pos, worldLink);
+		super(new Animator(Res.TREE, new Animation(0, type)), pos, worldLink);
 	}
 	
 }
