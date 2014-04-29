@@ -20,7 +20,7 @@ public class Res {
 	public static StackedTexture HEART = new StackedTexture("creatures/Heart", 4, 1, -0.5f, -0.2f);
 	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 3, -0.5f, -0.2f);
 
-	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 7, -0.5f, -0.1f);
+	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 8, -0.5f, -0.1f);
 	
 	public static SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);;
