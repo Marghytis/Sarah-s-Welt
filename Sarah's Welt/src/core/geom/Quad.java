@@ -19,6 +19,15 @@ public class Quad extends Vec{
 		size.set(width, height);
 	}
 
+	public void drawTex(){
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, 			y);
+			GL11.glTexCoord2f(1, 1); GL11.glVertex2f(x + size.x, 	y);
+			GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + size.x, 	y + size.y);
+			GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, 			y + size.y);
+		GL11.glEnd();
+	}
+
 	public void drawTex(Texture tex){
 		tex.bind();
 		GL11.glBegin(GL11.GL_QUADS);
@@ -30,12 +39,12 @@ public class Quad extends Vec{
 		tex.release();
 	}
 
-	public void drawTex(StackedTexture tex, int x, int y){
+	public void drawTex(StackedTexture tex, int xTex, int yTex){
 		
 		tex.bind();
 		
-		float xOffset = x*tex.widthT;
-		float yOffset = y*tex.heightT;
+		float xOffset = xTex*tex.widthT;
+		float yOffset = yTex*tex.heightT;
 		
 		GL11.glBegin(GL11.GL_QUADS);
 			GL11.glTexCoord2f(xOffset, 				yOffset + tex.heightT);	GL11.glVertex2f(x, 			y);
@@ -45,6 +54,36 @@ public class Quad extends Vec{
 		GL11.glEnd();
 
 		tex.release();
+	}
+
+	public void drawTexNotBind(StackedTexture tex, int xTex, int yTex, boolean mirrored){
+		
+		float xOffset = xTex*tex.widthT;
+		float yOffset = yTex*tex.heightT;
+		if(!mirrored){
+			GL11.glBegin(GL11.GL_QUADS);
+				GL11.glTexCoord2f(xOffset, 				yOffset + tex.heightT);	GL11.glVertex2f(x, 			y);
+				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset + tex.heightT);	GL11.glVertex2f(x + size.x, y);
+				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset);				GL11.glVertex2f(x + size.x, y + size.y);
+				GL11.glTexCoord2f(xOffset, 				yOffset);				GL11.glVertex2f(x, 			y + size.y);
+			GL11.glEnd();
+		} else {
+			GL11.glBegin(GL11.GL_QUADS);
+				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset + tex.heightT);	GL11.glVertex2f(x, 			y);
+				GL11.glTexCoord2f(xOffset, 				yOffset + tex.heightT);	GL11.glVertex2f(x + size.x, y);
+				GL11.glTexCoord2f(xOffset, 				yOffset);				GL11.glVertex2f(x + size.x, y + size.y);
+				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset);				GL11.glVertex2f(x, 			y + size.y);
+			GL11.glEnd();
+		}
+	}
+	
+	public void outline(){
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+			GL11.glVertex2f(x, y);
+			GL11.glVertex2f(x + size.x, y);
+			GL11.glVertex2f(x + size.x, y + size.y);
+			GL11.glVertex2f(x, y + size.y);
+		GL11.glEnd();
 	}
 	
 	public boolean contains(float x, float y){

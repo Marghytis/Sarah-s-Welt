@@ -1,14 +1,57 @@
 package world.creatures;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import core.Settings;
+import resources.Res;
 import resources.StackedTexture;
-import util.Animation;
+import resources.Texture;
+import util.Animator;
 import world.Material;
 import world.Node;
 import world.Point;
 import world.Thing;
 import world.WorldWindow;
+import world.otherThings.Heart;
 
 public abstract class Creature extends Thing {
+
+	public static List<ArrayList<Creature>> creatures = new ArrayList<>();
+	public static ArrayList<StackedTexture> creatureTextures = new ArrayList<>();
+	
+	static {
+		int id = 0;
+		Snail.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.SNAIL);
+		Butterfly.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.BUTTERFLY);
+		Heart.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.HEART);
+		Rabbit.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.RABBIT);
+	}
+	
+	public static void renderCreatures(){
+		for(int i = 0; i < creatures.size(); i++){
+			creatureTextures.get(i).bind();
+			creatures.get(i).forEach((c) -> c.render());
+		}
+		Texture.bindNone();
+		if(Settings.hitbox){
+			for(int i = 0; i < creatures.size(); i++){
+				creatures.get(i).forEach((c) -> {
+					GL11.glPushMatrix();
+					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
+					c.animator.tex.box.outline();
+					GL11.glPopMatrix();
+				});
+			}
+		}
+	}
+	
+	public static void updateCreatures(int delta){
+		for(List<Creature> list : creatures)
+			list.forEach((c) -> c.update(delta));
+	}
 	
 	protected Point acc = new Point();
 	protected Point vel = new Point();
@@ -19,11 +62,11 @@ public abstract class Creature extends Thing {
 	public int health = 20;
 	public int punchStrength = 1;
 	
-	public Creature(StackedTexture tex, Animation defaultAni, Point pos, Node worldLink){
-		super(tex, defaultAni, pos, worldLink);
+	public Creature(Animator ani, Point pos, Node worldLink){
+		super(ani, pos, worldLink);
 	}
 	
-	public void tick(float dTime){
+	public void update(int dTime){
 		pos.add(vel);
 		
 		vel.add(acc.scaledBy(dTime).scaledBy(WorldWindow.measureScale*dTime));

@@ -52,7 +52,7 @@ public class SurfaceGenR extends Surface {
 		plantTrees(output);
 		plantGrass(output);
 		plantBushes(output);
-		plantBambus(output);
+		plantBamboo(output);
 		plantFlowers(output);
 		spreadButterflies(output);
 		spreadRabbits(output);

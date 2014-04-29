@@ -8,23 +8,23 @@ import resources.StackedTexture;
 import resources.Texture;
 import world.Point;
 
-public class Quad {
+public class QuadOld {
 
 	public float x, y, width, height;
 	
-	public Quad(){
+	public QuadOld(){
 		this(0, 0);
 	}
 	
-	public Quad(float width, float height){
+	public QuadOld(float width, float height){
 		this(0, 0, width, height);
 	}
 	
-	public Quad(Quad quad){
+	public QuadOld(QuadOld quad){
 		this(quad.x, quad.y, quad.width, quad.height);
 	}
 	
-	public Quad(float x, float y, float width, float height){
+	public QuadOld(float x, float y, float width, float height){
 		this.x = x;
 		this.y = y;
 		this.width = width;

@@ -1,28 +1,29 @@
 package world.otherThings;
 
-import resources.StackedTexture;
+import resources.Res;
 import util.Animation;
+import util.Animator;
 import world.Node;
 import world.Point;
 import world.creatures.WalkingCreature;
 
 public class Heart extends WalkingCreature{
-	
-	public static StackedTexture tex = new StackedTexture("creatures/Heart", 4, 1, -0.5f, -0.2f);
 
+	public static int typeId;
+	
 	static Animation flap = new Animation(10, 0, true, 0, 1, 2, 3, 2, 1);
 
 	public Heart(Point pos, Node worldLink) {
-		super(tex, flap, pos, worldLink);
+		super(new Animator(Res.HEART, flap), pos, worldLink);
 		vel.y = -0.2f;
 		health = 2000;
 	}
 	
-	public void tick(float dTime){
+	public void update(int dTime){
 		if(!g){
 			collision();
 		}
 		health--;
-		super.tick(dTime);
+		super.update(dTime);
 	}
 }

@@ -1,28 +1,40 @@
 package world.creatures;
 
-import resources.StackedTexture;
+import resources.Res;
 import util.Animation;
+import util.Animator;
 import world.Material;
 import world.Node;
 import world.Point;
 
 
-public class Butterfly extends Creature{
+public class Butterfly extends WalkingCreature{
 
-	public static StackedTexture BROUN  = new StackedTexture("creatures/Butterfly1", 5, 1, -0.5f, -0.5f);
-	public static StackedTexture BLUE  = new StackedTexture("creatures/Butterfly2", 5, 1, -0.5f, -0.5f);
+	public static int typeId;
 	
-	static Animation flap = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
+	public static Animation flap1 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
+	public static Animation flap2 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
 	
-	public Butterfly(int type, Point p, Node worldLink){
-		super(type == 0 ? BROUN : BLUE, flap, p, worldLink);
+	public Butterfly(int type, Point p, Node worldLink, int frame){
+		super(new Animator(Res.BUTTERFLY, type == 0 ? flap1 : flap2), p, worldLink);
 		front = true;
 		health = 5;
+		animator.frame = frame;
 	}
 	
-	public void tick(float dTime){
-		acc.add((0.5f - random.nextFloat())*0.00003f, (0.5f - random.nextFloat())*0.00003f);
-		applyFriction(Material.AIR);
-		super.tick(dTime);
+	public void update(int dTime){
+		if(!g){
+			acc.add((0.5f - random.nextFloat())*0.00003f, (0.5f - random.nextFloat())*0.00003f);
+			applyFriction(Material.AIR);
+		} else {
+			if(random.nextInt(100) == 0){
+				pos.y++;
+				accelerateFromGround(new Point(0, 0.0001f));
+			}
+		}
+		
+		if(!g) collision();
+		
+		super.update(dTime);
 	}
 }

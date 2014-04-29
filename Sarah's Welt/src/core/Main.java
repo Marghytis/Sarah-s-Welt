@@ -1,6 +1,5 @@
 package core;
 
-import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
@@ -8,40 +7,41 @@ import resources.Res;
 import resources.Texture;
 import world.Calendar;
 import world.WorldWindow;
-import core.geom.Quad;
 
 public class Main {
 
 	public static void main(String[] args){
-//		Window.createSplash("Titel.png", 600, 400);
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		int titelTex = Window.createTexture("Titel.png");
 		
-		Window.create("Sarahs Welt", 1000, 500);
-		new Quad(Window.WIDTH/2 - 600, Window.HEIGHT/2 - 400, 1200, 800).drawTex(new Texture("Titel", 0, 0));
+		Window.create("Sarahs Welt", 1000, 600);
+//		Window.createFullScreen("Sarahs Welt");
+		Window.fill(new Texture("titelbild", 0, 0).handle);
 		Display.update();
-		WorldWindow.load("TestWelt");
 		Res.load();
+		WorldWindow.load("TestWelt");
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
-			Display.sync(60);
+			long testTime = System.currentTimeMillis();
+//			Display.sync(500);
 			
 			if(Settings.sound && !Res.test.playing) Res.test.play();
 
 			render();
 			
 			listening();
-			int delta = (int)(System.currentTimeMillis() - timeLastWorldTick);
-			timeLastWorldTick += delta;
-			calculate(delta);
+			long t = System.currentTimeMillis();
+			calculate(Math.min((int)(t - timeLastWorldTick), 20));
+			timeLastWorldTick = t;
+			
 			Display.update();
+			try {
+				Thread.sleep(17 - (System.currentTimeMillis() - testTime));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch(IllegalArgumentException e){}
+			System.out.println(System.currentTimeMillis() - testTime);
 		}
-
+		
 		Res.test.stop();
 		Res.unload();
 		Display.destroy();

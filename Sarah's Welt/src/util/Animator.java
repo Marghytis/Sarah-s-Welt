@@ -6,27 +6,24 @@ public class Animator {
 
 	public Animation animation;
 	public int frame;
-	public Quad texBox;
+	public StackedTexture tex;
 	public Runnable doOnReady;
 	
-	public Animator(Quad box){
-		this(box, () -> {});
+	public Animator(StackedTexture tex, Animation defaultA){
+		this(tex, () -> {}, defaultA);
 	}
 	
-	public Animator(Quad box, Runnable doOnReady){
-		this.texBox = box;
+	public Animator(StackedTexture tex, Runnable doOnReady, Animation defaultA){
+		this.tex = tex;
 		this.doOnReady = doOnReady;
+		this.animation = defaultA;
 	}
 	
-	public void animate(StackedTexture tex, boolean mirrored){
+	public void animate(boolean mirrored){
 
 		int texPos = animation.getPoint(frame);
 		
-		if(mirrored){
-			texBox.drawMirrored(tex, texPos, animation.y);
-		} else {
-			texBox.draw(tex, texPos, animation.y);
-		}
+		tex.box.drawTexNotBind(tex, texPos, animation.y, mirrored);
 
 		if(frame != -1){
 			frame = animation.next(frame);

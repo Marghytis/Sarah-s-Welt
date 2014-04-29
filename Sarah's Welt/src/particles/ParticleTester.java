@@ -4,10 +4,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
+import resources.Res;
 import resources.Texture;
-import util.Quad;
+import util.QuadOld;
 import world.Point;
-import world.structures.Cloud;
 import core.Window;
 
 public class ParticleTester {
@@ -20,12 +20,12 @@ public class ParticleTester {
 		
 		Lightmap lightmap = new Lightmap(new Texture(Window.WIDTH/2, Window.HEIGHT));
 		lightmap.resetDark( 0);
-		Quad leftWindow = new Quad(0, 0, Window.WIDTH/2, Window.HEIGHT);
+		QuadOld leftWindow = new QuadOld(0, 0, Window.WIDTH/2, Window.HEIGHT);
 		
 		FireEffect fire = new FireEffect(Window.WIDTH/4, Window.HEIGHT/2, lightmap);
 
 		RainEffect rain = new RainEffect(new Point(Window.WIDTH*2/3 + 50, Window.HEIGHT*3/4 + 10), 100, 20);
-		Quad cloud = new Quad(Window.WIDTH*2/3, Window.HEIGHT*3/4 - 20, 200, 140);
+		QuadOld cloud = new QuadOld(Window.WIDTH*2/3, Window.HEIGHT*3/4 - 20, 200, 140);
 		
 		float t = 0;
 		float r = 20;
@@ -52,7 +52,7 @@ public class ParticleTester {
 			rain.render();
 			time = nextTime;
 			GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
-			cloud.draw(Cloud.CLOUD);
+			cloud.draw(Res.CLOUD);
 			
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
 			leftWindow.draw(lightmap.texture);

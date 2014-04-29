@@ -1,7 +1,6 @@
 package world.creatures;
 
-import resources.StackedTexture;
-import util.Animation;
+import util.Animator;
 import util.Geom;
 import world.Material;
 import world.Node;
@@ -15,8 +14,8 @@ public abstract class WalkingCreature extends Creature{
 	public float velocityUnit = 0.00035f;
 	public int vP;// distance per stepping frame (in acceleration
 
-	public WalkingCreature(StackedTexture tex, Animation defaultAni, Point p, Node worldLink){
-		super(tex, defaultAni, p, worldLink);
+	public WalkingCreature(Animator ani, Point p, Node worldLink){
+		super(ani, p, worldLink);
 	}
 	
 	public void walkingAI(float dTime){}

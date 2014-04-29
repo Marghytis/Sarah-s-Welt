@@ -1,18 +1,17 @@
 package world.structures;
 
-import resources.StackedTexture;
+import resources.Res;
 import util.Animation;
+import util.Animator;
 import world.Node;
 import world.Point;
 
 public class Tree extends Structure{
 
-	public static StackedTexture[] TREE = {		new StackedTexture("structures/Tree1", 1, 1, -0.5f, -0.3f),
-												new StackedTexture("structures/Tree2", 1, 1, -0.5f, -0.3f),
-												new StackedTexture("structures/Tree3", 1, 1, -0.5f, -0.3f)};
+	public static int typeId;
 	
 	public Tree(int type, Point pos, Node worldLink){
-		super(TREE[type], new Animation(1, 1), pos, worldLink);
+		super(new Animator(Res.TREE, new Animation(0, type)), pos, worldLink);
 	}
 	
 }

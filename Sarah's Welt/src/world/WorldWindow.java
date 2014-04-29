@@ -1,6 +1,5 @@
 package world;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,10 +11,19 @@ import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
 import util.Tessellator;
+import world.creatures.Butterfly;
 import world.creatures.Creature;
+import world.creatures.Rabbit;
 import world.creatures.Sarah;
+import world.creatures.Snail;
 import world.otherThings.Heart;
+import world.structures.Bamboo;
+import world.structures.Bush;
+import world.structures.Cloud;
+import world.structures.Flower;
+import world.structures.Grass_tuft;
 import world.structures.Structure;
+import world.structures.Tree;
 import world.worldGen.WorldGenerator;
 import core.Menu;
 import core.Menu.View;
@@ -40,9 +48,6 @@ public class WorldWindow {
 		public static Lightmap light;
 		
 		public static float lightLevel = 0.1f;
-		
-		public static List<Structure> structures = new ArrayList<>();
-		public static List<Creature> creatures = new ArrayList<>();
 		
 		public static int[] sky = {0, 0, 100};
 	
@@ -82,8 +87,8 @@ public class WorldWindow {
 			light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
 		}
 		
-		public static void tick(float dTime){
-			sarah.tick(dTime);
+		public static void tick(int dTime){
+			sarah.update(dTime);
 			
 			int playerX = (int)(sarah.pos.x/Sector.WIDTH) - (sarah.pos.x < 0 ? 1 : 0);
 			if(playerX != xSector){
@@ -101,17 +106,11 @@ public class WorldWindow {
 				int sec = random.nextInt(3);
 				if(sectors[sec] != null){
 					Node link = (sectors[sec].findGrassPointAt((sectors[sec].x + random.nextFloat())*Sector.WIDTH, inter, 100));
-					creatures.add(new Heart(inter, link));
+					Creature.creatures.get(Heart.typeId).add(new Heart(inter, link));
 				}
 			}
-			structures.forEach(s -> s.tick(dTime));
-			for(int i = 0; i < creatures.size(); i++){
-				Creature c = creatures.get(i);
-				c.tick(dTime);
-				if(c.health <= 0){
-					creatures.remove(c);
-				}
-			}
+			Structure.updateStructures(dTime);
+			Creature.updateCreatures(dTime);
 		}
 		
 		public static void mouseListening(){
@@ -120,8 +119,8 @@ public class WorldWindow {
 				if(Mouse.getEventButtonState() && Mouse.getEventButton() == 0){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					for(Creature c : creatures){
-						if((c.pos.x + c.tex.box.x < x && c.pos.x + c.tex.box.x + c.tex.box.width > x) && (c.pos.y + c.tex.box.y < y && c.pos.y + c.tex.box.y + c.tex.box.height > y)){
+					for(List<Creature> list : Creature.creatures) for(Creature c : list){
+						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
 							c.hitBy(sarah);
 						}
 					}
@@ -176,25 +175,15 @@ public class WorldWindow {
 			GL11.glColor4f(1, 1, 1, 1);
 
 			//back
-			for(Structure s : structures){
-				if(!s.front)s.render();
-			}
-//			for(Sector sec : sectors){
-			{Sector sec = sectors[1];
-//				if(sec == null) continue;
-				
-				for(int mat = 0; mat < Material.values().length; mat++){
-						sec.areas[mat].render(Material.values()[mat].texture);
-				}
-				
-			}
+			Structure.renderStructures(false);
 			
+			for(int mat = 0; mat < Material.values().length; mat++){
+				sectors[1].areas[mat].render(Material.values()[mat].texture);
+			}
 			//front
-			for(Structure s : structures){
-				if(s.front)s.render();
-			}
-			
-			creatures.forEach(c -> c.render());
+			Structure.renderStructures(true);
+		
+			Creature.renderCreatures();
 
 			GL11.glPushMatrix();
 			sarah.render();
@@ -202,7 +191,9 @@ public class WorldWindow {
 
 			
 			//render health on creatures
-			if(Settings.health) creatures.forEach(c -> Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f));
+			if(Settings.health) for(List<Creature> list : Creature.creatures) for(Creature c : list){
+				Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f);
+			}
 			
 			//health on sarah
 			if(Settings.health){
@@ -248,27 +239,53 @@ public class WorldWindow {
 		}
 	
 		public static void putThingsTo(Sector s){
-			for(int i = 0; i < creatures.size(); i++){
-				Creature c = creatures.get(i);
-				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
-					s.creatures.add(c);
-					creatures.remove(i);
-					i--;
-				}
-			}
-			for(int i = 0; i < structures.size(); i++){
-				Structure c = structures.get(i);
-				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
-					s.structures.add(c);
-					structures.remove(i);
-					i--;
-				}
-			}
+//			for(int i = 0; i < creatures.size(); i++){
+//				Creature c = creatures.get(i);
+//				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
+//					s.creatures.add(c);
+//					creatures.remove(i);
+//					i--;
+//				}
+//			}
+//			for(int i = 0; i < structures.size(); i++){
+//				Structure c = structures.get(i);
+//				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
+//					s.structures.add(c);
+//					structures.remove(i);
+//					i--;
+//				}
+//			}
 		}
 		
 		public static void takeThingsFrom(Sector s){
-			
-			structures.addAll(s.structures); s.structures.clear();
-			creatures.addAll(s.creatures); s.creatures.clear();
+			for(Structure str : s.structures){
+//				if(str instanceof Bamboo){
+//					Structure.structures.get(Bamboo.typeId).add(str);
+//				} else 
+					if(str instanceof Tree){
+					Structure.structures.get(Tree.typeId).add(str);
+				} else if(str instanceof Bush){
+					Structure.structures.get(Bush.typeId).add(str);
+				} else if(str instanceof Flower){
+					Structure.structures.get(Flower.typeId).add(str);
+				} else if(str instanceof Grass_tuft){
+					Structure.structures.get(Grass_tuft.typeId).add(str);
+				} else if(str instanceof Cloud){
+					Structure.structures.get(Cloud.typeId).add(str);
+				}
+			}
+			for(Creature str : s.creatures){
+				if(str instanceof Butterfly){
+					Creature.creatures.get(Butterfly.typeId).add(str);
+				} else if(str instanceof Snail){
+					Creature.creatures.get(Snail.typeId).add(str);
+				} else if(str instanceof Heart){
+					Creature.creatures.get(Heart.typeId).add(str);
+				} else if(str instanceof Rabbit){
+					Creature.creatures.get(Rabbit.typeId).add(str);
+				}
+			}
+//			structures.addAll(s.structures); s.structures.clear();
+//			creatures.addAll(s.creatures); s.creatures.clear();
 		}
 }
