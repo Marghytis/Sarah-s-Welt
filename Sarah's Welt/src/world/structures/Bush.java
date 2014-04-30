@@ -11,7 +11,7 @@ public class Bush extends Structure{
 	public static int typeId;
 	
 	public Bush(int type, Point pos, Node worldLink, boolean front){
-		super(new Animator(Res.BUSH, new Animation(type, 1)), pos, worldLink);
+		super(new Animator(Res.BUSH, new Animation(1, type)), pos, worldLink);
 		this.front = front;
 	}
 	

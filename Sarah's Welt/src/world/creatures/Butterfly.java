@@ -13,7 +13,7 @@ public class Butterfly extends WalkingCreature{
 	public static int typeId;
 	
 	public static Animation flap1 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
-	public static Animation flap2 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
+	public static Animation flap2 = new Animation(5, 1, true, 0, 1, 2, 3, 2, 1);
 	
 	public Butterfly(int type, Point p, Node worldLink, int frame){
 		super(new Animator(Res.BUTTERFLY, type == 0 ? flap1 : flap2), p, worldLink);
