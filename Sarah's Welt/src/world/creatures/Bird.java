@@ -22,15 +22,18 @@ public class Bird extends WalkingCreature{
 		animator.frame = frame;
 	}
 	
+	int dir = 1;
+	
 	public void update(int dTime){
 		if(!g){
-			acc.add((0.5f - random.nextFloat())*0.00008f, (0.5f - random.nextFloat())*0.00008f);
+			acc.add(dir*0.00001f, (0.5f - random.nextFloat())*0.00001f);
 			applyFriction(Material.AIR);
 		} else {
 			if(random.nextInt(300) == 0){
 				animator.setAnimation(flap);
 				pos.y++;
 				accelerateFromGround(new Point(0, 0.0001f));
+				dir = random.nextBoolean() ? 1 : -1;
 			}
 		}
 		
