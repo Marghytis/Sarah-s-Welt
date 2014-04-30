@@ -169,8 +169,8 @@ public class WorldWindow {
 				turnUp = !turnUp;
 				colorCounter = 0;
 			}
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glClearColor(sky[0]/1000.0f + 0.4f, sky[1]/1000.0f + 0.4f, sky[2]/1000.0f + 0.4f, 1);
-			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
