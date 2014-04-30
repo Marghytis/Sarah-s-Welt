@@ -24,10 +24,10 @@ public class Bird extends WalkingCreature{
 	
 	public void update(int dTime){
 		if(!g){
-			acc.add((0.5f - random.nextFloat())*0.00003f, (0.5f - random.nextFloat())*0.00003f);
+			acc.add((0.5f - random.nextFloat())*0.00008f, (0.5f - random.nextFloat())*0.00008f);
 			applyFriction(Material.AIR);
 		} else {
-			if(random.nextInt(100) == 0){
+			if(random.nextInt(300) == 0){
 				animator.setAnimation(flap);
 				pos.y++;
 				accelerateFromGround(new Point(0, 0.0001f));

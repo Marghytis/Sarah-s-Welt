@@ -13,6 +13,7 @@ import world.creatures.Snail;
 import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cloud;
+import world.structures.Crack;
 import world.structures.Flower;
 import world.structures.Grass_tuft;
 import world.structures.Tree;
@@ -33,6 +34,20 @@ public abstract class Surface {
 	
 	public void spreadThings(Sector sector, Runnable yOffset, Runnable method){
 //		Runnable test = () -> System.out.println("Hello world two!");
+	}
+	
+	public void placeCracks(Sector sector){
+		for(int i = 0; i < 50; i++){
+			int x = sector.getGoodSpawnPos(random);
+			Point intersection = new Point(x, 0);
+			Node link = sector.findGrassPointAt(x, intersection, - (300 + random.nextInt(1000)));//- random.nextInt(100)
+			
+			float sizeMultiplier = 0.1f + (0.75f*random.nextFloat());
+			
+			Crack crack = new Crack(random.nextInt(4), intersection, link, sizeMultiplier, sizeMultiplier, random.nextFloat()*(float)(2*Math.PI));
+			
+			sector.structures.add(crack);
+		}
 	}
 		
 	public void placeClouds(Sector sector){

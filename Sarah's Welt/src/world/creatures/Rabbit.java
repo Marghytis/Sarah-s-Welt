@@ -16,12 +16,15 @@ public class Rabbit extends WalkingCreature {
 	static Animation stand = new Animation(0, 0);
 	static Animation hitt = new Animation(2, 0);
 	static Animation walk = new Animation(10, 0, true, 1, 2, 3, 4, 3, 2);
-	static Animation punch = new Animation(10, 1, true, 1, 2, 3, 4, 1);
+	static Animation punch = new Animation(5, 1, false, 1, 2, 3, 4, 1);
 	
 	public Rabbit(Point p, Node worldLink){
 		super(new Animator(Res.RABBIT, stand), p, worldLink);
+//		hitradius = 50;
 		maxSpeed = 5;
+		animator.doOnReady = () -> donePunch();
 		health = 10;
+		punchStrength = 1;
 	}
 	
 	public void update(int dTime){
@@ -45,6 +48,11 @@ public class Rabbit extends WalkingCreature {
 		if((!Settings.agro || !findSarah()))wanderAbout();
 		applyDirection(dir);
 		doStepping(velocityUnit*vP*dTime);
+	}
+	
+	public void donePunch(){
+		WorldWindow.sarah.hitBy(this);
+		animator.setAnimation(stand);
 	}
 	
 	public void wanderAbout(){
@@ -76,8 +84,7 @@ public class Rabbit extends WalkingCreature {
 		
 		if(hit > 0){
 			animator.setAnimation(hitt);
-			hit--;
-		} else {
+		} else if(!animator.animation.equals(punch)){
 			if(vP != 0){
 				animator.setAnimation(walk);
 			} else {

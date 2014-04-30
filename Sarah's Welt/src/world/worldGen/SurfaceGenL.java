@@ -54,6 +54,7 @@ public class SurfaceGenL extends Surface {
 		spreadRabbits(output);
 		spreadSnails(output);
 		placeClouds(output);
+		placeCracks(output);
 		
 		return output;
 	}

@@ -27,11 +27,12 @@ public abstract class Structure extends Thing{
 		Bamboo.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.BAMBOO);
 		Grass_tuft.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.GRASS_TUFT);
 		Cloud.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.CLOUD);
+		Crack.typeId = id++; structures.add(new ArrayList<>()); structuresTextures.add(Res.CRACK);
 	}
 	
 	public static void renderStructures(boolean front){
 		for(int i = 0; i < structures.size(); i++){
-			structuresTextures.get(i).bind();
+			if(structures.get(i).size() > 0) structuresTextures.get(i).bind();
 			structures.get(i).forEach((c) -> {if(front == c.front){c.render();}});
 		}
 		Texture.bindNone();

@@ -11,15 +11,16 @@ import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
 import util.Tessellator;
+import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Creature;
 import world.creatures.Rabbit;
 import world.creatures.Sarah;
 import world.creatures.Snail;
 import world.otherThings.Heart;
-import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cloud;
+import world.structures.Crack;
 import world.structures.Flower;
 import world.structures.Grass_tuft;
 import world.structures.Structure;
@@ -272,6 +273,8 @@ public class WorldWindow {
 					Structure.structures.get(Grass_tuft.typeId).add(str);
 				} else if(str instanceof Cloud){
 					Structure.structures.get(Cloud.typeId).add(str);
+				} else if(str instanceof Crack){
+					Structure.structures.get(Crack.typeId).add(str);
 				}
 			}
 			for(Creature str : s.creatures){
@@ -283,6 +286,8 @@ public class WorldWindow {
 					Creature.creatures.get(Heart.typeId).add(str);
 				} else if(str instanceof Rabbit){
 					Creature.creatures.get(Rabbit.typeId).add(str);
+				} else if(str instanceof Bird){
+					Creature.creatures.get(Bird.typeId).add(str);
 				}
 			}
 //			structures.addAll(s.structures); s.structures.clear();

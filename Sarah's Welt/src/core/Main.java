@@ -39,7 +39,7 @@ public class Main {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch(IllegalArgumentException e){}
-			System.out.println(System.currentTimeMillis() - testTime);
+//			System.out.println(System.currentTimeMillis() - testTime);
 		}
 		
 		Res.test.stop();

@@ -28,11 +28,12 @@ public abstract class Creature extends Thing {
 		Butterfly.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.BUTTERFLY);
 		Heart.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.HEART);
 		Rabbit.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.RABBIT);
+		Bird.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.BIRD);
 	}
 	
 	public static void renderCreatures(){
 		for(int i = 0; i < creatures.size(); i++){
-			creatureTextures.get(i).bind();
+			if(creatures.get(i).size() > 0) creatureTextures.get(i).bind();
 			creatures.get(i).forEach((c) -> c.render());
 		}
 		Texture.bindNone();

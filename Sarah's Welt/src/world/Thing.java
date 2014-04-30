@@ -4,9 +4,7 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import resources.Texture;
 import util.Animator;
-import core.Settings;
 
 public abstract class Thing {
 	
@@ -37,9 +35,7 @@ public abstract class Thing {
 		GL11.glTranslatef(pos.x, pos.y, 0);
 		
 		beforeRender();
-		animator.tex.bind();
 		animator.animate(mirrored);
-		Texture.bindNone();
 		afterRender();
 		
 		GL11.glPopMatrix();

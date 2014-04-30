@@ -3,6 +3,7 @@ package world.creatures;
 import org.lwjgl.input.Keyboard;
 
 import resources.Res;
+import resources.Texture;
 import util.Animation;
 import util.Animator;
 import world.Material;
@@ -124,6 +125,11 @@ public class Sarah extends WalkingCreature {
 				animator.setAnimation(fly);
 			}
 		}
+		animator.tex.bind();
+	}
+	
+	public void afterRender(){
+		Texture.bindNone();
 	}
 	
 	public void setKeyDirection(){
