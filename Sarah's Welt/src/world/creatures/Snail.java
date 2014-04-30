@@ -59,7 +59,7 @@ public class Snail extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(WorldWindow.sarah.pos).length() < 150){
+		if(pos.minus(WorldWindow.sarah.pos).lengthSqare() < 22500){
 			if(WorldWindow.sarah.pos.x + WorldWindow.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
 			} else if(WorldWindow.sarah.pos.x + WorldWindow.sarah.animator.tex.box.x + WorldWindow.sarah.animator.tex.box.size.x < pos.x){
@@ -77,12 +77,12 @@ public class Snail extends WalkingCreature {
 	}
 	
 	public boolean findNextCloud(){
-		Cloud find = null; float distance = 1000;
+		Cloud find = null; float distanceSq = 1000000;
 		for(Structure c : Structure.structures.get(Cloud.typeId)){
-			float dist = pos.minus(c.pos).length();
-			if(dist < distance){
+			float dist = pos.minus(c.pos).lengthSqare();
+			if(dist < distanceSq){
 				find = (Cloud)c;
-				distance = dist; 
+				distanceSq = dist; 
 			}
 		}
 		if(find != null){

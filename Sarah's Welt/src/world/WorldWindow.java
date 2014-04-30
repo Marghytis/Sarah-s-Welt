@@ -50,7 +50,7 @@ public class WorldWindow {
 		
 		public static float lightLevel = 0.1f;
 		
-		public static int[] sky = {0, 0, 100};
+//		public static int[] sky = {0, 0, 100};
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
@@ -151,26 +151,24 @@ public class WorldWindow {
 			}
 		}
 		
-		static int color = 0;
-		static boolean turnUp = true;
-		static int colorCounter;
+//		static int color = 0;
+//		static boolean turnUp = true;
+//		static int colorCounter;
 		
 		public static void render(){
-			if(turnUp){
-				sky[color] += 1;
-			} else {
-				sky[(color + 2) % 3] -= 1;
-			}
-			colorCounter += 1;
-			if(colorCounter >= 600){
-				if(!turnUp){
-					color = (color + 1) % 3;
-				}
-				turnUp = !turnUp;
-				colorCounter = 0;
-			}
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glClearColor(sky[0]/1000.0f + 0.4f, sky[1]/1000.0f + 0.4f, sky[2]/1000.0f + 0.4f, 1);
+//			if(turnUp){
+//				sky[color] += 1;
+//			} else {
+//				sky[(color + 2) % 3] -= 1;
+//			}
+//			colorCounter += 1;
+//			if(colorCounter >= 600){
+//				if(!turnUp){
+//					color = (color + 1) % 3;
+//				}
+//				turnUp = !turnUp;
+//				colorCounter = 0;
+//			}
 			GL11.glLoadIdentity();
 			GL11.glTranslatef(- sarah.pos.x + (Window.WIDTH/2.0f), - sarah.pos.y + (Window.HEIGHT/2.0f), 0);
 			GL11.glColor4f(1, 1, 1, 1);
@@ -240,22 +238,22 @@ public class WorldWindow {
 		}
 	
 		public static void putThingsTo(Sector s){
-//			for(int i = 0; i < creatures.size(); i++){
-//				Creature c = creatures.get(i);
-//				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
-//					s.creatures.add(c);
-//					creatures.remove(i);
-//					i--;
-//				}
-//			}
-//			for(int i = 0; i < structures.size(); i++){
-//				Structure c = structures.get(i);
-//				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
-//					s.structures.add(c);
-//					structures.remove(i);
-//					i--;
-//				}
-//			}
+			for(List<Creature> list : Creature.creatures) for(int i = 0; i < list.size(); i++){
+				Creature c = list.get(i);
+				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
+					s.creatures.add(c);
+					list.remove(i);
+					i--;
+				}
+			}
+			for(List<Structure> list : Structure.structures) for(int i = 0; i < list.size(); i++){
+				Structure c = list.get(i);
+				if(c.pos.x >= s.x*Sector.WIDTH && c.pos.x <= (s.x + 1)*Sector.WIDTH){
+					s.structures.add(c);
+					list.remove(i);
+					i--;
+				}
+			}
 		}
 		
 		public static void takeThingsFrom(Sector s){

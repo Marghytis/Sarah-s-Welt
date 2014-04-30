@@ -1,6 +1,7 @@
 package world.creatures;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import resources.Res;
 import resources.Texture;
