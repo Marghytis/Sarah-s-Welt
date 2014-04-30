@@ -1,11 +1,13 @@
 package world.creatures;
 
+import core.Settings;
 import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
 import world.Point;
+import world.WorldWindow;
 
 public class Rabbit extends WalkingCreature {
 
@@ -40,11 +42,33 @@ public class Rabbit extends WalkingCreature {
 	
 	int dir = 0;
 	public void walkingAI(float dTime){
+		if((!Settings.agro || !findSarah()))wanderAbout();
+		applyDirection(dir);
+		doStepping(velocityUnit*vP*dTime);
+	}
+	
+	public void wanderAbout(){
 		if(random.nextInt(100)<1){
 			dir = random.nextInt(3)-1;
 		}
-		applyDirection(dir);
-		doStepping(velocityUnit*vP*dTime);
+	}
+	
+	public boolean findSarah(){
+		if(pos.minus(WorldWindow.sarah.pos).length() < 150){
+			if(WorldWindow.sarah.pos.x + WorldWindow.sarah.animator.tex.box.x > pos.x){
+				dir = 1;
+			} else if(WorldWindow.sarah.pos.x + WorldWindow.sarah.animator.tex.box.x + WorldWindow.sarah.animator.tex.box.size.x < pos.x){
+				dir = -1;
+			} else {
+				dir = 0;
+				animator.setAnimation(punch);
+			}
+			maxSpeed = 6;
+			return true;
+		} else {
+			maxSpeed = 3;
+			return false;
+		}
 	}
 	
 	protected void beforeRender(){
