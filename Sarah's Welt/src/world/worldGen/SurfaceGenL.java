@@ -50,6 +50,7 @@ public class SurfaceGenL extends Surface {
 		plantBamboo(output);
 		plantFlowers(output);
 		spreadButterflies(output);
+		spreadBirds(output);
 		spreadRabbits(output);
 		spreadSnails(output);
 		placeClouds(output);
