@@ -1,5 +1,6 @@
 package world;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -112,6 +113,12 @@ public class WorldWindow {
 			}
 			Structure.updateStructures(dTime);
 			Creature.updateCreatures(dTime);
+			for(ArrayList<Creature> list : Creature.creatures) for(int c = 0; c < list.size(); c++){
+				if(list.get(c).health <= 0){
+					list.remove(c);
+					c--;
+				}
+			}
 		}
 		
 		public static void mouseListening(){

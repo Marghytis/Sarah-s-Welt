@@ -45,4 +45,13 @@ public class Bird extends WalkingCreature{
 		
 		super.update(dTime);
 	}
+
+	public boolean hitBy(Creature c){
+		if(super.hitBy(c)){
+			animator.setAnimation(flap);
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
