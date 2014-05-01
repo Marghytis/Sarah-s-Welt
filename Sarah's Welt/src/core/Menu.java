@@ -46,10 +46,10 @@ public class Menu {
 		GL11.glLoadIdentity();
 		while(Mouse.next()){
 			if(Mouse.getEventButton() == 0){
-				
 				if(Mouse.getEventButtonState()){
 					for(Button b : view.buttons){
 						if(b.contains(Mouse.getEventX(), Mouse.getEventY())){
+							Res.buttonSound.play();
 							if(b instanceof ToggleButton){
 								b.state = !b.state;
 								b.onClick.run();

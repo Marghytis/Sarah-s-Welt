@@ -25,8 +25,10 @@ public class Res {
 	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 8, -0.5f, -0.1f);
 	
 	public static SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
-	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);;
-	public static Sound test = new Sound("69569__digifishmusic__syyyymphonica.wav");;
+	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
+	
+	public static Sound test = new Sound("69569__digifishmusic__syyyymphonica.wav");
+	public static Sound buttonSound = new Sound("63531__florian-reinke__click1.wav");
 	
 	public static void load(){
 		//do nothing, classloader loads the resources (I hope)
