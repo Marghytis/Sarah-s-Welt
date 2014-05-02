@@ -19,6 +19,7 @@ import world.creatures.Rabbit;
 import world.creatures.Sarah;
 import world.creatures.Snail;
 import world.otherThings.Heart;
+import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cloud;
 import world.structures.Crack;
