@@ -12,7 +12,7 @@ public class Vec {
 		this(0, 0);
 	}
 	
-	public Vec(Point p){
+	public Vec(Vec p){
 		this.x = p.x;
 		this.y = p.y;
 	}

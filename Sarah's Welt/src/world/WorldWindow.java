@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import particles.SWOOSH;
 import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
@@ -19,7 +20,6 @@ import world.creatures.Rabbit;
 import world.creatures.Sarah;
 import world.creatures.Snail;
 import world.otherThings.Heart;
-import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cloud;
 import world.structures.Crack;
@@ -32,6 +32,7 @@ import core.Menu;
 import core.Menu.View;
 import core.Settings;
 import core.Window;
+import core.geom.Vec;
 
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
@@ -53,6 +54,8 @@ public class WorldWindow {
 		public static float lightLevel = 0.1f;
 		
 		public static int[] sky = {0, 0, 100};
+		
+		public static List<SWOOSH> deathSwooshs = new ArrayList<>();
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
@@ -116,10 +119,12 @@ public class WorldWindow {
 			Creature.updateCreatures(dTime);
 			for(ArrayList<Creature> list : Creature.creatures) for(int c = 0; c < list.size(); c++){
 				if(list.get(c).health <= 0){
+					deathSwooshs.add(new SWOOSH(new Vec(list.get(c).pos.x, list.get(c).pos.y)));
 					list.remove(c);
 					c--;
 				}
 			}
+			deathSwooshs.forEach((d) -> d.tick(dTime));
 		}
 		
 		public static void mouseListening(){
@@ -194,6 +199,15 @@ public class WorldWindow {
 		
 			Creature.renderCreatures();
 
+			for(int i = 0; i < deathSwooshs.size(); i++){
+				deathSwooshs.get(i).render();
+				if(deathSwooshs.get(i).count <= 0){
+					deathSwooshs.remove(i);
+					i--;
+				}
+			}
+
+			GL11.glColor4f(1, 1, 1, 1);
 			GL11.glPushMatrix();
 			sarah.render();
 			GL11.glPopMatrix();

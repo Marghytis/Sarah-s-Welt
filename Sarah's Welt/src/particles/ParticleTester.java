@@ -1,5 +1,9 @@
 package particles;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
@@ -9,6 +13,7 @@ import resources.Texture;
 import util.QuadOld;
 import world.Point;
 import core.Window;
+import core.geom.Vec;
 
 public class ParticleTester {
 	
@@ -34,6 +39,7 @@ public class ParticleTester {
 		long time = System.currentTimeMillis();
 		while(!Display.isCloseRequested()){
 			Display.sync(60);
+			mouseListening();
 //			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			fire.pos.set(Window.WIDTH/4 + (r * (float) Math.cos(t)), Window.HEIGHT/2 + (r * (float) Math.sin(t)));
 			t += (float)Math.PI/200;
@@ -48,8 +54,19 @@ public class ParticleTester {
 			long nextTime = System.currentTimeMillis();
 			fire.tick((int)(nextTime - time));
 			rain.tick((int)(nextTime - time));
+			
 			fire.render();
 			rain.render();
+			
+			for(int i = 0; i < swooshs.size(); i++){
+				swooshs.get(i).tick((int)(nextTime - time));
+				swooshs.get(i).render();
+				if(swooshs.get(i).count <= 0){
+					swooshs.remove(i);
+					i--;
+				}
+			}
+			
 			time = nextTime;
 			GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
 			cloud.draw(Res.CLOUD);
@@ -60,5 +77,16 @@ public class ParticleTester {
 	        Display.update();
 		}
 		Display.destroy();
+	}
+	
+	public static List<SWOOSH> swooshs = new ArrayList<>();
+	
+	public static void mouseListening(){
+//		swooshs.add(new SWOOSH(new Vec(Mouse.getX(), Mouse.getY())));
+		while(Mouse.next()){
+			if(Mouse.getEventButtonState()){
+				swooshs.add(new SWOOSH(new Vec(Mouse.getEventX(), Mouse.getEventY())));
+			}
+		}
 	}
 }

@@ -2,12 +2,7 @@ package particles;
 
 import particles.Particle.ParticleType;
 import resources.Texture;
-import world.Material;
-import world.Node;
 import world.Point;
-import world.WorldWindow;
-
-import com.sun.javafx.geom.Line2D;
 
 public class RainEffect {
 	

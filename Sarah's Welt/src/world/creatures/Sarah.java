@@ -25,8 +25,8 @@ public class Sarah extends WalkingCreature {
 	static Animation run = new Animation(3, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
 	static Animation sneak = new Animation(10, 5, true, 1, 2, 3, 4);
 	static Animation crouch = new Animation(0, 5);
-	static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0);
-	static Animation kick = new Animation(3, 6, false, 	1, 2, 3, 4, 5, 6);
+	static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 0);
+	static Animation kick = new Animation(3, 6, false, 	1, 2, 3, 4, 5);
 	
 	
 	public Sarah(Point pos, Node worldLink){

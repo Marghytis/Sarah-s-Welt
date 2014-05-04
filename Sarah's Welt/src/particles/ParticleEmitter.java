@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL15;
 
 import particles.Particle.ParticleType;
 import resources.Shader;
+import resources.Texture;
 
 public class ParticleEmitter{
 
@@ -84,6 +85,8 @@ public class ParticleEmitter{
 		renderParticles();
 		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+		GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}
 	
 	public void renderParticles(){
@@ -95,7 +98,7 @@ public class ParticleEmitter{
 					}
 				}
 			Shader.Test.release();
-		type.tex.release();
+		Texture.bindNone();
 	}
 
 	public void renderParticle(Particle p) {
