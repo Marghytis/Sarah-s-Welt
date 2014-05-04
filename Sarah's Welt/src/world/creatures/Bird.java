@@ -5,7 +5,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.Point;
+import core.geom.Vec;
 
 
 public class Bird extends WalkingCreature{
@@ -15,7 +15,7 @@ public class Bird extends WalkingCreature{
 	public static Animation sit = new Animation(0, 0);
 	public static Animation flap = new Animation(5, 0, true, 1, 2, 3, 4, 3, 2, 1);
 	
-	public Bird(Point p, Node worldLink, int frame){
+	public Bird(Vec p, Node worldLink, int frame){
 		super(new Animator(Res.BIRD, flap), p, worldLink);
 		front = true;
 		health = 5;
@@ -32,7 +32,7 @@ public class Bird extends WalkingCreature{
 			if(random.nextInt(300) == 0){
 				animator.setAnimation(flap);
 				pos.y++;
-				accelerateFromGround(new Point(0, 0.0001f));
+				accelerateFromGround(new Vec(0, 0.0001f));
 				dir = random.nextBoolean() ? 1 : -1;
 			}
 		}

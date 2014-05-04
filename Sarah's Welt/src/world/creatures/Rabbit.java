@@ -1,13 +1,13 @@
 package world.creatures;
 
-import core.Settings;
 import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.Point;
 import world.WorldWindow;
+import core.Settings;
+import core.geom.Vec;
 
 public class Rabbit extends WalkingCreature {
 
@@ -18,7 +18,7 @@ public class Rabbit extends WalkingCreature {
 	static Animation walk = new Animation(10, 0, true, 1, 2, 3, 4, 3, 2);
 	static Animation punch = new Animation(5, 1, false, 1, 2, 3, 4, 1);
 	
-	public Rabbit(Point p, Node worldLink){
+	public Rabbit(Vec p, Node worldLink){
 		super(new Animator(Res.RABBIT, stand), p, worldLink);
 //		hitradius = 50;
 		maxSpeed = 5;

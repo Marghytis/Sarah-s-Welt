@@ -9,10 +9,10 @@ import util.Animation;
 import util.Animator;
 import util.Color;
 import world.Node;
-import world.Point;
 import world.WorldWindow;
 import core.Settings;
 import core.Window;
+import core.geom.Vec;
 
 public class Flower extends Structure {
 
@@ -26,7 +26,7 @@ public class Flower extends Structure {
 	};
 	public static Texture FLOWER_LIGHT = new Texture("Light_dimmed");
 	
-	public Flower(int type, Point pos, Node worldLink){
+	public Flower(int type, Vec pos, Node worldLink){
 		super(new Animator(Res.FLOWER, new Animation(0, type)), pos, worldLink);
 		this.type = type;
 	}

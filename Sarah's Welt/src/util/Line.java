@@ -1,7 +1,7 @@
 package util;
 
 import world.Node;
-import world.Point;
+import core.geom.Vec;
 
 
 
@@ -17,7 +17,7 @@ public class Line{
 	 */
 	
 	public Line(float... coords){
-		addPoints(coords);
+		addVecs(coords);
 	}
 	
 	public void empty(){
@@ -26,18 +26,18 @@ public class Line{
 	}
 	
 	public void connect(Node from, Node to){
-		from.next = to;
-		to.last = from;
+		from.setNext(to);
+		to.setLast(from);
 	}
 
 	/**
-	 * inserts the Node insert between the first and its next
+	 * inserts the Node insert between the first and its getNext()
 	 * @param first
 	 * @param insert
 	 */
 	public void insertNodeAfter(Node first, Node insert){
-		if(first.next != null){
-			Node second = first.next;
+		if(first.getNext() != null){
+			Node second = first.getNext();
 			connect(first, insert);
 			connect(insert, second);
 		} else {
@@ -45,30 +45,34 @@ public class Line{
 		}
 	}
 	
-	public void addPoint(float x, float y){
-		Node n = new Node(new Point(x, y));
+	public void addVec(float x, float y){
+		Node n = new Node(new Vec(x, y));
 		if(end == null){
 			end = n;
 			start = n;
 		} else {
 			connect(end, n);
-			end = end.next;
+			end = end.getNext();
 		}
 	}
 	
-	public void addPoint(Point p){
+	public void addVec(Vec p){
 		Node n = new Node(p);
 		if(end == null){
 			end = n;
 			start = n;
 		} else {
 			connect(end, n);
-			end = end.next;
+			end = end.getNext();
 		}
 	}
 	
-	public void addPointBack(float x, float y){
-		Node n = new Node(new Point(x, y));
+	public void addVecBack(float x, float y){
+		addVecBack(new Vec(x, y));
+	}
+
+	public void addVecBack(Vec Vec){
+		Node n = new Node(Vec);
 		if(end == null){
 			end = n;
 			start = n;
@@ -78,38 +82,38 @@ public class Line{
 		}
 	}
 
-	public void addPoints(float... coords){
+	public void addVecs(float... coords){
 		if(coords.length <= 1){
 			//ERROR
 			return;
 		}
 		if(start == null){
-			start = new Node(new Point(coords[0], coords[1]), null);
+			start = new Node(new Vec(coords[0], coords[1]), null);
 			end = start;
 			for(int p = 2; p < coords.length; p += 2){
 				connect(end, new Node(coords[p], coords[p+1]));
-				end = end.next;
+				end = end.getNext();
 			}
 		} else {
 			for(int p = 0; p < coords.length; p += 2){
-				end.next = new Node(new Point(coords[p], coords[p+1]), end);
-				end = end.next;
+				end.setNext(new Node(new Vec(coords[p], coords[p+1]), end));
+				end = end.getNext();
 			}
 		}
 	}
 	
-	public void addPoints(Point... points){
+	public void addVecs(Vec... Vecs){
 		if(start == null){
-			start = new Node(points[0], null);
+			start = new Node(Vecs[0], null);
 			end = start;
-			for(int p = 1; p < points.length; p++){
-				end.next = new Node(points[p], end);
-				end = end.next;
+			for(int p = 1; p < Vecs.length; p++){
+				end.setNext(new Node(Vecs[p], end));
+				end = end.getNext();
 			}
 		} else {
-			for(int p = 0; p < points.length; p++){
-				end.next = new Node(points[p], end);
-				end = end.next;
+			for(int p = 0; p < Vecs.length; p++){
+				end.setNext(new Node(Vecs[p], end));
+				end = end.getNext();
 			}
 		}
 	}
@@ -127,7 +131,7 @@ public class Line{
 				Node n = new Node(src.p);
 				insertNodeAfter(end, n);
 				end = n;
-				src = src.next;
+				src = src.getNext();
 			}
 			Node n = new Node(src.p);
 			insertNodeAfter(end, n);
@@ -139,12 +143,22 @@ public class Line{
 				Node n = new Node(src.p);
 				insertNodeAfter(end, n);
 				end = n;
-				src = src.last;
+				src = src.getLast();
 			}
 			Node n = new Node(src.p);
 			insertNodeAfter(end, n);
 			end = n;
 		}
+	}
+	
+	public void removeLast(){
+		end = end.getLast();
+		end.setNext(null);
+	}
+	
+	public void removeFirst(){
+		start = start.getNext();
+		start.setLast(null);
 	}
 	
 	public void closeCircle(){
@@ -165,7 +179,7 @@ public class Line{
 	}
 	
 	public boolean isCircle(){
-//		return end.next == start;
+//		return end.getNext() == start;
 		return false;
 	}
 	
@@ -180,17 +194,17 @@ public class Line{
 		Node n = start;
 		String string = n.p.toString() + "  ";
 		while(n != end){
-			n = n.next;
+			n = n.getNext();
 			string += n.p.toString() + "  ";
 		}
-		if(end.next == start){
+		if(end.getNext() == start){
 			string += "  circle O";
 		} else {
-			if(end.next != null){
-				string += "  -->  " + end.next.p + "  ...";
+			if(end.getNext() != null){
+				string += "  -->  " + end.getNext().p + "  ...";
 			}
-			if(start.last != null){
-				string = "...  " + start.last.p + "<--  " + string;
+			if(start.getLast() != null){
+				string = "...  " + start.getLast().p + "<--  " + string;
 			}
 		}
 		return string;

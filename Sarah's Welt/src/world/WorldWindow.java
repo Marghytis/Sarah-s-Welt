@@ -34,32 +34,20 @@ import core.Window;
 public class WorldWindow {
 		/**The scale factor from meters to pixel*/
 		public static final int measureScale = 50;
-		public static Tessellator tessellator;
-		public static Random random = new Random();
 		
 		public static String worldName;
+		public static Random random = new Random();
+
+		public static SurfaceGenerator surface = new SurfaceGenerator();
 		
-		public static int xSector;
-		public static WorldGenerator generator;
-//		public static WorldDatabase database;
 		public static Sarah sarah;
-		
-		public static Sector[] sectors = new Sector[3];
 		
 		public static Lightmap light;
 		
-		public static float lightLevel = 0.1f;
-		
-		public static int[] sky = {0, 0, 100};
 	
 		public static void load(String worldName){
 			WorldWindow.worldName = worldName;
-			tessellator = new Tessellator();
 			light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
-//			System.out.println(Window.WIDTH + "  " + Window.HEIGHT);
-
-//			database = new WorldDatabase(worldName);
-//			database.loadWorld();
 			load();
 		}
 		

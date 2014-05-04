@@ -9,6 +9,7 @@ import util.Animation;
 import util.Animator;
 import world.Node;
 import world.Point;
+import core.geom.Vec;
 
 public class Cloud extends Structure{
 
@@ -18,7 +19,7 @@ public class Cloud extends Structure{
 	public float xSize;
 	public float ySize;
 	
-	public Cloud(Point pos, Node worldLink, float xSize, float ySize){
+	public Cloud(Vec pos, Node worldLink, float xSize, float ySize){
 		super(new Animator(Res.CLOUD, new Animation(1, 1)), pos, worldLink);
 		this.xSize = xSize;
 		this.ySize = ySize;

@@ -5,11 +5,11 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.Point;
 import world.WorldWindow;
 import world.structures.Cloud;
 import world.structures.Structure;
 import core.Settings;
+import core.geom.Vec;
 
 public class Snail extends WalkingCreature {
 
@@ -21,7 +21,7 @@ public class Snail extends WalkingCreature {
 	static Animation hitt = new Animation(0, 2);
 
 	
-	public Snail(Point p, Node worldLink){
+	public Snail(Vec p, Node worldLink){
 		super(new Animator(Res.SNAIL, stand), p, worldLink);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();

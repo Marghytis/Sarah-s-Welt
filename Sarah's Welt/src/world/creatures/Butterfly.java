@@ -5,7 +5,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.Point;
+import core.geom.Vec;
 
 
 public class Butterfly extends WalkingCreature{
@@ -15,7 +15,7 @@ public class Butterfly extends WalkingCreature{
 	public static Animation flap1 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
 	public static Animation flap2 = new Animation(5, 1, true, 0, 1, 2, 3, 2, 1);
 	
-	public Butterfly(int type, Point p, Node worldLink, int frame){
+	public Butterfly(int type, Vec p, Node worldLink, int frame){
 		super(new Animator(Res.BUTTERFLY, type == 0 ? flap1 : flap2), p, worldLink);
 		front = true;
 		health = 5;
@@ -29,7 +29,7 @@ public class Butterfly extends WalkingCreature{
 		} else {
 			if(random.nextInt(100) == 0){
 				pos.y++;
-				accelerateFromGround(new Point(0, 0.0001f));
+				accelerateFromGround(new Vec(0, 0.0001f));
 			}
 		}
 		

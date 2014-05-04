@@ -1,5 +1,7 @@
 package world;
 
+import core.geom.Vec;
+
 
 public class Node {
 	static int indexIndex;//TODO read and save in database
@@ -8,20 +10,20 @@ public class Node {
 	protected Node last = null; int lastIndex;//clockwise
 	
 	protected int index;
-	public Point p = null;
+	public Vec p = null;
 	
-	public Node(Point p, Node last){
+	public Node(Vec p, Node last){
 		this.p = p;
 		setLast(last);
 		index = indexIndex++;
 	}
 	
-	public Node(Point p){
+	public Node(Vec p){
 		this(p, null);
 	}
 	
 	public Node(float x, float y){
-		this(new Point(x, y));
+		this(new Vec(x, y));
 	}
 	
 	public void setLast(Node n){
@@ -32,5 +34,13 @@ public class Node {
 	public void setNext(Node n){
 		next = n;
 		if(n != null) nextIndex = n.index;
+	}
+	
+	public Node getLast(){
+		return last;
+	}
+	
+	public Node getNext(){
+		return next;
 	}
 }
