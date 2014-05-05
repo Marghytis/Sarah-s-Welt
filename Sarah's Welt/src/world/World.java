@@ -78,7 +78,7 @@ public class World {
 //		} else {
 		worldName = name;
 		tessellator = new Tessellator();
-		generator = new SurfaceGenerator(Window.WIDTH);
+		generator = new SurfaceGenerator(Window.WIDTH + 400);
 		
 		generator.gen(10);
 		sarah = new Sarah(new Vec(10, 1000), null);
@@ -108,7 +108,7 @@ public class World {
 	public static void updateStructures(int delta){
 		for(List<Structure> list : World.structures) for(int i = 0; i < list.size(); i++){
 			Structure s = list.get(i);
-			if(s.pos.x < sarah.pos.x - generator.WIDTH/4 || s.pos.x > sarah.pos.x + generator.WIDTH/4){
+			if(s.pos.x < sarah.pos.x - generator.WIDTH/2 || s.pos.x > sarah.pos.x + generator.WIDTH/2){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			} else {
@@ -119,10 +119,9 @@ public class World {
 	
 	public static void updateCreatures(int delta){
 		for(List<Creature> list : World.creatures) for(int i = 0; i < list.size(); i++){
-			System.out.println(i);
 			Creature s = list.get(i);
 			s.update(delta);
-			if(s.pos.x < sarah.pos.x - generator.WIDTH/4 || s.pos.x > sarah.pos.x + generator.WIDTH/4){
+			if(s.pos.x < sarah.pos.x - generator.WIDTH/2 || s.pos.x > sarah.pos.x + generator.WIDTH/2){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			}
@@ -147,7 +146,6 @@ public class World {
 		Texture.bindNone();
 		
 		//front
-		Structure.renderStructures(true);
 	
 		Creature.renderCreatures();
 
@@ -155,6 +153,7 @@ public class World {
 		sarah.render();
 		GL11.glPopMatrix();
 
+		Structure.renderStructures(true);
 		
 		//render health on creatures
 		if(Settings.health) for(List<Creature> list : creatures) for(Creature c : list){

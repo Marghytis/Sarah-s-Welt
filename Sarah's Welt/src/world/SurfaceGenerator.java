@@ -3,9 +3,7 @@ package world;
 import java.util.Random;
 
 import util.Line;
-import world.creatures.Butterfly;
-import world.creatures.Creature;
-import world.creatures.Snail;
+import world.worldGen.Biome;
 import world.worldGen.WorldGenObject;
 import world.worldGen.WorldGenObject.WorldGenObjectType;
 import core.geom.Vec;
@@ -92,13 +90,8 @@ public class SurfaceGenerator {
 				earthB.addVec(newStone);
 				stoneT.addVecBack(newStone);//Stone top
 				stoneB.addVec(newStoneBottom);//Stone bottom
-
-				int rand = random.nextInt(1000);
-				if(rand < 30){
-					spawnCreature(Snail.typeId, new Snail(new Vec(), null), grassT.start, 5);
-				} else if(rand < 60){
-					spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), grassT.start, 20);
-				}
+				
+				settingsR.biome.spawnThings(grassT.start);
 			}
 		} else {
 			while(!reachedDestination(grassT.start.getNext().p.x, destination, false)){
@@ -131,12 +124,7 @@ public class SurfaceGenerator {
 				stoneT.addVec(newStone);//Stone top
 				stoneB.addVecBack(newStoneBottom);//Stone bottom
 
-				int rand = random.nextInt(1000);
-				if(rand < 30){
-					spawnCreature(Snail.typeId, new Snail(new Vec(), null), grassT.end.getLast(), 5);
-				} else if(rand < 60){
-					spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), grassT.end.getLast(), 20);
-				}
+				settingsL.biome.spawnThings(grassT.end.getLast());
 			}
 		} else {
 			while(!reachedDestination(grassT.end.getLast().p.x, destination, true)){
@@ -149,11 +137,6 @@ public class SurfaceGenerator {
 				stoneB.removeFirst();				
 			}
 		}
-	}
-	
-	public void spawnCreature(int typeId, Creature c, Node n, float yOffset){
-		c.pos.set(n.p.plus(n.getNext().p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
-		World.creatures.get(typeId).add(c);
 	}
 	
 	public void refreshWorldNodes(){
@@ -180,6 +163,7 @@ public class SurfaceGenerator {
 		public WorldGenObject level_2;
 		public double nextAngle = 0;
 		public boolean dir;
+		public Biome biome = Biome.BAMBOO_FOREST;
 		
 		public Vec base;
 		
@@ -218,6 +202,10 @@ public class SurfaceGenerator {
 				nextAngle += level_2.next(random);
 			} catch (Exception e) {
 				level_2 = null;
+			}
+			if(random.nextInt(1000) == 0){
+				System.out.println("test");
+				biome = Biome.values()[random.nextInt(Biome.values().length)];
 			}
 		}
 	}
