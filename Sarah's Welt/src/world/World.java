@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
@@ -179,7 +180,19 @@ public class World {
 	}
 	
 	public static void mouseListening(){
-		
+		//add later
+		while(Mouse.next()){
+			if(Mouse.getEventButtonState() && Mouse.getEventButton() == 0){
+				int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
+				int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
+				for(List<Creature> list : creatures) for(Creature c : list){
+					if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
+						c.hitBy(sarah);
+					}
+				}
+				sarah.punch();
+			}
+		}
 	}
 	
 	public static void keyListening(){
