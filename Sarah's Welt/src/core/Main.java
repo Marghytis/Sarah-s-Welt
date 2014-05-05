@@ -12,7 +12,7 @@ public class Main {
 
 	public static void main(String[] args){
 		
-		Window.create("Sarahs Welt", 1200, 800);
+		Window.create("Sarahs Welt", 1000, 600);
 //		Window.createFullScreen("Sarahs Welt");
 		Window.fill(new Texture("titelbild", 0, 0).handle);
 		Display.update();
