@@ -1,6 +1,11 @@
 package resources;
 
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import org.lwjgl.openal.AL10;
 
@@ -38,5 +43,21 @@ public class Res {
 		font.destroy();
 		arial.destroy();
 		AL10.alDeleteSources(test.source);
+	}
+	
+	public static int[][] readTextureCoordinator(String file){
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
+			String line = reader.readLine();
+			line.replaceAll(" ", "");
+			String[] vertices = line.split(";");
+			
+			int[][] output = new int[vertices.length][3];
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
