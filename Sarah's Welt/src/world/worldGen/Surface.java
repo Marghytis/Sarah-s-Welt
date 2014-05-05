@@ -81,7 +81,7 @@ public abstract class Surface {
 			Point intersection = new Point(x, 0);
 			Node link = sector.findGrassPointAt(x, intersection, 20);
 			
-			Bird but = new Bird(intersection, link, random.nextInt(Butterfly.flap1.sequence.length));
+			Bird but = new Bird(random.nextInt(2), intersection, link, random.nextInt(Butterfly.flap1.sequence.length));
 			
 			sector.creatures.add(but);
 		}
