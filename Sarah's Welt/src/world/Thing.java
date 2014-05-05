@@ -5,12 +5,13 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
 import util.Animator;
+import core.geom.Vec;
 
 public abstract class Thing {
 	
 	public static Random random = new Random();
 	//Position
-	public Point pos = new Point();
+	public Vec pos = new Vec();
 	public Node worldLink;
 	
 	//For rendering
@@ -19,7 +20,7 @@ public abstract class Thing {
 	protected boolean mirrored = false;
 	public boolean front = false;
 	
-	public Thing(Animator ani, Point pos, Node worldLink){
+	public Thing(Animator ani, Vec pos, Node worldLink){
 		this.pos = pos;
 		this.worldLink = worldLink;
 		this.animator = ani;

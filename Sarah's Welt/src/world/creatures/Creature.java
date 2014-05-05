@@ -1,45 +1,31 @@
 package world.creatures;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import core.Settings;
-import resources.Res;
-import resources.StackedTexture;
 import resources.Texture;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.Point;
 import world.Thing;
-import world.WorldWindow;
-import world.otherThings.Heart;
+import world.World;
+import core.Settings;
+import core.geom.Vec;
 
 public abstract class Creature extends Thing {
-
-	public static List<ArrayList<Creature>> creatures = new ArrayList<>();
-	public static ArrayList<StackedTexture> creatureTextures = new ArrayList<>();
-	
-	static {
-		int id = 0;
-		Snail.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.SNAIL);
-		Butterfly.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.BUTTERFLY);
-		Heart.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.HEART);
-		Rabbit.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.RABBIT);
-		Bird.typeId = id++; creatures.add(new ArrayList<>()); creatureTextures.add(Res.BIRD);
-	}
 	
 	public static void renderCreatures(){
-		for(int i = 0; i < creatures.size(); i++){
-			if(creatures.get(i).size() > 0) creatureTextures.get(i).bind();
-			creatures.get(i).forEach((c) -> c.render());
+		for(ArrayList<Creature> list : World.creatures){
+			if(list.size() > 0) {
+				list.get(0).animator.tex.bind();
+				list.forEach((c) -> c.render());
+			}
 		}
 		Texture.bindNone();
 		if(Settings.hitbox){
-			for(int i = 0; i < creatures.size(); i++){
-				creatures.get(i).forEach((c) -> {
+			for(ArrayList<Creature> list : World.creatures){
+				list.forEach((c) -> {
 					GL11.glPushMatrix();
 					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
 					c.animator.tex.box.outline();
@@ -49,13 +35,8 @@ public abstract class Creature extends Thing {
 		}
 	}
 	
-	public static void updateCreatures(int delta){
-		for(List<Creature> list : creatures)
-			list.forEach((c) -> c.update(delta));
-	}
-	
-	protected Point acc = new Point();
-	protected Point vel = new Point();
+	protected Vec acc = new Vec();
+	protected Vec vel = new Vec();
 	
 	//combat
 	public int hit = 0;
@@ -63,14 +44,14 @@ public abstract class Creature extends Thing {
 	public int health = 20;
 	public int punchStrength = 1;
 	
-	public Creature(Animator ani, Point pos, Node worldLink){
+	public Creature(Animator ani, Vec pos, Node worldLink){
 		super(ani, pos, worldLink);
 	}
 	
 	public void update(int dTime){
 		pos.add(vel);
 		
-		vel.add(acc.scaledBy(dTime).scaledBy(WorldWindow.measureScale*dTime));
+		vel.add(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
 		acc.set(0, 0);
 		
 		if(hit > 0) hit--;

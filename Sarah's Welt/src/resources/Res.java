@@ -53,11 +53,13 @@ public class Res {
 			String[] vertices = line.split(";");
 			
 			int[][] output = new int[vertices.length][3];
+			return output;
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

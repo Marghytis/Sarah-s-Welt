@@ -1,6 +1,6 @@
 package util;
 
-import world.Point;
+import core.geom.Vec;
 
 
 public class Geom {
@@ -15,10 +15,10 @@ public class Geom {
 	 * @param toIntersection
 	 * @return
 	 */
-	public static boolean intersectionLines(Point A1, Point A2, Point B1, Point B2, Point toIntersection){
-		Point Ad = A2.minus(A1);
-		Point Bd = B2.minus(B1);
-		Point CmA = B1.minus(A1);//C - A
+	public static boolean intersectionLines(Vec A1, Vec A2, Vec B1, Vec B2, Vec toIntersection){
+		Vec Ad = A2.minus(A1);
+		Vec Bd = B2.minus(B1);
+		Vec CmA = B1.minus(A1);//C - A
 		float BcD = Ad.cross(Bd);//B x D
 
 		if(BcD != 0){
@@ -45,8 +45,8 @@ public class Geom {
 	 * @param r Radius of the circle
 	 * @return
 	 */
-	public static Point[] circleIntersection(Point p1, Point p2, Point c, float r){
-		Point[] ausgabe = new Point[2];
+	public static Vec[] circleIntersection(Vec p1, Vec p2, Vec c, float r){
+		Vec[] ausgabe = new Vec[2];
 		float a, b;
 		a = (p2.y - p1.y)/(p2.x - p1.x);
 		b = (p1.y - c.y) - ((p1.x - c.x)*a);
@@ -60,18 +60,18 @@ public class Geom {
 			xP2 += c.x;
 			int helpCounter = 0;
 			if((p1.x <= xP1 && xP1 <= p2.x)||(p2.x <= xP1 && xP1 <= p1.x)){
-				ausgabe[helpCounter] = new Point(xP1, yP1);
+				ausgabe[helpCounter] = new Vec(xP1, yP1);
 				helpCounter++;
 			}
 			if((p1.x <= xP2 && xP2 <= p2.x)||(p2.x <= xP2 && xP2 <= p1.x)){
-				ausgabe[helpCounter] = new Point(xP2, yP2);
+				ausgabe[helpCounter] = new Vec(xP2, yP2);
 			}
 		} else if(quadSum == 0){
 			float xP = ((-a*b)/((a*a)+1));
 			float yP = ((a*xP)+b) + c.y;
 			xP += c.x;
 			if((p1.x <= xP && xP <= p2.x)||(p2.x <= xP && xP <= p1.x)){
-				ausgabe[0] = new Point(xP, yP);
+				ausgabe[0] = new Vec(xP, yP);
 			}
 		}
 		return ausgabe;

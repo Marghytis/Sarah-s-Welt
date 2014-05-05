@@ -4,8 +4,8 @@ import util.Animator;
 import util.Geom;
 import world.Material;
 import world.Node;
-import world.Point;
-import world.WorldWindow;
+import world.World;
+import core.geom.Vec;
 
 public abstract class WalkingCreature extends Creature{
 	
@@ -14,7 +14,7 @@ public abstract class WalkingCreature extends Creature{
 	public float velocityUnit = 0.00035f;
 	public int vP;// distance per stepping frame (in acceleration
 
-	public WalkingCreature(Animator ani, Point p, Node worldLink){
+	public WalkingCreature(Animator ani, Vec p, Node worldLink){
 		super(ani, p, worldLink);
 	}
 	
@@ -25,7 +25,7 @@ public abstract class WalkingCreature extends Creature{
 			if(g){
 				float xVec = c.pos.x < pos.x ? 0.0002f : -0.0002f;
 				float yVec = 0.0005f;
-				accelerateFromGround(new Point(xVec, yVec));
+				accelerateFromGround(new Vec(xVec, yVec));
 			}
 			return true;
 		}
@@ -47,9 +47,9 @@ public abstract class WalkingCreature extends Creature{
 		}
 	}
 	
-	public void accelerateFromGround(Point vec){
+	public void accelerateFromGround(Vec vec){
 		pos.y++;
-		Point linkVec = worldLink.p.minus(worldLink.next.p);
+		Vec linkVec = worldLink.p.minus(worldLink.getNext().p);
 		if(linkVec.cross(vec) > 0){
 			acc.set(vec);
 			vP = 0;
@@ -66,16 +66,16 @@ public abstract class WalkingCreature extends Creature{
 			vel.set(0, 0);
 			return;
 		}
-		float v = d*WorldWindow.measureScale;
-		Point intersection = null;
+		float v = d*World.measureScale;
+		Vec intersection = null;
 		
-		Node node = worldLink.last.last.last.last.last.last.last.last;
+		Node node = worldLink.getLast().getLast().getLast().getLast().getLast().getLast().getLast().getLast();
 		Node finalNode = null;
 		if(node == null)return;//TODO
 		for(int i = 0; i <= 16; i++){
 			//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
-			if(node.p.x > node.next.p.x){
-				Point[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
+			if(node.p.x > node.getNext().p.x){
+				Vec[] inter = Geom.circleIntersection(node.p, node.getNext().p, pos, v);
 	
 				if(inter[0] != null){
 					if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
@@ -99,7 +99,7 @@ public abstract class WalkingCreature extends Creature{
 				}
 			}
 			
-			node = node.next;
+			node = node.getNext();
 		}
 		if(intersection != null){
 			vel.set(intersection.minus(pos));
@@ -110,31 +110,28 @@ public abstract class WalkingCreature extends Creature{
 	public boolean collision(){
 		float[] intersection = null;
 		boolean foundOne = false;
-//		for(Sector sector : WorldWindow.sectors){//	iterate columns
-//			if(sector != null) 
-				for(Material mat : Material.values()){//	iterate materials
-				if(mat.solid){
-					for(Node c : WorldWindow.sectors[1].areas[mat.ordinal()].cycles){//	iterate lines
-						Node n = c;
-						 do {
-							n = n.next;
-							Point inters = new Point();
-							boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.last.p, n.p, inters);
-							if(found && (intersection == null || inters.y > intersection[1])){
-								if(intersection == null)intersection = new float[2];
-								intersection[0] = inters.x;
-								intersection[1] = inters.y;
-								pos.set(inters);
-								worldLink = n;
-								vel.set(0, 0);
-								acc.set(0, 0);
-								g = true;
-								foundOne = true;
-							}
-						} while (n != c);
-					}
+		for(Material mat : Material.values()){//	iterate materials
+			if(mat.solid){
+				for(Node c : World.contours[mat.ordinal()]){//	iterate lines
+					Node n = c;
+					 do {
+						n = n.getNext();
+						Vec inters = new Vec();
+						boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getLast().p, n.p, inters);
+						if(found && (intersection == null || inters.y > intersection[1])){
+							if(intersection == null)intersection = new float[2];
+							intersection[0] = inters.x;
+							intersection[1] = inters.y;
+							pos.set(inters);
+							worldLink = n;
+							vel.set(0, 0);
+							acc.set(0, 0);
+							g = true;
+							foundOne = true;
+						}
+					} while (n != c);
 				}
-//			}
+			}
 		}
 		return foundOne;
 	}

@@ -8,8 +8,8 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.Point;
-import world.WorldWindow;
+import world.World;
+import core.geom.Vec;
 
 
 public class Sarah extends WalkingCreature {
@@ -29,12 +29,12 @@ public class Sarah extends WalkingCreature {
 	static Animation kick = new Animation(3, 6, false, 	1, 2, 3, 4, 5);
 	
 	
-	public Sarah(Point pos, Node worldLink){
+	public Sarah(Vec pos, Node worldLink){
 		super(new Animator(Res.SARAH, stand), pos, worldLink);
 		hitradius = 80;
 		punchStrength = 2;
 		maxSpeed = 10;
-		animator.doOnReady = () -> WorldWindow.sarah.animator.animation = stand;
+		animator.doOnReady = () -> World.sarah.animator.animation = stand;
 	}
 	
 	public void update(int dTime){
@@ -141,7 +141,7 @@ public class Sarah extends WalkingCreature {
 	public void jump(){
 		if(g){
 			pos.y++;
-			accelerateFromGround(new Point(0, 0.001f));
+			accelerateFromGround(new Vec(0, 0.001f));
 			animator.setAnimation(jump);
 		}
 	}

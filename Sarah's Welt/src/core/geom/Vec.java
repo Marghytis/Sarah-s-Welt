@@ -2,8 +2,6 @@ package core.geom;
 
 import org.lwjgl.opengl.GL11;
 
-import world.Point;
-
 public class Vec {
 
 	public float x, y;
@@ -33,7 +31,11 @@ public class Vec {
 	}
 	
 	public Vec plus(Vec p){
-		return new Vec(x + p.x, y + p.y);
+		return plus(p.x, p.y);
+	}
+	
+	public Vec plus(float x, float y){
+		return new Vec(this.x + x, this.y + y);
 	}
 	
 	public Vec minus(Vec p){
@@ -68,7 +70,7 @@ public class Vec {
 		return this;
 	}
 	
-	public float cross(Point p){
+	public float cross(Vec p){
 		return x*p.y - y*p.x;
 	}
 	

@@ -1,22 +1,54 @@
 package world;
 
+import core.geom.Vec;
+
 
 public class Node {
-	public Node next = null;//next should always be counter-clockwise
-	public Node last = null;//clockwise
+	static int indexIndex;//TODO read and save in database
 	
-	public Point p = null;
+	private Node next = null; int nextIndex = -1;//next should always be counter-clockwise
+	private Node last = null; int lastIndex = -1;//clockwise
 	
-	public Node(Point p, Node last){
+	private int index;
+	public Vec p = null;
+	
+	public Node(Vec p, Node last){
 		this.p = p;
-		this.last = last;
+		setLast(last);
+		index = indexIndex++;
 	}
 	
-	public Node(Point p){
-		this.p = p;
+	public Node(Vec p){
+		this(p, null);
 	}
 	
 	public Node(float x, float y){
-		this.p = new Point(x, y);
+		this(new Vec(x, y));
+	}
+	
+	public void setLast(Node n){
+		last = n;
+		if(n != null){
+			lastIndex = n.index;
+		} else {
+			lastIndex = -1;
+		}
+	}
+	
+	public void setNext(Node n){
+		next = n;
+		if(n != null){
+			nextIndex = n.index;
+		} else {
+			nextIndex = -1;
+		}
+	}
+	
+	public Node getLast(){
+		return last;
+	}
+	
+	public Node getNext(){
+		return next;
 	}
 }

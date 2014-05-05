@@ -6,7 +6,7 @@ import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Node;
-import world.Point;
+import core.geom.Vec;
 
 public class Crack extends Structure{
 	
@@ -17,7 +17,7 @@ public class Crack extends Structure{
 
 	public static Animation[] crack = {new Animation(0, 0), new Animation(0, 1), new Animation(0, 2), new Animation(0, 3)};
 	
-	public Crack(int type, Point pos, Node worldLink, float sizeX, float sizeY, float rotation){
+	public Crack(int type, Vec pos, Node worldLink, float sizeX, float sizeY, float rotation){
 		super(new Animator(Res.CRACK, crack[type]), pos, worldLink);
 		front = true;
 		this.xSize = sizeX;

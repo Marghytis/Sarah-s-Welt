@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL11;
 import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
-import util.QuadOld;
 import world.Point;
 import core.Window;
+import core.geom.Quad;
 import core.geom.Vec;
 
 public class ParticleTester {
@@ -25,12 +25,12 @@ public class ParticleTester {
 		
 		Lightmap lightmap = new Lightmap(new Texture(Window.WIDTH/2, Window.HEIGHT));
 		lightmap.resetDark( 0);
-		QuadOld leftWindow = new QuadOld(0, 0, Window.WIDTH/2, Window.HEIGHT);
+		Quad leftWindow = new Quad(0, 0, Window.WIDTH/2, Window.HEIGHT);
 		
 		FireEffect fire = new FireEffect(Window.WIDTH/4, Window.HEIGHT/2, lightmap);
 
 		RainEffect rain = new RainEffect(new Point(Window.WIDTH*2/3 + 50, Window.HEIGHT*3/4 + 10), 100, 20);
-		QuadOld cloud = new QuadOld(Window.WIDTH*2/3, Window.HEIGHT*3/4 - 20, 200, 140);
+		Quad cloud = new Quad(Window.WIDTH*2/3, Window.HEIGHT*3/4 - 20, 200, 140);
 		
 		float t = 0;
 		float r = 20;
@@ -69,10 +69,10 @@ public class ParticleTester {
 			
 			time = nextTime;
 			GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
-			cloud.draw(Res.CLOUD);
+			cloud.drawTex(Res.CLOUD);
 			
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
-			leftWindow.draw(lightmap.texture);
+			leftWindow.drawTex(lightmap.texture);
 	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	        Display.update();
 		}

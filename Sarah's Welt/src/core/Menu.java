@@ -8,7 +8,7 @@ import resources.Res;
 import resources.StackedTexture;
 import resources.Texture;
 import world.Calendar;
-import world.WorldWindow;
+import world.World;
 import core.geom.Quad;
 
 public class Menu {
@@ -83,7 +83,7 @@ public class Menu {
 		MAIN(true){
 			void setup(){
 				buttons = new Button[]{
-					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){WorldWindow.load("TestWorld");}}),
+					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){World.load("TestWorld");}}),
 					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = EMPTY;}}),
 					new Button("Options", 3/16.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
 					new Button("Exit", 3/16.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
@@ -92,7 +92,7 @@ public class Menu {
 		},
 		DEBUG(true){
 			void setup(){
-				buttons = new Button[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, () -> WorldWindow.sarah.flying = View.DEBUG.buttons[0].state),
+				buttons = new Button[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, () -> World.sarah.flying = View.DEBUG.buttons[0].state),
 										new ToggleButton("Textures enabled", "Textures disabled", true,		1/2.0f, 	9/12.0f, () -> Settings.debugView = View.DEBUG.buttons[1].state),
 										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, () -> Settings.hitbox = View.DEBUG.buttons[2].state),
 										new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	5/12.0f, () -> Settings.health = View.DEBUG.buttons[3].state),
