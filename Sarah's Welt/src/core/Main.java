@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 import resources.Res;
 import resources.Texture;
 import world.Calendar;
-import world.WorldWindow;
+import world.World;
 
 public class Main {
 
@@ -17,7 +17,7 @@ public class Main {
 		Window.fill(new Texture("titelbild", 0, 0).handle);
 		Display.update();
 		Res.load();
-		WorldWindow.load("TestWelt");
+		World.load("TestWelt");
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
@@ -52,7 +52,7 @@ public class Main {
 	public static void render(){
 		GL11.glLoadIdentity();
 		GL11.glColor4f(1, 1, 1, 1);
-		WorldWindow.render();
+		World.render();
 		GL11.glLoadIdentity();
 		Menu.render();
 	}
@@ -60,7 +60,7 @@ public class Main {
 	public static void calculate(int delta){
 		
 		if(!Menu.pauseWorld()){
-			WorldWindow.tick(delta);
+			World.update(delta);
 			Calendar.tick(delta);
 		}
 	}
@@ -69,12 +69,12 @@ public class Main {
 		if(Menu.pauseWorld()){
 			Menu.keyListening();
 		} else {
-			WorldWindow.keyListening();
+			World.keyListening();
 		}//extra
 		if(Menu.pauseWorld()){
 			Menu.mouseListening();
 		} else {
-			WorldWindow.mouseListening();
+			World.mouseListening();
 		}
 	}	
 }

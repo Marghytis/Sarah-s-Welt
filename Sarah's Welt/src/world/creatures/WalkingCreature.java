@@ -4,7 +4,7 @@ import util.Animator;
 import util.Geom;
 import world.Material;
 import world.Node;
-import world.WorldWindow;
+import world.World;
 import core.geom.Vec;
 
 public abstract class WalkingCreature extends Creature{
@@ -66,7 +66,7 @@ public abstract class WalkingCreature extends Creature{
 			vel.set(0, 0);
 			return;
 		}
-		float v = d*WorldWindow.measureScale;
+		float v = d*World.measureScale;
 		Vec intersection = null;
 		
 		Node node = worldLink.getLast().getLast().getLast().getLast().getLast().getLast().getLast().getLast();
@@ -110,31 +110,28 @@ public abstract class WalkingCreature extends Creature{
 	public boolean collision(){
 		float[] intersection = null;
 		boolean foundOne = false;
-//		for(Sector sector : WorldWindow.sectors){//	iterate columns
-//			if(sector != null) 
-				for(Material mat : Material.values()){//	iterate materials
-				if(mat.solid){
-					for(Node c : WorldWindow.sectors[1].areas[mat.ordinal()].cycles){//	iterate lines
-						Node n = c;
-						 do {
-							n = n.getNext();
-							Vec inters = new Vec();
-							boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getLast().p, n.p, inters);
-							if(found && (intersection == null || inters.y > intersection[1])){
-								if(intersection == null)intersection = new float[2];
-								intersection[0] = inters.x;
-								intersection[1] = inters.y;
-								pos.set(inters);
-								worldLink = n;
-								vel.set(0, 0);
-								acc.set(0, 0);
-								g = true;
-								foundOne = true;
-							}
-						} while (n != c);
-					}
+		for(Material mat : Material.values()){//	iterate materials
+			if(mat.solid){
+				for(Node c : World.contours[mat.ordinal()]){//	iterate lines
+					Node n = c;
+					 do {
+						n = n.getNext();
+						Vec inters = new Vec();
+						boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getLast().p, n.p, inters);
+						if(found && (intersection == null || inters.y > intersection[1])){
+							if(intersection == null)intersection = new float[2];
+							intersection[0] = inters.x;
+							intersection[1] = inters.y;
+							pos.set(inters);
+							worldLink = n;
+							vel.set(0, 0);
+							acc.set(0, 0);
+							g = true;
+							foundOne = true;
+						}
+					} while (n != c);
 				}
-//			}
+			}
 		}
 		return foundOne;
 	}

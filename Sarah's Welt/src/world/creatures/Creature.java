@@ -1,7 +1,6 @@
 package world.creatures;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -11,7 +10,6 @@ import world.Material;
 import world.Node;
 import world.Thing;
 import world.World;
-import world.WorldWindow;
 import core.Settings;
 import core.geom.Vec;
 
@@ -37,11 +35,6 @@ public abstract class Creature extends Thing {
 		}
 	}
 	
-	public static void updateCreatures(int delta){
-		for(List<Creature> list : World.creatures)
-			list.forEach((c) -> c.update(delta));
-	}
-	
 	protected Vec acc = new Vec();
 	protected Vec vel = new Vec();
 	
@@ -58,7 +51,7 @@ public abstract class Creature extends Thing {
 	public void update(int dTime){
 		pos.add(vel);
 		
-		vel.add(acc.scaledBy(dTime).scaledBy(WorldWindow.measureScale*dTime));
+		vel.add(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
 		acc.set(0, 0);
 		
 		if(hit > 0) hit--;

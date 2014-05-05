@@ -8,7 +8,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.WorldWindow;
+import world.World;
 import core.geom.Vec;
 
 
@@ -34,7 +34,7 @@ public class Sarah extends WalkingCreature {
 		hitradius = 80;
 		punchStrength = 2;
 		maxSpeed = 10;
-		animator.doOnReady = () -> WorldWindow.sarah.animator.animation = stand;
+		animator.doOnReady = () -> World.sarah.animator.animation = stand;
 	}
 	
 	public void update(int dTime){

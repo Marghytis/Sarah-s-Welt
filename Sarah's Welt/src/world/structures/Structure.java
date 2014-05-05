@@ -1,7 +1,6 @@
 package world.structures;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import resources.Texture;
 import util.Animator;
@@ -20,11 +19,6 @@ public abstract class Structure extends Thing{
 			}
 		}
 		Texture.bindNone();
-	}
-	
-	public static void updateStructures(int delta){
-		for(List<Structure> list : World.structures)
-			list.forEach((c) -> c.update(delta));
 	}
 
 	public Structure(Animator ani, Vec pos, Node worldLink){

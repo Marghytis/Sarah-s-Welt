@@ -3,6 +3,8 @@ package world;
 import java.util.Random;
 
 import util.Line;
+import world.creatures.Butterfly;
+import world.creatures.Creature;
 import world.creatures.Snail;
 import world.worldGen.WorldGenObject;
 import world.worldGen.WorldGenObject.WorldGenObjectType;
@@ -10,20 +12,30 @@ import core.geom.Vec;
 
 public class SurfaceGenerator {
 
-	public static float WIDTH;
+	public float WIDTH = 1000;
 
 	public Random random = new Random();
+	
 	private GenerationSettings settingsR;
 	private GenerationSettings settingsL;
 
 	Line grassT; int gTOffset = 0;
 	Line grassB; int gBOffset = -10;
 	Line earthT; int eTOffset = -10;
-	Line earthB; int eBOffset = -100;
-	Line stoneT; int sTOffset = -100;
+	Line earthB; int eBOffset = -50;
+	Line stoneT; int sTOffset = -50;
 	Line stoneB; int sBOffset = -1000;
 	
-	public SurfaceGenerator(){
+	/**
+	 * IMPORTANT: The "contours" must be completely empty!!
+	 */
+	public SurfaceGenerator(int width){
+		this.WIDTH = width;
+
+		World.contours[Material.GRASS.ordinal()].add(null);
+		World.contours[Material.EARTH.ordinal()].add(null);
+		World.contours[Material.STONE.ordinal()].add(null);
+		
 		settingsR = new GenerationSettings(true, new Vec(0, 400));
 		settingsL = new GenerationSettings(false, new Vec(0, 400));
 
@@ -36,12 +48,30 @@ public class SurfaceGenerator {
 	}
 	
 	public void gen(float sarahX){
+		
+		boolean changedSth = false;
+		
 		if(sarahX + (WIDTH/2) > settingsR.base.x){
 			shiftRightRim(true, sarahX + (WIDTH/2));
+			changedSth = true;
+		} else if(sarahX + (WIDTH/2) < settingsR.base.x){
+			shiftRightRim(false, sarahX + (WIDTH/2));
+			changedSth = true;
+		}
+		if(sarahX - (WIDTH/2) > settingsL.base.x){
 			shiftLeftRim(true, sarahX - (WIDTH/2));
+			changedSth = true;
 		} else if(sarahX - (WIDTH/2) < settingsL.base.x){
 			shiftLeftRim(false, sarahX - (WIDTH/2));
-			shiftRightRim(false, sarahX + (WIDTH/2));
+			changedSth = true;
+		}
+		
+		if(changedSth){
+			createCycle(grassT, grassB);
+			createCycle(earthT, earthB);
+			createCycle(stoneT, stoneB);
+			
+			refreshWorldNodes();
 		}
 	}
 	
@@ -62,11 +92,16 @@ public class SurfaceGenerator {
 				earthB.addVec(newStone);
 				stoneT.addVecBack(newStone);//Stone top
 				stoneB.addVec(newStoneBottom);//Stone bottom
-				
-				World.creatures.get(Snail.typeId).add(new Snail(grassT.start.p.minus(grassT.start.next.p).scaledBy(random.nextFloat()), grassT.start));
+
+				int rand = random.nextInt(1000);
+				if(rand < 30){
+					spawnCreature(Snail.typeId, new Snail(new Vec(), null), grassT.start, 5);
+				} else if(rand < 60){
+					spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), grassT.start, 20);
+				}
 			}
 		} else {
-			while(!reachedDestination(grassT.start.next.p.x, destination, false)){
+			while(!reachedDestination(grassT.start.getNext().p.x, destination, false)){
 				//TODO SAVE THE DATA!!!!!
 				grassT.removeFirst();
 				grassB.removeLast();
@@ -76,19 +111,11 @@ public class SurfaceGenerator {
 				stoneB.removeLast();				
 			}
 		}
-		grassB.end.next = grassT.start;
-		grassT.start.last = grassB.end;
-
-		earthB.end.next = earthT.start;
-		earthT.start.last = earthB.end;
-
-		stoneB.end.next = stoneT.start;
-		stoneT.start.last = stoneB.end;
 	}
 	
 	public void shiftLeftRim(boolean right, float destination){
 		if(!right){
-			while(!reachedDestination(settingsR.base.x, destination, false)){
+			while(!reachedDestination(settingsL.base.x, destination, false)){
 				
 				settingsL.shiftBase();
 				
@@ -103,11 +130,16 @@ public class SurfaceGenerator {
 				earthB.addVecBack(newStone);
 				stoneT.addVec(newStone);//Stone top
 				stoneB.addVecBack(newStoneBottom);//Stone bottom
-				
-				World.creatures.get(Snail.typeId).add(new Snail(grassT.end.last.p.minus(grassT.end.p).scaledBy(random.nextFloat()), grassT.end.last));
+
+				int rand = random.nextInt(1000);
+				if(rand < 30){
+					spawnCreature(Snail.typeId, new Snail(new Vec(), null), grassT.end.getLast(), 5);
+				} else if(rand < 60){
+					spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), grassT.end.getLast(), 20);
+				}
 			}
 		} else {
-			while(!reachedDestination(grassT.end.last.p.x, destination, true)){
+			while(!reachedDestination(grassT.end.getLast().p.x, destination, true)){
 				//TODO SAVE THE DATA!!!!!
 				grassT.removeLast();
 				grassB.removeFirst();
@@ -117,15 +149,17 @@ public class SurfaceGenerator {
 				stoneB.removeFirst();				
 			}
 		}
-		
-		grassT.end.next = grassB.start;
-		grassB.start.last = grassT.end;
-		
-		earthT.end.next = earthB.start;
-		earthB.start.last = earthT.end;
-		
-		stoneT.end.next = stoneB.start;
-		stoneB.start.last = stoneT.end;
+	}
+	
+	public void spawnCreature(int typeId, Creature c, Node n, float yOffset){
+		c.pos.set(n.p.plus(n.getNext().p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
+		World.creatures.get(typeId).add(c);
+	}
+	
+	public void refreshWorldNodes(){
+		World.contours[Material.GRASS.ordinal()].set(0, grassT.start);
+		World.contours[Material.EARTH.ordinal()].set(0, earthT.start);
+		World.contours[Material.STONE.ordinal()].set(0, stoneT.start);
 	}
 	
 	public boolean reachedDestination(float pos, float destination, boolean dir){
@@ -133,11 +167,11 @@ public class SurfaceGenerator {
 	}
 	
 	public static void createCycle(Line l1, Line l2){
-		l1.end.next = l2.start;
-		l2.start.last = l1.end;
-		
-		l2.end.next = l1.start;
-		l1.start.last = l2.end;
+		l1.end.setNext(l2.start);
+		l2.start.setLast(l1.end);
+
+		l2.end.setNext(l1.start);
+		l1.start.setLast(l2.end);
 	}
 	
 	public class GenerationSettings {

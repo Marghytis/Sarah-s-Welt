@@ -6,10 +6,10 @@ import core.geom.Vec;
 public class Node {
 	static int indexIndex;//TODO read and save in database
 	
-	protected Node next = null; int nextIndex;//next should always be counter-clockwise
-	protected Node last = null; int lastIndex;//clockwise
+	private Node next = null; int nextIndex = -1;//next should always be counter-clockwise
+	private Node last = null; int lastIndex = -1;//clockwise
 	
-	protected int index;
+	private int index;
 	public Vec p = null;
 	
 	public Node(Vec p, Node last){
@@ -28,12 +28,20 @@ public class Node {
 	
 	public void setLast(Node n){
 		last = n;
-		if(n != null) lastIndex = n.index;
+		if(n != null){
+			lastIndex = n.index;
+		} else {
+			lastIndex = -1;
+		}
 	}
 	
 	public void setNext(Node n){
 		next = n;
-		if(n != null) nextIndex = n.index;
+		if(n != null){
+			nextIndex = n.index;
+		} else {
+			nextIndex = -1;
+		}
 	}
 	
 	public Node getLast(){
