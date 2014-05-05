@@ -9,6 +9,8 @@ import world.Calendar;
 import world.WorldWindow;
 
 public class Main {
+	
+	//http://www.raywenderlich.com/54511/2d-skeletal-animation-with-spine-tutorial
 
 	public static void main(String[] args){
 		
