@@ -9,8 +9,6 @@ import world.Calendar;
 import world.World;
 
 public class Main {
-	
-	//http://www.raywenderlich.com/54511/2d-skeletal-animation-with-spine-tutorial
 
 	public static void main(String[] args){
 		
@@ -53,6 +51,8 @@ public class Main {
 	
 	public static void render(){
 		GL11.glLoadIdentity();
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClearColor(0.55f, 0.53f, 0.76f, 1);
 		GL11.glColor4f(1, 1, 1, 1);
 		World.render();
 		GL11.glLoadIdentity();

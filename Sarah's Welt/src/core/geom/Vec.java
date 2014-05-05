@@ -92,4 +92,8 @@ public class Vec {
 	public String toString(){
 		return "Vec[ " + x + " | " + y + " ]";
 	}
+
+	public float lengthSqare() {
+		return x*x + (y*y);
+	}
 }

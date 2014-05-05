@@ -62,7 +62,7 @@ public class Rabbit extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).length() < 150){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
 			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
 			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){

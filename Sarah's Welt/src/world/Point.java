@@ -74,6 +74,10 @@ public class Point {
 		return (float)Math.sqrt((x*x) + (y*y));
 	}
 	
+	public float lengthSqare(){
+		return (x*x) + (y*y);
+	}
+	
 	public float slope(){
 		return y/x;
 	}
