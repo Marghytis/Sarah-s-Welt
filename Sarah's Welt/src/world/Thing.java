@@ -41,6 +41,8 @@ public abstract class Thing {
 		
 		GL11.glPopMatrix();
 	}
+	
+	public boolean rightClickAction(){return false;}
 
 	protected void beforeRender(){}
 

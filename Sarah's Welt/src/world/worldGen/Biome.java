@@ -92,12 +92,12 @@ public enum Biome {
 
 	public void spawnThings(Node node){}
 	
-	private static void spawnCreature(int typeId, Creature c, Node n, float yOffset){
+	public static void spawnCreature(int typeId, Creature c, Node n, float yOffset){
 		c.pos.set(n.p.plus(n.getNext().p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
 		World.creatures.get(typeId).add(c);
 	}
 	
-	private static void spawnStructure(int typeId, Structure c, Node n, float yOffset){
+	public static void spawnStructure(int typeId, Structure c, Node n, float yOffset){
 		c.pos.set(n.p.plus(n.getNext().p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
 		World.structures.get(typeId).add(c);
 		System.out.println("Spawn struc: " + World.structures.get(Bamboo.typeId).size());

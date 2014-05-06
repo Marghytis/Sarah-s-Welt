@@ -66,8 +66,6 @@ public abstract class Creature extends Thing {
 		return false;
 	}
 	
-	public boolean rightClickAction(){return false;}
-	
 	/**
 	 * Applies the friction of the specified material to the acceleration
 	 * @param mat

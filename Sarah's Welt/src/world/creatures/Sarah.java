@@ -9,13 +9,14 @@ import util.Animator;
 import world.Material;
 import world.Node;
 import world.World;
+import core.Settings;
 import core.geom.Vec;
 
 
 public class Sarah extends WalkingCreature {
 	
 	public float keyAcc = 0.00005f;//the acceleration the Sarah experiences on the pressure of a movement key
-	public boolean flying = false;
+	public boolean ridingCow = false;
 	
 	static Animation stand = new Animation(0, 0);
 	static Animation walk = new Animation(3, 1, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
@@ -27,18 +28,37 @@ public class Sarah extends WalkingCreature {
 	static Animation crouch = new Animation(0, 5);
 	static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 0);
 	static Animation kick = new Animation(3, 6, false, 	1, 2, 3, 4, 5);
-	
+
+	static Animation mountCow = new Animation(3, 0, false, 0, 1, 2, 3, 4, 5, 6);//don't forget to change the texture!!!
+	static Animation dismountCow = new Animation(3, 0, false, 6, 5, 4, 3, 2, 1, 0);//don't forget to change the texture!!!
+	static Animation walkOnCow = new Animation(6, 6);//don't forget to change the texture!!!
 	
 	public Sarah(Vec pos, Node worldLink){
 		super(new Animator(Res.SARAH, stand), pos, worldLink);
 		hitradius = 80;
 		punchStrength = 2;
 		maxSpeed = 10;
-		animator.doOnReady = () -> World.sarah.animator.animation = stand;
+		animator.doOnReady = () -> {
+			if(g){
+				if(!ridingCow){
+					World.sarah.animator.animation = stand;
+				} else if(animator.animation == dismountCow){
+					ridingCow = false;
+//					Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), worldLink, 5);
+					World.sarah.animator.animation = stand;
+				} else {
+					World.sarah.animator.animation = walkOnCow;
+				}
+			}
+		};
 	}
 	
 	public void update(int dTime){
-		if(flying) g = false;
+		if(Settings.flying) g = false;
+		if(oldCow != null){
+			World.creatures.get(Cow.typeId).remove(oldCow);
+			oldCow = null;
+		}
 		if(g){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				maxSpeed = 20;
@@ -52,7 +72,7 @@ public class Sarah extends WalkingCreature {
 			
 		} else {
 			//apply gravity
-			if(!flying) acc.add(0, -0.00005f);
+			if(!Settings.flying) acc.add(0, -0.00005f);
 			
 			//apply keyboard force
 			if(Keyboard.isKeyDown(Keyboard.KEY_D)){
@@ -61,7 +81,7 @@ public class Sarah extends WalkingCreature {
 			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
 				acc.add(-keyAcc, 0);
 			}
-			if(flying){
+			if(Settings.flying){
 				if(Keyboard.isKeyDown(Keyboard.KEY_W)){
 					acc.add(0, keyAcc);
 				}
@@ -77,14 +97,14 @@ public class Sarah extends WalkingCreature {
 			applyFriction(Material.AIR);
 			
 			//do movement in air
-			if(!flying) collision();
+			if(!Settings.flying) collision();
 		}
 		super.update(dTime);
 	}
 	
 	public boolean collision(){
 		if(super.collision()){
-			animator.setAnimation(land);
+			if(!ridingCow)animator.setAnimation(land);
 			return true;
 		}
 		return false;
@@ -108,17 +128,20 @@ public class Sarah extends WalkingCreature {
 		
 		if(animator.animation != kick && animator.animation != punch && animator.animation != jump && animator.animation != land){
 			if(g){
-				if(keyDir != 0){
-					switch(walkMode){
-					case 0: animator.setAnimation(sneak); break;
-					case 1: animator.setAnimation(walk); break;
-					case 2: animator.setAnimation(run); break;
-					}
-				} else {
-					switch(walkMode){
-					case 0: animator.setAnimation(crouch); break;
-					case 1: 
-					case 2: animator.setAnimation(stand); break;
+				if(!ridingCow){
+					animator.tex = Res.SARAH;
+					if(keyDir != 0){
+						switch(walkMode){
+						case 0: animator.setAnimation(sneak); break;
+						case 1: animator.setAnimation(walk); break;
+						case 2: animator.setAnimation(run); break;
+						}
+					} else {
+						switch(walkMode){
+						case 0: animator.setAnimation(crouch); break;
+						case 1: 
+						case 2: animator.setAnimation(stand); break;
+						}
 					}
 				}
 			} else {
@@ -142,15 +165,33 @@ public class Sarah extends WalkingCreature {
 		if(g){
 			pos.y++;
 			accelerateFromGround(new Vec(0, 0.001f));
-			animator.setAnimation(jump);
+			if(!ridingCow)animator.setAnimation(jump);
 		}
 	}
 	
 	public void punch(){
-		switch(walkMode){
-		case 0: animator.setAnimation(kick); break;
-		case 1:
-		case 2: animator.setAnimation(punch); break;
+		if(!ridingCow){
+			switch(walkMode){
+			case 0: animator.setAnimation(kick); break;
+			case 1:
+			case 2: animator.setAnimation(punch); break;
+			}
+		}
+	}
+	
+	Cow oldCow = null;
+	
+	public void mountCow(Cow c){
+		if(g){
+			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
+			ridingCow = true;
+			oldCow = c;
+		}
+	}
+	
+	public void dismountCow(){
+		if(ridingCow){
+			animator.setAnimation(dismountCow);
 		}
 	}
 }

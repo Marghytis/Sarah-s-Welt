@@ -7,6 +7,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
+import world.World;
 import core.geom.Vec;
 
 public class Cow extends WalkingCreature{
@@ -42,6 +43,14 @@ public class Cow extends WalkingCreature{
 		doStepping(velocityUnit*vP*dTime);
 	}
 	
+	public boolean rightClickAction(){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
+			World.sarah.mountCow(this);
+			return true;
+		}
+		return false;
+	}
+	
 	public void wanderAbout(){
 		if(random.nextInt(100)<1){
 			dir = random.nextInt(3)-1;
@@ -49,6 +58,6 @@ public class Cow extends WalkingCreature{
 	}
 	
 	public void beforeRender(){
-		if(g)GL11.glRotatef(-(float)Math.PI/2, 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+		if(g)GL11.glRotatef(worldLink.p.minus(worldLink.getNext().p).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
 }
