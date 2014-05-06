@@ -96,4 +96,8 @@ public class Vec {
 	public float lengthSqare() {
 		return x*x + (y*y);
 	}
+
+	public float angle() {
+		return (float)Math.atan2(y, x);
+	}
 }

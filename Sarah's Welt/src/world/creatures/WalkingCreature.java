@@ -130,6 +130,7 @@ public abstract class WalkingCreature extends Creature{
 							intersection[1] = inters.y;
 							pos.set(inters);
 							worldLink = n;
+							vP = (int) (vel.x/(velocityUnit*World.measureScale*100));
 							vel.set(0, 0);
 							acc.set(0, 0);
 							g = true;

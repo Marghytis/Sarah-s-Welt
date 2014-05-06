@@ -1,5 +1,7 @@
 package world.creatures;
 
+import org.lwjgl.opengl.GL11;
+
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -44,5 +46,9 @@ public class Cow extends WalkingCreature{
 		if(random.nextInt(100)<1){
 			dir = random.nextInt(3)-1;
 		}
+	}
+	
+	public void beforeRender(){
+		if(g)GL11.glRotatef(-(float)Math.PI/2, 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
 }
