@@ -15,6 +15,7 @@ import resources.Texture;
 import util.Tessellator;
 import world.creatures.Bird;
 import world.creatures.Butterfly;
+import world.creatures.Cow;
 import world.creatures.Creature;
 import world.creatures.Heart;
 import world.creatures.Panda;
@@ -67,6 +68,7 @@ public class World {
 		Rabbit.typeId = c_id++; creatures.add(new ArrayList<>());
 		Bird.typeId = c_id++; creatures.add(new ArrayList<>());
 		Panda.typeId = c_id++; creatures.add(new ArrayList<>());
+		Cow.typeId = c_id++; creatures.add(new ArrayList<>());
 	}
 	
 	public static Sarah sarah;

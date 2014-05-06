@@ -4,6 +4,7 @@ import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Node;
+import world.World;
 import core.geom.Vec;
 
 public class Heart extends WalkingCreature{
@@ -19,6 +20,9 @@ public class Heart extends WalkingCreature{
 	}
 	
 	public void update(int dTime){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
+			World.sarah.health = Math.min(World.sarah.health += 5, 20);
+		}
 		if(!g){
 			collision();
 		}
