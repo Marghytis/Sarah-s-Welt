@@ -43,6 +43,12 @@ public abstract class WalkingCreature extends Creature{
 			int newSpeed = vP + dir;
 			if(Math.abs(newSpeed) < maxSpeed){
 				vP = newSpeed;
+			} else {
+				if(vP > 0){
+					vP--;
+				} else if(vP < 0){
+					vP++;
+				}
 			}
 		}
 	}

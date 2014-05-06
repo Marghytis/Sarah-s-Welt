@@ -17,6 +17,7 @@ import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Creature;
 import world.creatures.Heart;
+import world.creatures.Panda;
 import world.creatures.Rabbit;
 import world.creatures.Sarah;
 import world.creatures.Snail;
@@ -65,6 +66,7 @@ public class World {
 		Heart.typeId = c_id++; creatures.add(new ArrayList<>());
 		Rabbit.typeId = c_id++; creatures.add(new ArrayList<>());
 		Bird.typeId = c_id++; creatures.add(new ArrayList<>());
+		Panda.typeId = c_id++; creatures.add(new ArrayList<>());
 	}
 	
 	public static Sarah sarah;
@@ -113,7 +115,7 @@ public class World {
 	public static void updateStructures(int delta){
 		for(List<Structure> list : World.structures) for(int i = 0; i < list.size(); i++){
 			Structure s = list.get(i);
-			if(s.pos.x < sarah.pos.x - generator.WIDTH/2 || s.pos.x > sarah.pos.x + generator.WIDTH/2){
+			if(s.pos.x < generator.grassT.end.p.x || s.pos.x > generator.grassT.start.p.x){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			} else {
@@ -131,7 +133,7 @@ public class World {
 				list.remove(i);
 				i--;
 			}
-			if(s.pos.x < sarah.pos.x - generator.WIDTH/2 || s.pos.x > sarah.pos.x + generator.WIDTH/2){
+			if(s.pos.x < generator.grassT.end.p.x || s.pos.x > generator.grassT.start.p.x){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			}

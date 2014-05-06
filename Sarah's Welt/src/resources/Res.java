@@ -26,6 +26,7 @@ public class Res {
 	public static StackedTexture HEART = new StackedTexture("creatures/Heart", 4, 1, -0.5f, -0.2f);
 	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 3, -0.5f, -0.2f);
 	public static StackedTexture BIRD  = new StackedTexture("creatures/Bird", 5, 2, -0.5f, -0.2f);
+	public static StackedTexture PANDA  = new StackedTexture("creatures/Panda", 6, 2, -0.5f, -0.1f);
 
 	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 8, -0.5f, -0.1f);
 	

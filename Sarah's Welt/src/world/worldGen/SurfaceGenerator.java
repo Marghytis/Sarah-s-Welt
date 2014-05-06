@@ -17,7 +17,7 @@ public class SurfaceGenerator {
 	private GenerationSettings settingsR;
 	private GenerationSettings settingsL;
 
-	Line grassT; int gTOffset = 0;
+	public Line grassT; int gTOffset = 0;
 	Line grassB; int gBOffset = -10;
 	Line earthT; int eTOffset = -10;
 	Line earthB; int eBOffset = -50;
@@ -163,7 +163,7 @@ public class SurfaceGenerator {
 		public WorldGenObject level_2;
 		public double nextAngle = 0;
 		public boolean dir;
-		public Biome biome = Biome.BAMBOO_FOREST;
+		public Biome biome = Biome.FOREST;
 		
 		public Vec base;
 		
@@ -172,7 +172,7 @@ public class SurfaceGenerator {
 			this.base = base;
 		}
 		
-		float segmentLength = 10;
+		float segmentLength = 20;
 		
 		public void shiftBase(){
 			
@@ -203,8 +203,7 @@ public class SurfaceGenerator {
 			} catch (Exception e) {
 				level_2 = null;
 			}
-			if(random.nextInt(1000) == 0){
-				System.out.println("test");
+			if(random.nextInt(50) == 0){
 				biome = Biome.values()[random.nextInt(Biome.values().length)];
 			}
 		}

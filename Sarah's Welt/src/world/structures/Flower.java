@@ -3,14 +3,12 @@ package world.structures;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.Shader;
 import resources.Texture;
 import util.Animation;
 import util.Animator;
 import util.Color;
 import world.Node;
 import world.World;
-import core.Settings;
 import core.Window;
 import core.geom.Vec;
 
@@ -31,18 +29,10 @@ public class Flower extends Structure {
 		this.type = type;
 	}
 	
-	public void afterRender(){
-		GL11.glLoadIdentity();
+	public void renderLight(){
 		GL11.glTranslatef(pos.x - World.sarah.pos.x + Window.WIDTH/2 - FLOWER_LIGHT.width/2, -(pos.y - World.sarah.pos.y) + Window.HEIGHT/2 - FLOWER_LIGHT.height/2 - 20, 0);
-		if(Settings.shader){
-			colors[type].set();
-			World.light.bind();
-				Shader.Test.bind();
-					FLOWER_LIGHT.box.drawTex(FLOWER_LIGHT);
-				Shader.Test.release();
-			World.light.release();
-			GL11.glColor4f(1, 1, 1, 1);
-		}
+		colors[type].set();
+		FLOWER_LIGHT.box.drawTex(FLOWER_LIGHT);
 	}
 	
 }

@@ -20,7 +20,6 @@ public class Animator {
 	}
 	
 	public void animate(boolean mirrored){
-
 		int texPos = animation.getPoint(frame);
 		
 		tex.box.drawTexNotBind(tex, texPos, animation.y, mirrored);
