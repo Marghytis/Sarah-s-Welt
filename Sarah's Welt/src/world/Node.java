@@ -9,7 +9,7 @@ public class Node {
 	private Node next = null; int nextIndex = -1;//next should always be counter-clockwise
 	private Node last = null; int lastIndex = -1;//clockwise
 	
-	private int index;
+	public int index;
 	public Vec p = null;
 	
 	public Node(Vec p, Node last){
