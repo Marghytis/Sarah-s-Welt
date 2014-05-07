@@ -56,7 +56,7 @@ public class WorldDatabase extends Datenbank{
 //        }
 //	}
 	
-	public void save(int[] ids, int[] nextIds, int[] lastIds, String mat, int pointId){
+	public void save(int[] ids, int[] nextIds, int[] lastIds, String mat, float pX, float pY){
 		try {
             PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, next_ID, last_ID, Material, p_ID) VALUES (?,?,?,?)");
             

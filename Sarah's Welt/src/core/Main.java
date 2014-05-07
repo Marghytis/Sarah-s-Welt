@@ -17,10 +17,10 @@ public class Main {
 		Display.update();
 		Res.load();
 		World.load("TestWelt");
+		System.out.println(GL11.glGetString(GL11.GL_VERSION));
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
-			System.out.println(GL11.glGetString(GL11.GL_VERSION));
 			long testTime = System.currentTimeMillis();
 //			Display.sync(500);
 			
