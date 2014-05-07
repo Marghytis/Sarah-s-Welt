@@ -32,6 +32,7 @@ public class Sarah extends WalkingCreature {
 	static Animation mountCow = new Animation(3, 0, false, 0, 1, 2, 3, 4, 5, 6);//don't forget to change the texture!!!
 	static Animation dismountCow = new Animation(3, 0, false, 6, 5, 4, 3, 2, 1, 0);//don't forget to change the texture!!!
 	static Animation walkOnCow = new Animation(3, 1, true, 0, 1, 2, 3, 4, 3, 2, 1);//don't forget to change the texture!!!
+	static Animation standOnCow = new Animation(0, 6);//don't forget to change the texture!!!
 	
 	public Sarah(Vec pos, Node worldLink){
 		super(new Animator(Res.SARAH, stand), pos, worldLink);
@@ -46,6 +47,7 @@ public class Sarah extends WalkingCreature {
 					ridingCow = false;
 //					Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), worldLink, 5);
 					World.sarah.animator.animation = stand;
+					World.sarah.animator.tex = Res.SARAH;
 				} else {
 					World.sarah.animator.animation = walkOnCow;
 				}
@@ -129,7 +131,6 @@ public class Sarah extends WalkingCreature {
 		if(animator.animation != kick && animator.animation != punch && animator.animation != jump && animator.animation != land){
 			if(g){
 				if(!ridingCow){
-					animator.tex = Res.SARAH;
 					if(keyDir != 0){
 						switch(walkMode){
 						case 0: animator.setAnimation(sneak); break;
@@ -142,6 +143,12 @@ public class Sarah extends WalkingCreature {
 						case 1: 
 						case 2: animator.setAnimation(stand); break;
 						}
+					}
+				} else {
+					if(keyDir != 0){
+						animator.setAnimation(walkOnCow);
+					} else {
+						animator.setAnimation(standOnCow);
 					}
 				}
 			} else {
