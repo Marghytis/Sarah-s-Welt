@@ -27,10 +27,10 @@ public class Res {
 	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 3, -0.5f, -0.2f);
 	public static StackedTexture BIRD  = new StackedTexture("creatures/Bird", 5, 2, -0.5f, -0.2f);
 	public static StackedTexture PANDA  = new StackedTexture("creatures/Panda", 6, 2, -0.5f, -0.1f);
-	public static StackedTexture COW  = new StackedTexture("creatures/Cow", 7, 2, -0.5f, -0.1f);
+	public static StackedTexture COW  = new StackedTexture("creatures/Cow", 7, 1, -0.5f, -0.1f);
 
 	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 8, -0.5f, -0.1f);
-	public static StackedTexture SARAH_ON_COW = new StackedTexture("creatures/Sarah_riding_cow", 7, 1, -0.5f, -0.1f);
+	public static StackedTexture SARAH_ON_COW = new StackedTexture("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
 	
 	public static SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
