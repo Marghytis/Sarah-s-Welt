@@ -20,6 +20,7 @@ public class Main {
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){
+			System.out.println(GL11.glGetString(GL11.GL_VERSION));
 			long testTime = System.currentTimeMillis();
 //			Display.sync(500);
 			

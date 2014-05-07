@@ -56,10 +56,17 @@ public class WorldDatabase extends Datenbank{
 //        }
 //	}
 	
-	public void saveSector(Sector sec){
+	public void save(int[] ids, int[] nextIds, int[] lastIds, String mat, int pointId){
 		try {
-            PreparedStatement p = conn.prepareStatement("INSERT INTO Point (p_ID, pX, pY) VALUES (?,?,?)");
-
+            PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, next_ID, last_ID, Material, p_ID) VALUES (?,?,?,?)");
+            
+            for(Node node : nodes){
+	            p.setInt(1, node.index);
+	            p.setInt(2, node.nextIndex);
+	            p.setInt(3, node.lastIndex);
+	            p.setString(2, vorname);
+	            p.addBatch();
+            }
             for(MatArea a : sec.areas){
             	for(Node c : a.cycles){
 		            p.setInt(1, name);
@@ -82,9 +89,9 @@ public class WorldDatabase extends Datenbank{
                 Statement sql = conn.createStatement();
 
                 String sqlCreate = 
-            		"CREATE TABLE 'World' ('xSector' INTEGER NOT NULL DEFAULT 0);"
-                +	"CREATE TABLE 'Node' ('Material' VARCHAR NOT NULL  DEFAULT 'AIR' , 'sX' INTEGER NOT NULL , 'p_ID' INTEGER NOT NULL , 'cycleIndex' INTEGER);"
-                +	"CREATE TABLE 'Point' ('p_ID' INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0);";
+            		"CREATE TABLE 'World' ('x' FLOAT NOT NULL DEFAULT 0);"
+                +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'next_ID' INTEGER PRIMARY KEY, 'last_ID' INTEGER PRIMARY KEY, 'Material' VARCHAR NOT NULL DEFAULT 'AIR' , 'p_ID' INTEGER NOT NULL , 'cycleIndex' INTEGER);"
+                +	"CREATE TABLE 'Point'('p_ID' INTEGER PRIMARY KEY NOT NULL , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0);";
 ;
 
                 sql.executeUpdate(sqlCreate);
