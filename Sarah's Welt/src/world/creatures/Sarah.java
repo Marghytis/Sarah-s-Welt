@@ -65,7 +65,7 @@ public class Sarah extends WalkingCreature {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				maxSpeed = 20;
 			} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				maxSpeed = 6;
+				maxSpeed = 4;
 			} else {
 				maxSpeed = 10;
 			}

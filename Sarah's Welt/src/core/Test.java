@@ -29,8 +29,8 @@ public class Test {
 //		} catch (java.net.MalformedURLException murle) {
 //			System.out.println(murle);
 //		}
-		test = new Lesson1();
-		test.execute();
+//		test = new Lesson1();
+//		test.execute();
 		
 		createDisplay();
 		
