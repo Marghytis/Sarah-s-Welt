@@ -31,7 +31,7 @@ public class Sarah extends WalkingCreature {
 
 	static Animation mountCow = new Animation(3, 0, false, 0, 1, 2, 3, 4, 5, 6);//don't forget to change the texture!!!
 	static Animation dismountCow = new Animation(3, 0, false, 6, 5, 4, 3, 2, 1, 0);//don't forget to change the texture!!!
-	static Animation walkOnCow = new Animation(3, 1, true, 0, 1, 2, 3, 4, 3, 2, 1);//don't forget to change the texture!!!
+	static Animation walkOnCow = new Animation(6, 1, true, 0, 1, 2, 3, 4);//don't forget to change the texture!!!
 	static Animation standOnCow = new Animation(0, 6);//don't forget to change the texture!!!
 	
 	public Sarah(Vec pos, Node worldLink){
@@ -144,7 +144,7 @@ public class Sarah extends WalkingCreature {
 						case 2: animator.setAnimation(stand); break;
 						}
 					}
-				} else {
+				} else if(animator.animation != mountCow && animator.animation != dismountCow){
 					if(keyDir != 0){
 						animator.setAnimation(walkOnCow);
 					} else {
@@ -152,7 +152,7 @@ public class Sarah extends WalkingCreature {
 					}
 				}
 			} else {
-				animator.setAnimation(fly);
+				if(!ridingCow)animator.setAnimation(fly);
 			}
 		}
 		animator.tex.bind();
