@@ -230,8 +230,8 @@ public class World {
 			} else {
 				if(Keyboard.getEventKeyState()){
 					switch(Keyboard.getEventKey()){
-					case Keyboard.KEY_D : sarah.mirrored = sarah.ridingCow; break;
-					case Keyboard.KEY_A : sarah.mirrored = !sarah.ridingCow; break;
+					case Keyboard.KEY_D : sarah.mirrored = false; break;
+					case Keyboard.KEY_A : sarah.mirrored = true; break;
 					case Keyboard.KEY_W: sarah.jump(); break;
 					case Keyboard.KEY_E: sarah.dismountCow(); break;
 					}

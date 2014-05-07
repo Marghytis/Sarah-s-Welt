@@ -163,7 +163,7 @@ public class SurfaceGenerator {
 		public WorldGenObject level_2;
 		public double nextAngle = 0;
 		public boolean dir;
-		public Biome biome = Biome.FOREST;
+		public Biome biome = Biome.MEADOW;
 		
 		public Vec base;
 		
