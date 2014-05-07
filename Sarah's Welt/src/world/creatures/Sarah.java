@@ -31,7 +31,7 @@ public class Sarah extends WalkingCreature {
 
 	static Animation mountCow = new Animation(3, 0, false, 0, 1, 2, 3, 4, 5, 6);//don't forget to change the texture!!!
 	static Animation dismountCow = new Animation(3, 0, false, 6, 5, 4, 3, 2, 1, 0);//don't forget to change the texture!!!
-	static Animation walkOnCow = new Animation(6, 1, true, 0, 1, 2, 3, 4);//don't forget to change the texture!!!
+	static Animation walkOnCow = new Animation(3, 1, true, 0, 1, 2, 3, 4);//don't forget to change the texture!!!
 	static Animation standOnCow = new Animation(6, 0);//don't forget to change the texture!!!
 	
 	public Sarah(Vec pos, Node worldLink){
