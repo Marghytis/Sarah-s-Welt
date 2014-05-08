@@ -56,7 +56,7 @@ public class WorldDatabase extends Datenbank{
 //        }
 //	}
 	
-	public void save(int[] ids, int[] nextIds, int[] lastIds, String mat, float pX, float pY){
+	public void save(Node[] nodes, String mat){
 		try {
             PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, next_ID, last_ID, Material, p_x, p_y) VALUES (?,?,?,?,?,?)");
             
@@ -64,15 +64,10 @@ public class WorldDatabase extends Datenbank{
 	            p.setInt(1, node.index);
 	            p.setInt(2, node.nextIndex);
 	            p.setInt(3, node.lastIndex);
-	            p.setString(2, vorname);
+	            p.setString(4, mat);
+	            p.setFloat(5, node.getPoint().x);
+	            p.setFloat(6, node.getPoint().y);
 	            p.addBatch();
-            }
-            for(MatArea a : sec.areas){
-            	for(Node c : a.cycles){
-		            p.setInt(1, name);
-		            p.setString(2, vorname);
-		            p.addBatch();
-            	}
             }
 
             conn.setAutoCommit(false);
@@ -90,9 +85,9 @@ public class WorldDatabase extends Datenbank{
 
                 String sqlCreate = 
             		"CREATE TABLE 'World' ('x' FLOAT NOT NULL DEFAULT 0);"
-                +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'next_ID' INTEGER PRIMARY KEY, 'last_ID' INTEGER PRIMARY KEY, 'Material' VARCHAR NOT NULL DEFAULT 'AIR' , 'p_ID' INTEGER NOT NULL , 'cycleIndex' INTEGER);"
-                +	"CREATE TABLE 'Point'('p_ID' INTEGER PRIMARY KEY NOT NULL , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0);";
-;
+                +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'n_ID' INTEGER PRIMARY KEY NOT NULL, 'next_ID' INTEGER PRIMARY KEY, 'last_ID' INTEGER PRIMARY KEY , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0, 'cycleIndex' INTEGER);"
+                +   "CREATE TABLE 'Cycle' ('c_ID' INTEGER PRIMARY KEY NOT NULL, 'Material' VARCHAR NOT NULL DEFAULT 'AIR')"
+                ;
 
                 sql.executeUpdate(sqlCreate);
                 sql.close();

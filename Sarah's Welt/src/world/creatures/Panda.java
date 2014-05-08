@@ -53,7 +53,7 @@ public class Panda extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 1600){
 			animator.setAnimation(punch);
 			return true;
 		}

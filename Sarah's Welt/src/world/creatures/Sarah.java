@@ -1,6 +1,7 @@
 package world.creatures;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import resources.Res;
 import resources.Texture;
@@ -63,11 +64,11 @@ public class Sarah extends WalkingCreature {
 		}
 		if(g){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				maxSpeed = 20;
+				maxSpeed = ridingCow ? 30 : 20;
 			} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				maxSpeed = 4;
+				maxSpeed = ridingCow ? 20 : 4;
 			} else {
-				maxSpeed = 10;
+				maxSpeed = ridingCow ? 20 : 10;
 			}
 			
 			walkingAI(dTime);
@@ -156,6 +157,8 @@ public class Sarah extends WalkingCreature {
 			}
 		}
 		animator.tex.bind();
+		
+		if(ridingCow && g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
 	
 	public void afterRender(){

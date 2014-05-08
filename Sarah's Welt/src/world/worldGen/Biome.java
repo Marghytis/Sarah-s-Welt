@@ -24,7 +24,7 @@ public enum Biome {
 		public void spawnThings(Node node){
 			//Structures
 			if(random.nextInt(100) < 20){
-				spawnStructure(Tree.typeId, new Tree(random.nextInt(3), new Vec(), null), node, 0);
+				spawnStructure(Tree.typeId, new Tree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0);
 			}
 			if(random.nextInt(100) < 10){
 				spawnStructure(Bush.typeId, new Bush(random.nextInt(2), new Vec(), null), node, 0);
@@ -54,7 +54,7 @@ public enum Biome {
 			spawnStructure(Bamboo.typeId, new Bamboo(random.nextInt(4), new Vec(), null, random.nextFloat() + 0.5f), node, 0);
 			
 			//Creatures
-			if(random.nextInt(100) < 5){
+			if(random.nextInt(100) < 3){
 				spawnCreature(Panda.typeId, new Panda(new Vec(), null), node, 5);
 			}
 			if(random.nextInt(100) < 10){
@@ -70,7 +70,7 @@ public enum Biome {
 				spawnStructure(Bush.typeId, new Bush(random.nextInt(2), new Vec(), null), node, 0);
 			}
 			if(random.nextInt(100) < 1){
-				spawnStructure(Tree.typeId, new Tree(random.nextInt(3), new Vec(), null), node, 0);
+				spawnStructure(Tree.typeId, new Tree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0);
 			}
 
 			//Creatures
