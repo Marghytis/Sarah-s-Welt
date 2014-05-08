@@ -89,6 +89,8 @@ public enum Biome {
 		}
 	};
 	public static Random random = new Random();
+	
+	
 
 	public void spawnThings(Node node){}
 	
