@@ -55,7 +55,7 @@ public abstract class WalkingCreature extends Creature{
 	
 	public void accelerateFromGround(Vec vec){
 		pos.y++;
-		Vec linkVec = worldLink.p.minus(worldLink.getNext().p);
+		Vec linkVec = worldLink.getPoint().minus(worldLink.getNext().getPoint());
 		if(linkVec.cross(vec) > 0){
 			acc.set(vec);
 			vP = 0;
@@ -80,8 +80,8 @@ public abstract class WalkingCreature extends Creature{
 		if(node == null)return;//TODO
 		for(int i = 0; i <= 16; i++){
 			//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
-			if(node.p.x > node.getNext().p.x){
-				Vec[] inter = Geom.circleIntersection(node.p, node.getNext().p, pos, v);
+			if(node.getPoint().x > node.getNext().getPoint().x){
+				Vec[] inter = Geom.circleIntersection(node.getPoint(), node.getNext().getPoint(), pos, v);
 	
 				if(inter[0] != null){
 					if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
@@ -123,7 +123,7 @@ public abstract class WalkingCreature extends Creature{
 					 do {
 						n = n.getNext();
 						Vec inters = new Vec();
-						boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getLast().p, n.p, inters);
+						boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getLast().getPoint(), n.getPoint(), inters);
 						if(found && (intersection == null || inters.y > intersection[1])){
 							if(intersection == null)intersection = new float[2];
 							intersection[0] = inters.x;

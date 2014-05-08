@@ -10,6 +10,7 @@ import org.lwjgl.util.glu.GLUtessellator;
 import org.lwjgl.util.glu.GLUtessellatorCallbackAdapter;
 
 import world.Node;
+import core.geom.Vec;
 
 public class Tessellator extends GLUtessellatorCallbackAdapter{
 	
@@ -40,9 +41,9 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 				{
 					Node n = nodes.get(i1);
 					do {
-						
-						double[] coords = new double[]{n.p.x, n.p.y, 0};
-						float[] data = new float[]{n.p.x, n.p.y, n.p.x/texWidth, -n.p.y/texHeight};
+						Vec p = n.getPoint();
+						double[] coords = new double[]{p.x, p.y, 0};
+						float[] data = new float[]{p.x, p.y, p.x/texWidth, -p.y/texHeight};
 						tessellator.gluTessVertex(coords, 0, data);
 						n = n.getNext();
 					} while(n != nodes.get(i1));

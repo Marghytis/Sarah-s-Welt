@@ -58,6 +58,6 @@ public class Cow extends WalkingCreature{
 	}
 	
 	public void beforeRender(){
-		if(g)GL11.glRotatef(worldLink.p.minus(worldLink.getNext().p).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
 }

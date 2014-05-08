@@ -128,24 +128,24 @@ public class Line{
 			Node src = l.start;
 			
 			while(src != l.end){
-				Node n = new Node(src.p);
+				Node n = new Node(src.getPoint());
 				insertNodeAfter(end, n);
 				end = n;
 				src = src.getNext();
 			}
-			Node n = new Node(src.p);
+			Node n = new Node(src.getPoint());
 			insertNodeAfter(end, n);
 			end = n;
 		} else {
 			Node src = l.end;
 
 			while(src != l.start){
-				Node n = new Node(src.p);
+				Node n = new Node(src.getPoint());
 				insertNodeAfter(end, n);
 				end = n;
 				src = src.getLast();
 			}
-			Node n = new Node(src.p);
+			Node n = new Node(src.getPoint());
 			insertNodeAfter(end, n);
 			end = n;
 		}
@@ -192,19 +192,19 @@ public class Line{
 	
 	public String toString(){
 		Node n = start;
-		String string = n.p.toString() + "  ";
+		String string = n.getPoint().toString() + "  ";
 		while(n != end){
 			n = n.getNext();
-			string += n.p.toString() + "  ";
+			string += n.getPoint().toString() + "  ";
 		}
 		if(end.getNext() == start){
 			string += "  circle O";
 		} else {
 			if(end.getNext() != null){
-				string += "  -->  " + end.getNext().p + "  ...";
+				string += "  -->  " + end.getNext().getPoint() + "  ...";
 			}
 			if(start.getLast() != null){
-				string = "...  " + start.getLast().p + "<--  " + string;
+				string = "...  " + start.getLast().getPoint() + "<--  " + string;
 			}
 		}
 		return string;

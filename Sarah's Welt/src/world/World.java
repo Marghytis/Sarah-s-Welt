@@ -117,7 +117,7 @@ public class World {
 	public static void updateStructures(int delta){
 		for(List<Structure> list : World.structures) for(int i = 0; i < list.size(); i++){
 			Structure s = list.get(i);
-			if(s.pos.x < generator.grassT.end.p.x || s.pos.x > generator.grassT.start.p.x){
+			if(s.pos.x < generator.grassT.end.getPoint().x || s.pos.x > generator.grassT.start.getPoint().x){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			} else {
@@ -135,7 +135,7 @@ public class World {
 				list.remove(i);
 				i--;
 			}
-			if(s.pos.x < generator.grassT.end.p.x || s.pos.x > generator.grassT.start.p.x){
+			if(s.pos.x < generator.grassT.end.getPoint().x || s.pos.x > generator.grassT.start.getPoint().x){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			}

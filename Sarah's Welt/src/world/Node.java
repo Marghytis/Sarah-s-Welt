@@ -10,7 +10,7 @@ public class Node {
 	private Node last = null; int lastIndex = -1;//clockwise
 	
 	public int index;
-	public Vec p = null;
+	private Vec p = new Vec();
 	
 	public Node(Vec p, Node last){
 		this.p = p;
@@ -50,5 +50,17 @@ public class Node {
 	
 	public Node getNext(){
 		return next;
+	}
+	
+	public Vec getPoint(){
+		return p;
+	}
+	
+	public void setPoint(float x, float y){
+		p.set(x, y);
+	}
+	
+	public void setPoint(Vec v){
+		p.set(v);
 	}
 }

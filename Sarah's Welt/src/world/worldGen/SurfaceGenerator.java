@@ -94,7 +94,7 @@ public class SurfaceGenerator {
 				settingsR.biome.spawnThings(grassT.start);
 			}
 		} else {
-			while(!reachedDestination(grassT.start.getNext().p.x, destination, false)){
+			while(!reachedDestination(grassT.start.getNext().getPoint().x, destination, false)){
 				//TODO SAVE THE DATA!!!!!
 				grassT.removeFirst();
 				grassB.removeLast();
@@ -127,7 +127,7 @@ public class SurfaceGenerator {
 				settingsL.biome.spawnThings(grassT.end.getLast());
 			}
 		} else {
-			while(!reachedDestination(grassT.end.getLast().p.x, destination, true)){
+			while(!reachedDestination(grassT.end.getLast().getPoint().x, destination, true)){
 				//TODO SAVE THE DATA!!!!!
 				grassT.removeLast();
 				grassB.removeFirst();
