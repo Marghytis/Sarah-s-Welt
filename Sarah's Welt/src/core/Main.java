@@ -16,7 +16,7 @@ public class Main {
 		Window.fill(new Texture("titelbild", 0, 0).handle);
 		Display.update();
 		Res.load();
-		World.load("TestWelt");
+		World.load("TestWelt", 10);
 		System.out.println(GL11.glGetString(GL11.GL_VERSION));
 		
 		long timeLastWorldTick = System.currentTimeMillis();

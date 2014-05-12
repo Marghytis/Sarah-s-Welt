@@ -79,11 +79,11 @@ public class Window {
 	}
 	
 	private static void create(){
-		Display.setIcon(new ByteBuffer[] {icon16, icon32, icon64});
+//		Display.setIcon(new ByteBuffer[] {icon16, icon32, icon64});
 		try{
 			Display.create();
-			Mouse.create();
-			Keyboard.create();
+//			Mouse.create();
+//			Keyboard.create();
 			setupOpenGL();
 			setupOpenAL();
 		} catch(LWJGLException e){

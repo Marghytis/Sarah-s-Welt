@@ -81,16 +81,19 @@ public class World {
 	
 	public static List<SWOOSH> deathSwooshs = new ArrayList<>();
 	
-	public static void load(String name){
+	public static void load(String name, float sarahX){
 //		if(existsAlready(name)){
 //			loadFromDatabase(name);
 //		} else {
 		worldName = name;
 		tessellator = new Tessellator();
 		generator = new SurfaceGenerator(Window.WIDTH + 400);
+		for(List<Structure> s : structures) s.clear();
+		for(List<Creature> s : creatures) s.clear();
+		for(List<Node> ns : contours) ns.clear();
 		
-		generator.gen(10);
-		sarah = new Sarah(new Vec(10, 1000), null);
+		generator.gen(sarahX);
+		sarah = new Sarah(new Vec(sarahX, 1000), null);
 		light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
 //		}
 	}
