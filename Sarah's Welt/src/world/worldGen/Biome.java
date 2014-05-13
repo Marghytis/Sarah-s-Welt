@@ -37,7 +37,7 @@ public enum Biome {
 				spawnStructure(Grass_tuft.typeId, new Grass_tuft(new Vec(), null, random.nextInt(Grass_tuft.wave.sequence.length)), node, 0);
 			}
 			if(random.nextInt(100) < 4){
-				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), 0.5f + random.nextFloat()), node, 200);
+				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 200);
 			}
 
 			//Creatures
@@ -57,7 +57,7 @@ public enum Biome {
 			spawnStructure(Bamboo.typeId, new Bamboo(random.nextInt(4), new Vec(), null, random.nextFloat() + 0.5f), node, 0);
 			spawnStructure(Bamboo.typeId, new Bamboo(random.nextInt(4), new Vec(), null, random.nextFloat() + 0.5f), node, 0);
 			if(random.nextInt(100) < 4){
-				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), 0.5f + random.nextFloat()), node, 200);
+				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 200);
 			}
 			
 			//Creatures
@@ -80,14 +80,14 @@ public enum Biome {
 				spawnStructure(Tree.typeId, new Tree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0);
 			}
 			if(random.nextInt(100) < 4){
-				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), 0.5f + random.nextFloat()), node, 200);
+				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 200);
 			}
 
 			//Creatures
 			if(random.nextInt(100) < 1){
 				spawnCreature(Snail.typeId, new Snail(new Vec(), null), node, 5);
 			}
-			if(random.nextInt(100) < 1){
+			if(random.nextInt(100) < 2){
 				spawnCreature(Cow.typeId, new Cow(new Vec(), null), node, 5);
 			}
 			if(random.nextInt(100) < 1){

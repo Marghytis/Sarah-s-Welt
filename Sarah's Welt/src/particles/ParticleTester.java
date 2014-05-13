@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
-import world.Point;
 import core.Window;
 import core.geom.Quad;
 import core.geom.Vec;
@@ -29,7 +28,7 @@ public class ParticleTester {
 		
 		FireEffect fire = new FireEffect(Window.WIDTH/4, Window.HEIGHT/2, lightmap);
 
-		RainEffect rain = new RainEffect(new Point(Window.WIDTH*2/3 + 50, Window.HEIGHT*3/4 + 10), 100, 20);
+		RainEffect rain = new RainEffect(new Vec(Window.WIDTH*2/3 + 50, Window.HEIGHT*3/4 + 10), 100, 20);
 		Quad cloud = new Quad(Window.WIDTH*2/3, Window.HEIGHT*3/4 - 20, 200, 140);
 		
 		float t = 0;

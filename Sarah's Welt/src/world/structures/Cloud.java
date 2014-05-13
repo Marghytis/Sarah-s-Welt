@@ -8,7 +8,6 @@ import resources.Texture;
 import util.Animation;
 import util.Animator;
 import world.Node;
-import world.Point;
 import core.geom.Vec;
 
 public class Cloud extends Structure{
@@ -16,32 +15,44 @@ public class Cloud extends Structure{
 	public static int typeId;
 
 	private RainEffect effect;
-	public float xSize;
-	public float ySize;
+	public float size;
 	
-	public Cloud(Vec pos, Node worldLink, float xSize, float ySize){
+	public boolean needEffectPosReset = true;
+	private boolean raining = false;//should not simply be set, because you maybe need to create the effect first
+	
+	public Cloud(Vec pos, Node worldLink, float size, boolean raining){
 		super(new Animator(Res.CLOUD, new Animation(1, 1)), pos, worldLink);
-		this.xSize = xSize;
-		this.ySize = ySize;
-		effect = new RainEffect(new Point(pos.x + ((animator.tex.box.x*xSize)/2), pos.y + (animator.tex.box.y*xSize)), (animator.tex.box.size.x*xSize)/2, (animator.tex.box.size.y*xSize)/2);
+		this.size = size;
+		effect = new RainEffect(new Vec(pos.x + ((animator.tex.box.x*size)/2), pos.y + (animator.tex.box.y*size) + 650), (animator.tex.box.size.x*size)/2, (animator.tex.box.size.y*size)/2);
 		front = false;
+		this.raining = raining;
 	}
 	
 	public void update(int dTime){
 		pos.x += 0.1f;
-		effect.pos.x += 0.1f;
-		effect.tick((int)dTime*1);
+		
+		if(raining){
+			if(needEffectPosReset){
+				effect.pos.set(pos.x - (effect.size.x/2), pos.y - effect.size.y);
+				needEffectPosReset = false;
+			} else {
+				effect.pos.x += 0.1f;
+				effect.tick(dTime);
+			}
+		}
 	}
 	
 	public void render(){
-		effect.render();
-		GL11.glColor4f(1, 1, 1, 1);
+		if(raining){
+			effect.render();
+			GL11.glColor4f(1, 1, 1, 1);
+		}
 		animator.tex.bind();
 		super.render();
 		Texture.bindNone();
 	}
 	
 	public void beforeRender(){
-		GL11.glScalef(xSize, ySize, 0);
+		GL11.glScalef(size, size, 0);
 	}
 }

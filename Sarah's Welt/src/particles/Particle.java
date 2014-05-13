@@ -1,18 +1,18 @@
 package particles;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 
 import resources.Texture;
 import util.Color;
-import world.Point;
+import core.geom.Vec;
 
 
 public class Particle {
-	public Point pos = new Point();
-	public Point vel = new Point();//per millis
+	public Vec pos = new Vec();
+	public Vec vel = new Vec();//per millis
 	public Color col = new Color();
 	public float rot;
 	public float rad;
@@ -35,7 +35,7 @@ public class Particle {
 					0, 0, - wH, + hH};
 			
 			//create VBO
-			FloatBuffer buffer = ByteBuffer.allocateDirect(vertices.length*4).asFloatBuffer();
+			FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.length);
 			buffer.put(vertices);
 			buffer.flip();
 			

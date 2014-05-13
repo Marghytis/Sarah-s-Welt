@@ -1,15 +1,14 @@
 package util;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
-
 public class G {
 
 	public static int createVBO(float[] data){
 
-		FloatBuffer buffer = ByteBuffer.allocateDirect(data.length).asFloatBuffer();
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		

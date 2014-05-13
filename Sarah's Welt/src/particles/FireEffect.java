@@ -9,8 +9,8 @@ import particles.Particle.ParticleType;
 import resources.Lightmap;
 import resources.Shader;
 import resources.Texture;
-import world.Point;
 import core.Window;
+import core.geom.Vec;
 
 public class FireEffect {
 
@@ -153,7 +153,7 @@ public class FireEffect {
 	};
 
 	
-	public Point pos = new Point(Window.WIDTH/4, Window.HEIGHT/2);
+	public Vec pos = new Vec(Window.WIDTH/4, Window.HEIGHT/2);
 	public int size = 20;
 	public Lightmap lightmap;
 	

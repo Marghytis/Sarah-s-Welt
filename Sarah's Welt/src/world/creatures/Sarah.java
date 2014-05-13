@@ -34,6 +34,7 @@ public class Sarah extends WalkingCreature {
 	static Animation dismountCow = new Animation(3, 0, false, 6, 5, 4, 3, 2, 1, 0);//don't forget to change the texture!!!
 	static Animation walkOnCow = new Animation(3, 1, true, 0, 1, 2, 3, 4);//don't forget to change the texture!!!
 	static Animation standOnCow = new Animation(6, 0);//don't forget to change the texture!!!
+	static Animation flyOnCow = new Animation(2, 1);//don't forget to change the texture!!!
 	
 	public Sarah(Vec pos, Node worldLink){
 		super(new Animator(Res.SARAH, stand), pos, worldLink);
@@ -153,12 +154,19 @@ public class Sarah extends WalkingCreature {
 					}
 				}
 			} else {
-				if(!ridingCow)animator.setAnimation(fly);
+				if(ridingCow){
+					animator.setAnimation(flyOnCow);
+				} else {
+					animator.setAnimation(fly);
+				}
 			}
 		}
 		animator.tex.bind();
 		
 		if(ridingCow && g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+		else if(Settings.flying){
+			GL11.glRotatef(vel.angle()*(180/(float)Math.PI) - 90, 0, 0, 1);
+		}
 	}
 	
 	public void afterRender(){

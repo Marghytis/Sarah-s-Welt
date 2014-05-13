@@ -2,7 +2,7 @@ package particles;
 
 import particles.Particle.ParticleType;
 import resources.Texture;
-import world.Point;
+import core.geom.Vec;
 
 public class RainEffect {
 	
@@ -48,11 +48,11 @@ public class RainEffect {
 		}
 	};
 
-	public Point pos;
-	public Point size = new Point();
+	public Vec pos;
+	public Vec size = new Vec();
 	
-	public RainEffect(Point pos, float width, float height){
-		this.pos = new Point(pos);
+	public RainEffect(Vec vec, float width, float height){
+		this.pos = new Vec(vec);
 		size.set(width, height);
 	}
 	

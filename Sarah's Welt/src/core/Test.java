@@ -1,9 +1,9 @@
 package core;
 
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
@@ -75,7 +75,7 @@ public class Test {
 		int[] indices = {0, 1, 2, 2, 3, 0}; indexCount = 6;
 		
 		//create VBO
-		FloatBuffer vertexBuffer = ByteBuffer.allocateDirect(20).asFloatBuffer();
+		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(20);
 		vertexBuffer.put(vertices);
 		vertexBuffer.flip();
 		
@@ -85,7 +85,7 @@ public class Test {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		
 		//create IBO
-		IntBuffer indexBuffer = ByteBuffer.allocateDirect(indexCount).asIntBuffer();
+		IntBuffer indexBuffer = BufferUtils.createIntBuffer(indexCount);
 		indexBuffer.put(indices);
 		indexBuffer.flip();
 		
