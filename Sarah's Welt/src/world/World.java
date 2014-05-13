@@ -24,10 +24,12 @@ import world.creatures.Sarah;
 import world.creatures.Snail;
 import world.structures.Bamboo;
 import world.structures.Bush;
+import world.structures.Cactus;
 import world.structures.Cloud;
 import world.structures.Crack;
 import world.structures.Flower;
 import world.structures.Grass_tuft;
+import world.structures.PalmTree;
 import world.structures.Structure;
 import world.structures.Tree;
 import world.worldGen.SurfaceGenerator;
@@ -54,7 +56,9 @@ public class World {
 		
 		int s_id = 0;
 		Tree.typeId = s_id++; structures.add(new ArrayList<>());
+		PalmTree.typeId = s_id++; structures.add(new ArrayList<>());
 		Bush.typeId = s_id++; structures.add(new ArrayList<>());
+		Cactus.typeId = s_id++; structures.add(new ArrayList<>());
 		Flower.typeId = s_id++; structures.add(new ArrayList<>());
 		Bamboo.typeId = s_id++; structures.add(new ArrayList<>());
 		Grass_tuft.typeId = s_id++; structures.add(new ArrayList<>());

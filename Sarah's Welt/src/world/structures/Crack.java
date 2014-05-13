@@ -11,22 +11,20 @@ import core.geom.Vec;
 public class Crack extends Structure{
 	
 	public static int typeId;
-	public float xSize;
-	public float ySize;
-	public float rotation;
+	public float size;
+	public int rotation;
 
 	public static Animation[] crack = {new Animation(0, 0), new Animation(0, 1), new Animation(0, 2), new Animation(0, 3)};
 	
-	public Crack(int type, Vec pos, Node worldLink, float sizeX, float sizeY, float rotation){
+	public Crack(int type, Vec pos, Node worldLink, float size, int rotation){
 		super(new Animator(Res.CRACK, crack[type]), pos, worldLink);
 		front = true;
-		this.xSize = sizeX;
-		this.ySize = sizeY;
+		this.size = size;
 		this.rotation = rotation;
 	}
 	
 	public void beforeRender(){
-		GL11.glScalef(xSize, ySize, 0);
+		GL11.glScalef(size, size, 0);
 		GL11.glRotatef(rotation, 0, 0, 1);
 	}
 }

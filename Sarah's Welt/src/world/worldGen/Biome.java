@@ -13,7 +13,9 @@ import world.creatures.Rabbit;
 import world.creatures.Snail;
 import world.structures.Bamboo;
 import world.structures.Bush;
+import world.structures.Cactus;
 import world.structures.Cloud;
+import world.structures.Crack;
 import world.structures.Flower;
 import world.structures.Grass_tuft;
 import world.structures.Structure;
@@ -59,6 +61,9 @@ public enum Biome {
 			if(random.nextInt(100) < 4){
 				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 200);
 			}
+			if(random.nextInt(10) < 1){
+				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
+			}
 			
 			//Creatures
 			if(random.nextInt(100) < 3){
@@ -96,6 +101,30 @@ public enum Biome {
 			if(random.nextInt(100) < 2){
 				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
 			}
+		}
+	}, DESERT{
+		public void spawnThings(Node node){
+			//Structures
+//			if(random.nextInt(100) < 10){
+//				spawnStructure(PalmTree.typeId, new PalmTree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0);
+//			}
+			if(random.nextInt(100) < 10){
+				spawnStructure(Cactus.typeId, new Cactus(random.nextInt(3), new Vec(), null), node, 0);
+			}
+
+			//Creatures
+//			if(random.nextInt(100) < 1){
+//				spawnCreature(Snail.typeId, new Snail(new Vec(), null), node, 5);
+//			}
+//			if(random.nextInt(100) < 2){
+//				spawnCreature(Cow.typeId, new Cow(new Vec(), null), node, 5);
+//			}
+//			if(random.nextInt(100) < 1){
+//				spawnCreature(Rabbit.typeId, new Rabbit(new Vec(), null), node, 5);
+//			}
+//			if(random.nextInt(100) < 2){
+//				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
+//			}
 		}
 	};
 	public static Random random = new Random();

@@ -24,7 +24,7 @@ public class SurfaceGenerator {
 	Line earthT; int eTOffset = -10;
 	Line earthB; int eBOffset = -50;
 	Line stoneT; int sTOffset = -50;
-	Line stoneB; int sBOffset = -1000;
+	Line stoneB; int sBOffset = -10000;
 	
 	/**
 	 * IMPORTANT: The "contours" must be completely empty!!

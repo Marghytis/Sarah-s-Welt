@@ -48,10 +48,10 @@ public class Sarah extends WalkingCreature {
 				} else if(animator.animation == dismountCow){
 					ridingCow = false;
 //					Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), worldLink, 5);
-					World.sarah.animator.animation = stand;
+					World.sarah.animator.setAnimation(stand);
 					World.sarah.animator.tex = Res.SARAH;
 				} else {
-					World.sarah.animator.animation = walkOnCow;
+					World.sarah.animator.setAnimation(walkOnCow);
 				}
 			}
 		};
