@@ -1,5 +1,6 @@
 package particles;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL15;
@@ -7,8 +8,6 @@ import org.lwjgl.opengl.GL15;
 import resources.Texture;
 import util.Color;
 import world.Point;
-
-import com.sun.scenario.effect.impl.BufferUtil;
 
 
 public class Particle {
@@ -36,7 +35,7 @@ public class Particle {
 					0, 0, - wH, + hH};
 			
 			//create VBO
-			FloatBuffer buffer = BufferUtil.newFloatBuffer(vertices.length*4);
+			FloatBuffer buffer = ByteBuffer.allocateDirect(vertices.length*4).asFloatBuffer();
 			buffer.put(vertices);
 			buffer.flip();
 			

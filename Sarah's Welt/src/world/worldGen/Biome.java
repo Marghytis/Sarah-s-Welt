@@ -13,6 +13,7 @@ import world.creatures.Rabbit;
 import world.creatures.Snail;
 import world.structures.Bamboo;
 import world.structures.Bush;
+import world.structures.Cloud;
 import world.structures.Flower;
 import world.structures.Grass_tuft;
 import world.structures.Structure;
@@ -35,6 +36,9 @@ public enum Biome {
 			if(random.nextInt(100) < 20){
 				spawnStructure(Grass_tuft.typeId, new Grass_tuft(new Vec(), null, random.nextInt(Grass_tuft.wave.sequence.length)), node, 0);
 			}
+			if(random.nextInt(100) < 4){
+				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), 0.5f + random.nextFloat()), node, 200);
+			}
 
 			//Creatures
 			if(random.nextInt(100) < 1){
@@ -52,6 +56,9 @@ public enum Biome {
 			//Structures
 			spawnStructure(Bamboo.typeId, new Bamboo(random.nextInt(4), new Vec(), null, random.nextFloat() + 0.5f), node, 0);
 			spawnStructure(Bamboo.typeId, new Bamboo(random.nextInt(4), new Vec(), null, random.nextFloat() + 0.5f), node, 0);
+			if(random.nextInt(100) < 4){
+				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), 0.5f + random.nextFloat()), node, 200);
+			}
 			
 			//Creatures
 			if(random.nextInt(100) < 3){
@@ -71,6 +78,9 @@ public enum Biome {
 			}
 			if(random.nextInt(100) < 1){
 				spawnStructure(Tree.typeId, new Tree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0);
+			}
+			if(random.nextInt(100) < 4){
+				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), 0.5f + random.nextFloat()), node, 200);
 			}
 
 			//Creatures

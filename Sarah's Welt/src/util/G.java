@@ -1,16 +1,15 @@
 package util;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL15;
-
-import com.sun.scenario.effect.impl.BufferUtil;
 
 public class G {
 
 	public static int createVBO(float[] data){
 
-		FloatBuffer buffer = BufferUtil.newFloatBuffer(data.length);
+		FloatBuffer buffer = ByteBuffer.allocateDirect(data.length).asFloatBuffer();
 		buffer.put(data);
 		buffer.flip();
 		

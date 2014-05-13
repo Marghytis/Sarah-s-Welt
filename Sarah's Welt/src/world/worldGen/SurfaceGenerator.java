@@ -1,9 +1,11 @@
 package world.worldGen;
 
+import java.util.List;
 import java.util.Random;
 
 import util.Line;
 import world.Material;
+import world.Node;
 import world.World;
 import world.worldGen.WorldGenObject.WorldGenObjectType;
 import core.geom.Vec;
@@ -117,7 +119,7 @@ public class SurfaceGenerator {
 				Vec newStone = new Vec(settingsL.base.plus(0, sTOffset));
 				Vec newStoneBottom = new Vec(settingsL.base.plus(0, sBOffset));
 				
-				grassT.addVec(newGras);
+								grassT.addVec(newGras);
 				grassB.addVecBack(newEarth);
 				earthT.addVec(newEarth);//Earth top
 				earthB.addVecBack(newStone);
@@ -164,6 +166,9 @@ public class SurfaceGenerator {
 		public double nextAngle = 0;
 		public boolean dir;
 		public Biome biome = Biome.MEADOW;
+		public Landscape landscape = Landscape.SOMEHILLS;
+		
+		List<AreaOpening> openings;
 		
 		public Vec base;
 		
@@ -205,6 +210,14 @@ public class SurfaceGenerator {
 			}
 			if(random.nextInt(50) == 0){
 				biome = Biome.values()[random.nextInt(Biome.values().length)];
+			}
+		}
+		
+		public class AreaOpening {
+			public Node node;
+			
+			public AreaOpening(Node n){
+				this.node = n;
 			}
 		}
 	}

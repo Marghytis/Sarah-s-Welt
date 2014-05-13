@@ -1,5 +1,6 @@
 package core;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -12,8 +13,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import sound.Lesson1;
-
-import com.sun.scenario.effect.impl.BufferUtil;
 
 public class Test {
 	public static void main(String[] args) {
@@ -76,7 +75,7 @@ public class Test {
 		int[] indices = {0, 1, 2, 2, 3, 0}; indexCount = 6;
 		
 		//create VBO
-		FloatBuffer vertexBuffer = BufferUtil.newFloatBuffer(20);
+		FloatBuffer vertexBuffer = ByteBuffer.allocateDirect(20).asFloatBuffer();
 		vertexBuffer.put(vertices);
 		vertexBuffer.flip();
 		
@@ -86,7 +85,7 @@ public class Test {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		
 		//create IBO
-		IntBuffer indexBuffer = BufferUtil.newIntBuffer(indexCount);
+		IntBuffer indexBuffer = ByteBuffer.allocateDirect(indexCount).asIntBuffer();
 		indexBuffer.put(indices);
 		indexBuffer.flip();
 		
