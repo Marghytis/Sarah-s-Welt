@@ -108,6 +108,9 @@ public class World {
 	public static void update(int delta){
 		
 		sarah.update(delta);
+		if(sarah.health <= 0){
+			View.DEATH.set();
+		}
 		
 		generator.gen(sarah.pos.x);
 		
