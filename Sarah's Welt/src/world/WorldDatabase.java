@@ -1,12 +1,12 @@
 package world;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import util.Datenbank;
+import core.geom.Vec;
 
 public class WorldDatabase extends Datenbank{
 	
@@ -21,11 +21,10 @@ public class WorldDatabase extends Datenbank{
 		try {
             Statement sql = conn.createStatement();
 
-            ResultSet ergebnis = sql.executeQuery("SELECT xSector FROM World");//TODO
+            ResultSet ergebnis = sql.executeQuery("SELECT Name, x FROM World");//TODO
             
             ergebnis.next();
-            WorldWindow.xSector = ergebnis.getInt("xSector");
-            
+            	World.load(ergebnis.getString("Name"), ergebnis.getInt("x"));
             ergebnis.close();
             sql.close();
 
@@ -34,37 +33,15 @@ public class WorldDatabase extends Datenbank{
         }
 	}
 	
-	public Sector loadSector(int x){
-		return null;
-	}
-	
-//	public MatArea loadAreasAt(int xSector){
-//		try {
-//            Statement sql = conn.createStatement();
-//
-//            ResultSet ergebnis = sql.executeQuery("SELECT pX, pY FROM Point P INNER JOIN Contains C ON P.p_ID = C.p_ID WHERE a_ID = " + area.id + " AND sX = " + sX);//TODO
-//            
-//            while (list.next()) {
-//            	part.cycles[list.getInt("cycleIndex")].add(new Point(list.getFloat("pX"), list.getFloat("pY")));
-//            }
-//            
-//            ergebnis.close();
-//
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//            return null;
-//        }
-//	}
-	
 	public void save(Node[] nodes, String mat){
 		try {
-            PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, next_ID, last_ID, Material, p_x, p_y) VALUES (?,?,?,?,?,?)");
+            PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, Material, next_ID, last_ID, p_x, p_y) VALUES (?,?,?,?,?)");
             
             for(Node node : nodes){
 	            p.setInt(1, node.index);
-	            p.setInt(2, node.nextIndex);
-	            p.setInt(3, node.lastIndex);
-	            p.setString(4, mat);
+	            p.setString(2, mat);
+	            p.setInt(3, node.nextIndex);
+	            p.setInt(4, node.lastIndex);
 	            p.setFloat(5, node.getPoint().x);
 	            p.setFloat(6, node.getPoint().y);
 	            p.addBatch();
@@ -79,14 +56,45 @@ public class WorldDatabase extends Datenbank{
         }
 	}
 	
+	public void load(Node last, int amount, Node next){
+		if(last.nextIndex != -1){
+			(new Exception("[WorldDatabase]: Can't load a Node twice!!!!!")).printStackTrace();
+			return;
+		}
+		try {
+          Statement sql = conn.createStatement();
+
+          
+          Node n = last;
+          
+          for(int i = 0; i < amount; i++) {
+              ResultSet ergebnis = sql.executeQuery("SELECT * FROM Node N WHERE n_ID = " + last.nextIndex);//TODO
+              
+        	  Node node = new Node(ergebnis.getInt("n_ID"), new Vec(ergebnis.getFloat("pX"), ergebnis.getFloat("pY")), n);
+        	  n.setNext(node);
+        	  n = node;
+
+              ergebnis.close();
+          }
+          
+          if(n.nextIndex == next.index){
+        	  n.setNext(next);
+        	  next.setLast(n);
+          }
+
+      } catch (SQLException ex) {
+          ex.printStackTrace();
+          return;
+      }
+	}
+	
 	 public void createDB() {
             try {
                 Statement sql = conn.createStatement();
 
                 String sqlCreate = 
             		"CREATE TABLE 'World' ('x' FLOAT NOT NULL DEFAULT 0);"
-                +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'n_ID' INTEGER PRIMARY KEY NOT NULL, 'next_ID' INTEGER PRIMARY KEY, 'last_ID' INTEGER PRIMARY KEY , 'pX' FLOAT NOT NULL  DEFAULT 0, 'pY' FLOAT NOT NULL  DEFAULT 0, 'cycleIndex' INTEGER);"
-                +   "CREATE TABLE 'Cycle' ('c_ID' INTEGER PRIMARY KEY NOT NULL, 'Material' VARCHAR NOT NULL DEFAULT 'AIR')"
+                +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'Material' VARCHAR NOT NULL DEFAULT 'AIR', 'next_ID' INTEGER, 'last_ID' INTEGER, 'pX' FLOAT DEFAULT 0, 'pY' FLOAT DEFAULT 0);"
                 ;
 
                 sql.executeUpdate(sqlCreate);

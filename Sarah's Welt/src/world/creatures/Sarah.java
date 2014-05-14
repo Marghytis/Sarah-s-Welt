@@ -197,6 +197,10 @@ public class Sarah extends WalkingCreature {
 		}
 	}
 	
+	public void die(){
+		
+	}
+	
 	Cow oldCow = null;
 	
 	public void mountCow(Cow c){
