@@ -14,7 +14,9 @@ import world.creatures.Snail;
 import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cactus;
+import world.structures.CandyBush;
 import world.structures.CandyFlower;
+import world.structures.CandyTree;
 import world.structures.Cloud;
 import world.structures.Crack;
 import world.structures.Flower;
@@ -133,19 +135,19 @@ public enum Biome {
 			if(random.nextInt(100) < 20){
 				spawnStructure(CandyFlower.typeId, new CandyFlower(random.nextInt(6), new Vec(), null), node, 0);
 			}
+			if(random.nextInt(100) < 7){
+				spawnStructure(CandyTree.typeId, new CandyTree(new Vec(), null, 0.5f + random.nextFloat()), node, 0);
+			}
+			if(random.nextInt(100) < 20){
+				spawnStructure(CandyBush.typeId, new CandyBush(random.nextInt(2), new Vec(), null), node, 0);
+			}
 
 			//Creatures
-			if(random.nextInt(100) < 1){
-				spawnCreature(Snail.typeId, new Snail(new Vec(), null), node, 5);
-			}
-			if(random.nextInt(100) < 2){
-				spawnCreature(Cow.typeId, new Cow(new Vec(), null), node, 5);
-			}
-			if(random.nextInt(100) < 1){
-				spawnCreature(Rabbit.typeId, new Rabbit(new Vec(), null), node, 5);
-			}
-			if(random.nextInt(100) < 2){
+			if(random.nextInt(100) < 5){
 				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
+			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Bird.typeId, new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
 			}
 		}
 	};

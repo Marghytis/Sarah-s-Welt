@@ -16,8 +16,10 @@ public class Res {
 	public static StackedTexture CLOUD = new StackedTexture("structures/Cloud", 1, 1, -0.5f, -0.5f);
 	public static StackedTexture TREE = new StackedTexture("structures/Tree", 1, 3, -0.5f, -0.3f);
 	public static StackedTexture PALM_TREE = new StackedTexture("structures/PalmTree", 1, 3, -0.5f, -0.03f);
+	public static StackedTexture CANDY_TREE = new StackedTexture("structures/CandyTree", 1, 2, -0.5f, -0.03f);
 	public static StackedTexture BAMBOO = new StackedTexture("structures/Bamboo", 1, 4, -0.5f, -0.02f);
 	public static StackedTexture BUSH = new StackedTexture("structures/Bush", 1, 2, -0.5f, -0.2f);
+	public static StackedTexture CANDY_BUSH = new StackedTexture("structures/CandyBush", 1, 2, -0.5f, -0.2f);
 	public static StackedTexture CACTUS = new StackedTexture("structures/Cactus", 1, 3, -0.5f, -0.05f);
 	public static StackedTexture GRASS_TUFT = new StackedTexture("structures/Grass_tuft", 4, 1, -0.5f, -0.2f);
 	public static StackedTexture FLOWER = new StackedTexture("structures/Flower", 1, 3, -0.5f, 0f);
