@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL11;
 import resources.Res;
 import resources.StackedTexture;
 import resources.Texture;
+import util.Animation;
+import util.Animator;
 import world.Calendar;
 import world.World;
 import core.geom.Quad;
@@ -137,8 +139,11 @@ public class Menu {
 				buttons = new Button[]{ new Button("Main Menu", 1/2.0f, 1/8.0f, new Runnable(){public void run(){view = MAIN;}})};
 			}
 			
-			public void startAnimation(){
-				
+			Animator ani = new Animator(Res.SARAH_DEATH, new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
+			
+			public void set(){
+				super.set();
+				ani.frame = 0;
 			}
 			
 			@Override
@@ -165,9 +170,6 @@ public class Menu {
 		
 		public void set(){
 			Menu.view = this;
-			if(this == DEATH){
-				
-			}
 		}
 	}
 	

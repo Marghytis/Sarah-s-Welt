@@ -20,14 +20,16 @@ public class Animator {
 	}
 	
 	public void animate(boolean mirrored){
-		int texPos = animation.getPoint(frame);
-		
-		tex.box.drawTexNotBind(tex, texPos, animation.y, mirrored);
-
-		if(frame != -1){
-			frame = animation.next(frame);
-			if(frame == -1){
-				doOnReady.run();
+		if(animation != null){
+			int texPos = animation.getPoint(frame);
+			
+			tex.box.drawTexNotBind(tex, texPos, animation.y, mirrored);
+	
+			if(frame != -1){
+				frame = animation.next(frame);
+				if(frame == -1){
+					doOnReady.run();
+				}
 			}
 		}
 	}
