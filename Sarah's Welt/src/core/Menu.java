@@ -131,6 +131,20 @@ public class Menu {
 				Res.arial.drawString(20, Window.HEIGHT -100, text, 1, 1);
 				GL11.glColor3f(1, 1, 1);
 			}
+		},
+		DEATH(true){
+			void setup(){
+				buttons = new Button[]{ new Button("Main Menu", 1/2.0f, 1/8.0f, new Runnable(){public void run(){view = MAIN;}})};
+			}
+			
+			public void startAnimation(){
+				
+			}
+			
+			@Override
+			public void render(){
+				super.render();
+			}
 		};
 		
 		Button[] buttons;
@@ -146,6 +160,13 @@ public class Menu {
 		public void render(){
 			for(Button b : buttons){
 				b.render();
+			}
+		}
+		
+		public void set(){
+			Menu.view = this;
+			if(this == DEATH){
+				
 			}
 		}
 	}
