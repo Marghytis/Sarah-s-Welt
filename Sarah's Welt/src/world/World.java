@@ -25,6 +25,7 @@ import world.creatures.Snail;
 import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cactus;
+import world.structures.CandyFlower;
 import world.structures.Cloud;
 import world.structures.Crack;
 import world.structures.Flower;
@@ -60,6 +61,7 @@ public class World {
 		Bush.typeId = s_id++; structures.add(new ArrayList<>());
 		Cactus.typeId = s_id++; structures.add(new ArrayList<>());
 		Flower.typeId = s_id++; structures.add(new ArrayList<>());
+		CandyFlower.typeId = s_id++; structures.add(new ArrayList<>());
 		Bamboo.typeId = s_id++; structures.add(new ArrayList<>());
 		Grass_tuft.typeId = s_id++; structures.add(new ArrayList<>());
 		Cloud.typeId = s_id++; structures.add(new ArrayList<>());

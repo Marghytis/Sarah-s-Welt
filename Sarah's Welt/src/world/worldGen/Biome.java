@@ -14,6 +14,7 @@ import world.creatures.Snail;
 import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cactus;
+import world.structures.CandyFlower;
 import world.structures.Cloud;
 import world.structures.Crack;
 import world.structures.Flower;
@@ -125,6 +126,27 @@ public enum Biome {
 //			if(random.nextInt(100) < 2){
 //				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
 //			}
+		}
+	}, CANDY{
+		public void spawnThings(Node node){
+			//Structures
+			if(random.nextInt(100) < 20){
+				spawnStructure(CandyFlower.typeId, new CandyFlower(random.nextInt(6), new Vec(), null), node, 0);
+			}
+
+			//Creatures
+			if(random.nextInt(100) < 1){
+				spawnCreature(Snail.typeId, new Snail(new Vec(), null), node, 5);
+			}
+			if(random.nextInt(100) < 2){
+				spawnCreature(Cow.typeId, new Cow(new Vec(), null), node, 5);
+			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Rabbit.typeId, new Rabbit(new Vec(), null), node, 5);
+			}
+			if(random.nextInt(100) < 2){
+				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
+			}
 		}
 	};
 	public static Random random = new Random();
