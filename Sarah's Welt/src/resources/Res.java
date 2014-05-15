@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.openal.AL10;
 
@@ -35,6 +37,7 @@ public class Res {
 	public static StackedTexture COW  = new StackedTexture("creatures/Cow", 7, 1, -0.5f, -0.1f);
 
 	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 8, -0.5f, -0.1f);
+	public static List<int[][]> SARAH_ITEMCOORDS = readTextureCoordinator("res/creatures/Sarah.txt");
 	public static StackedTexture SARAH_ON_COW = new StackedTexture("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
 	public static StackedTexture SARAH_DEATH = new StackedTexture("creatures/Sarah_death", 14, 1, 0, 0);
 	
@@ -53,16 +56,30 @@ public class Res {
 		arial.destroy();
 		AL10.alDeleteSources(test.source);
 	}
-	
-	public static int[][] readTextureCoordinator(String file){
+
+	public static List<int[][]> readTextureCoordinator(String file){
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
-			String line = reader.readLine();
-			line.replaceAll(" ", "");
-			String[] vertices = line.split(";");
+			String line;
 			
-			int[][] output = new int[vertices.length][3];
-			return output;
+			List<int[][]> kA = new ArrayList<>();
+			
+			while((line = reader.readLine()) != null){
+				String[] vertices = line.split(";");
+				
+				int[][] output = new int[vertices.length][3];
+				
+				for(int i = 0; i < vertices.length; i++){
+					String[] coords = vertices[i].split(",");
+					output[i] = new int[]{Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])};
+				}
+				
+				kA.add(output);
+			}
+			
+			reader.close();
+			
+			return kA;
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

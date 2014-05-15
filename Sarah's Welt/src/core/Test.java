@@ -1,7 +1,14 @@
 package core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -22,26 +29,59 @@ public class Test {
 	public int WIDTH = 1000, HEIGHT = 500;
 	Lesson1 test;
 	public Test() {
-//		try {
-//			java.applet.AudioClip clip = java.applet.Applet.newAudioClip(new java.net.URL("file://c:/res/twolf.wav"));
-//			clip.loop();
-//		} catch (java.net.MalformedURLException murle) {
-//			System.out.println(murle);
-//		}
-//		test = new Lesson1();
-//		test.execute();
 		
-		createDisplay();
+		List<int[][]> coords = readTextureCoordinator("res/creatures/Sarah.txt");
 		
-		setup();
-		
-		while (!Display.isCloseRequested()) {
-			loop();
-			Display.sync(60);
-			Display.update();
+		for(int[][] pff : coords){
+			System.out.println("");
+			for(int[] vertex : pff){
+				System.out.print(" [" + vertex[0] + ", " + vertex[1] + ", " + vertex[2] + "]");
+			}
 		}
 		
-		Display.destroy();
+//		createDisplay();
+//		
+//		setup();
+//		
+//		while (!Display.isCloseRequested()) {
+//			loop();
+//			Display.sync(60);
+//			Display.update();
+//		}
+//		
+//		Display.destroy();
+	}
+	
+	public static List<int[][]> readTextureCoordinator(String file){
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
+			String line;
+			
+			List<int[][]> kA = new ArrayList<>();
+			
+			while((line = reader.readLine()) != null){
+				String[] vertices = line.split(";");
+				
+				int[][] output = new int[vertices.length][3];
+				
+				for(int i = 0; i < vertices.length; i++){
+					String[] coords = vertices[i].split(",");
+					output[i] = new int[]{Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])};
+				}
+				
+				kA.add(output);
+			}
+			
+			reader.close();
+			
+			return kA;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	private void createDisplay() {		
