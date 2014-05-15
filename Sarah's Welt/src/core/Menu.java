@@ -17,10 +17,6 @@ public class Menu {
 
 	public static View view = View.MAIN;
 	
-	public static void set(View newView){
-		view = newView;
-	}
-	
 	public static boolean pauseWorld(){
 		return view.pauseWorld;
 	}
@@ -29,16 +25,16 @@ public class Menu {
 		while(Keyboard.next()){
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
 				if(view == View.MAIN){
-					view = View.EMPTY;
+					View.EMPTY.set();
 				} else {
-					view = View.MAIN;
+					View.MAIN.set();
 				}
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
 				if(view == View.DEBUG){
-					view = View.EMPTY;
+					View.EMPTY.set();
 				} else {
-					view = View.DEBUG;
+					View.DEBUG.set();
 				}
 			}
 		}
@@ -85,7 +81,7 @@ public class Menu {
 		MAIN(true){
 			void setup(){
 				buttons = new Button[]{
-					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){World.load("TestWorld");}}),
+					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){World.load("TestWorld", 10);}}),
 					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = EMPTY;}}),
 					new Button("Options", 3/16.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
 					new Button("Exit", 3/16.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
@@ -109,15 +105,15 @@ public class Menu {
 		OPTIONS(true){
 			void setup(){
 				buttons = new Button[]{
-						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = CONTROLS;}}),
+						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){CONTROLS.set();}}),
 						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; Res.test.stop();}),
-						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){Menu.view = MAIN;}})
+						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};
 			}
 		},
 		CONTROLS(true){
 			void setup(){
-				buttons = new Button[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){view = MAIN;}})};
+				buttons = new Button[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})};
 			}
 			String text = 	"ESC : Main menu\n"
 					+ 	"A : left\n"
@@ -148,6 +144,17 @@ public class Menu {
 			
 			@Override
 			public void render(){
+				GL11.glLoadIdentity();
+				Texture.bindNone();
+				GL11.glColor4f(0, 0, 0, 1);
+				Window.fill();
+				GL11.glColor3f(1, 1, 1);
+				GL11.glPushMatrix();
+				GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
+				Res.SARAH_DEATH.bind();
+				ani.animate(false);
+				Texture.bindNone();
+				GL11.glPopMatrix();
 				super.render();
 			}
 		};

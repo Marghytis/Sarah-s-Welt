@@ -12,6 +12,11 @@ public class Node {
 	public int index;
 	private Vec p = new Vec();
 	
+	public Node(int index, Vec p, Node last){
+		this(p, last);
+		this.index = index;
+	}
+	
 	public Node(Vec p, Node last){
 		this.p = p;
 		setLast(last);
