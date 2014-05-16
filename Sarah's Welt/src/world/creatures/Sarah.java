@@ -223,7 +223,6 @@ public class Sarah extends WalkingCreature {
 	public int[] getHandPosition(){
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
-		return Res.
 		return new int[]{14, 20, 45};
 	}
 	

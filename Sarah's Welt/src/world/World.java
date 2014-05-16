@@ -1,5 +1,8 @@
 package world;
 
+import item.Item;
+import item.WorldItem;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,6 +53,7 @@ public class World {
 
 	public static List<ArrayList<Structure>> structures = new ArrayList<>();
 	public static List<ArrayList<Creature>> creatures = new ArrayList<>();
+	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.values().length]);
 	
 	public static List<Creature> deathCreatures = new ArrayList<>();
 	
@@ -57,6 +61,9 @@ public class World {
 		contours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		for(int i = 0; i < contours.length; i++){
 			contours[i] = new ArrayList<>();
+		}
+		for(int i = 0; i < items.length; i++){
+			items[i] = new ArrayList<>();
 		}
 		
 		int s_id = 0;
@@ -174,6 +181,8 @@ public class World {
 
 		//back
 		Structure.renderStructures(false);
+		
+		Item.renderItems();
 
 		Material[] mats = Material.values();
 		for(int i = 0; i < mats.length; i++){
@@ -191,6 +200,7 @@ public class World {
 		GL11.glPushMatrix();
 		sarah.render();
 		GL11.glPopMatrix();
+		
 
 		Structure.renderStructures(true);
 		

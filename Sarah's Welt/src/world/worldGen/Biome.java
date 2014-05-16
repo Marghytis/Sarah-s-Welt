@@ -1,5 +1,8 @@
 package world.worldGen;
 
+import item.Item;
+import item.WorldItem;
+
 import java.util.Random;
 
 import world.Node;
@@ -162,6 +165,11 @@ public enum Biome {
 			if(random.nextInt(100) < 1){
 				spawnCreature(Bird.typeId, new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
 			}
+			
+			//items
+			if(random.nextInt(100) < 20){
+				spawnItem(new WorldItem(Item.SWORD, new Vec(), null), node, -10);
+			}
 		}
 	};
 	public static Random random = new Random();
@@ -178,6 +186,10 @@ public enum Biome {
 	public static void spawnStructure(int typeId, Structure c, Node n, float yOffset){
 		c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
 		World.structures.get(typeId).add(c);
-		System.out.println("Spawn struc: " + World.structures.get(Bamboo.typeId).size());
+	}
+	
+	public static void spawnItem(WorldItem item, Node n, float yOffset){
+		item.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
+		World.items[item.item.ordinal()].add(item);
 	}
 }
