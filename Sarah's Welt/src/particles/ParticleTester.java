@@ -78,13 +78,13 @@ public class ParticleTester {
 		Display.destroy();
 	}
 	
-	public static List<SWOOSH> swooshs = new ArrayList<>();
+	public static List<DeathDust> swooshs = new ArrayList<>();
 	
 	public static void mouseListening(){
 //		swooshs.add(new SWOOSH(new Vec(Mouse.getX(), Mouse.getY())));
 		while(Mouse.next()){
 			if(Mouse.getEventButtonState()){
-				swooshs.add(new SWOOSH(new Vec(Mouse.getEventX(), Mouse.getEventY())));
+				swooshs.add(new DeathDust(new Vec(Mouse.getEventX(), Mouse.getEventY())));
 			}
 		}
 	}

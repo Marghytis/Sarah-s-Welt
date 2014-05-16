@@ -4,7 +4,7 @@ import particles.Particle.ParticleType;
 import resources.Texture;
 import core.geom.Vec;
 
-public class RainEffect {
+public class RainEffect implements ParticleEffect{
 	
 	public static final ParticleType RAINDROP = new ParticleType(new Texture("particles/Raindrop"));
 	

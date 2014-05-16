@@ -86,6 +86,10 @@ public class Quad extends Vec{
 		GL11.glEnd();
 	}
 	
+	public Vec middle(){
+		return new Vec(x + (size.x/2), y + (size.y/2));
+	}
+	
 	public boolean contains(float x, float y){
 		return x > this.x && x < this.x + size.x && y > this.y && y < this.y + size.y;
 	}

@@ -8,7 +8,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import particles.SWOOSH;
+import particles.ParticleEffect;
 import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
@@ -51,6 +51,8 @@ public class World {
 	public static List<ArrayList<Structure>> structures = new ArrayList<>();
 	public static List<ArrayList<Creature>> creatures = new ArrayList<>();
 	
+	public static List<Creature> deathCreatures = new ArrayList<>();
+	
 	static {
 		contours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		for(int i = 0; i < contours.length; i++){
@@ -89,7 +91,7 @@ public class World {
 	public static Lightmap light;
 	public static String worldName;
 	
-	public static List<SWOOSH> deathSwooshs = new ArrayList<>();
+	public static List<ParticleEffect> particleEffects = new ArrayList<>();
 	
 	public static void load(String name, float sarahX){
 //		if(existsAlready(name)){
@@ -143,20 +145,24 @@ public class World {
 	}
 	
 	public static void updateCreatures(int delta){
+		
+		for(Creature c : deathCreatures){
+			lists : for(List<Creature> list : World.creatures) for(int i = 0; i < list.size(); i++){
+				if(c.equals(list.get(i))){
+					list.remove(i);
+					break lists;
+				}
+			}
+		}
 		for(List<Creature> list : World.creatures) for(int i = 0; i < list.size(); i++){
 			Creature s = list.get(i);
 			s.update(delta);
-			if(s.health <= 0){
-				deathSwooshs.add(new SWOOSH(s.pos));
-				list.remove(i);
-				i--;
-			}
 			if(s.pos.x < generator.grassT.end.getPoint().x || s.pos.x > generator.grassT.start.getPoint().x){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			}
 		}
-		deathSwooshs.forEach((d) -> d.tick(delta));
+		particleEffects.forEach((d) -> d.tick(delta));
 	}
 	
 	public static void render(){
@@ -179,7 +185,7 @@ public class World {
 		//front
 	
 		Creature.renderCreatures();
-		deathSwooshs.forEach((d) -> d.render());
+		particleEffects.forEach((d) -> d.render());
 		GL11.glColor4f(1, 1, 1, 1);
 
 		GL11.glPushMatrix();

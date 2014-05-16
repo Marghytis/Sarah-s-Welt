@@ -1,5 +1,6 @@
 package world.creatures;
 
+import particles.Hearts;
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -20,13 +21,20 @@ public class Heart extends WalkingCreature{
 	}
 	
 	public void update(int dTime){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
-			World.sarah.health = Math.min(World.sarah.health += 5, 20);
-		}
 		if(!g){
 			collision();
 		}
 		health--;
 		super.update(dTime);
+	}
+	
+	public boolean rightClickAction(){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 2500){
+			World.particleEffects.add(new Hearts(pos.plus(animator.tex.box.middle())));
+			World.sarah.health = Math.min(World.sarah.health += 5, 30);
+			health = 0;
+			return true;
+		}
+		return false;
 	}
 }
