@@ -39,6 +39,17 @@ public class Quad extends Vec{
 		Texture.bindNone();
 	}
 
+	public void drawTex(Texture tex, Quad quad){
+		tex.bind();
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glTexCoord2f(quad.x/tex.width, 				(quad.y + quad.size.y)/tex.height); GL11.glVertex2f(x, 			y);
+		GL11.glTexCoord2f((quad.x + quad.size.x)/tex.width, (quad.y + quad.size.y)/tex.height); GL11.glVertex2f(x + size.x, y);
+		GL11.glTexCoord2f((quad.x + quad.size.x)/tex.width, quad.y/tex.height); 				GL11.glVertex2f(x + size.x, y + size.y);
+		GL11.glTexCoord2f(quad.x/tex.width, 				quad.y/tex.height); 				GL11.glVertex2f(x, 			y + size.y);
+		GL11.glEnd();
+		Texture.bindNone();
+	}
+
 	public void drawTex(StackedTexture tex, int xTex, int yTex){
 		
 		tex.bind();
