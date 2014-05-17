@@ -78,7 +78,7 @@ public class Snail extends WalkingCreature {
 	
 	public boolean findNextCloud(){
 		Cloud find = null; float distanceSq = 1000000;
-		for(Structure c : World.structures.get(Cloud.typeId)){
+		for(Structure c : World.structures[Cloud.typeId]){
 			float dist = pos.minus(c.pos).lengthSqare();
 			if(dist < distanceSq){
 				find = (Cloud)c;

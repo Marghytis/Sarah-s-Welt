@@ -1,6 +1,6 @@
 package world.structures;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -16,7 +16,7 @@ import core.geom.Vec;
 public abstract class Structure extends Thing{
 
 	public static void renderStructures(boolean front){
-		for(ArrayList<Structure> list : World.structures){
+		for(List<Structure> list : World.structures){
 			if(list.size() > 0){
 				list.get(0).animator.tex.bind();
 				list.forEach((c) -> {if(front == c.front){c.render();}});
@@ -42,7 +42,7 @@ public abstract class Structure extends Thing{
 		}
 		Texture.bindNone();
 		if(Settings.hitbox){
-			for(ArrayList<Structure> list : World.structures){
+			for(List<Structure> list : World.structures){
 				list.forEach((c) -> {
 					GL11.glPushMatrix();
 					GL11.glTranslatef(c.pos.x, c.pos.y, 0);

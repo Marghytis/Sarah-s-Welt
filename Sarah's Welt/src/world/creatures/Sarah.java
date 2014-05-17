@@ -65,7 +65,7 @@ public class Sarah extends WalkingCreature {
 	public void update(int dTime){
 		if(Settings.flying) g = false;
 		if(oldCow != null){
-			World.creatures.get(Cow.typeId).remove(oldCow);
+			World.creatures[Cow.typeId].remove(oldCow);
 			oldCow = null;
 		}
 		if(g){

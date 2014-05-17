@@ -20,6 +20,7 @@ import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Cow;
 import world.creatures.Creature;
+import world.creatures.Gnat;
 import world.creatures.Heart;
 import world.creatures.Panda;
 import world.creatures.Rabbit;
@@ -51,8 +52,8 @@ public class World {
 
 	public static List<Node>[] contours;
 
-	public static List<ArrayList<Structure>> structures = new ArrayList<>();
-	public static List<ArrayList<Creature>> creatures = new ArrayList<>();
+	public static List<Structure>[] structures;
+	public static List<Creature>[] creatures;
 	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.values().length]);
 	
 	public static List<Creature> deathCreatures = new ArrayList<>();
@@ -67,27 +68,39 @@ public class World {
 		}
 		
 		int s_id = 0;
-		Tree.typeId = s_id++; structures.add(new ArrayList<>());
-		PalmTree.typeId = s_id++; structures.add(new ArrayList<>());
-		CandyTree.typeId = s_id++; structures.add(new ArrayList<>());
-		Bush.typeId = s_id++; structures.add(new ArrayList<>());
-		CandyBush.typeId = s_id++; structures.add(new ArrayList<>());
-		Cactus.typeId = s_id++; structures.add(new ArrayList<>());
-		Flower.typeId = s_id++; structures.add(new ArrayList<>());
-		CandyFlower.typeId = s_id++; structures.add(new ArrayList<>());
-		Bamboo.typeId = s_id++; structures.add(new ArrayList<>());
-		Grass_tuft.typeId = s_id++; structures.add(new ArrayList<>());
-		Cloud.typeId = s_id++; structures.add(new ArrayList<>());
-		Crack.typeId = s_id++; structures.add(new ArrayList<>());
+		Tree.typeId = s_id++;
+		PalmTree.typeId = s_id++;
+		CandyTree.typeId = s_id++;
+		Bush.typeId = s_id++;
+		CandyBush.typeId = s_id++;
+		Cactus.typeId = s_id++;
+		Flower.typeId = s_id++;
+		CandyFlower.typeId = s_id++;
+		Bamboo.typeId = s_id++;
+		Grass_tuft.typeId = s_id++;
+		Cloud.typeId = s_id++;
+		Crack.typeId = s_id++;
+		
+		structures = (List<Structure>[]) new List<?>[s_id];
+		for(int i = 0; i < structures.length; i++){
+			structures[i] = new ArrayList<>();
+		}
 
 		int c_id = 0;
-		Snail.typeId = c_id++; creatures.add(new ArrayList<>());
-		Butterfly.typeId = c_id++; creatures.add(new ArrayList<>());
-		Heart.typeId = c_id++; creatures.add(new ArrayList<>());
-		Rabbit.typeId = c_id++; creatures.add(new ArrayList<>());
-		Bird.typeId = c_id++; creatures.add(new ArrayList<>());
-		Panda.typeId = c_id++; creatures.add(new ArrayList<>());
-		Cow.typeId = c_id++; creatures.add(new ArrayList<>());
+		Snail.typeId = c_id++;
+		Butterfly.typeId = c_id++;
+		Heart.typeId = c_id++;
+		Rabbit.typeId = c_id++;
+		Bird.typeId = c_id++;
+		Panda.typeId = c_id++;
+		Cow.typeId = c_id++;
+		Gnat.typeId = c_id++;
+		
+		creatures = (List<Creature>[]) new List<?>[c_id];
+		for(int i = 0; i < creatures.length; i++){
+			creatures[i] = new ArrayList<>();
+		}
+		
 	}
 	
 	public static Sarah sarah;
@@ -234,7 +247,7 @@ public class World {
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
 					for(List<Creature> list : creatures) for(Creature c : list){
-						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
+						if(!(c instanceof Gnat) && (c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
 							c.hitBy(sarah);
 						}
 					}
@@ -243,7 +256,7 @@ public class World {
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
 					for(List<Creature> list : creatures) for(Creature c : list){
-						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
+						if(!(c instanceof Gnat) && (c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
 							c.rightClickAction();
 						}
 					}
@@ -266,6 +279,7 @@ public class World {
 					case Keyboard.KEY_A : sarah.mirrored = true; break;
 					case Keyboard.KEY_W: sarah.jump(); break;
 					case Keyboard.KEY_E: sarah.dismountCow(); break;
+					case Keyboard.KEY_F: Menu.buttonPressed(View.DEBUG.buttons[0]); break;
 					}
 				} else {
 					
