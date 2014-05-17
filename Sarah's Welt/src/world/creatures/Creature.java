@@ -22,7 +22,7 @@ public abstract class Creature extends Thing {
 			if(list.size() > 0) {
 				if(list.get(0) instanceof Gnat){
 					Texture.bindNone();
-					GL11.glColor3f(0.6f, 0.6f, 0.6f);
+					GL11.glColor3f(0.2f, 0.2f, 0.2f);
 					GL11.glBegin(GL11.GL_POINTS);
 						list.forEach((c) -> ((Gnat)c).render());
 					GL11.glEnd();
