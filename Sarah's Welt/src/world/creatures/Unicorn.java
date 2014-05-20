@@ -1,6 +1,9 @@
 package world.creatures;
 
+import org.lwjgl.opengl.GL11;
+
 import resources.Res;
+import resources.Texture;
 import util.Animation;
 import util.Animator;
 import world.Material;
@@ -90,7 +93,7 @@ public class Unicorn extends WalkingCreature {
 	
 	protected void beforeRender(){
 		super.beforeRender();
-		
+
 		if(hit > 0){
 			animator.setAnimation(hitt);
 		} else if(!animator.animation.equals(punch)){
@@ -100,5 +103,13 @@ public class Unicorn extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
+		Res.UNICORN.bind();
+	}
+	
+	public void afterRender(){
+		Res.UNICORN_HAIR.bind();
+		GL11.glColor3f(1, 0, 0);
+		animator.animate(mirrored);
+		GL11.glColor3f(1, 1, 1);
 	}
 }
