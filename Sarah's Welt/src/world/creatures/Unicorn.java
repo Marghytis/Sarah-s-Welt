@@ -3,7 +3,6 @@ package world.creatures;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.Texture;
 import util.Animation;
 import util.Animator;
 import world.Material;
@@ -17,9 +16,9 @@ public class Unicorn extends WalkingCreature {
 	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
-	static Animation hitt = new Animation(10, 1, true, 0, 1, 0);
+	static Animation hitt = new Animation(10, 2, true, 0, 1, 0);
 	static Animation walk = new Animation(10, 0, true, 1, 2, 3, 4, 5, 4, 3, 2);
-	static Animation punch = new Animation(5, 2, false, 0, 1, 2, 2, 2, 1, 0);
+	static Animation punch = new Animation(5, 4, false, 0, 1, 2, 2, 2, 1, 0);
 	
 	public Unicorn(Vec p, Node worldLink){
 		super(new Animator(Res.UNICORN, stand), p, worldLink);
@@ -103,13 +102,13 @@ public class Unicorn extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
-		Res.UNICORN.bind();
 	}
 	
 	public void afterRender(){
-		Res.UNICORN_HAIR.bind();
+		animator.animation.y++;
 		GL11.glColor3f(1, 0, 0);
 		animator.animate(mirrored);
 		GL11.glColor3f(1, 1, 1);
+		animator.animation.y--;
 	}
 }
