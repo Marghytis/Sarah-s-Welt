@@ -16,9 +16,9 @@ public class Unicorn extends WalkingCreature {
 	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
-	static Animation hitt = new Animation(10, 2, true, 0, 1, 0);
+	static Animation hitt = new Animation(10, 4, true, 0, 1, 0);
 	static Animation walk = new Animation(10, 0, true, 1, 2, 3, 4, 5, 4, 3, 2);
-	static Animation punch = new Animation(5, 4, false, 0, 1, 2, 2, 2, 1, 0);
+	static Animation punch = new Animation(5, 2, false, 0, 1, 2, 2, 2, 1, 0);
 	
 	public Unicorn(Vec p, Node worldLink){
 		super(new Animator(Res.UNICORN, stand), p, worldLink);
@@ -26,7 +26,7 @@ public class Unicorn extends WalkingCreature {
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
 		health = 10;
-		punchStrength = 1;
+		punchStrength = 4;
 	}
 	
 	public void update(int dTime){
@@ -107,16 +107,16 @@ public class Unicorn extends WalkingCreature {
 	int color = 0;
 	boolean turnUp = true;
 	int colorCounter;
-	int[] sky = {2, 0, 0};
+	int[] sky = {0, 0, 100};
 	
 	public void afterRender(){
 		if(turnUp){
-			sky[color] += 1;
+			sky[color] += 10;
 		} else {
-			sky[(color + 2) % 3] -= 1;
+			sky[(color + 2) % 3] -= 10;
 		}
 		colorCounter += 1;
-		if(colorCounter >= 600){
+		if(colorCounter >= 10){
 			if(!turnUp){
 				color = (color + 1) % 3;
 			}
@@ -124,7 +124,7 @@ public class Unicorn extends WalkingCreature {
 			colorCounter = 0;
 		}
 		animator.animation.y++;
-		GL11.glColor3f(sky[0]/1000.0f + 0.4f, sky[1]/1000.0f + 0.4f, sky[2]/1000.0f + 0.4f);
+		GL11.glColor3f(sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f);
 		animator.animate(mirrored);
 		GL11.glColor3f(1, 1, 1);
 		animator.animation.y--;
