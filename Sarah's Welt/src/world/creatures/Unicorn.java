@@ -107,6 +107,7 @@ public class Unicorn extends WalkingCreature {
 	int color = 0;
 	boolean turnUp = true;
 	int colorCounter;
+	int[] sky = {2, 0, 0};
 	
 	public void afterRender(){
 		if(turnUp){
@@ -123,7 +124,7 @@ public class Unicorn extends WalkingCreature {
 			colorCounter = 0;
 		}
 		animator.animation.y++;
-		GL11.glColor3f(1, 0, 0);
+		GL11.glColor3f(sky[0]/1000.0f + 0.4f, sky[1]/1000.0f + 0.4f, sky[2]/1000.0f + 0.4f);
 		animator.animate(mirrored);
 		GL11.glColor3f(1, 1, 1);
 		animator.animation.y--;
