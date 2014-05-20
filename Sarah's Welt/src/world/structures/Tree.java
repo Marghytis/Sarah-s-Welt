@@ -14,8 +14,14 @@ public class Tree extends Structure{
 	
 	public float size;
 	
+	static Animation[] anis = new Animation[]{
+			new Animation(0, 0),
+			new Animation(0, 1),
+			new Animation(0, 2),
+	};
+	
 	public Tree(int type, Vec pos, Node worldLink, float size){
-		super(new Animator(Res.TREE, new Animation(0, type)), pos, worldLink);
+		super(new Animator(Res.TREE, anis[type]), pos, worldLink);
 		this.size = size;
 		mirrored = random.nextBoolean();
 	}

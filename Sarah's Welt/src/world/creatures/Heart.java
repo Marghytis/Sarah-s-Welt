@@ -11,13 +11,14 @@ import core.geom.Vec;
 public class Heart extends WalkingCreature{
 
 	public static int typeId;
-	
+
 	static Animation flap = new Animation(10, 0, true, 0, 1, 2, 3, 2, 1);
 
-	public Heart(Vec pos, Node worldLink) {
+	public Heart(int type, Vec pos, Node worldLink) {
 		super(new Animator(Res.HEART, flap), pos, worldLink);
 		vel.y = -0.2f;
 		health = 2000;
+		flap.y = type;
 	}
 	
 	public void update(int dTime){
@@ -29,7 +30,7 @@ public class Heart extends WalkingCreature{
 	}
 	
 	public boolean rightClickAction(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 2500){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 10000){
 			World.particleEffects.add(new Hearts(pos.plus(animator.tex.box.middle())));
 			World.sarah.health = Math.min(World.sarah.health += 5, 30);
 			health = 0;
