@@ -104,7 +104,24 @@ public class Unicorn extends WalkingCreature {
 		}
 	}
 	
+	int color = 0;
+	boolean turnUp = true;
+	int colorCounter;
+	
 	public void afterRender(){
+		if(turnUp){
+			sky[color] += 1;
+		} else {
+			sky[(color + 2) % 3] -= 1;
+		}
+		colorCounter += 1;
+		if(colorCounter >= 600){
+			if(!turnUp){
+				color = (color + 1) % 3;
+			}
+			turnUp = !turnUp;
+			colorCounter = 0;
+		}
 		animator.animation.y++;
 		GL11.glColor3f(1, 0, 0);
 		animator.animate(mirrored);
