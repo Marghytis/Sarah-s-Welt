@@ -18,6 +18,10 @@ public class Quad extends Vec{
 		set(x, y);
 		size.set(width, height);
 	}
+	
+	public Quad plus(Vec v){
+		return new Quad(x + v.x, y + v.y, size.x, size.y);
+	}
 
 	public void drawTex(){
 		GL11.glBegin(GL11.GL_QUADS);
@@ -88,6 +92,10 @@ public class Quad extends Vec{
 	
 	public Vec middle(){
 		return new Vec(x + (size.x/2), y + (size.y/2));
+	}
+	
+	public boolean contains(Vec v){
+		return contains(v.x, v.y);
 	}
 	
 	public boolean contains(float x, float y){

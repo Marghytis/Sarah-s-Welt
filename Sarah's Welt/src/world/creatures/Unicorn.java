@@ -1,8 +1,10 @@
 package world.creatures;
 
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
+import particles.RainbowSpit;
 import resources.Res;
+import resources.Shader20;
 import util.Animation;
 import util.Animator;
 import world.Material;
@@ -19,6 +21,8 @@ public class Unicorn extends WalkingCreature {
 	static Animation hitt = new Animation(10, 4, true, 0, 1, 0);
 	static Animation walk = new Animation(10, 0, true, 1, 2, 3, 4, 5, 4, 3, 2);
 	static Animation punch = new Animation(5, 2, false, 0, 1, 2, 2, 2, 1, 0);
+	
+	boolean spitting = false;
 	
 	public Unicorn(Vec p, Node worldLink){
 		super(new Animator(Res.UNICORN, stand), p, worldLink);
@@ -45,16 +49,17 @@ public class Unicorn extends WalkingCreature {
 		super.update(dTime);
 	}
 	
-	int dir = 0;
+	public int dir = 0;
 	public void walkingAI(float dTime){
-		if((!Settings.agro || !findSarah()))wanderAbout();
+		if(spitting || (!Settings.agro || !findSarah()))wanderAbout();
 		applyDirection(dir);
 		doStepping(velocityUnit*vP*dTime);
 	}
 	
 	public void donePunch(){
-		World.sarah.hitBy(this);
+//		World.sarah.hitBy(this);
 		animator.setAnimation(stand);
+		spitting = false;
 	}
 	
 	public void wanderAbout(){
@@ -65,6 +70,7 @@ public class Unicorn extends WalkingCreature {
 	
 	public boolean findSarah(){
 		float headX;
+		float headY = pos.y + 50;
 		if(dir == 1){
 			headX = pos.x + 50;
 		} else if(dir == -1){
@@ -73,14 +79,18 @@ public class Unicorn extends WalkingCreature {
 			headX = pos.x;
 		}
 		
-		if(pos.minus(World.sarah.pos).lengthSqare() < 160000){
-			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > headX){
+		float distSquare = pos.minus(World.sarah.pos).lengthSqare();
+		
+		if(distSquare < 160000){
+			if(World.sarah.pos.x + World.sarah.animator.tex.box.x - 60 > pos.x){
 				dir = 1;
-			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < headX){
+			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x + 60 < pos.x){
 				dir = -1;
 			} else {
-				dir = 0;
 				animator.setAnimation(punch);
+				World.particleEffects.add(new RainbowSpit(headX, headY, this));
+				spitting = true;
+				dir = 0;
 			}
 			maxSpeed = 6;
 			return true;
@@ -95,21 +105,14 @@ public class Unicorn extends WalkingCreature {
 
 		if(hit > 0){
 			animator.setAnimation(hitt);
-		} else if(!animator.animation.equals(punch)){
+		} else if(!spitting){
 			if(vP != 0){
 				animator.setAnimation(walk);
 			} else {
 				animator.setAnimation(stand);
 			}
 		}
-	}
-	
-	int color = 0;
-	boolean turnUp = true;
-	int colorCounter;
-	int[] sky = {0, 0, 100};
-	
-	public void afterRender(){
+		
 		if(turnUp){
 			sky[color] += 10;
 		} else {
@@ -123,10 +126,18 @@ public class Unicorn extends WalkingCreature {
 			turnUp = !turnUp;
 			colorCounter = 0;
 		}
-		animator.animation.y++;
-		GL11.glColor3f(sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f);
-		animator.animate(mirrored);
-		GL11.glColor3f(1, 1, 1);
-		animator.animation.y--;
+		float[] color = new float[]{sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f};
+		
+		Shader20.UNICORN.bind();
+			GL20.glUniform3f(GL20.glGetUniformLocation(Shader20.UNICORN.handle, "color"), color[0], color[1], color[2]);
+	}
+	
+	int color = 0;
+	boolean turnUp = true;
+	int colorCounter;
+	int[] sky = {0, 0, 100};
+	
+	public void afterRender(){
+		Shader20.bindNone();
 	}
 }

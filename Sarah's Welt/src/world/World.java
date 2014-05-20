@@ -164,7 +164,13 @@ public class World {
 				i--;
 			}
 		}
-		particleEffects.forEach((d) -> d.tick(delta));
+		for(int i = 0; i < particleEffects.size(); i++){
+			particleEffects.get(i).tick(delta);
+			if(!particleEffects.get(i).living()){
+				particleEffects.remove(i);
+				i--;
+			}
+		}
 	}
 	
 	public static void render(){

@@ -64,4 +64,8 @@ public static final ParticleType SMOKE = new ParticleType(new Texture("particles
 	public void finalize(){
 		smoke.finalize();
 	}
+
+	public boolean living() {
+		return count > 0;
+	}
 }

@@ -8,4 +8,5 @@ public interface ParticleEffect {
 	
 	public void finalize();
 	
+	public boolean living();
 }

@@ -67,5 +67,9 @@ public class RainEffect implements ParticleEffect{
 	public void finalize(){
 		drops.finalize();
 	}
+
+	public boolean living() {
+		return false;
+	}
 	
 }

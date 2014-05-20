@@ -58,4 +58,8 @@ public class BloodSplash implements ParticleEffect{
 	public void finalize(){
 		blood.finalize();
 	}
+
+	public boolean living() {
+		return count > 0;
+	}
 }

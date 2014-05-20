@@ -73,15 +73,15 @@ public class FireEffect implements ParticleEffect{
 			p.rad = 2*((float)p.live/startLife);
 		}
 
-		public void renderParticles(){
-			type.tex.bind();
-				for(Particle p : particles){
-					if(p.live > 0){
-						renderParticle(p);
-					}
-				}
-			Texture.bindNone();
-		}
+//		public void renderParticles(){
+//			type.tex.bind();
+//				for(Particle p : particles){
+//					if(p.live > 0){
+//						renderParticle(p);
+//					}
+//				}
+//			Texture.bindNone();
+//		}
 
 		public void renderParticle(Particle p) {
 			GL11.glColor4f(p.col.r, p.col.g, p.col.b, p.col.a);
@@ -199,6 +199,10 @@ public class FireEffect implements ParticleEffect{
 		flame.finalize();
 		spark.finalize();
 		light.finalize();
+	}
+
+	public boolean living() {
+		return true;
 	}
 	
 }

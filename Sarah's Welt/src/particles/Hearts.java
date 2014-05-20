@@ -57,4 +57,8 @@ public class Hearts implements ParticleEffect{
 	public void finalize(){
 		hearts.finalize();
 	}
+
+	public boolean living() {
+		return count > 0;
+	}
 }

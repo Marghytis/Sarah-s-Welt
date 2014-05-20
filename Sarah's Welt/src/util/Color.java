@@ -28,6 +28,10 @@ public class Color {
 		this.a = a;
 	}
 	
+	public void set(Color c){
+		set(c.r, c.g, c.b, c.a);
+	}
+	
 	public void set(){
 		GL11.glColor4f(r, g, b, a);
 	}
