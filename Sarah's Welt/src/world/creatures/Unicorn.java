@@ -34,12 +34,14 @@ public class Unicorn extends WalkingCreature {
 		punchStrength = 4;
 	}
 	
-	public void update(int dTime){
+	public int spitCount = 0;
+	
+	public void update(int delta){
 		if(g){
 //			pos.y++;
 //			accelerateFromGround(new Point(0, 0.001f));
 			
-			walkingAI(dTime);
+			walkingAI(delta);
 		} else {
 			acc.add(0, -0.00005f);
 			applyFriction(Material.AIR);
@@ -47,7 +49,8 @@ public class Unicorn extends WalkingCreature {
 			//do movement in air
 			collision();
 		}
-		super.update(dTime);
+		spitCount -= delta;
+		super.update(delta);
 	}
 	
 	public int dir = 0;
@@ -83,10 +86,11 @@ public class Unicorn extends WalkingCreature {
 		float distSquare = pos.minus(World.sarah.pos).lengthSqare();
 		
 		if(distSquare < 160000){
-			if(distSquare < 3600){
+			if(distSquare < 10000){
 				animator.setAnimation(punch);
 				World.particleEffects.add(new RainbowSpit(headX, headY, this));
 				spitting = true;
+				spitCount = 2000;
 			} else if(World.sarah.pos.x > pos.x){
 				dir = 1;
 			} else if(World.sarah.pos.x < pos.x){
