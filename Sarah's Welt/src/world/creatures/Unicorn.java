@@ -52,9 +52,11 @@ public class Unicorn extends WalkingCreature {
 	
 	public int dir = 0;
 	public void walkingAI(float dTime){
-		if(!spitting || (!Settings.agro || !findSarah()))wanderAbout();
-		applyDirection(dir);
-		doStepping(velocityUnit*vP*dTime);
+		if(!spitting){
+			if((!Settings.agro || !findSarah()))wanderAbout();
+			applyDirection(dir);
+			doStepping(velocityUnit*vP*dTime);
+		}
 	}
 	
 	public void donePunch(){
