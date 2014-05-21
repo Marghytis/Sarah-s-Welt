@@ -39,7 +39,7 @@ public class Sarah extends WalkingCreature {
 	
 	public Sarah(Vec pos, Node worldLink){
 		super(new Animator(Res.SARAH, stand), pos, worldLink);
-		hitradius = 80;
+		hitradius = 60;
 		punchStrength = 2;
 		maxSpeed = 10;
 		animator.doOnReady = () -> {
