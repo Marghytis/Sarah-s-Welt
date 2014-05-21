@@ -1,5 +1,6 @@
 package world.creatures;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import particles.RainbowSpit;
@@ -29,7 +30,7 @@ public class Unicorn extends WalkingCreature {
 //		hitradius = 50;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
-		health = 10;
+		health = 25;
 		punchStrength = 4;
 	}
 	
@@ -126,6 +127,7 @@ public class Unicorn extends WalkingCreature {
 			turnUp = !turnUp;
 			colorCounter = 0;
 		}
+		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
 		float[] color = new float[]{sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f};
 		
 		Shader20.UNICORN.bind();

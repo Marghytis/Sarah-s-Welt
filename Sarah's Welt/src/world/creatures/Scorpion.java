@@ -1,5 +1,7 @@
 package world.creatures;
 
+import org.lwjgl.opengl.GL11;
+
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -90,5 +92,6 @@ public class Scorpion extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
+		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
 	}
 }
