@@ -1,6 +1,5 @@
 package world.creatures;
 
-import item.Item;
 import item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
@@ -14,6 +13,7 @@ import world.Material;
 import world.Node;
 import world.World;
 import world.worldGen.Biome;
+import core.Menu.View;
 import core.Settings;
 import core.geom.Vec;
 
@@ -59,8 +59,6 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 		};
-		
-		sword = new ItemStack(Item.SWORD);
 	}
 	
 	public void update(int dTime){
@@ -175,12 +173,10 @@ public class Sarah extends WalkingCreature {
 		}
 	}
 	
-	ItemStack sword;
-	
 	public void afterRender(){
 		Texture.bindNone();
 		
-		sword.renderInHand();
+		((ItemStack)View.INVENTORY.buttons[0]).renderInHand();
 	}
 	
 	public void setKeyDirection(){
@@ -224,7 +220,7 @@ public class Sarah extends WalkingCreature {
 	public int[] getHandPosition(){
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
-		return new int[]{14, 20, 45};
+		return Res.SARAH_ITEMCOORDS.get(y)[x];
 	}
 	
 	public void dismountCow(){

@@ -290,6 +290,12 @@ public class World {
 					case Keyboard.KEY_W: sarah.jump(); break;
 					case Keyboard.KEY_E: sarah.dismountCow(); break;
 					case Keyboard.KEY_F: Menu.buttonPressed(View.DEBUG.buttons[0]); break;
+					case Keyboard.KEY_I:
+						if(Menu.view == View.INVENTORY){
+							View.EMPTY.set();
+						} else {
+							View.INVENTORY.set();
+						} break;
 					}
 				} else {
 					

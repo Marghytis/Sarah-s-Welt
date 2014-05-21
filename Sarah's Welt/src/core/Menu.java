@@ -1,5 +1,8 @@
 package core;
 
+import item.Item;
+import item.ItemStack;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -46,13 +49,13 @@ public class Menu {
 			if(Mouse.getEventButton() == 0){
 				if(Mouse.getEventButtonState()){
 					for(Button b : view.buttons){
-						if(b.contains(Mouse.getEventX(), Mouse.getEventY())){
+						if(!(b instanceof ItemStack) && b.contains(Mouse.getEventX(), Mouse.getEventY())){
 							buttonPressed(b);
 						}
 					}
 				} else {
 					for(Button b : view.buttons){
-						buttonReleased(b);
+						if(!(b instanceof ItemStack)) buttonReleased(b);
 					}
 				}
 			}
@@ -118,6 +121,21 @@ public class Menu {
 						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; Res.test.stop();}),
 						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};
+			}
+		},
+		INVENTORY(false){			
+			void setup(){
+				buttons = new ItemStack[6];
+				for(int i = 0; i < buttons.length; i++){
+					buttons[i] = new ItemStack(i);
+				}
+				((ItemStack)buttons[0]).item = Item.SWORD;
+			}
+			
+			public void render(){
+				for(Button item : buttons){
+					((ItemStack)item).renderInInv();
+				}
 			}
 		},
 		CONTROLS(true){
@@ -242,6 +260,5 @@ public class Menu {
 			}
 			super.render();
 		}
-		
 	}
 }

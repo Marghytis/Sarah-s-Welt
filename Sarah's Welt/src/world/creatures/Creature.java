@@ -1,5 +1,7 @@
 package world.creatures;
 
+import item.ItemStack;
+
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -12,6 +14,7 @@ import world.Material;
 import world.Node;
 import world.Thing;
 import world.World;
+import core.Menu.View;
 import core.Settings;
 import core.geom.Vec;
 
@@ -76,7 +79,11 @@ public abstract class Creature extends Thing {
 	public boolean hitBy(Creature c){
 		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
 			hit = 40;
-			health -= c.punchStrength;
+			if(c instanceof Sarah){
+				health -= ((ItemStack)View.INVENTORY.buttons[0]).item.damage;
+			} else {
+				health -= c.punchStrength;
+			}
 			World.particleEffects.add(new BloodSplash(pos.plus(animator.tex.box.middle())));
 			return true;
 		}
