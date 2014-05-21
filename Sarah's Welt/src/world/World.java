@@ -21,6 +21,7 @@ import world.creatures.Heart;
 import world.creatures.Panda;
 import world.creatures.Rabbit;
 import world.creatures.Sarah;
+import world.creatures.Scorpion;
 import world.creatures.Snail;
 import world.creatures.Unicorn;
 import world.structures.Bamboo;
@@ -83,6 +84,7 @@ public class World {
 		Panda.typeId = c_id++; creatures.add(new ArrayList<>());
 		Cow.typeId = c_id++; creatures.add(new ArrayList<>());
 		Unicorn.typeId = c_id++; creatures.add(new ArrayList<>());
+		Scorpion.typeId = c_id++; creatures.add(new ArrayList<>());
 	}
 	
 	public static Sarah sarah;

@@ -11,6 +11,7 @@ import world.creatures.Creature;
 import world.creatures.Heart;
 import world.creatures.Panda;
 import world.creatures.Rabbit;
+import world.creatures.Scorpion;
 import world.creatures.Snail;
 import world.creatures.Unicorn;
 import world.structures.Bamboo;
@@ -124,6 +125,9 @@ public enum Biome {
 //			}
 			if(random.nextInt(100) < 10){
 				spawnStructure(Cactus.typeId, new Cactus(random.nextInt(3), new Vec(), null), node, 0);
+			}
+			if(random.nextInt(100) < 3){
+				spawnCreature(Scorpion.typeId, new Scorpion(new Vec(), null), node, 5);
 			}
 
 			//Creatures

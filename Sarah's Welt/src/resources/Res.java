@@ -34,6 +34,7 @@ public class Res {
 	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 3, -0.5f, -0.2f);
 	public static StackedTexture BIRD  = new StackedTexture("creatures/Bird", 5, 2, -0.5f, -0.2f);
 	public static StackedTexture PANDA  = new StackedTexture("creatures/Panda", 6, 2, -0.5f, -0.1f);
+	public static StackedTexture SCORPION  = new StackedTexture("creatures/Scorpion", 7, 2, -0.5f, -0.1f);
 	public static StackedTexture COW  = new StackedTexture("creatures/Cow", 7, 1, -0.5f, -0.1f);
 	public static StackedTexture UNICORN  = new StackedTexture("creatures/Unicorn", 6, 3, -0.5f, -0.1f);
 	public static StackedTexture UNICORN_HAIR  = new StackedTexture("creatures/Unicorn_hair", 6, 3, -0.5f, -0.1f);
