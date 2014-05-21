@@ -27,6 +27,7 @@ public class Res {
 	public static StackedTexture FLOWER = new StackedTexture("structures/Flower", 1, 3, -0.5f, 0f);
 	public static StackedTexture CANDY_FLOWER = new StackedTexture("structures/Candy", 1, 6, -0.5f, 0f);
 	public static StackedTexture CRACK = new StackedTexture("structures/Crack", 1, 4, -0.5f, -0.5f);
+	public static StackedTexture FOSSIL = new StackedTexture("structures/Fossil", 1, 3, -0.5f, -0.5f);
 	
 	public static StackedTexture SNAIL  = new StackedTexture("creatures/Snail", 7, 3, -0.5f, -0.1f);
 	public static StackedTexture BUTTERFLY  = new StackedTexture("creatures/Butterfly", 5, 2, -0.5f, -0.5f);

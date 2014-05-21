@@ -1,5 +1,7 @@
 package world.structures;
 
+import org.lwjgl.opengl.GL11;
+
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -15,4 +17,7 @@ public class Bush extends Structure{
 		this.front = random.nextInt(10) == 0;
 	}
 	
+	public void beforeRender(){
+		GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+	}
 }

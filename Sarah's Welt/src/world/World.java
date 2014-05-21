@@ -33,6 +33,7 @@ import world.structures.CandyTree;
 import world.structures.Cloud;
 import world.structures.Crack;
 import world.structures.Flower;
+import world.structures.Fossil;
 import world.structures.Grass_tuft;
 import world.structures.PalmTree;
 import world.structures.Structure;
@@ -74,6 +75,7 @@ public class World {
 		Grass_tuft.typeId = s_id++; structures.add(new ArrayList<>());
 		Cloud.typeId = s_id++; structures.add(new ArrayList<>());
 		Crack.typeId = s_id++; structures.add(new ArrayList<>());
+		Fossil.typeId = s_id++; structures.add(new ArrayList<>());
 
 		int c_id = 0;
 		Snail.typeId = c_id++; creatures.add(new ArrayList<>());
