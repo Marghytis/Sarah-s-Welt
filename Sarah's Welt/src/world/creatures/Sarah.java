@@ -10,6 +10,7 @@ import util.Animator;
 import world.Material;
 import world.Node;
 import world.World;
+import world.worldGen.Biome;
 import core.Settings;
 import core.geom.Vec;
 
@@ -47,7 +48,7 @@ public class Sarah extends WalkingCreature {
 					World.sarah.animator.animation = stand;
 				} else if(animator.animation == dismountCow){
 					ridingCow = false;
-//					Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), worldLink, 5);
+					Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), worldLink, 2);
 					World.sarah.animator.setAnimation(stand);
 					World.sarah.animator.tex = Res.SARAH;
 				} else {
