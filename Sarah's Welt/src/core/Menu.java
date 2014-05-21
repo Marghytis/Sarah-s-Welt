@@ -95,11 +95,12 @@ public class Menu {
 										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, () -> Settings.hitbox = View.DEBUG.buttons[2].state),
 										new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	5/12.0f, () -> Settings.health = View.DEBUG.buttons[3].state),
 										new ToggleButton("Creatures agressive", "Creatures friendly", true,	1/2.0f, 	3/12.0f, () -> Settings.agro = View.DEBUG.buttons[4].state),
-										new ToggleButton("Shader active", "Shader inactive", false, 			1/2.0f, 	1/12.0f, () -> Settings.shader = View.DEBUG.buttons[5].state),
+										new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	1/12.0f, () -> Settings.shader = View.DEBUG.buttons[5].state),
 										
 										new ToggleButton("Time running", "Time stopped", true, 				3/4.0f, 	9/12.0f, () -> Settings.time = View.DEBUG.buttons[6].state),
 										new Button("Set morning",								 			3/4.0f, 	7/12.0f, () -> Calendar.setMorning()),
-										new Button("Set evening",											3/4.0f, 	5/12.0f, () -> Calendar.setEvening())};
+										new Button("Set evening",											3/4.0f, 	5/12.0f, () -> Calendar.setEvening()),
+										new Button("Boost Health",											1/4.0f, 	5/12.0f, () -> World.sarah.health += 5)};
 			}
 		},
 		OPTIONS(true){

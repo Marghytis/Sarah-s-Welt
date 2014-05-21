@@ -112,6 +112,7 @@ public class Unicorn extends WalkingCreature {
 
 		if(hit > 0){
 			animator.setAnimation(hitt);
+			spitting = false;
 		} else if(!spitting){
 			if(vP != 0){
 				animator.setAnimation(walk);
