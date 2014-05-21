@@ -1,5 +1,8 @@
 package world.creatures;
 
+import item.Item;
+import item.ItemStack;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -56,12 +59,14 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 		};
+		
+		sword = new ItemStack(Item.SWORD);
 	}
 	
 	public void update(int dTime){
 		if(Settings.flying) g = false;
 		if(oldCow != null){
-			World.creatures.get(Cow.typeId).remove(oldCow);
+			World.creatures[Cow.typeId].remove(oldCow);
 			oldCow = null;
 		}
 		if(g){
@@ -170,8 +175,12 @@ public class Sarah extends WalkingCreature {
 		}
 	}
 	
+	ItemStack sword;
+	
 	public void afterRender(){
 		Texture.bindNone();
+		
+		sword.renderInHand();
 	}
 	
 	public void setKeyDirection(){
@@ -210,6 +219,12 @@ public class Sarah extends WalkingCreature {
 			ridingCow = true;
 			oldCow = c;
 		}
+	}
+	
+	public int[] getHandPosition(){
+		int x = animator.animation.getPoint(animator.frame);
+		int y = animator.animation.y;
+		return new int[]{14, 20, 45};
 	}
 	
 	public void dismountCow(){

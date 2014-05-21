@@ -1,5 +1,8 @@
 package world.worldGen;
 
+import item.Item;
+import item.WorldItem;
+
 import java.util.Random;
 
 import world.Node;
@@ -8,6 +11,7 @@ import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Cow;
 import world.creatures.Creature;
+import world.creatures.Gnat;
 import world.creatures.Heart;
 import world.creatures.Panda;
 import world.creatures.Rabbit;
@@ -48,7 +52,7 @@ public enum Biome {
 			if(random.nextInt(100) < 4){
 				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 200);
 			}
-			if(random.nextInt(10) < 1){
+			if(random.nextInt(10) < 2){
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
@@ -68,6 +72,9 @@ public enum Biome {
 			if(random.nextInt(100) < 1){
 				spawnCreature(Heart.typeId, new Heart(0, new Vec(), null), node, 100);
 			}
+			if(random.nextInt(100) < 33){
+				spawnCreature(Gnat.typeId, new Gnat(new Vec(), null), node, 40);
+			}
 		}
 	}, BAMBOO_FOREST{
 		public void spawnThings(Node node){
@@ -77,7 +84,7 @@ public enum Biome {
 			if(random.nextInt(100) < 4){
 				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 400);
 			}
-			if(random.nextInt(10) < 1){
+			if(random.nextInt(10) < 2){
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
@@ -109,7 +116,7 @@ public enum Biome {
 			if(random.nextInt(100) < 4){
 				spawnStructure(Cloud.typeId, new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 400);
 			}
-			if(random.nextInt(10) < 1){
+			if(random.nextInt(10) < 2){
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
@@ -142,7 +149,7 @@ public enum Biome {
 			if(random.nextInt(100) < 10){
 				spawnStructure(Cactus.typeId, new Cactus(random.nextInt(3), new Vec(), null), node, 0);
 			}
-			if(random.nextInt(10) < 1){
+			if(random.nextInt(10) < 2){
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
@@ -181,7 +188,7 @@ public enum Biome {
 			if(random.nextInt(100) < 20){
 				spawnStructure(CandyBush.typeId, new CandyBush(random.nextInt(2), new Vec(), node), node, 0);
 			}
-			if(random.nextInt(10) < 1){
+			if(random.nextInt(10) < 2){
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
@@ -201,6 +208,11 @@ public enum Biome {
 			if(random.nextInt(100) < 1){
 				spawnCreature(Heart.typeId, new Heart(1, new Vec(), null), node, 100);
 			}
+			
+			//items
+			if(random.nextInt(100) < 1){
+				spawnItem(new WorldItem(Item.SWORD, new Vec(), null), node, -10);
+			}
 		}
 	};
 	public static Random random = new Random();
@@ -211,11 +223,16 @@ public enum Biome {
 	
 	public static void spawnCreature(int typeId, Creature c, Node n, float yOffset){
 		c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-		World.creatures.get(typeId).add(c);
+		World.creatures[typeId].add(c);
 	}
 	
 	public static void spawnStructure(int typeId, Structure c, Node n, float yOffset){
 		c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-		World.structures.get(typeId).add(c);
+		World.structures[typeId].add(c);
+	}
+	
+	public static void spawnItem(WorldItem item, Node n, float yOffset){
+		item.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
+		World.items[item.item.ordinal()].add(item);
 	}
 }

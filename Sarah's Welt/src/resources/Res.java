@@ -45,6 +45,8 @@ public class Res {
 	public static StackedTexture SARAH_ON_COW = new StackedTexture("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
 	public static StackedTexture SARAH_DEATH = new StackedTexture("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
 	
+	public static Texture WEAPONS = new Texture("items/Weapons");
+	
 	public static SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
 	

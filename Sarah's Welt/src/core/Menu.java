@@ -47,26 +47,34 @@ public class Menu {
 				if(Mouse.getEventButtonState()){
 					for(Button b : view.buttons){
 						if(b.contains(Mouse.getEventX(), Mouse.getEventY())){
-							Res.buttonSound.play();
-							if(b instanceof ToggleButton){
-								b.state = !b.state;
-								b.onClick.run();
-							} else {
-								b.state = true;
-							}
+							buttonPressed(b);
 						}
 					}
 				} else {
 					for(Button b : view.buttons){
-						if(!(b instanceof ToggleButton)){
-							if(b.contains(Mouse.getEventX(), Mouse.getEventY()) && b.state == true){
-								b.onClick.run();
-							}
-							b.state = false;
-						}
+						buttonReleased(b);
 					}
 				}
 			}
+		}
+	}
+	
+	public static void buttonPressed(Button b){
+		Res.buttonSound.play();
+		if(b instanceof ToggleButton){
+			b.state = !b.state;
+			b.onClick.run();
+		} else {
+			b.state = true;
+		}
+	}
+	
+	public static void buttonReleased(Button b){
+		if(!(b instanceof ToggleButton)){
+			if(b.contains(Mouse.getEventX(), Mouse.getEventY()) && b.state == true){
+				b.onClick.run();
+			}
+			b.state = false;
 		}
 	}
 
@@ -162,7 +170,7 @@ public class Menu {
 			}
 		};
 		
-		Button[] buttons;
+		public Button[] buttons;
 		boolean pauseWorld;
 		
 		View(boolean stopWorldTicking){
