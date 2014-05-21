@@ -72,25 +72,25 @@ public class Unicorn extends WalkingCreature {
 	public boolean findSarah(){
 		float headX;
 		float headY = pos.y + 50;
-		if(dir == 1){
+		if(mirrored){
 			headX = pos.x + 50;
-		} else if(dir == -1){
-			headX = pos.x - 50;
 		} else {
-			headX = pos.x;
+			headX = pos.x - 50;
 		}
 		
 		float distSquare = pos.minus(World.sarah.pos).lengthSqare();
 		
 		if(distSquare < 160000){
-			if(World.sarah.pos.x + World.sarah.animator.tex.box.x - 60 > pos.x){
-				dir = 1;
-			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x + 60 < pos.x){
-				dir = -1;
-			} else {
+			if(distSquare < 3600){
 				animator.setAnimation(punch);
 				World.particleEffects.add(new RainbowSpit(headX, headY, this));
 				spitting = true;
+			}
+			if(World.sarah.pos.x > pos.x){
+				dir = 1;
+			} else if(World.sarah.pos.x < pos.x){
+				dir = -1;
+			} else {
 				dir = 0;
 			}
 			maxSpeed = 6;
