@@ -34,9 +34,9 @@ public enum Shader20 {
 		//add Source and compile shader
 		try {
 			GL20.glShaderSource(fShader, readFile(srcName));
-			System.out.println(GL20.glGetShaderInfoLog(fShader, 1000));
+//			System.out.println(GL20.glGetShaderInfoLog(fShader, 1000));
 			GL20.glCompileShader(fShader);
-			System.out.println(GL20.glGetShaderInfoLog(fShader, 1000));
+//			System.out.println(GL20.glGetShaderInfoLog(fShader, 1000));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
