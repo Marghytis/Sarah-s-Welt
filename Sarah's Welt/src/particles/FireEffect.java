@@ -12,7 +12,7 @@ import resources.Texture;
 import core.Window;
 import core.geom.Vec;
 
-public class FireEffect {
+public class FireEffect implements ParticleEffect{
 
 	public static final ParticleType SMOKE = new ParticleType(new Texture("particles/Smoke"));
 
@@ -72,6 +72,26 @@ public class FireEffect {
 		public void radiusInterpolator(Particle p){
 			p.rad = 2*((float)p.live/startLife);
 		}
+
+//		public void renderParticles(){
+//			type.tex.bind();
+//				for(Particle p : particles){
+//					if(p.live > 0){
+//						renderParticle(p);
+//					}
+//				}
+//			Texture.bindNone();
+//		}
+
+		public void renderParticle(Particle p) {
+			GL11.glColor4f(p.col.r, p.col.g, p.col.b, p.col.a);
+			GL11.glPushMatrix();
+				GL11.glTranslatef(p.pos.x, p.pos.y, 0);
+				GL11.glRotatef(p.rot, 0, 0, 1);
+				GL11.glScalef(p.rad, p.rad, 0);
+					GL11.glDrawArrays(GL11.GL_QUADS, 0, 4);
+			GL11.glPopMatrix();
+		}
 		
 	};
 	
@@ -116,15 +136,13 @@ public class FireEffect {
 		
 		public void renderParticles(){
 			type.tex.bind();
-				Shader.Test.bind();
-					lightmap.bind();
-						for(Particle p : particles){
-							if(p.live > 0){
-								renderParticle(p);
-							}
+				lightmap.bind();
+					for(Particle p : particles){
+						if(p.live > 0){
+							renderParticle(p);
 						}
-					lightmap.release();
-				Shader.Test.release();
+					}
+				lightmap.release();
 			type.tex.release();
 		}
 		
@@ -181,6 +199,10 @@ public class FireEffect {
 		flame.finalize();
 		spark.finalize();
 		light.finalize();
+	}
+
+	public boolean living() {
+		return true;
 	}
 	
 }

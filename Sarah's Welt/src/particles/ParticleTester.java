@@ -53,14 +53,14 @@ public class ParticleTester {
 			long nextTime = System.currentTimeMillis();
 			fire.tick((int)(nextTime - time));
 			rain.tick((int)(nextTime - time));
-			
+
 			fire.render();
 			rain.render();
 			
 			for(int i = 0; i < swooshs.size(); i++){
 				swooshs.get(i).tick((int)(nextTime - time));
 				swooshs.get(i).render();
-				if(swooshs.get(i).count <= 0){
+				if(!swooshs.get(i).living()){
 					swooshs.remove(i);
 					i--;
 				}
@@ -78,13 +78,17 @@ public class ParticleTester {
 		Display.destroy();
 	}
 	
-	public static List<SWOOSH> swooshs = new ArrayList<>();
+	public static List<ParticleEffect> swooshs = new ArrayList<>();
 	
 	public static void mouseListening(){
 //		swooshs.add(new SWOOSH(new Vec(Mouse.getX(), Mouse.getY())));
 		while(Mouse.next()){
 			if(Mouse.getEventButtonState()){
-				swooshs.add(new SWOOSH(new Vec(Mouse.getEventX(), Mouse.getEventY())));
+				if(Mouse.getEventButton() == 0){
+					swooshs.add(new DeathDust(new Vec(Mouse.getEventX(), Mouse.getEventY())));
+				} else {
+					swooshs.add(new RainbowSpit(Mouse.getEventX(), Mouse.getEventY(), 1));
+				}
 			}
 		}
 	}

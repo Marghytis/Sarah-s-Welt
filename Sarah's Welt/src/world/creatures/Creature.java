@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import particles.BloodSplash;
+import particles.DeathDust;
 import resources.Texture;
 import util.Animator;
 import world.Material;
@@ -49,18 +51,24 @@ public abstract class Creature extends Thing {
 	}
 	
 	public void update(int dTime){
-		pos.add(vel);
-		
-		vel.add(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
-		acc.set(0, 0);
-		
-		if(hit > 0) hit--;
+		if(health <= 0){
+			World.particleEffects.add(new DeathDust(pos.plus(animator.tex.box.middle())));
+			World.deathCreatures.add(this);
+		} else {
+			pos.add(vel);
+			
+			vel.add(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
+			acc.set(0, 0);
+			
+			if(hit > 0) hit--;
+		}
 	}
 	
 	public boolean hitBy(Creature c){
 		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
 			hit = 40;
 			health -= c.punchStrength;
+			World.particleEffects.add(new BloodSplash(pos.plus(animator.tex.box.middle())));
 			return true;
 		}
 		return false;

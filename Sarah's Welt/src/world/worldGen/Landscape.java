@@ -1,24 +1,22 @@
 package world.worldGen;
 
-import world.Material;
+import java.util.Random;
+
+import world.worldGen.WorldGenObject.WorldGenObjectType;
 
 public enum Landscape {
-	SOMEHILLS(new Layer(Material.GRASS, 10), new Layer(Material.EARTH, 20), new Layer(Material.STONE, 1000)), DESERT;
-	
-	public Layer[] layers;
-	
-	Landscape(Layer... layers){
-		this.layers = layers;
-	}
-	
-	public static class Layer{
-		public Material mat;
-		public int height;
-		
-		public Layer(Material mat, int height){
-			this.mat = mat;
-			this.height = height;
+	FLAT(), HILLY(), STAIRS(new WorldGenObjectType[]{WorldGenObjectType.UP, WorldGenObjectType.DOWN}){
+
+		public WorldGenObject newObjectPlease(Random random, int level){
+			return new WorldGenObject(possibleLevelObjects[level][random.nextInt(possibleLevelObjects[level].length)]);
 		}
+	};
+	
+	WorldGenObjectType[][] possibleLevelObjects;
+	
+	Landscape(WorldGenObjectType[]... possibleLevelObjects){
+		this.possibleLevelObjects = possibleLevelObjects;
 	}
 	
+	public WorldGenObject newObjectPlease(Random random, int level){return null;}
 }

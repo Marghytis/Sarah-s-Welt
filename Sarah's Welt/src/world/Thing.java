@@ -17,7 +17,7 @@ public abstract class Thing {
 	//For rendering
 	public Animator animator;
 	
-	protected boolean mirrored = false;
+	public boolean mirrored = false;
 	public boolean front = false;
 	
 	public Thing(Animator ani, Vec pos, Node worldLink){

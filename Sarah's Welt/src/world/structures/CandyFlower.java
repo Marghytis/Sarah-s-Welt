@@ -25,6 +25,7 @@ public class CandyFlower extends Structure {
 			new Color(0.4f, 0.58f, 0.75f),
 			new Color(0.97f, 0.56f, 0.74f)
 	};
+	
 	public static Texture FLOWER_LIGHT = new Texture("Light_dimmed");
 	
 	public CandyFlower(int type, Vec pos, Node worldLink){

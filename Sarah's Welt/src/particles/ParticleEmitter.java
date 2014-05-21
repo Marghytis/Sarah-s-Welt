@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import particles.Particle.ParticleType;
-import resources.Shader;
 import resources.Texture;
 
 public class ParticleEmitter{
@@ -91,13 +90,11 @@ public class ParticleEmitter{
 	
 	public void renderParticles(){
 		type.tex.bind();
-			Shader.Test.bind();
-				for(Particle p : particles){
-					if(p.live > 0){
-						renderParticle(p);
-					}
+			for(Particle p : particles){
+				if(p.live > 0){
+					renderParticle(p);
 				}
-			Shader.Test.release();
+			}
 		Texture.bindNone();
 	}
 

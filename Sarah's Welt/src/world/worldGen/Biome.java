@@ -8,9 +8,11 @@ import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Cow;
 import world.creatures.Creature;
+import world.creatures.Heart;
 import world.creatures.Panda;
 import world.creatures.Rabbit;
 import world.creatures.Snail;
+import world.creatures.Unicorn;
 import world.structures.Bamboo;
 import world.structures.Bush;
 import world.structures.Cactus;
@@ -55,6 +57,9 @@ public enum Biome {
 			if(random.nextInt(100) < 1){
 				spawnCreature(Bird.typeId, new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
 			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Heart.typeId, new Heart(0, new Vec(), null), node, 100);
+			}
 		}
 	}, BAMBOO_FOREST{
 		public void spawnThings(Node node){
@@ -74,6 +79,9 @@ public enum Biome {
 			}
 			if(random.nextInt(100) < 10){
 				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
+			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Heart.typeId, new Heart(0, new Vec(), null), node, 100);
 			}
 		}
 	}, MEADOW{
@@ -104,6 +112,9 @@ public enum Biome {
 			if(random.nextInt(100) < 2){
 				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
 			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Heart.typeId, new Heart(0, new Vec(), null), node, 100);
+			}
 		}
 	}, DESERT{
 		public void spawnThings(Node node){
@@ -128,6 +139,9 @@ public enum Biome {
 //			if(random.nextInt(100) < 2){
 //				spawnCreature(Butterfly.typeId, new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
 //			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Heart.typeId, new Heart(0, new Vec(), null), node, 100);
+			}
 		}
 	}, CANDY{
 		public void spawnThings(Node node){
@@ -148,6 +162,12 @@ public enum Biome {
 			}
 			if(random.nextInt(100) < 1){
 				spawnCreature(Bird.typeId, new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20);
+			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Unicorn.typeId, new Unicorn(new Vec(), null), node, 2);
+			}
+			if(random.nextInt(100) < 2){
+				spawnCreature(Heart.typeId, new Heart(1, new Vec(), null), node, 100);
 			}
 		}
 	};
