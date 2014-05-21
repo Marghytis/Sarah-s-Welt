@@ -87,16 +87,17 @@ public class Unicorn extends WalkingCreature {
 		
 		if(distSquare < 160000){
 			if(distSquare < 10000){
-				animator.setAnimation(punch);
-				World.particleEffects.add(new RainbowSpit(headX, headY, this));
-				spitting = true;
-				spitCount = 2000;
+				if(spitCount <= 0){
+					animator.setAnimation(punch);
+					World.particleEffects.add(new RainbowSpit(headX, headY, this));
+					spitting = true;
+					spitCount = 2000;
+				}
+				dir = 0;
 			} else if(World.sarah.pos.x > pos.x){
 				dir = 1;
 			} else if(World.sarah.pos.x < pos.x){
 				dir = -1;
-			} else {
-				dir = 0;
 			}
 			maxSpeed = 6;
 			return true;
