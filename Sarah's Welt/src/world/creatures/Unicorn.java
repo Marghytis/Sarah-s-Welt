@@ -27,7 +27,7 @@ public class Unicorn extends WalkingCreature {
 	
 	public Unicorn(Vec p, Node worldLink){
 		super(new Animator(Res.UNICORN, stand), p, worldLink);
-//		hitradius = 50;
+		hitradius = 200;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
 		health = 25;

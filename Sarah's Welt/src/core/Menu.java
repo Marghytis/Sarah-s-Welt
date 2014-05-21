@@ -140,6 +140,8 @@ public class Menu {
 			public void set(){
 				super.set();
 				ani.frame = 0;
+				Res.test.stop();
+				Res.death.play();
 			}
 			
 			@Override

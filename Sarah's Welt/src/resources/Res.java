@@ -49,6 +49,7 @@ public class Res {
 	
 	public static Sound test = new Sound("69569__digifishmusic__syyyymphonica.wav");
 	public static Sound buttonSound = new Sound("63531__florian-reinke__click1.wav");
+	public static Sound death = new Sound("FuneralMarch.wav");
 	
 	public static void load(){
 		//do nothing, classloader loads the resources (I hope)
