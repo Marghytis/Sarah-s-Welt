@@ -170,7 +170,7 @@ public enum Biome {
 			if(random.nextInt(100) < 1){
 				spawnCreature(Unicorn.typeId, new Unicorn(new Vec(), null), node, 2);
 			}
-			if(random.nextInt(100) < 2){
+			if(random.nextInt(100) < 1){
 				spawnCreature(Heart.typeId, new Heart(1, new Vec(), null), node, 100);
 			}
 		}
