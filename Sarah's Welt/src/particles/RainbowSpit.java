@@ -52,7 +52,7 @@ public class RainbowSpit implements ParticleEffect{
 		}
 
 		public void colorInterpolator(Particle p) {
-			p.col.a = (float) (p.live*0.8f) /startLife;
+			p.col.a = (float) (p.live) /startLife;
 		}
 
 		public void rotationInterpolator(Particle p) {

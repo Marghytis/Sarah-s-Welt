@@ -215,6 +215,9 @@ public class Sarah extends WalkingCreature {
 	
 	public void mountCow(Cow c){
 		if(g){
+			if(ridingCow){
+				Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), World.sarah.worldLink, 2);
+			}
 			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
 			ridingCow = true;
 			oldCow = c;

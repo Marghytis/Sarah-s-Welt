@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import resources.Lightmap;
 import resources.Res;
 import resources.Texture;
+import world.creatures.Unicorn;
 import core.Window;
 import core.geom.Quad;
 import core.geom.Vec;
@@ -87,7 +88,7 @@ public class ParticleTester {
 				if(Mouse.getEventButton() == 0){
 					swooshs.add(new DeathDust(new Vec(Mouse.getEventX(), Mouse.getEventY())));
 				} else {
-					swooshs.add(new RainbowSpit(Mouse.getEventX(), Mouse.getEventY(), 1));
+					swooshs.add(new RainbowSpit(Mouse.getEventX(), Mouse.getEventY(), new Unicorn(new Vec(Mouse.getEventX(), Mouse.getEventY()), null)));
 				}
 			}
 		}

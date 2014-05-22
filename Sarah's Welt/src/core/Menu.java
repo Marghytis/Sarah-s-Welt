@@ -141,16 +141,20 @@ public class Menu {
 		},
 		DEATH(true){
 			void setup(){
-				buttons = new Button[]{ new Button("Main Menu", 1/2.0f, 1/8.0f, new Runnable(){public void run(){view = MAIN;}})};
+				buttons = new Button[]{ new Button("Main Menu", -10000, -10000, new Runnable(){public void run(){view = MAIN;}})};
 			}
 			
-			Animator ani = new Animator(Res.SARAH_DEATH, new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
+			Animator ani = new Animator(Res.SARAH_DEATH, () -> showButton(), new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
 			
 			public void set(){
 				super.set();
 				ani.frame = 0;
 //				Res.test.stop();
 				Res.death.play();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {}
+				buttons[0].set(-10000, -10000);
 			}
 			
 			@Override
@@ -165,8 +169,15 @@ public class Menu {
 				Res.SARAH_DEATH.bind();
 				ani.animate(false);
 				Texture.bindNone();
+				GL11.glTranslatef(0, 100, 0);
+				float xText = - 150;
+				Res.font.drawString(xText*2, 0, "GAME OVER", 2, 2);
 				GL11.glPopMatrix();
 				super.render();
+			}
+			
+			public void showButton(){
+				buttons[0].set(1/2.0f, 1/8.0f);
 			}
 		};
 		

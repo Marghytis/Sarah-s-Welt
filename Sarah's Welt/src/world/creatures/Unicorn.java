@@ -58,8 +58,10 @@ public class Unicorn extends WalkingCreature {
 		if(!spitting){
 			if((!Settings.agro || !findSarah()))wanderAbout();
 			applyDirection(dir);
-			doStepping(velocityUnit*vP*dTime);
+		} else {
+			applyDirection(0);
 		}
+		doStepping(velocityUnit*vP*dTime);
 	}
 	
 	public void donePunch(){
@@ -93,10 +95,11 @@ public class Unicorn extends WalkingCreature {
 					spitting = true;
 					spitCount = 1000;
 				}
-				dir = 0;
-			} else if(World.sarah.pos.x > pos.x){
+			}
+			dir = 0;
+			if(World.sarah.pos.x > pos.x + 20){
 				dir = 1;
-			} else if(World.sarah.pos.x < pos.x){
+			} else if(World.sarah.pos.x < pos.x - 20){
 				dir = -1;
 			}
 			maxSpeed = 6;
@@ -134,7 +137,7 @@ public class Unicorn extends WalkingCreature {
 			turnUp = !turnUp;
 			colorCounter = 0;
 		}
-		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
+		if(g) GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
 		float[] color = new float[]{sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f};
 		
 		if(Settings.shader){
