@@ -115,7 +115,7 @@ public class Menu {
 			void setup(){
 				buttons = new Button[]{
 						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){CONTROLS.set();}}),
-						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; Res.test.stop();}),
+						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; /*Res.test.stop();*/}),
 						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};
 			}
@@ -149,7 +149,7 @@ public class Menu {
 			public void set(){
 				super.set();
 				ani.frame = 0;
-				Res.test.stop();
+//				Res.test.stop();
 				Res.death.play();
 			}
 			

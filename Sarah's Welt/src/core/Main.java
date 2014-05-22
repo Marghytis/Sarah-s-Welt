@@ -24,7 +24,7 @@ public class Main {
 			long testTime = System.currentTimeMillis();
 //			Display.sync(500);
 			
-			if(Settings.sound && !Res.test.playing) Res.test.play();
+//			if(Settings.sound && !Res.test.playing) Res.test.play();
 
 			render();
 			
@@ -42,7 +42,7 @@ public class Main {
 //			System.out.println(System.currentTimeMillis() - testTime);
 		}
 		
-		Res.test.stop();
+//		Res.test.stop();
 		Res.unload();
 		Display.destroy();
 	}

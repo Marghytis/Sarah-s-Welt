@@ -8,7 +8,7 @@ public enum Material {
 	AIR("", 0.0000005f, false),
 	STONE("materials/Stone", 2f, true),
 	EARTH("materials/Earth", 3f, true),
-	GRASS("materials/Grass_Candy", 3f, true),
+	GRASS("materials/Grass", 3f, true),
 	SOIL("materials/Soil", 3f, true),
 	CANDY("materials/Candy", 3f, true),;
 	

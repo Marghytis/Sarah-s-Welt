@@ -50,7 +50,6 @@ public class Res {
 	public static SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
 	
-	public static Sound test = new Sound("69569__digifishmusic__syyyymphonica.wav");
 	public static Sound buttonSound = new Sound("63531__florian-reinke__click1.wav");
 	public static Sound death = new Sound("FuneralMarch.wav");
 	
@@ -61,7 +60,7 @@ public class Res {
 	public static void unload(){
 		font.destroy();
 		arial.destroy();
-		AL10.alDeleteSources(test.source);
+//		AL10.alDeleteSources(test.source);
 	}
 
 	public static List<int[][]> readTextureCoordinator(String file){
