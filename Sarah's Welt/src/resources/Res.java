@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.openal.AL10;
-
 import sound.Sound;
 
 public class Res {
