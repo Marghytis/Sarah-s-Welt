@@ -175,6 +175,9 @@ public class Sarah extends WalkingCreature {
 	
 	public void afterRender(){
 		Texture.bindNone();
+		if(Settings.hitbox){
+				animator.tex.box.outline();
+		}
 		
 		((ItemStack)View.INVENTORY.buttons[0]).renderInHand();
 	}
@@ -220,6 +223,9 @@ public class Sarah extends WalkingCreature {
 	public int[] getHandPosition(){
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
+		if(ridingCow){
+			return Res.SARAH_ITEMCOORDS.get(0)[0];
+		}
 		return Res.SARAH_ITEMCOORDS.get(y)[x];
 	}
 	

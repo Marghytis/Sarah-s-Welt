@@ -84,8 +84,11 @@ public class Vec {
 	
 	public void draw(){
 		GL11.glBegin(GL11.GL_LINE);
-		GL11.glVertex2f(0, 0);
 		GL11.glVertex2f(x, y);
+		GL11.glVertex2f(x-1, y);
+		GL11.glVertex2f(x, y-1);
+		GL11.glVertex2f(x+1, y);
+		GL11.glVertex2f(x, y+1);
 		GL11.glEnd();
 	}
 	

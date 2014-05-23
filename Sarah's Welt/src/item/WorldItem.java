@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import world.Node;
 import world.Thing;
+import core.Menu.View;
 import core.geom.Vec;
 
 public class WorldItem extends Thing{
@@ -13,6 +14,18 @@ public class WorldItem extends Thing{
 	public WorldItem(Item item, Vec pos, Node worldLink) {
 		super(null, pos, worldLink);
 		this.item = item;
+	}
+	
+	public boolean rightClickAction(){
+		for(int i = 0; i < View.INVENTORY.buttons.length; i++){
+			if(((ItemStack)View.INVENTORY.buttons[i]).item == item){
+				return false;
+			} else if (((ItemStack)View.INVENTORY.buttons[i]).item == null){
+				((ItemStack)View.INVENTORY.buttons[i]).item = item;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void render(){

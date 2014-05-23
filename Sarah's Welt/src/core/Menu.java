@@ -129,7 +129,6 @@ public class Menu {
 				for(int i = 0; i < buttons.length; i++){
 					buttons[i] = new ItemStack(i);
 				}
-				((ItemStack)buttons[0]).item = Item.SWORD;
 			}
 			
 			public void render(){

@@ -270,6 +270,11 @@ public class World {
 							c.rightClickAction();
 						}
 					}
+					for(List<WorldItem> list : items) for(WorldItem c : list){
+						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
+							c.rightClickAction();
+						}
+					}
 				}
 			}
 		}

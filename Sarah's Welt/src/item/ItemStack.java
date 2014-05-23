@@ -37,15 +37,22 @@ public class ItemStack extends Button{
 	}
 	
 	public void renderInHand(){
-		
+		if(item == null) return;
 		int[] sarahHandPos = World.sarah.getHandPosition();
 		
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		GL11.glTranslatef((Window.WIDTH/2) - World.sarah.animator.tex.box.x + sarahHandPos[0] - 27, 10 + (Window.HEIGHT/2) - World.sarah.animator.tex.box.y + sarahHandPos[1], 0);
+		GL11.glTranslatef((Window.WIDTH/2) + World.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) + World.sarah.animator.tex.box.y + sarahHandPos[1], 0);
+//		try {
+//			throw new AccessException("Breakpoint?");
+//		} catch (AccessException e) {}
 		GL11.glRotatef(item.defaultRotationHand + sarahHandPos[2], 0, 0, 1);
 		
 		item.box.drawTex(item.hand, item.handTexQuad);
+//		Texture.bindNone();
+//		GL11.glColor4f(1, 0, 0, 1);
+//		item.box.draw();
+//		Res.ITEMS.bind();
 		
 		GL11.glPopMatrix();
 	}

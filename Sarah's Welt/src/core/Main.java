@@ -17,7 +17,6 @@ public class Main {
 		Display.update();
 		Res.load();
 		World.load("TestWelt", 10);
-		System.out.println(GL11.glGetString(GL11.GL_VERSION));
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){

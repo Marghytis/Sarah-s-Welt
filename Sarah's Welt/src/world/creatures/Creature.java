@@ -79,7 +79,7 @@ public abstract class Creature extends Thing {
 	public boolean hitBy(Creature c){
 		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
 			hit = 40;
-			if(c instanceof Sarah){
+			if(c instanceof Sarah && ((ItemStack)View.INVENTORY.buttons[0]).item != null){
 				health -= ((ItemStack)View.INVENTORY.buttons[0]).item.damage;
 			} else {
 				health -= c.punchStrength;

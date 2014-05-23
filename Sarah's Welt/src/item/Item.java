@@ -8,7 +8,7 @@ import world.World;
 import core.geom.Quad;
 
 public enum Item {
-	SWORD(Res.WEAPONS, new Quad(0, 0, 27, 53), Res.WEAPONS, new Quad(0, 0, 27, 53), new Quad(-13, -10, 27, 53), 90, "Sword", 0, 0, 4);
+	SWORD(Res.WEAPONS, new Quad(0, 0, 27, 53), Res.WEAPONS, new Quad(0, 0, 27, 53), new Quad(-13, -45, 27, 53), 90, "Sword", 0, 0, 4);
 	
 	public static void renderItems(){
 		for(List<WorldItem> list : World.items){
