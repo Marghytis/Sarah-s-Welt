@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import particles.ParticleEffect;
 import resources.Lightmap;
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import util.Tessellator;
 import world.creatures.Bird;
 import world.creatures.Butterfly;
@@ -131,7 +131,7 @@ public class World {
 		
 		generator.gen(sarahX);
 		sarah = new Sarah(new Vec(sarahX, 1000), null);
-		light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
+		light = new Lightmap(new TextureFile(Window.WIDTH, Window.HEIGHT));
 //		}
 	}
 	
@@ -210,10 +210,10 @@ public class World {
 
 		Material[] mats = Material.values();
 		for(int i = 0; i < mats.length; i++){
-			mats[i].texture.bind();
-			tessellator.tessellateOneNode(contours[i], Material.GRASS.texture.width, Material.GRASS.texture.height);
+			mats[i].textureFile.bind();
+			tessellator.tessellateOneNode(contours[i], Material.GRASS.textureFile.width, Material.GRASS.textureFile.height);
 		}
-		Texture.bindNone();
+		TextureFile.bindNone();
 		
 		//front
 	

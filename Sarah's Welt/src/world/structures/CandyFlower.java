@@ -3,7 +3,7 @@ package world.structures;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import util.Color;
@@ -26,7 +26,7 @@ public class CandyFlower extends Structure {
 			new Color(0.97f, 0.56f, 0.74f)
 	};
 	
-	public static Texture FLOWER_LIGHT = new Texture("Light_dimmed");
+	public static TextureFile FLOWER_LIGHT = new TextureFile("Light_dimmed");
 	
 	public CandyFlower(int type, Vec pos, Node worldLink){
 		super(new Animator(Res.CANDY_FLOWER, new Animation(0, type)), pos, worldLink);

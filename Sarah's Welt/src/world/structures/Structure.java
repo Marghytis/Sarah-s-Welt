@@ -5,7 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import resources.Shader;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animator;
 import world.Node;
 import world.Thing;
@@ -40,7 +40,7 @@ public abstract class Structure extends Thing{
 				}
 			}
 		}
-		Texture.bindNone();
+		TextureFile.bindNone();
 		if(Settings.hitbox){
 			for(List<Structure> list : World.structures){
 				list.forEach((c) -> {

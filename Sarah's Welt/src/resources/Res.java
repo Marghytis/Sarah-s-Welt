@@ -9,49 +9,50 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.openal.AL10;
-
 import sound.Sound;
 
 public class Res {
 
-	public static StackedTexture CLOUD = new StackedTexture("structures/Cloud", 1, 1, -0.5f, -0.5f);
-	public static StackedTexture TREE = new StackedTexture("structures/Tree", 1, 3, -0.5f, -0.3f);
-	public static StackedTexture PALM_TREE = new StackedTexture("structures/PalmTree", 1, 3, -0.5f, -0.03f);
-	public static StackedTexture CANDY_TREE = new StackedTexture("structures/CandyTree", 1, 1, -0.5f, -0.2f);
-	public static StackedTexture BAMBOO = new StackedTexture("structures/Bamboo", 1, 4, -0.5f, -0.02f);
-	public static StackedTexture BUSH = new StackedTexture("structures/Bush", 1, 2, -0.5f, -0.02f);
-	public static StackedTexture CANDY_BUSH = new StackedTexture("structures/CandyBush", 1, 2, -0.5f, -0.2f);
-	public static StackedTexture CACTUS = new StackedTexture("structures/Cactus", 1, 3, -0.5f, -0.05f);
-	public static StackedTexture GRASS_TUFT = new StackedTexture("structures/Grass_tuft", 4, 1, -0.5f, -0.2f);
-	public static StackedTexture FLOWER = new StackedTexture("structures/Flower", 1, 3, -0.5f, 0f);
-	public static StackedTexture CANDY_FLOWER = new StackedTexture("structures/Candy", 1, 6, -0.5f, 0f);
-	public static StackedTexture CRACK = new StackedTexture("structures/Crack", 1, 4, -0.5f, -0.5f);
-	public static StackedTexture FOSSIL = new StackedTexture("structures/Fossil", 1, 3, -0.5f, -0.5f);
+	//Structures
+	public static final StackedTextures CLOUD = new StackedTextures(new TextureFile("structures/Cloud"), 1, 1, -0.5f, -0.5f);
+	public static final StackedTextures TREE = new StackedTextures("structures/Tree", 1, 3, -0.5f, -0.3f);
+	public static final StackedTextures PALM_TREE = new StackedTextures("structures/PalmTree", 1, 3, -0.5f, -0.03f);
+	public static final StackedTextures CANDY_TREE = new StackedTextures("structures/CandyTree", 1, 1, -0.5f, -0.2f);
+	public static final StackedTextures BAMBOO = new StackedTextures("structures/Bamboo", 1, 4, -0.5f, -0.02f);
+	public static final StackedTextures BUSH = new StackedTextures("structures/Bush", 1, 2, -0.5f, -0.02f);
+	public static final StackedTextures CANDY_BUSH = new StackedTextures("structures/CandyBush", 1, 2, -0.5f, -0.2f);
+	public static final StackedTextures CACTUS = new StackedTextures("structures/Cactus", 1, 3, -0.5f, -0.05f);
+	public static final StackedTextures GRASS_TUFT = new StackedTextures("structures/Grass_tuft", 4, 1, -0.5f, -0.2f);
+	public static final StackedTextures FLOWER = new StackedTextures("structures/Flower", 1, 3, -0.5f, 0f);
+	public static final StackedTextures CANDY_FLOWER = new StackedTextures("structures/Candy", 1, 6, -0.5f, 0f);
+	public static final StackedTextures CRACK = new StackedTextures("structures/Crack", 1, 4, -0.5f, -0.5f);
+	public static final StackedTextures FOSSIL = new StackedTextures("structures/Fossil", 1, 3, -0.5f, -0.5f);
 	
-	public static StackedTexture SNAIL  = new StackedTexture("creatures/Snail", 7, 3, -0.5f, -0.1f);
-	public static StackedTexture BUTTERFLY  = new StackedTexture("creatures/Butterfly", 5, 2, -0.5f, -0.5f);
-	public static StackedTexture HEART = new StackedTexture("creatures/Heart", 4, 2, -0.5f, -0.2f);
-	public static StackedTexture RABBIT  = new StackedTexture("creatures/Rabbit", 5, 3, -0.5f, -0.2f);
-	public static StackedTexture BIRD  = new StackedTexture("creatures/Bird", 5, 2, -0.5f, -0.2f);
-	public static StackedTexture PANDA  = new StackedTexture("creatures/Panda", 6, 2, -0.5f, -0.1f);
-	public static StackedTexture SCORPION  = new StackedTexture("creatures/Scorpion", 7, 2, -0.5f, -0.1f);
-	public static StackedTexture COW  = new StackedTexture("creatures/Cow", 7, 1, -0.5f, -0.1f);
-	public static StackedTexture UNICORN  = new StackedTexture("creatures/Unicorn", 6, 3, -0.5f, -0.1f);
-	public static StackedTexture UNICORN_HAIR  = new StackedTexture("creatures/Unicorn_hair", 6, 3, -0.5f, -0.1f);
+	//Creatures
+	public static final StackedTextures SNAIL  = new StackedTextures("creatures/Snail", 7, 3, -0.5f, -0.1f);
+	public static final StackedTextures BUTTERFLY  = new StackedTextures("creatures/Butterfly", 5, 2, -0.5f, -0.5f);
+	public static final StackedTextures HEART = new StackedTextures("creatures/Heart", 4, 2, -0.5f, -0.2f);
+	public static final StackedTextures RABBIT  = new StackedTextures("creatures/Rabbit", 5, 3, -0.5f, -0.2f);
+	public static final StackedTextures BIRD  = new StackedTextures("creatures/Bird", 5, 2, -0.5f, -0.2f);
+	public static final StackedTextures PANDA  = new StackedTextures("creatures/Panda", 6, 2, -0.5f, -0.1f);
+	public static final StackedTextures SCORPION  = new StackedTextures("creatures/Scorpion", 7, 2, -0.5f, -0.1f);
+	public static final StackedTextures COW  = new StackedTextures("creatures/Cow", 7, 1, -0.5f, -0.1f);
+	public static final StackedTextures UNICORN  = new StackedTextures("creatures/Unicorn", 6, 3, -0.5f, -0.1f);
+	public static final StackedTextures UNICORN_HAIR  = new StackedTextures("creatures/Unicorn_hair", 6, 3, -0.5f, -0.1f);
 
-	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 8, -0.5f, -0.1f);
-	public static List<int[][]> SARAH_ITEMCOORDS = readTextureCoordinator("res/creatures/Sarah.txt");
-	public static StackedTexture SARAH_ON_COW = new StackedTexture("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
-	public static StackedTexture SARAH_DEATH = new StackedTexture("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
+	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 8, -0.5f, -0.1f);
+	public static final List<int[][]> SARAH_ITEMCOORDS = readTextureCoordinator("res/creatures/Sarah.txt");
+	public static final StackedTextures SARAH_ON_COW = new StackedTextures("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
+	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
 	
-	public static Texture WEAPONS = new Texture("items/Weapons");
+	public static final TextureFile WEAPONS = new TextureFile("items/Weapons");
+	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2);
 	
-	public static SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
-	public static SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
+	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
+	public static final SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
 	
-	public static Sound buttonSound = new Sound("63531__florian-reinke__click1.wav");
-	public static Sound death = new Sound("FuneralMarch.wav");
+	public static final Sound buttonSound = new Sound("63531__florian-reinke__click1.wav");
+	public static final Sound death = new Sound("FuneralMarch.wav");
 	
 	public static void load(){
 		//do nothing, classloader loads the resources (I hope)

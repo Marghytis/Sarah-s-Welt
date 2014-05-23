@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import particles.Particle.ParticleType;
-import resources.Texture;
+import resources.TextureFile;
 
 public class ParticleEmitter{
 
@@ -95,7 +95,7 @@ public class ParticleEmitter{
 					renderParticle(p);
 				}
 			}
-		Texture.bindNone();
+		TextureFile.bindNone();
 	}
 
 	public void renderParticle(Particle p) {

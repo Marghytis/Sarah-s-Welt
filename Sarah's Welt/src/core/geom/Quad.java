@@ -2,8 +2,8 @@ package core.geom;
 
 import org.lwjgl.opengl.GL11;
 
-import resources.StackedTexture;
-import resources.Texture;
+import resources.StackedTextures;
+import resources.TextureFile;
 
 public class Quad extends Vec{
 
@@ -32,7 +32,7 @@ public class Quad extends Vec{
 		GL11.glEnd();
 	}
 
-	public void drawTex(Texture tex){
+	public void drawTex(TextureFile tex){
 		tex.bind();
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, 			y);
@@ -40,10 +40,10 @@ public class Quad extends Vec{
 		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + size.x, 	y + size.y);
 		GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
-		Texture.bindNone();
+		TextureFile.bindNone();
 	}
 
-	public void drawTex(Texture tex, Quad quad){
+	public void drawTex(TextureFile tex, Quad quad){
 		tex.bind();
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(quad.x/tex.width, 				(quad.y + quad.size.y)/tex.height); GL11.glVertex2f(x, 			y);
@@ -51,10 +51,10 @@ public class Quad extends Vec{
 		GL11.glTexCoord2f((quad.x + quad.size.x)/tex.width, quad.y/tex.height); 				GL11.glVertex2f(x + size.x, y + size.y);
 		GL11.glTexCoord2f(quad.x/tex.width, 				quad.y/tex.height); 				GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
-		Texture.bindNone();
+		TextureFile.bindNone();
 	}
 
-	public void drawTex(StackedTexture tex, int xTex, int yTex){
+	public void drawTex(StackedTextures tex, int xTex, int yTex){
 		
 		tex.bind();
 		
@@ -71,7 +71,7 @@ public class Quad extends Vec{
 		tex.release();
 	}
 
-	public void drawTexNotBind(StackedTexture tex, int xTex, int yTex, boolean mirrored){
+	public void drawTexNotBind(StackedTextures tex, int xTex, int yTex, boolean mirrored){
 		
 		float xOffset = xTex*tex.widthT;
 		float yOffset = yTex*tex.heightT;

@@ -1,19 +1,19 @@
 package util;
 
-import resources.StackedTexture;
+import resources.StackedTextures;
 
 public class Animator {
 
 	public Animation animation;
 	public int frame;
-	public StackedTexture tex;
+	public StackedTextures tex;
 	public Runnable doOnReady;
 	
-	public Animator(StackedTexture tex, Animation defaultA){
+	public Animator(StackedTextures tex, Animation defaultA){
 		this(tex, () -> {}, defaultA);
 	}
 	
-	public Animator(StackedTexture tex, Runnable doOnReady, Animation defaultA){
+	public Animator(StackedTextures tex, Runnable doOnReady, Animation defaultA){
 		this.tex = tex;
 		this.doOnReady = doOnReady;
 		this.animation = defaultA;

@@ -5,8 +5,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.StackedTexture;
-import resources.Texture;
+import resources.StackedTextures;
+import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import world.Calendar;
@@ -160,7 +160,7 @@ public class Menu {
 			@Override
 			public void render(){
 				GL11.glLoadIdentity();
-				Texture.bindNone();
+				TextureFile.bindNone();
 				GL11.glColor4f(0, 0, 0, 1);
 				Window.fill();
 				GL11.glColor3f(1, 1, 1);
@@ -168,7 +168,7 @@ public class Menu {
 				GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
 				Res.SARAH_DEATH.bind();
 				ani.animate(false);
-				Texture.bindNone();
+				TextureFile.bindNone();
 				GL11.glTranslatef(0, 100, 0);
 				float xText = - 150;
 				Res.font.drawString(xText*2, 0, "GAME OVER", 2, 2);
@@ -204,7 +204,7 @@ public class Menu {
 	
 	public static class Button extends Quad{
 		
-		static StackedTexture tex = Texture.MENU_BUTTON;
+		static StackedTextures tex = Res.MENU_BUTTON;
 		
 		public String name;
 		public boolean state;

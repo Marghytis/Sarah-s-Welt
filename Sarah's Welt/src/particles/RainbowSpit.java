@@ -1,7 +1,7 @@
 package particles;
 
 import particles.Particle.ParticleType;
-import resources.Texture;
+import resources.TextureFile;
 import util.Color;
 import world.World;
 import world.creatures.Unicorn;
@@ -9,7 +9,7 @@ import core.geom.Vec;
 
 public class RainbowSpit implements ParticleEffect{
 	
-	public static final ParticleType RAINBOW = new ParticleType(new Texture("particles/RainbowParticle"));
+	public static final ParticleType RAINBOW = new ParticleType(new TextureFile("particles/RainbowParticle"));
 	
 	public ParticleEmitter rainbow = new ParticleEmitter(210, 200, RAINBOW, 1000){
 		

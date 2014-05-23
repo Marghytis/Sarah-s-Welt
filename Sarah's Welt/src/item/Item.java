@@ -3,7 +3,7 @@ package item;
 import java.util.List;
 
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import world.World;
 import core.geom.Quad;
 
@@ -19,15 +19,15 @@ public enum Item {
 	}
 	
 	//in world, in inventory; in hand
-	Texture world;
+	TextureFile world;
 	Quad worldTexQuad;
-	Texture hand;
+	TextureFile hand;
 	Quad handTexQuad;
 	int defaultRotationHand;
 	
 	String name;
 	
-	Item(Texture world, Quad worldTexQuad, Texture hand, Quad handTexQuad, int defaultRotationHand, String name){
+	Item(TextureFile world, Quad worldTexQuad, TextureFile hand, Quad handTexQuad, int defaultRotationHand, String name){
 		this.world = world;
 		this.worldTexQuad = worldTexQuad;
 		this.hand = hand;

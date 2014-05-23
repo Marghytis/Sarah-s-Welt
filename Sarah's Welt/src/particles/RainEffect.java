@@ -1,12 +1,12 @@
 package particles;
 
 import particles.Particle.ParticleType;
-import resources.Texture;
+import resources.TextureFile;
 import core.geom.Vec;
 
 public class RainEffect implements ParticleEffect{
 	
-	public static final ParticleType RAINDROP = new ParticleType(new Texture("particles/Raindrop"));
+	public static final ParticleType RAINDROP = new ParticleType(new TextureFile("particles/Raindrop"));
 	
 	public ParticleEmitter drops = new ParticleEmitter(200, 50, RAINDROP, 2000){
 

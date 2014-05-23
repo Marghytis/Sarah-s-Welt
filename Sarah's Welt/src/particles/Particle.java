@@ -5,7 +5,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 
-import resources.Texture;
+import resources.TextureFile;
 import util.Color;
 import core.geom.Vec;
 
@@ -20,10 +20,10 @@ public class Particle {
 	public boolean justSpawned = true;
 	
 	public static class ParticleType {
-		public Texture tex;
+		public TextureFile tex;
 		public int vbo;
 		
-		public ParticleType(Texture tex){
+		public ParticleType(TextureFile tex){
 			this.tex = tex;
 
 			float wH = tex.width/2;

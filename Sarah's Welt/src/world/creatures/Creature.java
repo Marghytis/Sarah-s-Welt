@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import particles.BloodSplash;
 import particles.DeathDust;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animator;
 import world.Material;
 import world.Node;
@@ -21,7 +21,7 @@ public abstract class Creature extends Thing {
 		for(List<Creature> list : World.creatures){
 			if(list.size() > 0) {
 				if(list.get(0) instanceof Gnat){
-					Texture.bindNone();
+					TextureFile.bindNone();
 					GL11.glColor3f(0.2f, 0.2f, 0.2f);
 					GL11.glBegin(GL11.GL_POINTS);
 						list.forEach((c) -> ((Gnat)c).render());
@@ -33,7 +33,7 @@ public abstract class Creature extends Thing {
 				}
 			}
 		}
-		Texture.bindNone();
+		TextureFile.bindNone();
 		if(Settings.hitbox){
 			for(List<Creature> list : World.creatures){
 				list.forEach((c) -> {

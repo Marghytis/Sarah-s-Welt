@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import world.creatures.Unicorn;
 import core.Window;
 import core.geom.Quad;
@@ -17,13 +17,13 @@ import core.geom.Vec;
 
 public class ParticleTester {
 	
-	public static Texture background;
+	public static TextureFile background;
 	
 	public static void main(String[] args){
 		Window.create("Particle", 1000, 700);
-		background = new Texture("particles/Background");
+		background = new TextureFile("particles/Background");
 		
-		Lightmap lightmap = new Lightmap(new Texture(Window.WIDTH/2, Window.HEIGHT));
+		Lightmap lightmap = new Lightmap(new TextureFile(Window.WIDTH/2, Window.HEIGHT));
 		lightmap.resetDark( 0);
 		Quad leftWindow = new Quad(0, 0, Window.WIDTH/2, Window.HEIGHT);
 		
@@ -72,7 +72,7 @@ public class ParticleTester {
 			cloud.drawTex(Res.CLOUD);
 			
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
-			leftWindow.drawTex(lightmap.texture);
+			leftWindow.drawTex(lightmap.textureFile);
 	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	        Display.update();
 		}

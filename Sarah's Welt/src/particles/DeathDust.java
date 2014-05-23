@@ -1,12 +1,12 @@
 package particles;
 
 import particles.Particle.ParticleType;
-import resources.Texture;
+import resources.TextureFile;
 import core.geom.Vec;
 
 public class DeathDust implements ParticleEffect {
 	
-public static final ParticleType SMOKE = new ParticleType(new Texture("particles/Smoke"));
+public static final ParticleType SMOKE = new ParticleType(new TextureFile("particles/Smoke"));
 	
 	public ParticleEmitter smoke = new ParticleEmitter(100, 1, SMOKE, 3000){
 

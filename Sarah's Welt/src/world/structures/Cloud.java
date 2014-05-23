@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import particles.RainEffect;
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import world.Node;
@@ -49,7 +49,7 @@ public class Cloud extends Structure{
 		}
 		animator.tex.bind();
 		super.render();
-		Texture.bindNone();
+		TextureFile.bindNone();
 	}
 	
 	public void beforeRender(){
