@@ -32,7 +32,7 @@ public class WorldItem extends Thing{
 		GL11.glPushMatrix();
 		GL11.glTranslatef(pos.x, pos.y, 0);
 
-		item.worldTexQuad.drawTex(item.world, item.worldTexQuad);
+//		item.worldTexQuad.drawTex(item.world, item.worldTexQuad);
 		
 		GL11.glPopMatrix();
 	}

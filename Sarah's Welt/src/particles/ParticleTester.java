@@ -9,20 +9,21 @@ import org.lwjgl.opengl.GL11;
 
 import resources.Lightmap;
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
+import world.creatures.Unicorn;
 import core.Window;
 import core.geom.Quad;
 import core.geom.Vec;
 
 public class ParticleTester {
 	
-	public static Texture background;
+	public static TextureFile background;
 	
 	public static void main(String[] args){
 		Window.create("Particle", 1000, 700);
-		background = new Texture("particles/Background");
+		background = new TextureFile("particles/Background");
 		
-		Lightmap lightmap = new Lightmap(new Texture(Window.WIDTH/2, Window.HEIGHT));
+		Lightmap lightmap = new Lightmap(new TextureFile(Window.WIDTH/2, Window.HEIGHT));
 		lightmap.resetDark( 0);
 		Quad leftWindow = new Quad(0, 0, Window.WIDTH/2, Window.HEIGHT);
 		
@@ -68,10 +69,12 @@ public class ParticleTester {
 			
 			time = nextTime;
 			GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
-			cloud.drawTex(Res.CLOUD);
+			cloud.drawTex(Res.CLOUD.texs[0][0]);
 			
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
+			lightmap.texture.file.bind();
 			leftWindow.drawTex(lightmap.texture);
+			TextureFile.bindNone();
 	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	        Display.update();
 		}
@@ -87,7 +90,7 @@ public class ParticleTester {
 				if(Mouse.getEventButton() == 0){
 					swooshs.add(new DeathDust(new Vec(Mouse.getEventX(), Mouse.getEventY())));
 				} else {
-					swooshs.add(new RainbowSpit(Mouse.getEventX(), Mouse.getEventY(), 1));
+					swooshs.add(new RainbowSpit(Mouse.getEventX(), Mouse.getEventY(), new Unicorn(new Vec(Mouse.getEventX(), Mouse.getEventY()), null)));
 				}
 			}
 		}

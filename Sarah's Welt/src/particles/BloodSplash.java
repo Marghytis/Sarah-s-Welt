@@ -1,13 +1,13 @@
 package particles;
 
 import particles.Particle.ParticleType;
-import resources.Texture;
+import resources.TextureFile;
 import core.geom.Vec;
 
 public class BloodSplash implements ParticleEffect{
 
 	
-	public static final ParticleType BLOOD_DROP = new ParticleType(new Texture("particles/Blood_drop"));
+	public static final ParticleType BLOOD_DROP = new ParticleType(new TextureFile("particles/Blood_drop"));
 	
 	public ParticleEmitter blood = new ParticleEmitter(100, 1, BLOOD_DROP, 1000){
 

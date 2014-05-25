@@ -6,7 +6,7 @@ import core.Window;
 
 public class Lightmap extends Framebuffer{
 		
-	public Lightmap(Texture tex){
+	public Lightmap(TextureFile tex){
 		super(tex);
 	}
 	

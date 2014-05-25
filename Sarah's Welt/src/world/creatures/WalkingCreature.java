@@ -70,7 +70,6 @@ public abstract class WalkingCreature extends Creature{
 	public void doStepping(float d){
 		if(d == 0){
 			vel.set(0, 0);
-			return;
 		}
 		float v = d*World.measureScale;
 		Vec intersection = null;

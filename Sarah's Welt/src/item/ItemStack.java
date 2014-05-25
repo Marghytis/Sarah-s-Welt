@@ -3,6 +3,7 @@ package item;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
+import resources.TextureFile;
 import world.World;
 import core.Menu.Button;
 import core.Window;
@@ -27,9 +28,9 @@ public class ItemStack extends Button{
 		GL11.glLoadIdentity();
 		int oneWidth = Window.WIDTH/7;
 		GL11.glTranslatef((slot+1)*oneWidth, Window.HEIGHT/5, 0);
-		Res.INVENTORY.bind();
-		slotQuad.drawTex();
-		if(item != null) itemQuad.drawTex(Res.ITEMS, item.xItemsPNG, item.yItemsPNG);
+		Res.INVENTORY.file.bind();
+		slotQuad.drawTex(Res.INVENTORY);
+		if(item != null) itemQuad.drawTex(Res.ITEMS.texs[item.xItemsPNG][item.yItemsPNG]);
 //		float xText = x + (size.x/2) - (Res.font.getWidth(name)/3);
 //		float yText = y + (size.y/2) - (Res.font.getHeight()/2);
 //		Res.font.drawString(xText, yText, name, 1, 1);
@@ -48,7 +49,9 @@ public class ItemStack extends Button{
 //		} catch (AccessException e) {}
 		GL11.glRotatef(item.defaultRotationHand + sarahHandPos[2], 0, 0, 1);
 		
+		item.hand.bind();
 		item.box.drawTex(item.hand, item.handTexQuad);
+		TextureFile.bindNone();
 //		Texture.bindNone();
 //		GL11.glColor4f(1, 0, 0, 1);
 //		item.box.draw();

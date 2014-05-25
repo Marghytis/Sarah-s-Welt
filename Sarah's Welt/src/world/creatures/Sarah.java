@@ -165,7 +165,7 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 		}
-		animator.tex.bind();
+		animator.tex.file.bind();
 		
 		if(ridingCow && g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
 		else if(Settings.flying){
@@ -174,7 +174,7 @@ public class Sarah extends WalkingCreature {
 	}
 	
 	public void afterRender(){
-		Texture.bindNone();
+		TextureFile.bindNone();
 		if(Settings.hitbox){
 				animator.tex.box.outline();
 		}
@@ -214,6 +214,9 @@ public class Sarah extends WalkingCreature {
 	
 	public void mountCow(Cow c){
 		if(g){
+			if(ridingCow){
+				Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), World.sarah.worldLink, 2);
+			}
 			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
 			ridingCow = true;
 			oldCow = c;

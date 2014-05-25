@@ -4,6 +4,7 @@ import java.util.List;
 
 import resources.Res;
 import resources.Texture;
+import resources.TextureFile;
 import world.World;
 import core.geom.Quad;
 
@@ -19,9 +20,9 @@ public enum Item {
 	}
 	
 	//in world, in inventory; in hand
-	public Texture world;
+	public TextureFile world;
 	public Quad worldTexQuad;
-	public Texture hand;
+	public TextureFile hand;
 	public Quad handTexQuad;
 	public Quad box;
 	public int defaultRotationHand;
@@ -33,7 +34,7 @@ public enum Item {
 	
 	public int damage;
 	
-	Item(Texture world, Quad worldTexQuad, Texture hand, Quad handTexQuad, Quad box, int defaultRotationHand, String name, int x, int y, int damage){
+	Item(TextureFile world, Quad worldTexQuad, TextureFile hand, Quad handTexQuad, Quad box, int defaultRotationHand, String name, int x, int y, int damage){
 		this.world = world;
 		this.worldTexQuad = worldTexQuad;
 		this.hand = hand;

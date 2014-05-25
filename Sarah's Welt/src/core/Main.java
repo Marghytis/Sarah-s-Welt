@@ -4,7 +4,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import world.Calendar;
 import world.World;
 
@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args){
 		Window.create("Sarahs Welt", 1000, 600);
 //		Window.createFullScreen("Sarahs Welt");
-		Window.fill(new Texture("titelbild", 0, 0).handle);
+		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();
 		Res.load();
 		World.load("TestWelt", 10);
@@ -23,7 +23,7 @@ public class Main {
 			long testTime = System.currentTimeMillis();
 //			Display.sync(500);
 			
-			if(Settings.sound && !Res.test.playing) Res.test.play();
+//			if(Settings.sound && !Res.test.playing) Res.test.play();
 
 			render();
 			
@@ -41,7 +41,7 @@ public class Main {
 //			System.out.println(System.currentTimeMillis() - testTime);
 		}
 		
-		Res.test.stop();
+//		Res.test.stop();
 		Res.unload();
 		Display.destroy();
 	}

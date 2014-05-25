@@ -1,6 +1,6 @@
 package world;
 
-import resources.Texture;
+import resources.TextureFile;
 
 
 public enum Material {
@@ -13,14 +13,14 @@ public enum Material {
 	CANDY("materials/Candy", 3f, true),;
 	
 	public String name;
-	public Texture texture;
+	public TextureFile textureFile;
 	
 	public float decelerationFactor;//density or friction; this is determined by the 'solid' boolean
 	public boolean solid = true;
 	
 	
 	Material(String name, float decelerationFactor, boolean solid){
-		texture = new Texture(name);
+		textureFile = new TextureFile(name);
 		this.name = name;
 		
 		this.decelerationFactor = decelerationFactor;

@@ -8,13 +8,13 @@ import org.lwjgl.opengl.GL11;
 import particles.Particle.ParticleType;
 import resources.Lightmap;
 import resources.Shader;
-import resources.Texture;
+import resources.TextureFile;
 import core.Window;
 import core.geom.Vec;
 
 public class FireEffect implements ParticleEffect{
 
-	public static final ParticleType SMOKE = new ParticleType(new Texture("particles/Smoke"));
+	public static final ParticleType SMOKE = new ParticleType(new TextureFile("particles/Smoke"));
 
 	public ParticleEmitter smoke = new ParticleEmitter(1000, 100, SMOKE, 2000){
 		
@@ -39,7 +39,7 @@ public class FireEffect implements ParticleEffect{
 		
 	};
 	
-	public static final ParticleType FLAME = new ParticleType(new Texture("particles/Flame"));
+	public static final ParticleType FLAME = new ParticleType(new TextureFile("particles/Flame"));
 	
 	public ParticleEmitter flame = new ParticleEmitter(10000, 50, FLAME, 1000){
 
@@ -95,7 +95,7 @@ public class FireEffect implements ParticleEffect{
 		
 	};
 	
-	public static final ParticleType SPARK = new ParticleType(new Texture("particles/Spark"));
+	public static final ParticleType SPARK = new ParticleType(new TextureFile("particles/Spark"));
 	
 	public ParticleEmitter spark = new ParticleEmitter(1000, 5, SPARK, 2000){
 
@@ -130,7 +130,7 @@ public class FireEffect implements ParticleEffect{
 		}
 	};
 	
-	public static final ParticleType LIGHT = new ParticleType(new Texture("particles/Fire"));
+	public static final ParticleType LIGHT = new ParticleType(new TextureFile("particles/Fire"));
 	
 	public ParticleEmitter light = new ParticleEmitter(1000, 5, LIGHT, 1000){
 		

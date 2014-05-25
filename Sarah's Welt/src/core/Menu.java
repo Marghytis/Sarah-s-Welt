@@ -8,8 +8,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.StackedTexture;
-import resources.Texture;
+import resources.StackedTextures;
+import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import world.Calendar;
@@ -118,7 +118,7 @@ public class Menu {
 			void setup(){
 				buttons = new Button[]{
 						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){CONTROLS.set();}}),
-						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; Res.test.stop();}),
+						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; /*Res.test.stop();*/}),
 						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};
 			}
@@ -158,32 +158,43 @@ public class Menu {
 		},
 		DEATH(true){
 			void setup(){
-				buttons = new Button[]{ new Button("Main Menu", 1/2.0f, 1/8.0f, new Runnable(){public void run(){view = MAIN;}})};
+				buttons = new Button[]{ new Button("Main Menu", -10000, -10000, new Runnable(){public void run(){view = MAIN;}})};
 			}
 			
-			Animator ani = new Animator(Res.SARAH_DEATH, new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
+			Animator ani = new Animator(Res.SARAH_DEATH, () -> showButton(), new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
 			
 			public void set(){
 				super.set();
 				ani.frame = 0;
-				Res.test.stop();
+//				Res.test.stop();
 				Res.death.play();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {}
+				buttons[0].set(-10000, -10000);
 			}
 			
 			@Override
 			public void render(){
 				GL11.glLoadIdentity();
-				Texture.bindNone();
+				TextureFile.bindNone();
 				GL11.glColor4f(0, 0, 0, 1);
 				Window.fill();
 				GL11.glColor3f(1, 1, 1);
 				GL11.glPushMatrix();
 				GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
-				Res.SARAH_DEATH.bind();
+				Res.SARAH_DEATH.file.bind();
 				ani.animate(false);
-				Texture.bindNone();
+				TextureFile.bindNone();
+				GL11.glTranslatef(0, 100, 0);
+				float xText = - 150;
+				Res.font.drawString(xText*2, 0, "GAME OVER", 2, 2);
 				GL11.glPopMatrix();
 				super.render();
+			}
+			
+			public void showButton(){
+				buttons[0].set(1/2.0f, 1/8.0f);
 			}
 		};
 		
@@ -210,7 +221,7 @@ public class Menu {
 	
 	public static class Button extends Quad{
 		
-		static StackedTexture tex = Texture.MENU_BUTTON;
+		static StackedTextures tex = Res.MENU_BUTTON;
 		
 		public String name;
 		public boolean state;
@@ -225,7 +236,8 @@ public class Menu {
 		public void render(){
 			GL11.glPushMatrix();
 			GL11.glTranslatef((x*Window.WIDTH) - (size.x/2), (y*Window.HEIGHT) - (size.y/2), 0);
-			drawTex(tex, 0, state ? 1 : 0);
+			tex.file.bind();
+			drawTex(tex.texs[0][state ? 1 : 0]);
 			float xText = x + (size.x/2) - (Res.font.getWidth(name)/3);
 			float yText = y + (size.y/2) - (Res.font.getHeight()/2);
 			Res.font.drawString(xText, yText, name, 1, 1);
