@@ -18,7 +18,7 @@ public abstract class Structure extends Thing{
 	public static void renderStructures(boolean front){
 		for(List<Structure> list : World.structures){
 			if(list.size() > 0){
-				list.get(0).animator.tex.bind();
+				list.get(0).animator.tex.file.bind();
 				list.forEach((c) -> {if(front == c.front){c.render();}});
 				
 				if(Settings.shader && list.get(0) instanceof Flower){

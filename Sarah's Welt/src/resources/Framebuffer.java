@@ -11,7 +11,7 @@ public class Framebuffer {
 
 	
 	public int handle;
-	public TextureFile textureFile;
+	public Texture texture;
 	
 	public void bind(){
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, handle);
@@ -30,32 +30,32 @@ public class Framebuffer {
 	 */
 	public void draw(){
 		GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
-		Window.fill(textureFile.handle);
+		Window.fill(texture.file.handle);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
-	public Framebuffer(TextureFile tex){
+	public Framebuffer(TextureFile texFile){
 		//create frame buffer object
 		handle = EXTFramebufferObject.glGenFramebuffersEXT();
 		
 		//create texture
-		textureFile = tex;
-		textureFile.set(GL11.glGenTextures(), textureFile.width, textureFile.height);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureFile.handle);
+		texture = new Texture(texFile);
+		texFile.set(GL11.glGenTextures(), texFile.width, texFile.height);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texFile.handle);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8,  textureFile.width, textureFile.height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8,  texFile.width, texFile.height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		
 		//create render buffer
 		int rbo = EXTFramebufferObject.glGenRenderbuffersEXT();
 		EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, rbo);
-		EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, GL11.GL_DEPTH_COMPONENT, textureFile.width, textureFile.height);
+		EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, GL11.GL_DEPTH_COMPONENT, texFile.width, texFile.height);
 		
 		//bind texture to frame buffer
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, handle);
 			EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT, EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT, EXTFramebufferObject.GL_RENDERBUFFER_EXT, rbo);
-			EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, textureFile.handle, 0);
+			EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT, GL11.GL_TEXTURE_2D, texFile.handle, 0);
 		EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0);
 
 		//check for errors

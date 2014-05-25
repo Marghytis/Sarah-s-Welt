@@ -69,10 +69,12 @@ public class ParticleTester {
 			
 			time = nextTime;
 			GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
-			cloud.drawTex(Res.CLOUD);
+			cloud.drawTex(Res.CLOUD.texs[0][0]);
 			
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
-			leftWindow.drawTex(lightmap.textureFile);
+			lightmap.texture.file.bind();
+			leftWindow.drawTex(lightmap.texture);
+			TextureFile.bindNone();
 	        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	        Display.update();
 		}

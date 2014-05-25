@@ -29,7 +29,7 @@ public class ItemStack{
 		GL11.glTranslatef((Window.WIDTH/2) - World.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) - World.sarah.animator.tex.box.y + sarahHandPos[1], 0);
 		GL11.glRotatef(item.defaultRotationHand + sarahHandPos[2], 0, 0, 1);
 		
-		item.handTexQuad.drawTex(item.hand, item.handTexQuad);
+//		item.handTexQuad.drawTex(item.hand, item.handTexQuad);
 		
 		GL11.glPopMatrix();
 	}

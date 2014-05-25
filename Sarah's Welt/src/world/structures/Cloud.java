@@ -21,7 +21,7 @@ public class Cloud extends Structure{
 	private boolean raining = false;//should not simply be set, because you maybe need to create the effect first
 	
 	public Cloud(Vec pos, Node worldLink, float size, boolean raining){
-		super(new Animator(Res.CLOUD, new Animation(1, 1)), pos, worldLink);
+		super(new Animator(Res.CLOUD, new Animation(0, 0)), pos, worldLink);
 		this.size = size;
 		effect = new RainEffect(new Vec(pos.x + ((animator.tex.box.x*size)/2), pos.y + (animator.tex.box.y*size) + 650), (animator.tex.box.size.x*size)/2, (animator.tex.box.size.y*size)/2);
 		front = false;
@@ -47,7 +47,7 @@ public class Cloud extends Structure{
 			effect.render();
 			GL11.glColor4f(1, 1, 1, 1);
 		}
-		animator.tex.bind();
+		animator.tex.file.bind();
 		super.render();
 		TextureFile.bindNone();
 	}

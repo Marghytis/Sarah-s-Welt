@@ -14,7 +14,7 @@ import sound.Sound;
 public class Res {
 
 	//Structures
-	public static final StackedTextures CLOUD = new StackedTextures(new TextureFile("structures/Cloud"), 1, 1, -0.5f, -0.5f);
+	public static final StackedTextures CLOUD = new StackedTextures("structures/Cloud", 1, 1, -0.5f, -0.5f);
 	public static final StackedTextures TREE = new StackedTextures("structures/Tree", 1, 3, -0.5f, -0.3f);
 	public static final StackedTextures PALM_TREE = new StackedTextures("structures/PalmTree", 1, 3, -0.5f, -0.03f);
 	public static final StackedTextures CANDY_TREE = new StackedTextures("structures/CandyTree", 1, 1, -0.5f, -0.2f);
@@ -27,6 +27,8 @@ public class Res {
 	public static final StackedTextures CANDY_FLOWER = new StackedTextures("structures/Candy", 1, 6, -0.5f, 0f);
 	public static final StackedTextures CRACK = new StackedTextures("structures/Crack", 1, 4, -0.5f, -0.5f);
 	public static final StackedTextures FOSSIL = new StackedTextures("structures/Fossil", 1, 3, -0.5f, -0.5f);
+
+	public static final Texture FLOWER_LIGHT = new Texture("Light_dimmed");
 	
 	//Creatures
 	public static final StackedTextures SNAIL  = new StackedTextures("creatures/Snail", 7, 3, -0.5f, -0.1f);
@@ -46,7 +48,7 @@ public class Res {
 	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
 	
 	public static final TextureFile WEAPONS = new TextureFile("items/Weapons");
-	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2);
+	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2, -0.5f, -0.5f);
 	
 	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static final SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);

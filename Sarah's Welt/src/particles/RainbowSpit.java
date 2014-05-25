@@ -45,7 +45,7 @@ public class RainbowSpit implements ParticleEffect{
 		public void velocityInterpolator(Particle p) {
 			p.vel.y -= 0.002f;
 			if(World.sarah != null){
-				if(World.sarah.animator.tex.box.plus(World.sarah.pos).contains(p.pos)){
+				if(World.sarah.animator.tex.texs[0][0].box.plus(World.sarah.pos).contains(p.pos)){
 					World.sarah.hitBy(source);
 				}
 			}

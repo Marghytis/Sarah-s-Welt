@@ -28,7 +28,7 @@ public abstract class Creature extends Thing {
 					GL11.glEnd();
 					GL11.glColor3f(1, 1, 1);
 				} else {
-					list.get(0).animator.tex.bind();
+					list.get(0).animator.tex.file.bind();
 					list.forEach((c) -> c.render());
 				}
 			}
@@ -39,7 +39,7 @@ public abstract class Creature extends Thing {
 				list.forEach((c) -> {
 					GL11.glPushMatrix();
 					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
-					c.animator.tex.box.outline();
+					c.animator.tex.texs[0][0].box.outline();
 					GL11.glPopMatrix();
 				});
 			}

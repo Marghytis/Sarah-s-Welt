@@ -166,7 +166,7 @@ public class Menu {
 				GL11.glColor3f(1, 1, 1);
 				GL11.glPushMatrix();
 				GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
-				Res.SARAH_DEATH.bind();
+				Res.SARAH_DEATH.file.bind();
 				ani.animate(false);
 				TextureFile.bindNone();
 				GL11.glTranslatef(0, 100, 0);
@@ -219,7 +219,8 @@ public class Menu {
 		public void render(){
 			GL11.glPushMatrix();
 			GL11.glTranslatef((x*Window.WIDTH) - (size.x/2), (y*Window.HEIGHT) - (size.y/2), 0);
-			drawTex(tex, 0, state ? 1 : 0);
+			tex.file.bind();
+			drawTex(tex.texs[0][state ? 1 : 0]);
 			float xText = x + (size.x/2) - (Res.font.getWidth(name)/3);
 			float yText = y + (size.y/2) - (Res.font.getHeight()/2);
 			Res.font.drawString(xText, yText, name, 1, 1);

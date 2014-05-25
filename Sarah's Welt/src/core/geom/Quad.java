@@ -2,8 +2,7 @@ package core.geom;
 
 import org.lwjgl.opengl.GL11;
 
-import resources.StackedTextures;
-import resources.TextureFile;
+import resources.Texture;
 
 public class Quad extends Vec{
 
@@ -12,6 +11,11 @@ public class Quad extends Vec{
 	public Quad(float x, float y, float width, float height){
 		super(x, y);
 		size = new Vec(width, height);
+	}
+
+	public Quad(Vec offset, Vec vec) {
+		super(offset);
+		size = new Vec(vec);
 	}
 
 	public void set(float x, float y, float width, float height){
@@ -23,75 +27,47 @@ public class Quad extends Vec{
 		return new Quad(x + v.x, y + v.y, size.x, size.y);
 	}
 
-	public void drawTex(){
+	/**
+	 * Doesn't bind the texture
+	 * @param tex
+	 */
+	public void drawTex(Texture tex){
+		
 		GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, 			y);
-			GL11.glTexCoord2f(1, 1); GL11.glVertex2f(x + size.x, 	y);
-			GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + size.x, 	y + size.y);
-			GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, 			y + size.y);
+			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.size.y); 	GL11.glVertex2f(x, 			y);//texs coords are right like this
+			GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.size.y); 	GL11.glVertex2f(x + size.x, y);
+			GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.y); 		GL11.glVertex2f(x + size.x, y + size.y);
+			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.y); 	GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
 	}
 
-	public void drawTex(TextureFile tex){
-		tex.bind();
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2f(0, 1); GL11.glVertex2f(x, 			y);
-		GL11.glTexCoord2f(1, 1); GL11.glVertex2f(x + size.x, 	y);
-		GL11.glTexCoord2f(1, 0); GL11.glVertex2f(x + size.x, 	y + size.y);
-		GL11.glTexCoord2f(0, 0); GL11.glVertex2f(x, 			y + size.y);
-		GL11.glEnd();
-		TextureFile.bindNone();
-	}
-
-	public void drawTex(TextureFile tex, Quad quad){
-		tex.bind();
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2f(quad.x/tex.width, 				(quad.y + quad.size.y)/tex.height); GL11.glVertex2f(x, 			y);
-		GL11.glTexCoord2f((quad.x + quad.size.x)/tex.width, (quad.y + quad.size.y)/tex.height); GL11.glVertex2f(x + size.x, y);
-		GL11.glTexCoord2f((quad.x + quad.size.x)/tex.width, quad.y/tex.height); 				GL11.glVertex2f(x + size.x, y + size.y);
-		GL11.glTexCoord2f(quad.x/tex.width, 				quad.y/tex.height); 				GL11.glVertex2f(x, 			y + size.y);
-		GL11.glEnd();
-		TextureFile.bindNone();
-	}
-
-	public void drawTex(StackedTextures tex, int xTex, int yTex){
-		
-		tex.bind();
-		
-		float xOffset = xTex*tex.widthT;
-		float yOffset = yTex*tex.heightT;
+	/**
+	 * Doesn't bind the texture
+	 * @param tex
+	 */
+	public void drawTexMirrored(Texture tex){
 		
 		GL11.glBegin(GL11.GL_QUADS);
-			GL11.glTexCoord2f(xOffset, 				yOffset + tex.heightT);	GL11.glVertex2f(x, 			y);
-			GL11.glTexCoord2f(xOffset + tex.widthT, yOffset + tex.heightT);	GL11.glVertex2f(x + size.x, y);
-			GL11.glTexCoord2f(xOffset + tex.widthT, yOffset);				GL11.glVertex2f(x + size.x, y + size.y);
-			GL11.glTexCoord2f(xOffset, 				yOffset);				GL11.glVertex2f(x, 			y + size.y);
+			GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.size.y); 	GL11.glVertex2f(x, 			y);//texs coords are right like this
+			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.size.y); 	GL11.glVertex2f(x + size.x, y);
+			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.y); 		GL11.glVertex2f(x + size.x, y + size.y);
+			GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.y); 		GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
-
-		tex.release();
 	}
 
-	public void drawTexNotBind(StackedTextures tex, int xTex, int yTex, boolean mirrored){
+	public void draw(){
 		
-		float xOffset = xTex*tex.widthT;
-		float yOffset = yTex*tex.heightT;
-		if(!mirrored){
-			GL11.glBegin(GL11.GL_QUADS);
-				GL11.glTexCoord2f(xOffset, 				yOffset + tex.heightT);	GL11.glVertex2f(x, 			y);
-				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset + tex.heightT);	GL11.glVertex2f(x + size.x, y);
-				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset);				GL11.glVertex2f(x + size.x, y + size.y);
-				GL11.glTexCoord2f(xOffset, 				yOffset);				GL11.glVertex2f(x, 			y + size.y);
-			GL11.glEnd();
-		} else {
-			GL11.glBegin(GL11.GL_QUADS);
-				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset + tex.heightT);	GL11.glVertex2f(x, 			y);
-				GL11.glTexCoord2f(xOffset, 				yOffset + tex.heightT);	GL11.glVertex2f(x + size.x, y);
-				GL11.glTexCoord2f(xOffset, 				yOffset);				GL11.glVertex2f(x + size.x, y + size.y);
-				GL11.glTexCoord2f(xOffset + tex.widthT, yOffset);				GL11.glVertex2f(x, 			y + size.y);
-			GL11.glEnd();
-		}
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glVertex2f(x, 			y);
+			GL11.glVertex2f(x + size.x, y);
+			GL11.glVertex2f(x + size.x, y + size.y);
+			GL11.glVertex2f(x, 			y + size.y);
+		GL11.glEnd();
 	}
 	
+	/**
+	 * Doesn't unbind the texture
+	 */
 	public void outline(){
 		GL11.glBegin(GL11.GL_LINE_LOOP);
 			GL11.glVertex2f(x, y);

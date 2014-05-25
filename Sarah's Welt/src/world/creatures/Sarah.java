@@ -167,7 +167,7 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 		}
-		animator.tex.bind();
+		animator.tex.file.bind();
 		
 		if(ridingCow && g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
 		else if(Settings.flying){

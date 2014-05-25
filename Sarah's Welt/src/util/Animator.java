@@ -23,7 +23,11 @@ public class Animator {
 		if(animation != null){
 			int texPos = animation.getPoint(frame);
 			
-			tex.box.drawTexNotBind(tex, texPos, animation.y, mirrored);
+			if(mirrored){
+				tex.texs[0][0].box.drawTexMirrored(tex.texs[texPos][animation.y]);
+			} else {
+				tex.texs[0][0].box.drawTex(tex.texs[texPos][animation.y]);
+			}
 	
 			if(frame != -1){
 				frame = animation.next(frame);

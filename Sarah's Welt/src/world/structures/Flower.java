@@ -3,7 +3,6 @@ package world.structures;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import util.Color;
@@ -22,7 +21,6 @@ public class Flower extends Structure {
 			new Color(1, 0, 0),
 			new Color(1, 1, 1)
 	};
-	public static TextureFile FLOWER_LIGHT = new TextureFile("Light_dimmed");
 	
 	public Flower(int type, Vec pos, Node worldLink){
 		super(new Animator(Res.FLOWER, new Animation(0, type)), pos, worldLink);
@@ -30,9 +28,9 @@ public class Flower extends Structure {
 	}
 	
 	public void renderLight(){
-		GL11.glTranslatef(pos.x - World.sarah.pos.x + Window.WIDTH/2 - FLOWER_LIGHT.width/2, -(pos.y - World.sarah.pos.y) + Window.HEIGHT/2 - FLOWER_LIGHT.height/2 - 20, 0);
+		GL11.glTranslatef(pos.x - World.sarah.pos.x + Window.WIDTH/2 - Res.FLOWER_LIGHT.file.width/2, -(pos.y - World.sarah.pos.y) + Window.HEIGHT/2 - Res.FLOWER_LIGHT.file.height/2 - 20, 0);
 		colors[type].set();
-		FLOWER_LIGHT.box.drawTex(FLOWER_LIGHT);
+		Res.FLOWER_LIGHT.box.drawTex(Res.FLOWER_LIGHT);
 	}
 	
 }
