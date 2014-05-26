@@ -233,7 +233,7 @@ public class World {
 		
 		//render health on creatures
 		if(Settings.health) for(List<Creature> list : creatures) for(Creature c : list){
-			Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f);
+			if(!(c instanceof Gnat)) Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f);
 		}
 		
 		//health on sarah
@@ -266,6 +266,9 @@ public class World {
 						}
 					}
 					sarah.punch();
+					if(Menu.view == View.INVENTORY){
+						Inventory.mouseClickedAt(Mouse.getEventX(), Mouse.getEventY());
+					}
 				} else if(Mouse.getEventButton() == 1){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);

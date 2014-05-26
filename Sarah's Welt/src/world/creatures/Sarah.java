@@ -79,21 +79,21 @@ public class Sarah extends WalkingCreature {
 			
 		} else {
 			//apply gravity
-			if(!Settings.flying) acc.add(0, -0.00005f);
+			if(!Settings.flying) acc.shift(0, -0.00005f);
 			
 			//apply keyboard force
 			if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-				acc.add(keyAcc, 0);
+				acc.shift(keyAcc, 0);
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-				acc.add(-keyAcc, 0);
+				acc.shift(-keyAcc, 0);
 			}
 			if(Settings.flying){
 				if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-					acc.add(0, keyAcc);
+					acc.shift(0, keyAcc);
 				}
 				if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-					acc.add(0, -keyAcc);
+					acc.shift(0, -keyAcc);
 				}
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -178,7 +178,7 @@ public class Sarah extends WalkingCreature {
 				animator.tex.box.outline();
 		}
 		
-		if(Inventory.stacks[0].item != null) Inventory.stacks[0].item.renderHand();
+		if(Inventory.stacks[Inventory.selectedItem].item != null) Inventory.stacks[Inventory.selectedItem].item.renderHand();
 	}
 	
 	public void setKeyDirection(){
@@ -214,7 +214,7 @@ public class Sarah extends WalkingCreature {
 	public void mountCow(Cow c){
 		if(g){
 			if(ridingCow){
-				Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), World.sarah.worldLink, 2);
+				Biome.spawnCreature(Cow.typeId, oldCow, World.sarah.worldLink, 2);
 			}
 			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
 			ridingCow = true;

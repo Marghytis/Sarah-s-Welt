@@ -9,6 +9,10 @@ public class StackedTextures{
 	public Texture[][] texs;
 	public TextureFile file;
 	public Quad box;
+	
+	public StackedTextures(String filename, int xParts, int yParts){
+		this(filename, xParts, yParts, 0, 0);
+	}
 
 	public StackedTextures(String filename, int xParts, int yParts, float xOffset, float yOffset){
 		if(yParts <= 0 || xParts <= 0){

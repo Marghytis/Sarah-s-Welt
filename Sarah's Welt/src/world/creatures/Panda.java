@@ -29,7 +29,7 @@ public class Panda extends WalkingCreature {
 		if(g){
 			walkingAI(dTime);
 		} else {
-			acc.add(0, -0.00005f);
+			acc.shift(0, -0.00005f);
 			applyFriction(Material.AIR);
 			
 			//do movement in air

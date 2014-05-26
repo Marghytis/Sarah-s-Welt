@@ -26,7 +26,6 @@ public class Item {
 	public Texture texInv;
 	public Quad boxWorld;
 	public Quad boxHand;
-	public static Quad boxInv = new Quad(-35, -35, 70, 70);
 	
 	public int defaultRotationHand;
 	
@@ -73,10 +72,6 @@ public class Item {
 		}
 		
 		GL11.glPopMatrix();
-	}
-	
-	public void renderInv(){
-		boxInv.drawTex(texInv);
 	}
 	
 }

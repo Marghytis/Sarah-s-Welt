@@ -69,9 +69,9 @@ public abstract class Creature extends Thing {
 			World.particleEffects.add(new DeathDust(pos.plus(animator.tex.box.middle())));
 			World.deathCreatures.add(this);
 		} else {
-			pos.add(vel);
+			pos.shift(vel);
 			
-			vel.add(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
+			vel.shift(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
 			acc.set(0, 0);
 			
 			if(hit > 0) hit--;
@@ -81,8 +81,8 @@ public abstract class Creature extends Thing {
 	public boolean hitBy(Creature c){
 		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
 			hit = 40;
-			if((c instanceof Sarah) && Inventory.stacks[0].item != null){
-				health -= ((Weapon)Inventory.stacks[0].item).power;
+			if((c instanceof Sarah) && Inventory.stacks[Inventory.selectedItem].item != null){
+				health -= ((Weapon)Inventory.stacks[Inventory.selectedItem].item).power;
 			} else {
 				health -= c.punchStrength;
 			}

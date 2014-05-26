@@ -46,13 +46,13 @@ public class Vec {
 		return new Vec(x *f, y * f);
 	}
 	
-	public Vec add(Vec p){
+	public Vec shift(Vec p){
 		x += p.x;
 		y += p.y;
 		return this;
 	}
 	
-	public Vec add(float x, float y){
+	public Vec shift(float x, float y){
 		this.x += x;
 		this.y += y;
 		return this;

@@ -67,7 +67,7 @@ public class ParticleEmitter{
 		colorInterpolator(p);
 		rotationInterpolator(p);
 		radiusInterpolator(p);
-		p.pos.add(p.vel.scaledBy(delta));
+		p.pos.shift(p.vel.scaledBy(delta));
 		p.live -= delta;
 	}
 

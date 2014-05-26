@@ -49,7 +49,7 @@ public class Res {
 	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
 	
 	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2, -0.5f, -0.5f);
-	public static final Texture INVENTORY = new Texture("items/Inventory");
+	public static final StackedTextures INVENTORY = new StackedTextures("items/Inventory", 1, 2);
 	public static final StackedTextures ITEMS_WORLD = new StackedTextures("items/ItemsWorld", 5, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_HAND = new StackedTextures("items/ItemsHand", 5, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 5, 1, -0.5f, -0.5f);

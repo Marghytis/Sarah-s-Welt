@@ -6,6 +6,8 @@ public class Inventory {
 
 	public static ItemStack[] stacks = new ItemStack[6];
 	
+	public static int selectedItem;
+	
 	public static void reset(){
 		for(int i = 0; i < Inventory.stacks.length; i++){
 			Inventory.stacks[i] = new ItemStack(i);
@@ -16,6 +18,14 @@ public class Inventory {
 		Res.INVENTORY.file.bind();
 		for(ItemStack stack : Inventory.stacks){
 			stack.render();
+		}
+	}
+	
+	public static void mouseClickedAt(float x, float y){
+		for(ItemStack stack : Inventory.stacks){
+			if(stack.contains(x, y)){
+				selectedItem = stack.slot;
+			}
 		}
 	}
 }

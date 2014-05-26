@@ -19,7 +19,7 @@ public class Gnat extends WalkingCreature{
 	
 	public void update(int dTime){
 		if(!g){
-			acc.add((0.5f - random.nextFloat())*0.00003f, (0.49f - random.nextFloat())*0.00003f);
+			acc.shift((0.5f - random.nextFloat())*0.00003f, (0.49f - random.nextFloat())*0.00003f);
 			applyFriction(Material.AIR);
 		} else {
 			if(random.nextInt(100) == 0){

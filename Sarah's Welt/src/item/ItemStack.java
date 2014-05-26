@@ -7,27 +7,25 @@ import core.Window;
 import core.geom.Quad;
 
 
-public class ItemStack{
+public class ItemStack extends Quad{
 
 	public Item item = null;
 	int count = 0;
 	int slot;
-	static Quad slotQuad = new Quad(-50, -50, 100, 100);
 	
 	public ItemStack(int slot){
+		super((slot+1)*(Window.WIDTH/7) -50, Window.HEIGHT/5 -50, 100, 100);
 		this.slot = slot;
 	}
 	
 	public void render(){
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		int oneWidth = Window.WIDTH/7;
-		GL11.glTranslatef((slot+1)*oneWidth, Window.HEIGHT/5, 0);
-		slotQuad.drawTex(Res.INVENTORY);
+		drawTex(Res.INVENTORY.texs[0][slot == Inventory.selectedItem ? 1 : 0]);
 		
 		Res.ITEMS_INV.file.bind();
 		if(item != null){
-			item.renderInv();
+			drawTex(item.texInv);
 		}
 		Res.INVENTORY.file.bind();
 		
