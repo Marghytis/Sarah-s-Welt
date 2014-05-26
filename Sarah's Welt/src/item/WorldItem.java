@@ -27,6 +27,7 @@ public class WorldItem extends Thing{
 				return false;
 			} else if (Inventory.stacks[i].item == null){
 				Inventory.stacks[i].item = item;
+//				World.items[item.id].remove(this);TODO
 				return true;
 			}
 		}
