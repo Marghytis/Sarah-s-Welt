@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.openal.AL10;
-
 import sound.Sound;
 
 public class Res {
@@ -49,10 +47,11 @@ public class Res {
 	public static final StackedTextures SARAH_ON_COW = new StackedTextures("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
 	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
 	
-	public static final TextureFile WEAPONS = new TextureFile("items/Weapons");
 	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2, -0.5f, -0.5f);
-	public static Texture INVENTORY = new Texture("items/Inventory");
-	public static StackedTextures ITEMS = new StackedTextures("items/Items", 5, 1, -0.5f, -0.5f);
+	public static final Texture INVENTORY = new Texture("items/Inventory");
+	public static final StackedTextures ITEMS_WORLD = new StackedTextures("items/ItemsWorld", 5, 1, -0.5f, -0.5f);
+	public static final StackedTextures ITEMS_HAND = new StackedTextures("items/ItemsHand", 5, 1, -0.5f, -0.5f);
+	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 5, 1, -0.5f, -0.5f);
 	
 	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static final SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);

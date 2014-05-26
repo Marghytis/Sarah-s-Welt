@@ -56,7 +56,7 @@ public enum Biome {
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
-				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
+				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 
 			//Creatures
@@ -88,7 +88,7 @@ public enum Biome {
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
-				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
+				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			
 			//Creatures
@@ -120,7 +120,7 @@ public enum Biome {
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
-				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
+				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 
 			//Creatures
@@ -153,7 +153,7 @@ public enum Biome {
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
-				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
+				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 
 			//Creatures
@@ -192,7 +192,7 @@ public enum Biome {
 				spawnStructure(Crack.typeId, new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 			if(random.nextInt(10) < 1){
-				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
+				spawnStructure(Fossil.typeId, new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000));
 			}
 
 			//Creatures
@@ -210,8 +210,8 @@ public enum Biome {
 			}
 			
 			//items
-			if(random.nextInt(100) < 1){
-				spawnItem(new WorldItem(Item.SWORD, new Vec(), null), node, -10);
+			if(random.nextInt(100) < 10){
+				spawnItem(new WorldItem(Item.sword, new Vec(), null), node, -10);
 			}
 		}
 	};
@@ -233,6 +233,6 @@ public enum Biome {
 	
 	public static void spawnItem(WorldItem item, Node n, float yOffset){
 		item.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-		World.items[item.item.ordinal()].add(item);
+		World.items[item.item.id].add(item);
 	}
 }

@@ -1,52 +1,74 @@
 package item;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
 
 import resources.Res;
 import resources.Texture;
-import resources.TextureFile;
 import world.World;
+import core.Window;
 import core.geom.Quad;
 
-public enum Item {
-	SWORD(Res.WEAPONS, new Quad(0, 0, 27, 53), Res.WEAPONS, new Quad(0, 0, 27, 53), new Quad(-13, -45, 27, 53), 90, "Sword", 0, 0, 4);
-	
-	public static void renderItems(){
-		for(List<WorldItem> list : World.items){
-			if(list.size() > 0){
-				list.forEach((c) -> c.render());
-			}
-		}
-	}
-	
-	//in world, in inventory; in hand
-	public TextureFile world;
-	public Quad worldTexQuad;
-	public TextureFile hand;
-	public Quad handTexQuad;
-	public Quad box;
-	public int defaultRotationHand;
+public class Item {
 
-	public int xItemsPNG;
-	public int yItemsPNG;
+	public static List<Item> list = new ArrayList<>();
+	
+	public static final Weapon sword = new Weapon(Res.ITEMS_WORLD.texs[0][0], Res.ITEMS_HAND.texs[0][0], Res.ITEMS_INV.texs[0][0],
+			new Quad(-25, -2, 50, 50), new Quad(-25, -10, 50, 50), 90, "Sword", 5);
+	public static final Weapon axe = new Weapon(Res.ITEMS_WORLD.texs[1][0], Res.ITEMS_HAND.texs[1][0], Res.ITEMS_INV.texs[1][0],
+			new Quad(-25, -2, 50, 50), new Quad(-25, -10, 50, 50), 90, "Sword", 5);
+	
+	
+	public Texture texWorld;
+	public Texture texHand;
+	public Texture texInv;
+	public Quad boxWorld;
+	public Quad boxHand;
+	public static Quad boxInv = new Quad(-20, -30, 40, 40);
+	
+	public int defaultRotationHand;
 	
 	public String name;
-	
-	public int damage;
-	
-	Item(TextureFile world, Quad worldTexQuad, TextureFile hand, Quad handTexQuad, Quad box, int defaultRotationHand, String name, int x, int y, int damage){
-		this.world = world;
-		this.worldTexQuad = worldTexQuad;
-		this.hand = hand;
-		this.handTexQuad = handTexQuad;
-		this.box = box;
+	public int id;
+
+	public Item(Texture texWorld, Texture texHand, Texture texinv,
+			Quad boxWorld, Quad boxHand, int defaultRotationHand,
+			String name) {
+		this.texWorld = texWorld;
+		this.texHand = texHand;
+		this.texInv = texinv;
+		this.boxWorld = boxWorld;
+		this.boxHand = boxHand;
 		this.defaultRotationHand = defaultRotationHand;
-		
 		this.name = name;
 		
-		this.xItemsPNG = x;
-		this.yItemsPNG = y;
-		
-		this.damage = damage;
+		list.add(this);
+		this.id = list.indexOf(this);
 	}
+	
+	public void renderWorld(){
+		boxWorld.drawTex(texWorld);
+	}
+	
+	public void renderHand(){
+		int[] sarahHandPos = World.sarah.getHandPosition();
+		
+		GL11.glPushMatrix();
+		GL11.glLoadIdentity();
+		GL11.glTranslatef((Window.WIDTH/2) + World.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) + World.sarah.animator.tex.box.y + sarahHandPos[1], 0);
+		GL11.glRotatef(defaultRotationHand + sarahHandPos[2], 0, 0, 1);
+		
+		texHand.file.bind();
+		boxHand.drawTex(texHand);
+		
+		GL11.glPopMatrix();
+	}
+	
+	public void renderInv(){
+		texInv.file.bind();
+		boxInv.drawTex(texInv);
+	}
+	
 }

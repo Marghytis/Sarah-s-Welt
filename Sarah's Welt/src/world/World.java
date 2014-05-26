@@ -1,5 +1,6 @@
 package world;
 
+import item.Inventory;
 import item.Item;
 import item.WorldItem;
 
@@ -57,7 +58,7 @@ public class World {
 
 	public static List<Structure>[] structures;
 	public static List<Creature>[] creatures;
-	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.values().length]);
+	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.list.size()]);
 	
 	public static List<Creature> deathCreatures = new ArrayList<>();
 	
@@ -132,6 +133,7 @@ public class World {
 		generator.gen(sarahX);
 		sarah = new Sarah(new Vec(sarahX, 1000), null);
 		light = new Lightmap(new TextureFile(Window.WIDTH, Window.HEIGHT));
+		Inventory.reset();
 //		}
 	}
 	
@@ -206,7 +208,7 @@ public class World {
 		//back
 		Structure.renderStructures(false);
 		
-		Item.renderItems();
+		WorldItem.renderItems();
 
 		Material[] mats = Material.values();
 		for(int i = 0; i < mats.length; i++){
@@ -271,7 +273,7 @@ public class World {
 						}
 					}
 					for(List<WorldItem> list : items) for(WorldItem c : list){
-						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
+						if((c.pos.x + c.animator.texture.box.x < x && c.pos.x + c.animator.texture.box.x + c.animator.texture.box.size.x > x) && (c.pos.y + c.animator.texture.box.y < y && c.pos.y + c.animator.texture.box.y + c.animator.texture.box.size.y > y)){
 							c.rightClickAction();
 						}
 					}

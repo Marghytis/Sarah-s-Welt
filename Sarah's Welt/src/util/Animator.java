@@ -1,13 +1,16 @@
 package util;
 
 import resources.StackedTextures;
+import resources.Texture;
 
 public class Animator {
 
 	public Animation animation;
 	public int frame;
 	public StackedTextures tex;
+	public Texture texture;
 	public Runnable doOnReady;
+	public boolean staticFrame;
 	
 	public Animator(StackedTextures tex, Animation defaultA){
 		this(tex, () -> {}, defaultA);
@@ -17,10 +20,18 @@ public class Animator {
 		this.tex = tex;
 		this.doOnReady = doOnReady;
 		this.animation = defaultA;
+		staticFrame = false;
+	}
+	
+	public Animator(Texture tex){
+		staticFrame = true;
+		texture = tex;
 	}
 	
 	public void animate(boolean mirrored){
-		if(animation != null){
+		if(staticFrame){
+			texture.box.drawTex(texture);
+		} else if(animation != null){
 			int texPos = animation.getPoint(frame);
 			
 			if(mirrored){

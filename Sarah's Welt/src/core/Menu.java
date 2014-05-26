@@ -1,7 +1,6 @@
 package core;
 
-import item.Item;
-import item.ItemStack;
+import item.Inventory;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -49,13 +48,13 @@ public class Menu {
 			if(Mouse.getEventButton() == 0){
 				if(Mouse.getEventButtonState()){
 					for(Button b : view.buttons){
-						if(!(b instanceof ItemStack) && b.contains(Mouse.getEventX(), Mouse.getEventY())){
+						if(b.contains(Mouse.getEventX(), Mouse.getEventY())){
 							buttonPressed(b);
 						}
 					}
 				} else {
 					for(Button b : view.buttons){
-						if(!(b instanceof ItemStack)) buttonReleased(b);
+						buttonReleased(b);
 					}
 				}
 			}
@@ -123,18 +122,13 @@ public class Menu {
 				};
 			}
 		},
-		INVENTORY(false){			
+		INVENTORY(false){
+						
 			void setup(){
-				buttons = new ItemStack[6];
-				for(int i = 0; i < buttons.length; i++){
-					buttons[i] = new ItemStack(i);
-				}
 			}
 			
 			public void render(){
-				for(Button item : buttons){
-					((ItemStack)item).renderInInv();
-				}
+				Inventory.render();
 			}
 		},
 		CONTROLS(true){

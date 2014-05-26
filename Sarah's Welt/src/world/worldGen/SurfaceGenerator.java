@@ -165,7 +165,7 @@ public class SurfaceGenerator {
 		public WorldGenObject level_2;
 		public double nextAngle = 0;
 		public boolean dir;
-		public Biome biome = Biome.FOREST;
+		public Biome biome = Biome.CANDY;
 		public WorldStructure landscape = WorldStructure.GRASSTOP;
 		public Landscape formation = Landscape.STAIRS;
 		

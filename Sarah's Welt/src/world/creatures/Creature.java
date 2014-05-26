@@ -1,6 +1,7 @@
 package world.creatures;
 
-import item.ItemStack;
+import item.Inventory;
+import item.Weapon;
 
 import java.util.List;
 
@@ -14,7 +15,6 @@ import world.Material;
 import world.Node;
 import world.Thing;
 import world.World;
-import core.Menu.View;
 import core.Settings;
 import core.geom.Vec;
 
@@ -79,8 +79,8 @@ public abstract class Creature extends Thing {
 	public boolean hitBy(Creature c){
 		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
 			hit = 40;
-			if(c instanceof Sarah && ((ItemStack)View.INVENTORY.buttons[0]).item != null){
-				health -= ((ItemStack)View.INVENTORY.buttons[0]).item.damage;
+			if((c instanceof Sarah) && Inventory.stacks[0].item != null){
+				health -= ((Weapon)Inventory.stacks[0].item).power;
 			} else {
 				health -= c.punchStrength;
 			}

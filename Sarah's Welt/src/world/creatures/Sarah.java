@@ -1,6 +1,6 @@
 package world.creatures;
 
-import item.ItemStack;
+import item.Inventory;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -13,7 +13,6 @@ import world.Material;
 import world.Node;
 import world.World;
 import world.worldGen.Biome;
-import core.Menu.View;
 import core.Settings;
 import core.geom.Vec;
 
@@ -179,7 +178,7 @@ public class Sarah extends WalkingCreature {
 				animator.tex.box.outline();
 		}
 		
-		((ItemStack)View.INVENTORY.buttons[0]).renderInHand();
+		if(Inventory.stacks[0].item != null) Inventory.stacks[0].item.renderHand();
 	}
 	
 	public void setKeyDirection(){
