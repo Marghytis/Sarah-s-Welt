@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import world.Material;
