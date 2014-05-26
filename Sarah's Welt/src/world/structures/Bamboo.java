@@ -14,7 +14,7 @@ public class Bamboo extends Structure{
 	public float size;
 	
 	public Bamboo(int type, Vec pos, Node worldLink, float size){
-		super(new Animator(Res.BAMBOO, new Animation(1, type)), pos, worldLink);
+		super(new Animator(Res.BAMBOO, new Animation(0, type)), pos, worldLink);
 		this.front = random.nextInt(10) == 0;
 		this.size = size;
 		mirrored = random.nextBoolean();

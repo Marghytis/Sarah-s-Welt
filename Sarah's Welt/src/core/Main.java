@@ -4,20 +4,19 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import world.Calendar;
 import world.World;
 
 public class Main {
 
 	public static void main(String[] args){
-		Window.create("Sarahs Welt", 1000, 600);
-//		Window.createFullScreen("Sarahs Welt");
-		Window.fill(new Texture("titelbild", 0, 0).handle);
+//		Window.create("Sarahs Welt", 1200, 800);
+		Window.createFullScreen("Sarahs Welt");
+		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();
 		Res.load();
 		World.load("TestWelt", 10);
-		System.out.println(GL11.glGetString(GL11.GL_VERSION));
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){

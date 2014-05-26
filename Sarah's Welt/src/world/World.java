@@ -1,5 +1,6 @@
 package world;
 
+import item.Inventory;
 import item.Item;
 import item.WorldItem;
 
@@ -14,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import particles.ParticleEffect;
 import resources.Lightmap;
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import util.Tessellator;
 import world.creatures.Bird;
 import world.creatures.Butterfly;
@@ -58,7 +59,7 @@ public class World {
 
 	public static List<Structure>[] structures;
 	public static List<Creature>[] creatures;
-	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.values().length]);
+	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.list.size()]);
 	
 	public static List<Creature> deathCreatures = new ArrayList<>();
 	
@@ -133,7 +134,8 @@ public class World {
 		
 		generator.gen(sarahX);
 		sarah = new Sarah(new Vec(sarahX, 1000), null);
-		light = new Lightmap(new Texture(Window.WIDTH, Window.HEIGHT));
+		light = new Lightmap(new TextureFile(Window.WIDTH, Window.HEIGHT));
+		Inventory.reset();
 //		}
 	}
 	
@@ -208,14 +210,14 @@ public class World {
 		//back
 		Structure.renderStructures(false);
 		
-		Item.renderItems();
+		WorldItem.renderItems();
 
 		Material[] mats = Material.values();
 		for(int i = 0; i < mats.length; i++){
-			mats[i].texture.bind();
-			tessellator.tessellateOneNode(contours[i], Material.GRASS.texture.width, Material.GRASS.texture.height);
+			mats[i].textureFile.bind();
+			tessellator.tessellateOneNode(contours[i], Material.GRASS.textureFile.width, Material.GRASS.textureFile.height);
 		}
-		Texture.bindNone();
+		TextureFile.bindNone();
 		
 		//front
 	
@@ -267,8 +269,14 @@ public class World {
 				} else if(Mouse.getEventButton() == 1){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					for(List<Creature> list : creatures) for(Creature c : list){
+					for(List<Creature> list : creatures) for(int ci = 0; ci < list.size(); ci++){
+						Creature c = list.get(ci);
 						if(!(c instanceof Gnat) && (c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
+							c.rightClickAction();
+						}
+					}
+					for(List<WorldItem> list : items) for(WorldItem c : list){
+						if((c.pos.x + c.item.boxWorld.x < x && c.pos.x + c.item.boxWorld.x + c.item.boxWorld.size.x > x) && (c.pos.y + c.item.boxWorld.y < y && c.pos.y + c.item.boxWorld.y + c.item.boxWorld.size.y > y)){
 							c.rightClickAction();
 						}
 					}
@@ -292,6 +300,12 @@ public class World {
 					case Keyboard.KEY_W: sarah.jump(); break;
 					case Keyboard.KEY_E: sarah.dismountCow(); break;
 					case Keyboard.KEY_F: Menu.buttonPressed(View.DEBUG.buttons[0]); break;
+					case Keyboard.KEY_I:
+						if(Menu.view == View.INVENTORY){
+							View.EMPTY.set();
+						} else {
+							View.INVENTORY.set();
+						} break;
 					}
 				} else {
 					

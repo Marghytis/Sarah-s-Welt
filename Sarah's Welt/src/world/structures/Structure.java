@@ -5,7 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import resources.Shader;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animator;
 import world.Node;
 import world.Thing;
@@ -18,7 +18,7 @@ public abstract class Structure extends Thing{
 	public static void renderStructures(boolean front){
 		for(List<Structure> list : World.structures){
 			if(list.size() > 0){
-				list.get(0).animator.tex.bind();
+				list.get(0).animator.tex.file.bind();
 				list.forEach((c) -> {if(front == c.front){c.render();}});
 				
 				if(Settings.shader && list.get(0) instanceof Flower){
@@ -40,7 +40,7 @@ public abstract class Structure extends Thing{
 				}
 			}
 		}
-		Texture.bindNone();
+		TextureFile.bindNone();
 		if(Settings.hitbox){
 			for(List<Structure> list : World.structures){
 				list.forEach((c) -> {

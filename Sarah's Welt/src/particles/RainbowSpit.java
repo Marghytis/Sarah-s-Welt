@@ -1,7 +1,7 @@
 package particles;
 
 import particles.Particle.ParticleType;
-import resources.Texture;
+import resources.TextureFile;
 import util.Color;
 import world.World;
 import world.creatures.Unicorn;
@@ -9,7 +9,7 @@ import core.geom.Vec;
 
 public class RainbowSpit implements ParticleEffect{
 	
-	public static final ParticleType RAINBOW = new ParticleType(new Texture("particles/RainbowParticle"));
+	public static final ParticleType RAINBOW = new ParticleType(new TextureFile("particles/RainbowParticle"));
 	
 	public ParticleEmitter rainbow = new ParticleEmitter(210, 200, RAINBOW, 1000){
 		
@@ -45,7 +45,7 @@ public class RainbowSpit implements ParticleEffect{
 		public void velocityInterpolator(Particle p) {
 			p.vel.y -= 0.002f;
 			if(World.sarah != null){
-				if(World.sarah.animator.tex.box.plus(World.sarah.pos).contains(p.pos)){
+				if(World.sarah.animator.tex.texs[0][0].box.plus(World.sarah.pos).contains(p.pos)){
 					World.sarah.hitBy(source);
 				}
 			}

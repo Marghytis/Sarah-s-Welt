@@ -1,12 +1,14 @@
 package core;
 
+import item.Inventory;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.StackedTexture;
-import resources.Texture;
+import resources.StackedTextures;
+import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import world.Calendar;
@@ -120,6 +122,15 @@ public class Menu {
 				};
 			}
 		},
+		INVENTORY(false){
+						
+			void setup(){
+			}
+			
+			public void render(){
+				Inventory.render();
+			}
+		},
 		CONTROLS(true){
 			void setup(){
 				buttons = new Button[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})};
@@ -160,15 +171,15 @@ public class Menu {
 			@Override
 			public void render(){
 				GL11.glLoadIdentity();
-				Texture.bindNone();
+				TextureFile.bindNone();
 				GL11.glColor4f(0, 0, 0, 1);
 				Window.fill();
 				GL11.glColor3f(1, 1, 1);
 				GL11.glPushMatrix();
 				GL11.glTranslatef(Window.WIDTH/2, Window.HEIGHT/2, 0);
-				Res.SARAH_DEATH.bind();
+				Res.SARAH_DEATH.file.bind();
 				ani.animate(false);
-				Texture.bindNone();
+				TextureFile.bindNone();
 				GL11.glTranslatef(0, 100, 0);
 				float xText = - 150;
 				Res.font.drawString(xText*2, 0, "GAME OVER", 2, 2);
@@ -204,7 +215,7 @@ public class Menu {
 	
 	public static class Button extends Quad{
 		
-		static StackedTexture tex = Texture.MENU_BUTTON;
+		static StackedTextures tex = Res.MENU_BUTTON;
 		
 		public String name;
 		public boolean state;
@@ -219,7 +230,8 @@ public class Menu {
 		public void render(){
 			GL11.glPushMatrix();
 			GL11.glTranslatef((x*Window.WIDTH) - (size.x/2), (y*Window.HEIGHT) - (size.y/2), 0);
-			drawTex(tex, 0, state ? 1 : 0);
+			tex.file.bind();
+			drawTex(tex.texs[0][state ? 1 : 0]);
 			float xText = x + (size.x/2) - (Res.font.getWidth(name)/3);
 			float yText = y + (size.y/2) - (Res.font.getHeight()/2);
 			Res.font.drawString(xText, yText, name, 1, 1);
@@ -253,6 +265,5 @@ public class Menu {
 			}
 			super.render();
 		}
-		
 	}
 }

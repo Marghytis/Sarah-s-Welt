@@ -1,13 +1,13 @@
 package particles;
 
 import particles.Particle.ParticleType;
-import resources.Texture;
+import resources.TextureFile;
 import core.geom.Vec;
 
 public class Hearts implements ParticleEffect{
 
 	
-	public static final ParticleType HEART = new ParticleType(new Texture("particles/Heart"));
+	public static final ParticleType HEART = new ParticleType(new TextureFile("particles/Heart"));
 	
 	public ParticleEmitter hearts = new ParticleEmitter(100, 1, HEART, 1000){
 

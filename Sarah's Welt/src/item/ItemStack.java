@@ -2,35 +2,38 @@ package item;
 
 import org.lwjgl.opengl.GL11;
 
+import resources.Res;
 import core.Window;
-import world.World;
+import core.geom.Quad;
 
 
 public class ItemStack{
 
-	Item item;
-	int count;
+	public Item item = null;
+	int count = 0;
+	int slot;
+	static Quad slotQuad = new Quad(-50, -50, 100, 100);
 	
-	public ItemStack(Item item){
-		this(item, 1);
+	public ItemStack(int slot){
+		this.slot = slot;
 	}
 	
-	public ItemStack(Item item, int count){
-		this.item = item;
-		this.count = count;
-	}
-	
-	public void renderInHand(){
-		
-		int[] sarahHandPos = World.sarah.getHandPosition();
-		
+	public void render(){
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		GL11.glTranslatef((Window.WIDTH/2) - World.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) - World.sarah.animator.tex.box.y + sarahHandPos[1], 0);
-		GL11.glRotatef(item.defaultRotationHand + sarahHandPos[2], 0, 0, 1);
+		int oneWidth = Window.WIDTH/7;
+		GL11.glTranslatef((slot+1)*oneWidth, Window.HEIGHT/5, 0);
+		slotQuad.drawTex(Res.INVENTORY);
 		
-		item.handTexQuad.drawTex(item.hand, item.handTexQuad);
+		Res.ITEMS_INV.file.bind();
+		if(item != null){
+			item.renderInv();
+		}
+		Res.INVENTORY.file.bind();
 		
+//		float xText = x + (size.x/2) - (Res.font.getWidth(name)/3);
+//		float yText = y + (size.y/2) - (Res.font.getHeight()/2);
+//		Res.font.drawString(xText, yText, name, 1, 1);
 		GL11.glPopMatrix();
 	}
 }

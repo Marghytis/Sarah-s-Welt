@@ -14,10 +14,10 @@ public class Fossil extends Structure{
 	public float size;
 	public int rotation;
 
-	public static Animation[] crack = {new Animation(0, 0), new Animation(0, 1), new Animation(0, 2), new Animation(0, 3)};
+	public static Animation[] fossil = {new Animation(0, 0), new Animation(0, 1), new Animation(0, 2)};
 	
 	public Fossil(int type, Vec pos, Node worldLink, float size, int rotation){
-		super(new Animator(Res.FOSSIL, crack[type]), pos, worldLink);
+		super(new Animator(Res.FOSSIL, fossil[type]), pos, worldLink);
 		front = true;
 		this.size = size;
 		this.rotation = rotation;

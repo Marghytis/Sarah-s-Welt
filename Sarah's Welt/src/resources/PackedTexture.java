@@ -2,7 +2,7 @@ package resources;
 
 import core.geom.Quad;
 
-public class PackedTexture extends Texture {
+public class PackedTexture extends TextureFile {
 
 	public Quad[] parts;
 	

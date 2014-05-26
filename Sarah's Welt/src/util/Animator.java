@@ -1,29 +1,44 @@
 package util;
 
-import resources.StackedTexture;
+import resources.StackedTextures;
+import resources.Texture;
 
 public class Animator {
 
 	public Animation animation;
 	public int frame;
-	public StackedTexture tex;
+	public StackedTextures tex;
+	public Texture texture;
 	public Runnable doOnReady;
+	public boolean staticFrame;
 	
-	public Animator(StackedTexture tex, Animation defaultA){
+	public Animator(StackedTextures tex, Animation defaultA){
 		this(tex, () -> {}, defaultA);
 	}
 	
-	public Animator(StackedTexture tex, Runnable doOnReady, Animation defaultA){
+	public Animator(StackedTextures tex, Runnable doOnReady, Animation defaultA){
 		this.tex = tex;
 		this.doOnReady = doOnReady;
 		this.animation = defaultA;
+		staticFrame = false;
+	}
+	
+	public Animator(Texture tex){
+		staticFrame = true;
+		texture = tex;
 	}
 	
 	public void animate(boolean mirrored){
-		if(animation != null){
+		if(staticFrame){
+			texture.box.drawTex(texture);
+		} else if(animation != null){
 			int texPos = animation.getPoint(frame);
 			
-			tex.box.drawTexNotBind(tex, texPos, animation.y, mirrored);
+			if(mirrored){
+				tex.texs[0][0].box.drawTexMirrored(tex.texs[texPos][animation.y]);
+			} else {
+				tex.texs[0][0].box.drawTex(tex.texs[texPos][animation.y]);
+			}
 	
 			if(frame != -1){
 				frame = animation.next(frame);

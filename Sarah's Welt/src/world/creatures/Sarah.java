@@ -1,13 +1,12 @@
 package world.creatures;
 
-import item.Item;
-import item.ItemStack;
+import item.Inventory;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import world.Material;
@@ -59,8 +58,6 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 		};
-		
-		sword = new ItemStack(Item.SWORD);
 	}
 	
 	public void update(int dTime){
@@ -167,7 +164,7 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 		}
-		animator.tex.bind();
+		animator.tex.file.bind();
 		
 		if(ridingCow && g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
 		else if(Settings.flying){
@@ -175,12 +172,13 @@ public class Sarah extends WalkingCreature {
 		}
 	}
 	
-	ItemStack sword;
-	
 	public void afterRender(){
-		Texture.bindNone();
+		TextureFile.bindNone();
+		if(Settings.hitbox){
+				animator.tex.box.outline();
+		}
 		
-		sword.renderInHand();
+		if(Inventory.stacks[0].item != null) Inventory.stacks[0].item.renderHand();
 	}
 	
 	public void setKeyDirection(){
@@ -227,7 +225,10 @@ public class Sarah extends WalkingCreature {
 	public int[] getHandPosition(){
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
-		return new int[]{14, 20, 45};
+		if(ridingCow){
+			return Res.SARAH_ITEMCOORDS.get(0)[0];
+		}
+		return Res.SARAH_ITEMCOORDS.get(y)[x];
 	}
 	
 	public void dismountCow(){

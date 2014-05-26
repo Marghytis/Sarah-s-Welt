@@ -1,12 +1,15 @@
 package world.creatures;
 
+import item.Inventory;
+import item.Weapon;
+
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
 import particles.BloodSplash;
 import particles.DeathDust;
-import resources.Texture;
+import resources.TextureFile;
 import util.Animator;
 import world.Material;
 import world.Node;
@@ -21,26 +24,28 @@ public abstract class Creature extends Thing {
 		for(List<Creature> list : World.creatures){
 			if(list.size() > 0) {
 				if(list.get(0) instanceof Gnat){
-					Texture.bindNone();
+					TextureFile.bindNone();
 					GL11.glColor3f(0.2f, 0.2f, 0.2f);
 					GL11.glBegin(GL11.GL_POINTS);
 						list.forEach((c) -> ((Gnat)c).render());
 					GL11.glEnd();
 					GL11.glColor3f(1, 1, 1);
 				} else {
-					list.get(0).animator.tex.bind();
+					list.get(0).animator.tex.file.bind();
 					list.forEach((c) -> c.render());
 				}
 			}
 		}
-		Texture.bindNone();
+		TextureFile.bindNone();
 		if(Settings.hitbox){
 			for(List<Creature> list : World.creatures){
 				list.forEach((c) -> {
-					GL11.glPushMatrix();
-					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
-					c.animator.tex.box.outline();
-					GL11.glPopMatrix();
+					if(!(c instanceof Gnat)){
+						GL11.glPushMatrix();
+						GL11.glTranslatef(c.pos.x, c.pos.y, 0);
+						c.animator.tex.texs[0][0].box.outline();
+						GL11.glPopMatrix();
+					}
 				});
 			}
 		}
@@ -76,7 +81,11 @@ public abstract class Creature extends Thing {
 	public boolean hitBy(Creature c){
 		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
 			hit = 40;
-			health -= c.punchStrength;
+			if((c instanceof Sarah) && Inventory.stacks[0].item != null){
+				health -= ((Weapon)Inventory.stacks[0].item).power;
+			} else {
+				health -= c.punchStrength;
+			}
 			World.particleEffects.add(new BloodSplash(pos.plus(animator.tex.box.middle())));
 			return true;
 		}
