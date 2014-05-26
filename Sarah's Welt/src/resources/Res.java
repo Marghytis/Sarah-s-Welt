@@ -52,6 +52,7 @@ public class Res {
 	public static final StackedTextures ITEMS_WORLD = new StackedTextures("items/ItemsWorld", 5, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_HAND = new StackedTextures("items/ItemsHand", 5, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 5, 1, -0.5f, -0.5f);
+	public static final StackedTextures ITEMS_WEAPONS = new StackedTextures("items/Weapons", 1, 6, -0.5f, -0.5f);
 	
 	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static final SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);

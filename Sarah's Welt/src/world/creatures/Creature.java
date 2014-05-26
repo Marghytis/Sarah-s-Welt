@@ -40,10 +40,12 @@ public abstract class Creature extends Thing {
 		if(Settings.hitbox){
 			for(List<Creature> list : World.creatures){
 				list.forEach((c) -> {
-					GL11.glPushMatrix();
-					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
-					c.animator.tex.texs[0][0].box.outline();
-					GL11.glPopMatrix();
+					if(!(c instanceof Gnat)){
+						GL11.glPushMatrix();
+						GL11.glTranslatef(c.pos.x, c.pos.y, 0);
+						c.animator.tex.texs[0][0].box.outline();
+						GL11.glPopMatrix();
+					}
 				});
 			}
 		}

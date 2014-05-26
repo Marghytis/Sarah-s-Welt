@@ -17,11 +17,5 @@ public class Inventory {
 		for(ItemStack stack : Inventory.stacks){
 			stack.render();
 		}
-		Res.ITEMS_INV.file.bind();
-		for(ItemStack stack : Inventory.stacks){
-			if(stack.item != null){
-				stack.item.renderInv();
-			}
-		}
 	}
 }

@@ -9,6 +9,7 @@ import util.Animator;
 import world.Node;
 import world.Thing;
 import world.World;
+import core.Settings;
 import core.geom.Vec;
 
 public class WorldItem extends Thing{
@@ -48,7 +49,17 @@ public class WorldItem extends Thing{
 				list.forEach((c) -> c.render());
 			}
 		}
-		TextureFile.bindNone();		
+		TextureFile.bindNone();
+		if(Settings.hitbox){
+			for(List<WorldItem> list : World.items){
+				list.forEach((c) -> {
+					GL11.glPushMatrix();
+					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
+					c.animator.texture.box.outline();
+					GL11.glPopMatrix();
+				});
+			}
+		}
 	}
 	
 }

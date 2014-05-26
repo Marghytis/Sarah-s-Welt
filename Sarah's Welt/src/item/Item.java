@@ -15,10 +15,10 @@ public class Item {
 
 	public static List<Item> list = new ArrayList<>();
 	
-	public static final Weapon sword = new Weapon(Res.ITEMS_WORLD.texs[0][0], Res.ITEMS_HAND.texs[0][0], Res.ITEMS_INV.texs[0][0],
-			new Quad(-25, -2, 50, 50), new Quad(-25, -10, 50, 50), 90, "Sword", 5);
-	public static final Weapon axe = new Weapon(Res.ITEMS_WORLD.texs[1][0], Res.ITEMS_HAND.texs[1][0], Res.ITEMS_INV.texs[1][0],
-			new Quad(-25, -2, 50, 50), new Quad(-25, -10, 50, 50), 90, "Sword", 5);
+	public static final Weapon sword = new Weapon(Res.ITEMS_WORLD.texs[0][0], Res.ITEMS_WEAPONS.texs[0][0], Res.ITEMS_INV.texs[0][0],
+			new Quad(-25, -2, 50, 50), new Quad(-55, -21, 80, 40), 180, "Sword", 4);
+	public static final Weapon axe = new Weapon(Res.ITEMS_WORLD.texs[1][0], Res.ITEMS_WEAPONS.texs[0][1], Res.ITEMS_INV.texs[1][0],
+			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Axe", 10);
 	
 	
 	public Texture texWorld;
@@ -26,7 +26,7 @@ public class Item {
 	public Texture texInv;
 	public Quad boxWorld;
 	public Quad boxHand;
-	public static Quad boxInv = new Quad(-20, -30, 40, 40);
+	public static Quad boxInv = new Quad(-35, -35, 70, 70);
 	
 	public int defaultRotationHand;
 	
@@ -53,7 +53,12 @@ public class Item {
 	}
 	
 	public void renderHand(){
-		int[] sarahHandPos = World.sarah.getHandPosition();
+		int[] handPos = World.sarah.getHandPosition();
+		int[] sarahHandPos = new int[]{handPos[0], handPos[1], handPos[2]};
+		if(World.sarah.mirrored){
+			sarahHandPos[0] = (int) (World.sarah.animator.tex.box.size.x - sarahHandPos[0]);
+			sarahHandPos[2] = 180 - sarahHandPos[2];
+		}
 		
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
@@ -61,13 +66,16 @@ public class Item {
 		GL11.glRotatef(defaultRotationHand + sarahHandPos[2], 0, 0, 1);
 		
 		texHand.file.bind();
-		boxHand.drawTex(texHand);
+		if(!World.sarah.mirrored){
+			boxHand.drawTex(texHand);
+		} else {
+			boxHand.drawTexFlipped(texHand);
+		}
 		
 		GL11.glPopMatrix();
 	}
 	
 	public void renderInv(){
-		texInv.file.bind();
 		boxInv.drawTex(texInv);
 	}
 	

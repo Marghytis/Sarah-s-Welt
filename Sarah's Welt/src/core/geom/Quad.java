@@ -37,7 +37,7 @@ public class Quad extends Vec{
 			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.size.y); 	GL11.glVertex2f(x, 			y);//texs coords are right like this
 			GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.size.y); 	GL11.glVertex2f(x + size.x, y);
 			GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.y); 		GL11.glVertex2f(x + size.x, y + size.y);
-			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.y); 	GL11.glVertex2f(x, 			y + size.y);
+			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.y); 		GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
 	}
 
@@ -52,6 +52,20 @@ public class Quad extends Vec{
 			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.size.y); 	GL11.glVertex2f(x + size.x, y);
 			GL11.glTexCoord2f(tex.quad.x, 		tex.quad.y); 		GL11.glVertex2f(x + size.x, y + size.y);
 			GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.y); 		GL11.glVertex2f(x, 			y + size.y);
+		GL11.glEnd();
+	}
+
+	/**
+	 * Doesn't bind the texture
+	 * @param tex
+	 */
+	public void drawTexFlipped(Texture tex){
+		
+		GL11.glBegin(GL11.GL_QUADS);
+		GL11.glTexCoord2f(tex.quad.x, 		tex.quad.y); 	GL11.glVertex2f(x, 			y);//texs coords are right like this
+		GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.y); 	GL11.glVertex2f(x + size.x, y);
+		GL11.glTexCoord2f(tex.quad.size.x, 	tex.quad.size.y); 		GL11.glVertex2f(x + size.x, y + size.y);
+		GL11.glTexCoord2f(tex.quad.x, 		tex.quad.size.y); 		GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
 	}
 

@@ -213,6 +213,9 @@ public enum Biome {
 			if(random.nextInt(100) < 10){
 				spawnItem(new WorldItem(Item.sword, new Vec(), null), node, -10);
 			}
+			if(random.nextInt(100) < 10){
+				spawnItem(new WorldItem(Item.axe, new Vec(), null), node, -10);
+			}
 		}
 	};
 	public static Random random = new Random();

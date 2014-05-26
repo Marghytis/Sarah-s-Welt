@@ -267,13 +267,14 @@ public class World {
 				} else if(Mouse.getEventButton() == 1){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
 					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					for(List<Creature> list : creatures) for(Creature c : list){
+					for(List<Creature> list : creatures) for(int ci = 0; ci < list.size(); ci++){
+						Creature c = list.get(ci);
 						if(!(c instanceof Gnat) && (c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
 							c.rightClickAction();
 						}
 					}
 					for(List<WorldItem> list : items) for(WorldItem c : list){
-						if((c.pos.x + c.animator.texture.box.x < x && c.pos.x + c.animator.texture.box.x + c.animator.texture.box.size.x > x) && (c.pos.y + c.animator.texture.box.y < y && c.pos.y + c.animator.texture.box.y + c.animator.texture.box.size.y > y)){
+						if((c.pos.x + c.item.boxWorld.x < x && c.pos.x + c.item.boxWorld.x + c.item.boxWorld.size.x > x) && (c.pos.y + c.item.boxWorld.y < y && c.pos.y + c.item.boxWorld.y + c.item.boxWorld.size.y > y)){
 							c.rightClickAction();
 						}
 					}

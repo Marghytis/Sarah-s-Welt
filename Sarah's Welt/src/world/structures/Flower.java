@@ -30,6 +30,7 @@ public class Flower extends Structure {
 	public void renderLight(){
 		GL11.glTranslatef(pos.x - World.sarah.pos.x + Window.WIDTH/2 - Res.FLOWER_LIGHT.file.width/2, -(pos.y - World.sarah.pos.y) + Window.HEIGHT/2 - Res.FLOWER_LIGHT.file.height/2 - 20, 0);
 		colors[type].set();
+		Res.FLOWER_LIGHT.file.bind();
 		Res.FLOWER_LIGHT.box.drawTex(Res.FLOWER_LIGHT);
 	}
 	
