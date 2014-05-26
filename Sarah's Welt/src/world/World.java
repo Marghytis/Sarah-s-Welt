@@ -61,7 +61,7 @@ public class World {
 	public static List<Creature>[] creatures;
 	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.list.size()]);
 	
-	public static List<Creature> deathCreatures = new ArrayList<>();
+	public static List<Runnable> thingTasks = new ArrayList<>();
 	
 	static {
 		contours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
@@ -92,7 +92,7 @@ public class World {
 			structures[i] = new ArrayList<>();
 		}
 
-		int c_id = 0;
+		int c_id = 1;//0 is sarah
 		Snail.typeId = c_id++;
 		Butterfly.typeId = c_id++;
 		Heart.typeId = c_id++;
@@ -175,14 +175,10 @@ public class World {
 	
 	public static void updateCreatures(int delta){
 		
-		for(Creature c : deathCreatures){
-			lists : for(List<Creature> list : World.creatures) for(int i = 0; i < list.size(); i++){
-				if(c.equals(list.get(i))){
-					list.remove(i);
-					break lists;
-				}
-			}
+		for(Runnable r : thingTasks){
+			r.run();
 		}
+		thingTasks.clear();
 		for(List<Creature> list : World.creatures) for(int i = 0; i < list.size(); i++){
 			Creature s = list.get(i);
 			s.update(delta);

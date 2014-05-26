@@ -26,7 +26,7 @@ public class Unicorn extends WalkingCreature {
 	boolean spitting = false;
 	
 	public Unicorn(Vec p, Node worldLink){
-		super(new Animator(Res.UNICORN, stand), p, worldLink);
+		super(new Animator(Res.UNICORN, stand), p, worldLink, typeId);
 		hitradius = 200;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();

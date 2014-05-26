@@ -22,7 +22,7 @@ public class Snail extends WalkingCreature {
 
 	
 	public Snail(Vec p, Node worldLink){
-		super(new Animator(Res.SNAIL, stand), p, worldLink);
+		super(new Animator(Res.SNAIL, stand), p, worldLink, typeId);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
 		front = true;

@@ -12,7 +12,7 @@ public class Gnat extends WalkingCreature{
 	public static int typeId;
 		
 	public Gnat(Vec p, Node worldLink){
-		super(null, p, worldLink);
+		super(null, p, worldLink, typeId);
 		front = true;
 		health = 5;
 	}

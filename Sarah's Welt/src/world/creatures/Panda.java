@@ -19,7 +19,7 @@ public class Panda extends WalkingCreature {
 
 	
 	public Panda(Vec p, Node worldLink){
-		super(new Animator(Res.PANDA, sit), p, worldLink);
+		super(new Animator(Res.PANDA, sit), p, worldLink, typeId);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
 		front = true;

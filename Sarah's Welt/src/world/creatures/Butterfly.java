@@ -16,7 +16,7 @@ public class Butterfly extends WalkingCreature{
 	public static Animation flap2 = new Animation(5, 1, true, 0, 1, 2, 3, 2, 1);
 	
 	public Butterfly(int type, Vec p, Node worldLink, int frame){
-		super(new Animator(Res.BUTTERFLY, type == 0 ? flap1 : flap2), p, worldLink);
+		super(new Animator(Res.BUTTERFLY, type == 0 ? flap1 : flap2), p, worldLink, typeId);
 		front = true;
 		health = 5;
 		animator.frame = frame;

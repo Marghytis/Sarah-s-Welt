@@ -20,7 +20,7 @@ public class Trex extends WalkingCreature {
 //	static Animation chew = new Animation(5, 3, false, 0, 1, 2, 3);
 	
 	public Trex(Vec p, Node worldLink){
-		super(new Animator(Res.TREX, stand), p, worldLink);
+		super(new Animator(Res.TREX, stand), p, worldLink, typeId);
 //		hitradius = 50;
 		maxSpeed = 2;
 		animator.doOnReady = () -> donePunch();

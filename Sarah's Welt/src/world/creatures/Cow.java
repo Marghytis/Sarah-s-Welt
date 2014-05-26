@@ -17,7 +17,7 @@ public class Cow extends WalkingCreature{
 	static Animation chew = new Animation(5, 0, true, 0, 1, 2, 3, 4, 5, 6);
 	
 	public Cow(Vec p, Node worldLink){
-		super(new Animator(Res.COW, chew), p, worldLink);
+		super(new Animator(Res.COW, chew), p, worldLink, typeId);
 		maxSpeed = 5;
 		health = 10;
 		punchStrength = 1;

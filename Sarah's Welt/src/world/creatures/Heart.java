@@ -17,7 +17,7 @@ public class Heart extends WalkingCreature{
 	int type;
 
 	public Heart(int type, Vec pos, Node worldLink) {
-		super(new Animator(Res.HEART, flap), pos, worldLink);
+		super(new Animator(Res.HEART, flap), pos, worldLink, typeId);
 		vel.y = -0.2f;
 		health = 2000;
 		this.type = type;

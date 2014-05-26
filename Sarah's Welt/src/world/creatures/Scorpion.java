@@ -20,7 +20,7 @@ public class Scorpion extends WalkingCreature {
 	static Animation punch = new Animation(5, 1, false, 0, 1, 2, 3);
 	
 	public Scorpion(Vec p, Node worldLink){
-		super(new Animator(Res.SCORPION, stand), p, worldLink);
+		super(new Animator(Res.SCORPION, stand), p, worldLink, typeId);
 //		hitradius = 50;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();

@@ -14,8 +14,8 @@ public abstract class WalkingCreature extends Creature{
 	public float velocityUnit = 0.00035f;
 	public int vP;// distance per stepping frame (in acceleration
 
-	public WalkingCreature(Animator ani, Vec p, Node worldLink){
-		super(ani, p, worldLink);
+	public WalkingCreature(Animator ani, Vec p, Node worldLink, int id){
+		super(ani, p, worldLink, id);
 	}
 	
 	public void walkingAI(float dTime){}

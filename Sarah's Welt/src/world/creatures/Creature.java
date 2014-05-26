@@ -20,6 +20,11 @@ import core.geom.Vec;
 
 public abstract class Creature extends Thing {
 	
+	public class C_type {
+		public String name;
+		public int id;
+	}
+	
 	public static void renderCreatures(){
 		for(List<Creature> list : World.creatures){
 			if(list.size() > 0) {
@@ -59,15 +64,17 @@ public abstract class Creature extends Thing {
 	public int hitradius = 100; //only relevant, if its aggressive
 	public int health = 20;
 	public int punchStrength = 1;
+	public int id;
 	
-	public Creature(Animator ani, Vec pos, Node worldLink){
+	public Creature(Animator ani, Vec pos, Node worldLink, int id){
 		super(ani, pos, worldLink);
+		this.id = id;
 	}
 	
 	public void update(int dTime){
 		if(health <= 0){
 			World.particleEffects.add(new DeathDust(pos.plus(animator.tex.box.middle())));
-			World.deathCreatures.add(this);
+			World.thingTasks.add(() -> World.creatures[id].remove(this));
 		} else {
 			pos.shift(vel);
 			

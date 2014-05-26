@@ -40,7 +40,7 @@ public class Sarah extends WalkingCreature {
 	static Animation flyOnCow = new Animation(2, 1);//don't forget to change the texture!!!
 	
 	public Sarah(Vec pos, Node worldLink){
-		super(new Animator(Res.SARAH, stand), pos, worldLink);
+		super(new Animator(Res.SARAH, stand), pos, worldLink, 0);
 		hitradius = 60;
 		punchStrength = 2;
 		maxSpeed = 10;
@@ -50,9 +50,12 @@ public class Sarah extends WalkingCreature {
 					World.sarah.animator.animation = stand;
 				} else if(animator.animation == dismountCow){
 					ridingCow = false;
-					Biome.spawnCreature(Cow.typeId, new Cow(new Vec(), null), World.sarah.worldLink, 2);
+					Cow newCow = riddenCow;
+					newCow.worldLink = World.sarah.worldLink;
+					World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
 					World.sarah.animator.setAnimation(stand);
 					World.sarah.animator.tex = Res.SARAH;
+					riddenCow = null;
 				} else {
 					World.sarah.animator.setAnimation(walkOnCow);
 				}
@@ -62,10 +65,6 @@ public class Sarah extends WalkingCreature {
 	
 	public void update(int dTime){
 		if(Settings.flying) g = false;
-		if(oldCow != null){
-			World.creatures[Cow.typeId].remove(oldCow);
-			oldCow = null;
-		}
 		if(g){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				maxSpeed = ridingCow ? 30 : 20;
@@ -209,16 +208,19 @@ public class Sarah extends WalkingCreature {
 		
 	}
 	
-	Cow oldCow = null;
+	Cow riddenCow = null;
 	
 	public void mountCow(Cow c){
 		if(g){
 			if(ridingCow){
-				Biome.spawnCreature(Cow.typeId, oldCow, World.sarah.worldLink, 2);
+				Cow newCow = riddenCow;
+				newCow.worldLink = World.sarah.worldLink;
+				World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
 			}
 			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
 			ridingCow = true;
-			oldCow = c;
+			riddenCow = c;
+			World.thingTasks.add(() -> World.creatures[Cow.typeId].remove(c));
 		}
 	}
 	
