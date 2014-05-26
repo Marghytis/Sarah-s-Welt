@@ -16,7 +16,7 @@ public class Trex extends WalkingCreature {
 	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
-	static Animation walk = new Animation(5, 0, true, 0, 1, 2, 3, 4, 5, 6, 7);
+	static Animation walk = new Animation(8, 0, true, 0, 1, 2, 3, 4, 5, 6, 7);
 	static Animation punch1 = new Animation(5, 1 , false, 0, 1, 2, 3, 4, 3, 2, 1);
 //	static Animation punch2 = new Animation(5, 2, false, 0, 1, 2, 3, 4, 5, 6, 7, 8);
 //	static Animation chew = new Animation(5, 3, false, 0, 1, 2, 3);
@@ -24,7 +24,7 @@ public class Trex extends WalkingCreature {
 	public Trex(Vec p, Node worldLink){
 		super(new Animator(Res.TREX, stand), p, worldLink);
 //		hitradius = 50;
-		maxSpeed = 5;
+		maxSpeed = 2;
 		animator.doOnReady = () -> donePunch();
 		health = 30;
 		punchStrength = 5;
@@ -65,7 +65,7 @@ public class Trex extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 90000){
 			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
 			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
@@ -74,10 +74,10 @@ public class Trex extends WalkingCreature {
 				dir = 0;
 				animator.setAnimation(punch1);
 			}
-			maxSpeed = 6;
+			maxSpeed = 4;
 			return true;
 		} else {
-			maxSpeed = 3;
+			maxSpeed = 2;
 			return false;
 		}
 	}
@@ -94,6 +94,5 @@ public class Trex extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
-		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
 	}
 }

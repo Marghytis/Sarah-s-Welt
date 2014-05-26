@@ -37,7 +37,7 @@ public class Res {
 	public static StackedTexture COW  = new StackedTexture("creatures/Cow", 7, 1, -0.5f, -0.1f);
 	public static StackedTexture UNICORN  = new StackedTexture("creatures/Unicorn", 6, 3, -0.5f, -0.1f);
 	public static StackedTexture UNICORN_HAIR  = new StackedTexture("creatures/Unicorn_hair", 6, 3, -0.5f, -0.1f);
-	public static StackedTexture TREX  = new StackedTexture("creatures/Trex", 9, 4, -0.5f, -0.1f);
+	public static StackedTexture TREX  = new StackedTexture("creatures/Trex", 9, 4, -0.5f, -0.05f);
 
 	public static StackedTexture SARAH = new StackedTexture("creatures/Sarah", 11, 8, -0.5f, -0.1f);
 	public static List<int[][]> SARAH_ITEMCOORDS = readTextureCoordinator("res/creatures/Sarah.txt");
