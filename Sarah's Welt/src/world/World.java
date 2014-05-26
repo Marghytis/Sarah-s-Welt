@@ -27,6 +27,7 @@ import world.creatures.Rabbit;
 import world.creatures.Sarah;
 import world.creatures.Scorpion;
 import world.creatures.Snail;
+import world.creatures.Trex;
 import world.creatures.Unicorn;
 import world.structures.Bamboo;
 import world.structures.Bush;
@@ -101,6 +102,7 @@ public class World {
 		Gnat.typeId = c_id++;
 		Unicorn.typeId = c_id++;
 		Scorpion.typeId = c_id++;
+		Trex.typeId = c_id++;
 		
 		creatures = (List<Creature>[]) new List<?>[c_id];
 		for(int i = 0; i < creatures.length; i++){

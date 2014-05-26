@@ -17,6 +17,7 @@ import world.creatures.Panda;
 import world.creatures.Rabbit;
 import world.creatures.Scorpion;
 import world.creatures.Snail;
+import world.creatures.Trex;
 import world.creatures.Unicorn;
 import world.structures.Bamboo;
 import world.structures.Bush;
@@ -74,6 +75,9 @@ public enum Biome {
 			}
 			if(random.nextInt(100) < 33){
 				spawnCreature(Gnat.typeId, new Gnat(new Vec(), null), node, 40);
+			}
+			if(random.nextInt(100) < 1){
+				spawnCreature(Trex.typeId, new Trex(new Vec(), null), node, 5);
 			}
 		}
 	}, BAMBOO_FOREST{
