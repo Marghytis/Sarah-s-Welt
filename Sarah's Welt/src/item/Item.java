@@ -19,6 +19,12 @@ public class Item {
 			new Quad(-25, -2, 50, 50), new Quad(-55, -21, 80, 40), 180, "Sword", 4);
 	public static final Weapon axe = new Weapon(Res.ITEMS_WORLD.texs[1][0], Res.ITEMS_WEAPONS.texs[0][1], Res.ITEMS_INV.texs[1][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Axe", 10);
+	public static final Weapon stick = new Weapon(Res.ITEMS_WORLD.texs[2][0], Res.ITEMS_WEAPONS.texs[0][2], Res.ITEMS_INV.texs[2][0],
+			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Axe", 3);
+	public static final Weapon candyCane = new Weapon(Res.ITEMS_WORLD.texs[3][0], Res.ITEMS_WEAPONS.texs[0][3], Res.ITEMS_INV.texs[3][0],
+			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Axe", 3);
+	public static final Weapon shovel = new Weapon(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[4][0],
+			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Axe", 4);
 	
 	
 	public Texture texWorld;
