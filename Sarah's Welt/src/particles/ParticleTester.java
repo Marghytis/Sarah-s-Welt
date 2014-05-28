@@ -90,7 +90,7 @@ public class ParticleTester {
 				if(Mouse.getEventButton() == 0){
 					swooshs.add(new DeathDust(new Vec(Mouse.getEventX(), Mouse.getEventY())));
 				} else {
-					swooshs.add(new RainbowSpit(Mouse.getEventX(), Mouse.getEventY(), new Unicorn(new Vec(Mouse.getEventX(), Mouse.getEventY()), null)));
+					swooshs.add(new Magic(Mouse.getEventX(), Mouse.getEventY(), new Unicorn(new Vec(Mouse.getEventX(), Mouse.getEventY()), null)));
 				}
 			}
 		}

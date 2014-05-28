@@ -7,11 +7,11 @@ import world.World;
 import world.creatures.Unicorn;
 import core.geom.Vec;
 
-public class RainbowSpit implements ParticleEffect{
+public class Magic implements ParticleEffect{
 	
-	public static final ParticleType RAINBOW = new ParticleType(new TextureFile("particles/Spark"));
+	public static final ParticleType BEAM = new ParticleType(new TextureFile("particles/Spark"));
 	
-	public ParticleEmitter rainbow = new ParticleEmitter(210, 200, RAINBOW, 1000){
+	public ParticleEmitter rainbow = new ParticleEmitter(210, 200, BEAM, 1000){
 		
 		int color = 0;
 		
@@ -72,7 +72,7 @@ public class RainbowSpit implements ParticleEffect{
 	int live = 1500;
 	Unicorn source;
 	
-	public RainbowSpit(float x, float y, Unicorn source){
+	public Magic(float x, float y, Unicorn source){
 		pos = new Vec(x, y);
 		this.source = source;
 	}
