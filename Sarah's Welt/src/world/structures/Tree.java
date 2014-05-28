@@ -1,5 +1,8 @@
 package world.structures;
 
+import item.Inventory;
+import item.Item;
+
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
@@ -28,6 +31,18 @@ public class Tree extends Structure{
 	
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
+	}
+	
+	public boolean rightClickAction(){
+		for(int i = 0; i < Inventory.stacks.length; i++){
+			if(Inventory.stacks[i].item == Item.stick){
+				return false;
+			} else if (Inventory.stacks[i].item == null){
+				Inventory.stacks[i].item = Item.stick;
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }
