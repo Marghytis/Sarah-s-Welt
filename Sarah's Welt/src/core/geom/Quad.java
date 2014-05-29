@@ -86,6 +86,16 @@ public class Quad extends Vec{
 			GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
 	}
+
+	public static void draw(float x1, float y1, float x2, float y2){
+		
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glVertex2f(x1, y1);
+			GL11.glVertex2f(x2, y1);
+			GL11.glVertex2f(x2, y2);
+			GL11.glVertex2f(x1, y2);
+		GL11.glEnd();
+	}
 	
 	/**
 	 * Doesn't unbind the texture

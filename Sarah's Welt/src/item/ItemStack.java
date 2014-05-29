@@ -21,13 +21,13 @@ public class ItemStack extends Quad{
 	public void render(){
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
+		Res.INVENTORY.file.bind();
 		drawTex(Res.INVENTORY.texs[0][slot == Inventory.selectedItem ? 1 : 0]);
 		
 		Res.ITEMS_INV.file.bind();
-		if(item != null){
+		if(item != null && item.texInv != null){
 			drawTex(item.texInv);
 		}
-		Res.INVENTORY.file.bind();
 		
 //		float xText = x + (size.x/2) - (Res.font.getWidth(name)/3);
 //		float yText = y + (size.y/2) - (Res.font.getHeight()/2);

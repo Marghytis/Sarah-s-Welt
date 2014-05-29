@@ -25,7 +25,7 @@ public class WorldItem extends Thing{
 		for(int i = 0; i < Inventory.stacks.length; i++){
 			if(Inventory.stacks[i].item == item){
 				return false;
-			} else if (Inventory.stacks[i].item == null){
+			} else if (Inventory.stacks[i].item == Item.fist){
 				Inventory.stacks[i].item = item;
 //				World.items[item.id].remove(this);TODO
 				return true;

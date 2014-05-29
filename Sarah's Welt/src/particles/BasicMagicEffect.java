@@ -11,7 +11,7 @@ import world.creatures.Creature;
 import world.creatures.Gnat;
 import core.geom.Vec;
 
-public class BasicMagicEffect implements ParticleEffect{
+public class BasicMagicEffect extends MagicEffect{
 	
 	public static final ParticleType LIGHT = new ParticleType(new TextureFile("particles/Fire", -0.5f, -0.5f));
 	
@@ -70,15 +70,8 @@ public class BasicMagicEffect implements ParticleEffect{
 
 	};
 	
-	Vec pos;
-	Vec dir;
-	int live = 3000;
-	Creature source;
-	
 	public BasicMagicEffect(Vec pos, Vec dir, Creature source){
-		this.pos = new Vec(pos);
-		this.dir = new Vec(dir).scale(0.4f);
-		this.source = source;
+		super(pos, new Vec(dir).scale(0.4f), source);
 		light.emittParticle(0);
 	}
 	

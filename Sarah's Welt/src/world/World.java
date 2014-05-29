@@ -1,9 +1,7 @@
 package world;
 
-import item.DistantWeapon;
 import item.Inventory;
 import item.Item;
-import item.Weapon;
 import item.WorldItem;
 
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import particles.BasicMagicEffect;
 import particles.ParticleEffect;
 import resources.Lightmap;
 import resources.Res;
@@ -257,17 +254,14 @@ public class World {
 		events : while(Mouse.next()){
 			if(Mouse.getEventButtonState()){
 				if(Mouse.getEventButton() == 0){
-					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
-					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					Item heldItem = Inventory.stacks[Inventory.selectedItem].item;
-					for(List<Creature> list : creatures) for(Creature c : list){
-						if(!(c instanceof Gnat) && heldItem instanceof Weapon && !(heldItem instanceof DistantWeapon) && (c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
-							c.hitBy(sarah, ((Weapon)heldItem));
-						}
-					}
-					sarah.punch();
+					boolean clickedInWorld = true;
 					if(Menu.view == View.INVENTORY){
-						Inventory.mouseClickedAt(Mouse.getEventX(), Mouse.getEventY());
+						clickedInWorld = !Inventory.mouseClickedAt(Mouse.getEventX(), Mouse.getEventY());
+					}
+					if(clickedInWorld){
+						int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
+						int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
+						Inventory.getSelectedItem().use(x, y);
 					}
 				} else if(Mouse.getEventButton() == 1){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
@@ -291,9 +285,6 @@ public class World {
 							continue events;
 						}
 					}
-					if(Inventory.stacks[Inventory.selectedItem].item == Item.horn){
-						particleEffects.add(new BasicMagicEffect(sarah.pos.minus(sarah.animator.box).plus(new Vec(sarah.getHandPosition()[0], sarah.getHandPosition()[1])), new Vec(x - (sarah.animator.box.middle().x + sarah.pos.x), y - (sarah.animator.box.middle().y + sarah.pos.y)).normalise(), sarah));
-					}
 				}
 			}
 		}
@@ -316,7 +307,7 @@ public class World {
 					case Keyboard.KEY_F: Menu.buttonPressed(View.DEBUG.buttons[0]); break;
 					case Keyboard.KEY_I:
 						if(Menu.view == View.INVENTORY){
-							View.EMPTY.set();
+							View.WORLD.set();
 						} else {
 							View.INVENTORY.set();
 						} break;

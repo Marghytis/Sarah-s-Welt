@@ -1,6 +1,7 @@
 package world.creatures;
 
 import item.DistantWeapon;
+import item.Item;
 import item.Weapon;
 
 import java.util.List;
@@ -88,11 +89,11 @@ public abstract class Creature extends Thing {
 		}
 	}
 	
-	public boolean hitBy(Creature c, Weapon weapon){
+	public boolean hitBy(Creature c, Item weapon){
 		if(hit == 0 && (c.pos.minus(pos).length() < c.hitradius || weapon instanceof DistantWeapon)){
 			hit = 40;
 			if((c instanceof Sarah)){
-				health -= weapon instanceof DistantWeapon ? ((DistantWeapon)weapon).distPower : weapon.power;
+				health -= weapon instanceof DistantWeapon ? ((DistantWeapon)weapon).distPower : ((Weapon)weapon).power;
 			} else {
 				health -= c.punchStrength;
 			}

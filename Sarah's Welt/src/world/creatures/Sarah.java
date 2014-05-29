@@ -1,6 +1,7 @@
 package world.creatures;
 
 import item.Inventory;
+import item.Item;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -22,22 +23,26 @@ public class Sarah extends WalkingCreature {
 	public float keyAcc = 0.00005f;//the acceleration the Sarah experiences on the pressure of a movement key
 	public boolean ridingCow = false;
 	
-	static Animation stand = new Animation(0, 0);
-	static Animation walk = new Animation(3, 1, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
-	static Animation jump = new Animation(5, 3, false, 	1, 2, 3, 4, 5, 6);
-	static Animation fly = new Animation(6, 3);
-	static Animation land = new Animation(2, 3, false, 	5, 4, 3, 2, 1);
-	static Animation run = new Animation(3, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
-	static Animation sneak = new Animation(10, 5, true, 1, 2, 3, 2);
-	static Animation crouch = new Animation(0, 5);
-	static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 0);
-	static Animation kick = new Animation(3, 6, false, 	1, 2, 3, 4, 5);
+	public static Animation stand = new Animation(0, 0);
+	public static Animation walk = new Animation(3, 1, true, 	4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6);
+	public static Animation jump = new Animation(5, 3, false, 	1, 2, 3, 4, 5, 6);
+	public static Animation fly = new Animation(6, 3);
+	public static Animation land = new Animation(2, 3, false, 	5, 4, 3, 2, 1);
+	public static Animation run = new Animation(3, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
+	public static Animation sneak = new Animation(10, 5, true, 1, 2, 3, 2);
+	public static Animation crouch = new Animation(0, 5);
+	public static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 0);
+	public static Animation kick = new Animation(3, 6, false, 	1, 2, 3, 4, 5);
+	public static Animation swingWeapon = new Animation(3, 8, false, 0, 1, 2, 3, 4);
+	public static Animation castSpell = new Animation(8, 9, false, 0, 1, 0);
 
-	static Animation mountCow = new Animation(3, 0, false, 0, 1, 2, 3, 4, 5, 6);//don't forget to change the texture!!!
-	static Animation dismountCow = new Animation(3, 0, false, 6, 5, 4, 3, 2, 1, 0);//don't forget to change the texture!!!
-	static Animation walkOnCow = new Animation(3, 1, true, 0, 1, 2, 3, 4);//don't forget to change the texture!!!
-	static Animation standOnCow = new Animation(6, 0);//don't forget to change the texture!!!
-	static Animation flyOnCow = new Animation(2, 1);//don't forget to change the texture!!!
+	public static Animation mountCow = new Animation(3, 0, false, 0, 1, 2, 3, 4, 5, 6);//don't forget to change the texture!!!
+	public static Animation dismountCow = new Animation(3, 0, false, 6, 5, 4, 3, 2, 1, 0);//don't forget to change the texture!!!
+	public static Animation walkOnCow = new Animation(3, 1, true, 0, 1, 2, 3, 4);//don't forget to change the texture!!!
+	public static Animation standOnCow = new Animation(6, 0);//don't forget to change the texture!!!
+	public static Animation flyOnCow = new Animation(2, 1);//don't forget to change the texture!!!
+	
+	public int mana = 20;
 	
 	public Sarah(Vec pos, Node worldLink){
 		super(new Animator(Res.SARAH, stand), pos, worldLink, 0);
@@ -46,6 +51,9 @@ public class Sarah extends WalkingCreature {
 		maxSpeed = 10;
 		animator.doOnReady = () -> {
 			if(g){
+				if(animator.animation == castSpell){
+					System.out.println("Test");
+				}
 				if(!ridingCow){
 					World.sarah.animator.animation = stand;
 				} else if(animator.animation == dismountCow){
@@ -64,6 +72,7 @@ public class Sarah extends WalkingCreature {
 	}
 	
 	public void update(int dTime){
+		Inventory.update(dTime);
 		if(Settings.flying) g = false;
 		if(g){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -132,7 +141,7 @@ public class Sarah extends WalkingCreature {
 		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))	walkMode++;
 		if(Keyboard.isKeyDown(Keyboard.KEY_S))		walkMode--;
 		
-		if(animator.animation != kick && animator.animation != punch && animator.animation != jump && animator.animation != land){
+		if(animator.animation.repeat){
 			if(g){
 				if(!ridingCow){
 					if(keyDir != 0){
@@ -148,7 +157,7 @@ public class Sarah extends WalkingCreature {
 						case 2: animator.setAnimation(stand); break;
 						}
 					}
-				} else if(animator.animation != mountCow && animator.animation != dismountCow){
+				} else {
 					if(keyDir != 0){
 						animator.setAnimation(walkOnCow);
 					} else {
@@ -177,7 +186,7 @@ public class Sarah extends WalkingCreature {
 				animator.tex.box.outline();
 		}
 		
-		if(Inventory.stacks[Inventory.selectedItem].item != null) Inventory.stacks[Inventory.selectedItem].item.renderHand();
+		if(Inventory.getSelectedItem() != null) Inventory.getSelectedItem().renderHand();
 	}
 	
 	public void setKeyDirection(){
@@ -194,12 +203,16 @@ public class Sarah extends WalkingCreature {
 		}
 	}
 	
-	public void punch(){
+	public void useItem(Item item){
 		if(!ridingCow){
-			switch(walkMode){
-			case 0: animator.setAnimation(kick); break;
-			case 1:
-			case 2: animator.setAnimation(punch); break;
+			if(item == Item.fist){
+				switch(walkMode){
+				case 0: animator.setAnimation(kick); break;
+				case 1:
+				case 2: animator.setAnimation(punch); break;
+				}
+			} else {
+				animator.setAnimation(item.animation);
 			}
 		}
 	}
@@ -227,7 +240,7 @@ public class Sarah extends WalkingCreature {
 	public int[] getHandPosition(){
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
-		if(ridingCow){
+		if(ridingCow || y >= Res.SARAH_ITEMCOORDS.size() || x >= Res.SARAH_ITEMCOORDS.get(y).length){
 			return Res.SARAH_ITEMCOORDS.get(0)[0];
 		}
 		return Res.SARAH_ITEMCOORDS.get(y)[x];
