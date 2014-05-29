@@ -4,20 +4,45 @@ import particles.Particle.ParticleType;
 import resources.TextureFile;
 import core.geom.Vec;
 
-public class DeathDust implements ParticleEffect {
+public class BasicMagicDissapperance implements ParticleEffect {
 	
-public static final ParticleType SMOKE = new ParticleType(new TextureFile("particles/Smoke"));
+	public static final ParticleType SPARKLE = new ParticleType(new TextureFile("particles/Sparkle"));
 	
-	public ParticleEmitter smoke = new ParticleEmitter(100, 1, SMOKE, 3000){
+	public ParticleEmitter sparkle = new ParticleEmitter(100, 1, SPARKLE, 3000){
 
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y);
 			float angle = random.nextFloat()*(float)(Math.PI*2);
 			
 			p.vel.set((float)Math.cos(angle)*(random.nextFloat()*0.3f), (float)Math.sin(angle)*(random.nextFloat()*0.3f) + 0.1f);//-0.8f
-			p.col.set(0.7f, 0.7f, 0.5f, 0.1f);
+			p.col.set(1f, 0.7f, 0.0f, 0.8f);
+			p.rad = 0.5f;
+			p.live = startLife;
+		}
+
+		public void velocityInterpolator(Particle p) {
+			p.vel.x *= 0.97f;
+			p.vel.y *= 0.97f;
+		}
+
+		public void colorInterpolator(Particle p) {
+			p.col.a = (float) p.live /startLife;
+		}
+
+	};
+
+	public static final ParticleType SMOKE = new ParticleType(new TextureFile("particles/Smoke"));
+	
+	public ParticleEmitter smoke = new ParticleEmitter(60, 0, SMOKE, 1000){
+
+		public void makeParticle(Particle p) {
+			p.pos.set(pos.x, pos.y);
+			float angle = random.nextFloat()*(float)(Math.PI*2);
+			
+			p.vel.set((float)Math.cos(angle)*(random.nextFloat()*0.3f), (float)Math.sin(angle)*(random.nextFloat()*0.3f) + 0.1f);//-0.8f
+			p.col.set(1, 0, 0, 0.1f);
 			p.rot = random.nextBoolean() ? 0.1f : -0.1f;
-			p.rad = 2;
+			p.rad = 1;
 			p.live = startLife;
 		}
 
@@ -43,25 +68,32 @@ public static final ParticleType SMOKE = new ParticleType(new TextureFile("parti
 	public Vec pos;
 	public int count = 1000;
 
-	public DeathDust(Vec pos){
+	public BasicMagicDissapperance(Vec pos){
 		this.pos = new Vec(pos);
 		for(int i = 0; i < 60; i++){
 			smoke.emittParticle(0);
 		}
+		for(int i = 0; i < 60; i++){
+			sparkle.emittParticle(0);
+		}
 		smoke.emitting = false;
+		sparkle.emitting = false;
 	}
 	
 	public void tick(float dTime){
 		smoke.tick(dTime);
+		sparkle.tick(dTime);
 		count -= dTime;
 	}
 	
 	public void render(){
 		smoke.render();
+		sparkle.render();
 	}
 	
 	public void finalize(){
 		smoke.finalize();
+		sparkle.finalize();
 	}
 
 	public boolean living() {

@@ -25,8 +25,8 @@ public class Item {
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Candy cane", 3);
 	public static final Weapon shovel = new Weapon(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[4][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Shovel", 4);
-	public static final Item horn = new Item(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[5][0],
-			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Horn");
+	public static final DistantWeapon horn = new DistantWeapon(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[5][0],
+			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Horn", 4);
 	
 	public Texture texWorld;
 	public Texture texHand;

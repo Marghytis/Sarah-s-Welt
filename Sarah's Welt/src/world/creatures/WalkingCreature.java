@@ -1,5 +1,6 @@
 package world.creatures;
 
+import item.Weapon;
 import util.Animator;
 import util.Geom;
 import world.Material;
@@ -20,8 +21,8 @@ public abstract class WalkingCreature extends Creature{
 	
 	public void walkingAI(float dTime){}
 	
-	public boolean hitBy(Creature c){
-		if(super.hitBy(c)){
+	public boolean hitBy(Creature c, Weapon weapon){
+		if(super.hitBy(c, weapon)){
 			if(g){
 				float xVec = c.pos.x < pos.x ? 0.0002f : -0.0002f;
 				float yVec = 0.0005f;

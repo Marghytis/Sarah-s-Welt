@@ -36,7 +36,7 @@ public class ParticleTester {
 		float r = 20;
 		float d = 100;
 		
-		long time = System.currentTimeMillis();
+		long time = System.nanoTime();
 		while(!Display.isCloseRequested()){
 			Display.sync(60);
 			mouseListening();
@@ -51,15 +51,16 @@ public class ParticleTester {
 			lightmap.release();
 			Window.fill(background.handle);
 			
-			long nextTime = System.currentTimeMillis();
-			fire.tick((int)(nextTime - time));
-			rain.tick((int)(nextTime - time));
+			long nextTime = System.nanoTime();
+			float delta = (nextTime - time)/1000000;
+			fire.tick(delta);
+			rain.tick(delta);
 
 			fire.render();
 			rain.render();
 			
 			for(int i = 0; i < swooshs.size(); i++){
-				swooshs.get(i).tick((int)(nextTime - time));
+				swooshs.get(i).tick(delta);
 				swooshs.get(i).render();
 				if(!swooshs.get(i).living()){
 					swooshs.remove(i);
@@ -69,6 +70,7 @@ public class ParticleTester {
 			
 			time = nextTime;
 			GL11.glColor4f(0.8f, 0.8f, 0.8f, 1);
+			Res.CLOUD.texs[0][0].file.bind();
 			cloud.drawTex(Res.CLOUD.texs[0][0]);
 			
 			GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
@@ -90,7 +92,7 @@ public class ParticleTester {
 				if(Mouse.getEventButton() == 0){
 					swooshs.add(new DeathDust(new Vec(Mouse.getEventX(), Mouse.getEventY())));
 				} else {
-					swooshs.add(new Magic(Mouse.getEventX(), Mouse.getEventY(), new Unicorn(new Vec(Mouse.getEventX(), Mouse.getEventY()), null)));
+					swooshs.add(new BasicMagicEffect(Mouse.getEventX(), Mouse.getEventY(), new Unicorn(new Vec(Mouse.getEventX(), Mouse.getEventY()), null)));
 				}
 			}
 		}

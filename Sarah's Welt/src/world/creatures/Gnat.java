@@ -2,6 +2,7 @@ package world.creatures;
 
 import org.lwjgl.opengl.GL11;
 
+import util.Animator;
 import world.Material;
 import world.Node;
 import core.geom.Vec;
@@ -12,7 +13,7 @@ public class Gnat extends WalkingCreature{
 	public static int typeId;
 		
 	public Gnat(Vec p, Node worldLink){
-		super(null, p, worldLink, typeId);
+		super(new Animator(null), p, worldLink, typeId);
 		front = true;
 		health = 5;
 	}

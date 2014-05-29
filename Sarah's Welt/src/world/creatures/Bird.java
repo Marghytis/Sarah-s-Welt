@@ -1,5 +1,6 @@
 package world.creatures;
 
+import item.Weapon;
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -51,8 +52,8 @@ public class Bird extends WalkingCreature{
 		super.update(dTime);
 	}
 
-	public boolean hitBy(Creature c){
-		if(super.hitBy(c)){
+	public boolean hitBy(Creature c, Weapon w){
+		if(super.hitBy(c, w)){
 			animator.setAnimation(variant == 0 ? flap1 : flap2);
 			return true;
 		} else {

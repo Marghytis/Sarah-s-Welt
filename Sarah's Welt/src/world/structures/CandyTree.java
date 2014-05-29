@@ -28,15 +28,7 @@ public class CandyTree extends Structure{
 	}
 	
 	public boolean rightClickAction(){
-		for(int i = 0; i < Inventory.stacks.length; i++){
-			if(Inventory.stacks[i].item == Item.candyCane){
-				return false;
-			} else if (Inventory.stacks[i].item == null){
-				Inventory.stacks[i].item = Item.candyCane;
-				return true;
-			}
-		}
-		return false;
+		return Inventory.addItem(Item.candyCane);
 	}
 	
 }

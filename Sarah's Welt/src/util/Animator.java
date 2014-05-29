@@ -2,6 +2,7 @@ package util;
 
 import resources.StackedTextures;
 import resources.Texture;
+import core.geom.Quad;
 
 public class Animator {
 
@@ -9,6 +10,7 @@ public class Animator {
 	public int frame;
 	public StackedTextures tex;
 	public Texture texture;
+	public Quad box;
 	public Runnable doOnReady;
 	public boolean staticFrame;
 	
@@ -18,6 +20,7 @@ public class Animator {
 	
 	public Animator(StackedTextures tex, Runnable doOnReady, Animation defaultA){
 		this.tex = tex;
+		this.box = tex.box;
 		this.doOnReady = doOnReady;
 		this.animation = defaultA;
 		staticFrame = false;
@@ -26,6 +29,7 @@ public class Animator {
 	public Animator(Texture tex){
 		staticFrame = true;
 		texture = tex;
+		this.box = tex != null ? tex.box : new Quad();
 	}
 	
 	public void animate(boolean mirrored){

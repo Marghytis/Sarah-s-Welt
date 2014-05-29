@@ -45,7 +45,7 @@ public class Hearts implements ParticleEffect{
 		hearts.emitting = false;
 	}
 	
-	public void tick(int dTime){
+	public void tick(float dTime){
 		hearts.tick(dTime);
 		count -= dTime;
 	}

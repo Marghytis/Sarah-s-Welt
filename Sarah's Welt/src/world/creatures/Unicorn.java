@@ -1,5 +1,8 @@
 package world.creatures;
 
+import item.Inventory;
+import item.Item;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -153,5 +156,9 @@ public class Unicorn extends WalkingCreature {
 	
 	public void afterRender(){
 		if(Settings.shader) Shader20.bindNone();
+	}
+	
+	protected void onDeath(){
+		Inventory.addItem(Item.horn);
 	}
 }

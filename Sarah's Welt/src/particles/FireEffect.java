@@ -180,7 +180,7 @@ public class FireEffect implements ParticleEffect{
 		this.lightmap = lightmap;
 	}
 	
-	public void tick(int dTime){
+	public void tick(float dTime){
 		smoke.tick(dTime);
 		flame.tick(dTime);
 		spark.tick(dTime);

@@ -28,4 +28,16 @@ public class Inventory {
 			}
 		}
 	}
+	
+	public static boolean addItem(Item item){
+		for(int i = 0; i < Inventory.stacks.length; i++){
+			if(Inventory.stacks[i].item == item){
+				return false;
+			} else if (Inventory.stacks[i].item == null){
+				Inventory.stacks[i].item = item;
+				return true;
+			}
+		}
+		return false;
+	}
 }

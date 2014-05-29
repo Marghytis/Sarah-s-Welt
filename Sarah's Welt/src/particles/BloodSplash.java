@@ -46,7 +46,7 @@ public class BloodSplash implements ParticleEffect{
 		blood.emitting = false;
 	}
 	
-	public void tick(int dTime){
+	public void tick(float dTime){
 		blood.tick(dTime);
 		count -= dTime;
 	}

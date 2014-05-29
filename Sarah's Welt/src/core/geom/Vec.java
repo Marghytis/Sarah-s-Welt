@@ -74,6 +74,11 @@ public class Vec {
 		return x*p.y - y*p.x;
 	}
 	
+	public Vec normalise(){
+		scale((float)Math.sqrt(1/((x*x)+(y*y))));
+		return this;
+	}
+	
 	public float length(){
 		return (float)Math.sqrt((x*x) + (y*y));
 	}

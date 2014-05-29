@@ -56,7 +56,7 @@ public class RainEffect implements ParticleEffect{
 		size.set(width, height);
 	}
 	
-	public void tick(int dTime){
+	public void tick(float dTime){
 		drops.tick(dTime);
 	}
 	

@@ -2,7 +2,7 @@ package particles;
 
 public interface ParticleEffect {
 
-	public void tick(int delta);
+	public void tick(float delta);
 	
 	public void render();
 	
