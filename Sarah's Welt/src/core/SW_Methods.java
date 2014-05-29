@@ -1,220 +1,179 @@
-public class WorldView {
+package core;
 
-	public static int WIDTH = 1000;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-	List<Node> leftConns = new ArrayList<>();
-	List<Node> middleAreas = new ArrayList<>();
-	List<Node> rightConns = new ArrayList<>();
+import world.Material;
+import world.Node;
+import core.geom.Vec;
 
-	Generator rightGenerator;
-	Generator leftGenerator;
+public class SW_Methods {
+public static class WorldView {
 
-	float xL, xR;
-
-	public void update(float x){
-
-		float newXL = x - (WIDTH/2);
-		float newXR = x + (WIDTH/2);
-
-		if(newXL < xL){
-			for(Node conn : leftConns){
-				expand(conn, xpWh, false){
-			}
-		} else if(newXL > xL){
-			for(Node conn : leftConns){
-				contract(conn, xpWh, true){
-			}
-		}
-
-		if(newXR > xR){
-			for(Node conn : rightConns){
-				expand(conn, xpWh, true){
-			}
-		} else if(newXR < xR){
-			for(Node conn : rightConns){
-				contract(conn, xpWh, false){
-			}
-		}
+	static BasePoint rightGenerator, leftGenerator;
+	static Column rightBorder, leftBorder;
+	static float posX;
+	
+	public static void reset(){
+		rightGenerator = new BasePoint();
+		leftGenerator = new BasePoint();
+		rightBorder = new Column();
+		leftBorder = new Column();
+		posX = 0;
 	}
 
-	/**
-	*	Takes the nodes from the database. generates new nodes if nessessary
-	*/
-	public void expand(float dest, boolean rightWards){
+	public static void move(float deltaX){
+		float destination = posX + deltaX;
+		if(deltaX > 0){
 
-		ArrayList<Node> conns = rightWards ? rightConns : leftConns;
-
-		//generate new terrain if nessessary
-		if(rightwards && rightGenerator.x < dest){
-			rightGenerator.generate(dest, middleAreas, conns);
-		} else if(!rightwards && leftGenerator.x > dest){
-			leftGenerator.generate(dest, middleAreas, conns);
-		}
-
-		for(int i = 0; i < conns.size(); i++){
-
-			Node conn = conns.get(i);
-
-			//create the line which starts at the connection
-			Node n1 = conn;
-			Node n2 = conn.getNext();//(because n1.next changes)
-			while(rightWards ? n1.p.x < dest : n1.p.x > dest){
-				if(n1.nextIndex == n2.index){
-					middleAreas.add(conn);
-					rightConns.remove(conn);
-					return;
-				}
-				n1.next = DB.getNode(n1.nextIndex));
-				n1.next.last = n1;
-				n1 = n1.getNext();
+			while(rightGenerator.pos.x < destination){
+				rightGenerator.shift(rightBorder);
 			}
+			//TODO add remove and load code later
+		} else if(deltaX < 0){
 
-			//create the second line, which starts at the other part of the connection
-			while(rightWards ? n2.p.x < dest : n2.p.x > dest){
-				n2.last = DB.getNode(n2.lastIndex);
-				n2.last.next = n2;
-				n2 = n2.getLast();
+			while(leftGenerator.pos.x > destination){
+				leftGenerator.shift(leftBorder);
 			}
-
-			//connect both lines
-			n1.next = n2;//not set(), because the index should stay, the index is global and can refer to Nodes that aren't loaded
-			n2.last = n1;
-
-			//shift the connection outwards
-			conn = n1;
-
-			if(n1.nextIndex == n2.index && n2.lastIndex = n1.index){
-				if(rightWards){
-					middleAreas.add(conn);
-					rightConns.remove(i);
-				}
-			}
+			//TODO add remove and load code later
 		}
-	}
-
-	public void contract(Node conn, float dest, boolean rightWards){
-
-		//follow the bottom line until the node is indise the boundaries
-		Node n1 = conn;
-		while(rightWards ? n1.p.x < dest : n1.p.x > dest){
-			n1 = n1.getLast();
-		}
-
-		//follow the top line until the node is indise the boundaries
-		Node n2 = conn.getNext();
-		while(rightWards ? n2.p.x < dest : n2.p.x > dest){
-			n1 = n1.getNext();
-		}
-
-		//connect the two shortened lines again (not their indices - they have to stay for the database)
-		n1.next = n2;//not set(), because the index should stay, the index is global and can refer to Nodes that aren't loaded
-		n2.last = n1;
-
-		//shift the connection towards the center, thus removing all Nodes around it from the harddrive
-		conn = n1;
 	}
 }
 
-public class Generator {
+public static class Column {
+	List<Node> nodes;
+	
+	public Column(){
+		nodes = new ArrayList<>();
+	}
 
-	public boolean rightWards;
+	public void attach(Integer[] end, Integer[] start, Vec[] points, boolean right){
+		//register changes in the structure of the layers
+		for(int i : end) nodes.remove(i);
+		for(int i : start) nodes.add(i, null);
 
-	public Biomer biomer;
-	public Structurer structurer;
-	public Landscaper landscaper;
+		//shifting of openings
+		if(right){
+			for(int n = 0; n < nodes.size(); n++){
+				//all relevant nodes in real order
+				Node node2 = nodes.get(n).getNext();Node node3 = new Node(points[n*2]);
+				Node node1 = nodes.get(n);			Node node4 = new Node(points[n*2+1]);
 
+				//connect nodes the right way
+				node1.connect(node4);
+				node4.connect(node3);
+				node3.connect(node2);
+
+				//shift ending to the new node
+				nodes.set(n, node4);
+			}
+		} else {
+			for(int n = 0; n < nodes.size(); n++){
+				//all relevant nodes in real order
+				Node node3 = new Node(points[n*2]);		Node node1 = nodes.get(n);
+				Node node4 = new Node(points[n*2+1]);	Node node2 = nodes.get(n).getNext();
+
+				//connect nodes the right way
+				node1.connect(node3);
+				node3.connect(node4);
+				node4.connect(node2);
+
+				//shift ending to the new node
+				nodes.set(n, node3);
+			}
+		}
+	}
+}
+
+/**this class handles all the world generation mechanisms*/
+public static class BasePoint {
 	Random random;
-
-	public void generate(float dest, List<Node> middleAreas, List<Node> rimConns){
-		landscaper.shiftBase();
-		structurer.shiftLayers();
+	Zone zone = Zone.FOREST;
+	boolean right;
+	Vec pos;
+	Structure[] levels;
+	List<Layer> layers;
+	
+	public BasePoint(boolean right, Vec pos){
+		this.right = right;
+		this.pos = pos;
+		levels = new Structure[zone.possibleStructures.length];
+		layers = new ArrayList<>();
+		random = new Random();
 	}
 
-	public class Landscaper {
-		Landscape landscape = Landscape.STAIRS;
-		WorldGenObject[] levels;
-		Vec base;
-
-		float segmentLength = 20;
-		double nextAngle = rightWards ? 0 : Math.PI;
-
-		public void shiftBase(){
-			base.x + = segmentLength*Math.cos(nextAngle);
-			base.y += segmentLength*Math.sin(nextAngle);
-
-			nextAngle();
+	public void shift(Column borderToShift){
+		//shift this point
+		pos.shift(new Vec(right ? 10 : -10, 10));
+		for(int s = 0; s < levels.length; s++){
+			levels[s].next(s);
 		}
-
-		public void nextAngle(){
-			nextAngle = (dir ? 0 : Math.PI);
-
-			for(WorldGenObject level : levels){
-				if(level == null){
-					level.newObjectPlease();
-				}
-				try {
-					nextAngle += level_2.next(random);
-				} catch (Exception e) {//the object is at its end
-					level_2 = null;
-				}
-			}
-
+		//create the final points out of this base one
+		//TODO add a bit of randomness
+		//TODO if a layer finished or started say it
+		
+		if(layers.size() == 0){
+			for(int i = 0; i < zone.finalLayers.length; i++) layers.add(zone.finalLayers[i]);
 		}
+		
+		List<Integer> layersEnded = new ArrayList<>();
+		List<Integer> layersStarted = new ArrayList<>();
+
+		float y = pos.y;
+		Vec[] points = new Vec[layers.size()*2];
+		for(int i = 0; i < points.length; i += 2){
+			points[i] = new Vec(pos.x, y);
+			y -= layers.get(i).thickness;
+			points[i+1] = new Vec(pos.x, y);
+		}
+		//attach the computed points to the border and shift it too
+		borderToShift.attach(layersEnded.toArray(new Integer[0]), layersStarted.toArray(new Integer[0]), points, right);
 	}
+	public class Structure {
+		StructureType type;
+		int stepPos;
 
-	public class Biomer {
-		Biome biome = Biome.FOREST;
-	}
-
-	public class Structurer {//TODO add extra objects (like boulders) and for smooth transition
-		WorldStructure structure = WorldStructure.GRASSTOP;
-
-		List<LayerRim> layers = new ArrayList<>();
-
-		public void shiftLayers(Vec base){
-			int y = 0;
-			for(Layer layer : layers){
-				Vec newPointTop = new Vec(base.plus(0, y));
-				Vec newPointBottom = new Vec(base.plus(0, y -= layer.thickness));
-
-				Node nodeTop = new Node(newPointTop, rightWards ? null : layer.topNode);
-				Node nodeBottom = new Node(newPointBottom, rightWards ? layer.bottomNode : null);
-				if(rightWards){
-					nodeTop.setNext(layer.topNode);
-					layer.topNode.setNext(nodeTop);
-
-					nodeBottom.next = nodeTop;//!! not set, because of index
-					nodeTop.last = nodeBottom;
-				} else {
-					nodeBottom.setLast(layer.bottomNode);
-					layer.bottomNode.setNext(nodeBottom);
-
-					nodeBottom.last = nodeTop;//!! not set, because of index
-					nodeTop.next = nodeBottom;
+		public void next(int level){
+			if(right){
+				stepPos++;
+				if(stepPos >= type.steps.length){
+					type = zone.possibleStructures[level][random.nextInt(zone.possibleStructures[level].length)];
+					stepPos = 0;
 				}
-
-				DB.saveNode(layer.topNode);
-				DB.saveNode(layer.bottomNode);
-
-				layer.topNode = nodeTop;
-				layer.bottomNode = nodeBottom;
-			}
-		}
-
-		public void endLayer(LayerRim layer){
-			if(rightWards){
-				layer.topNode.setLast(layer.bottomNode);
-				layer.bottomNode.setNext(layer.topNode);
 			} else {
-				layer.topNode.setNext(layer.bottomNode);
-				layer.bottomNode.setLast(layer.topNode);
+				stepPos--;
+				if(stepPos <= -1){
+					type = zone.possibleStructures[level][random.nextInt(zone.possibleStructures[level].length)];
+					stepPos = type.steps.length - 1;
+				}
 			}
 		}
+	}
 
-		public class LayerRim {
-			Layer layer;
-			Node topNode;
-			Node bottomNode;
+	public enum StructureType {
+		HILL;
+		double angleStep;//e.g. = Math.PI/160
+		public int[] steps;
+	}
+	public class Layer {
+		Material material;
+		float thickness;
+
+		Node endNode;
+	}
+	/**Zones: recht große Einteilung. es gibt zwischenzones, wo jede Schicht versucht, sich baldmöglichst anzupassen (aufhören, neu beginnen)*/
+	public enum Zone {
+		FOREST( new Layer[]{},
+				new StructureType[][]{});
+		
+		Layer[] finalLayers;
+		StructureType[][] possibleStructures;//possible structure types for each level
+		
+		Zone(Layer[] finalLayers, StructureType[][] possibleStructures) {
+			this.finalLayers = finalLayers;
+			this.possibleStructures = possibleStructures;
 		}
 	}
+}
 }

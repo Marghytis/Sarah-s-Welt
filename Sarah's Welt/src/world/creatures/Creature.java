@@ -21,11 +21,6 @@ import core.geom.Vec;
 
 public abstract class Creature extends Thing {
 	
-	public class C_type {
-		public String name;
-		public int id;
-	}
-	
 	public static void renderCreatures(){
 		for(List<Creature> list : World.creatures){
 			if(list.size() > 0) {

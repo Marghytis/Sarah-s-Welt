@@ -68,4 +68,9 @@ public class Node {
 	public void setPoint(Vec v){
 		p.set(v);
 	}
+
+	public void connect(Node node2) {
+		this.next = node2;
+		node2.last = this;
+	}
 }

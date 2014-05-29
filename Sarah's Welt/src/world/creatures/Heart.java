@@ -14,13 +14,13 @@ public class Heart extends WalkingCreature{
 
 	static Animation flap = new Animation(10, 0, true, 0, 1, 2, 3, 2, 1);
 	
-	int type;
+	int variant;
 
-	public Heart(int type, Vec pos, Node worldLink) {
+	public Heart(int variant, Vec pos, Node worldLink) {
 		super(new Animator(Res.HEART, flap), pos, worldLink, typeId);
 		vel.y = -0.2f;
 		health = 2000;
-		this.type = type;
+		this.variant = variant;
 	}
 	
 	public void update(int dTime){
@@ -42,6 +42,6 @@ public class Heart extends WalkingCreature{
 	}
 	
 	public void beforeRender(){
-		flap.y = type;
+		flap.y = variant;
 	}
 }
