@@ -7,7 +7,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.World;
+import world.WorldView;
 import core.Settings;
 import core.geom.Vec;
 
@@ -53,7 +53,7 @@ public class Rabbit extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		World.sarah.hitBy(this, null);
+		WorldView.sarah.hitBy(this, null);
 		animator.setAnimation(stand);
 	}
 	
@@ -64,10 +64,10 @@ public class Rabbit extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
-			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
+		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 22500){
+			if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
-			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
+			} else if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x + WorldView.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;

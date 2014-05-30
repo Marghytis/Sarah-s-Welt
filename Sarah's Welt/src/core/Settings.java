@@ -13,5 +13,5 @@ public class Settings {
 	public static boolean sound = false;
 	
 	//shortcuts
-	public static boolean flying = false;
+	public static boolean flying = true;
 }

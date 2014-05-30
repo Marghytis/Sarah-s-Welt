@@ -6,7 +6,7 @@ import util.Animator;
 import util.Geom;
 import world.Material;
 import world.Node;
-import world.World;
+import world.WorldView;
 import core.geom.Vec;
 
 public abstract class WalkingCreature extends Creature{
@@ -64,7 +64,7 @@ public abstract class WalkingCreature extends Creature{
 			g = false;
 		}
 	}
-	
+	int adfg;
 	/**
 	 * changes vX and vY so the thing is walking on the terrain with pace vP
 	 * @param d distance to step
@@ -73,12 +73,11 @@ public abstract class WalkingCreature extends Creature{
 		if(d == 0){
 			vel.set(0, 0);
 		}
-		float v = d*World.measureScale;
+		float v = d*WorldView.measureScale;
 		Vec intersection = null;
 		
 		Node node = worldLink.getLast().getLast().getLast().getLast().getLast().getLast().getLast().getLast();
 		Node finalNode = null;
-		if(node == null)return;//TODO
 		for(int i = 0; i <= 16; i++){
 			//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
 			if(node.getPoint().x > node.getNext().getPoint().x){
@@ -119,7 +118,7 @@ public abstract class WalkingCreature extends Creature{
 		boolean foundOne = false;
 		for(Material mat : Material.values()){//	iterate materials
 			if(mat.solid){
-				for(Node c : World.contours[mat.ordinal()]){//	iterate lines
+				for(Node c : WorldView.contours[mat.ordinal()]){//	iterate lines
 					Node n = c;
 					 do {
 						n = n.getNext();
@@ -131,7 +130,7 @@ public abstract class WalkingCreature extends Creature{
 							intersection[1] = inters.y;
 							pos.set(inters);
 							worldLink = n;
-							vP = (int) (vel.x/(velocityUnit*World.measureScale*100));
+							vP = (int) (vel.x/(velocityUnit*WorldView.measureScale*100));
 							vel.set(0, 0);
 							acc.set(0, 0);
 							g = true;

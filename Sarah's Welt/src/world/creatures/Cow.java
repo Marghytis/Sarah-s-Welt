@@ -7,7 +7,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.World;
+import world.WorldView;
 import core.geom.Vec;
 
 public class Cow extends WalkingCreature{
@@ -44,8 +44,8 @@ public class Cow extends WalkingCreature{
 	}
 	
 	public boolean rightClickAction(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
-			World.sarah.mountCow(this);
+		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 400){
+			WorldView.sarah.mountCow(this);
 			return true;
 		}
 		return false;

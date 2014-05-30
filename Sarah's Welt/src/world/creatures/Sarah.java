@@ -12,8 +12,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.World;
-import world.worldGen.Biome;
+import world.WorldView;
 import core.Settings;
 import core.geom.Vec;
 
@@ -55,17 +54,17 @@ public class Sarah extends WalkingCreature {
 					System.out.println("Test");
 				}
 				if(!ridingCow){
-					World.sarah.animator.animation = stand;
+					animator.animation = stand;
 				} else if(animator.animation == dismountCow){
 					ridingCow = false;
 					Cow newCow = riddenCow;
-					newCow.worldLink = World.sarah.worldLink;
-					World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
-					World.sarah.animator.setAnimation(stand);
-					World.sarah.animator.tex = Res.SARAH;
+					newCow.worldLink = worldLink;
+//					World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
+					animator.setAnimation(stand);
+					animator.tex = Res.SARAH;
 					riddenCow = null;
 				} else {
-					World.sarah.animator.setAnimation(walkOnCow);
+					animator.setAnimation(walkOnCow);
 				}
 			}
 		};
@@ -227,13 +226,13 @@ public class Sarah extends WalkingCreature {
 		if(g){
 			if(ridingCow){
 				Cow newCow = riddenCow;
-				newCow.worldLink = World.sarah.worldLink;
-				World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
+				newCow.worldLink = worldLink;
+//				WorldView.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, WorldView.sarah.worldLink, 2));//TODO
 			}
 			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
 			ridingCow = true;
 			riddenCow = c;
-			World.thingTasks.add(() -> World.creatures[Cow.typeId].remove(c));
+			WorldView.thingTasks.add(() -> WorldView.creatures[Cow.typeId].remove(c));
 		}
 	}
 	

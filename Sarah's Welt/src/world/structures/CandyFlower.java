@@ -7,7 +7,7 @@ import util.Animation;
 import util.Animator;
 import util.Color;
 import world.Node;
-import world.World;
+import world.WorldView;
 import core.Window;
 import core.geom.Vec;
 
@@ -31,7 +31,7 @@ public class CandyFlower extends Structure {
 	}
 	
 	public void renderLight(){
-		GL11.glTranslatef(pos.x - World.sarah.pos.x + Window.WIDTH/2 - Res.FLOWER_LIGHT.file.width/2, -(pos.y - World.sarah.pos.y) + Window.HEIGHT/2 - Res.FLOWER_LIGHT.file.height/2 - 20, 0);
+		GL11.glTranslatef(pos.x - WorldView.sarah.pos.x + Window.WIDTH/2 - Res.FLOWER_LIGHT.file.width/2, -(pos.y - WorldView.sarah.pos.y) + Window.HEIGHT/2 - Res.FLOWER_LIGHT.file.height/2 - 20, 0);
 		colors[type].set();
 		Res.FLOWER_LIGHT.box.drawTex(Res.FLOWER_LIGHT);
 	}

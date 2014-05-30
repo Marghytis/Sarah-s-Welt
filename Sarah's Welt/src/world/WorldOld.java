@@ -52,7 +52,7 @@ import core.Window;
 import core.geom.Vec;
 
 @SuppressWarnings("unchecked")
-public class World {
+public class WorldOld {
 	public static final int measureScale = 50;
 
 	public static List<Node>[] contours;
@@ -60,6 +60,7 @@ public class World {
 	public static List<Structure>[] structures;
 	public static List<Creature>[] creatures;
 	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.list.size()]);
+	public static List<ParticleEffect> particleEffects = new ArrayList<>();
 	
 	public static List<Runnable> thingTasks = new ArrayList<>();
 	
@@ -119,7 +120,6 @@ public class World {
 	public static Lightmap light;
 	public static String worldName;
 	
-	public static List<ParticleEffect> particleEffects = new ArrayList<>();
 	
 	public static void load(String name, float sarahX){
 //		if(existsAlready(name)){

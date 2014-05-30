@@ -5,7 +5,7 @@ import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Node;
-import world.World;
+import world.WorldView;
 import core.geom.Vec;
 
 public class Heart extends WalkingCreature{
@@ -32,9 +32,9 @@ public class Heart extends WalkingCreature{
 	}
 	
 	public boolean rightClickAction(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 10000){
-			World.particleEffects.add(new Hearts(pos.plus(animator.tex.box.middle())));
-			World.sarah.health = Math.min(World.sarah.health += health/300, 30);
+		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 10000){
+			WorldView.particleEffects.add(new Hearts(pos.plus(animator.tex.box.middle())));
+			WorldView.sarah.health = Math.min(WorldView.sarah.health += health/300, 30);
 			health = 0;
 			return true;
 		}

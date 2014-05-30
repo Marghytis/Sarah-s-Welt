@@ -5,7 +5,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.World;
+import world.WorldView;
 import core.Settings;
 import core.geom.Vec;
 
@@ -48,12 +48,12 @@ public class Panda extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		World.sarah.hitBy(this, null);
+		WorldView.sarah.hitBy(this, null);
 		animator.setAnimation(sit);
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 1600){
+		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 1600){
 			animator.setAnimation(punch);
 			return true;
 		}
@@ -63,9 +63,9 @@ public class Panda extends WalkingCreature {
 	protected void beforeRender(){
 		super.beforeRender();
 		
-		if(pos.x < World.sarah.pos.x){
+		if(pos.x < WorldView.sarah.pos.x){
 			mirrored = true;
-		} else if(pos.x > World.sarah.pos.x){
+		} else if(pos.x > WorldView.sarah.pos.x){
 			mirrored = false;
 		}
 		
