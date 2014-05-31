@@ -30,20 +30,20 @@ import world.creatures.Scorpion;
 import world.creatures.Snail;
 import world.creatures.Trex;
 import world.creatures.Unicorn;
-import world.structures.Bamboo;
-import world.structures.Bush;
-import world.structures.Cactus;
-import world.structures.CandyBush;
-import world.structures.CandyFlower;
-import world.structures.CandyTree;
-import world.structures.Cloud;
-import world.structures.Crack;
-import world.structures.Flower;
-import world.structures.Fossil;
-import world.structures.Grass_tuft;
-import world.structures.PalmTree;
-import world.structures.Structure;
-import world.structures.Tree;
+import worldObjects.Bamboo;
+import worldObjects.Bush;
+import worldObjects.Cactus;
+import worldObjects.CandyBush;
+import worldObjects.CandyFlower;
+import worldObjects.CandyTree;
+import worldObjects.Cloud;
+import worldObjects.Crack;
+import worldObjects.Flower;
+import worldObjects.Fossil;
+import worldObjects.Grass_tuft;
+import worldObjects.PalmTree;
+import worldObjects.Tree;
+import worldObjects.WorldObject;
 import core.Menu;
 import core.Settings;
 import core.Window;
@@ -56,11 +56,11 @@ public class WorldView {
 	public static String name;
 	//world generation
 	static BasePoint rightGenerator, leftGenerator;
-	static float widthHalf = 200;
+	static float widthHalf = 1000;
 	//things
 	public static Sarah sarah;
 	public static List<Node>[] contours;
-	public static List<Structure>[] structures;
+	public static List<WorldObject>[] worldObjects;
 	public static List<Creature>[] creatures;
 	public static List<WorldItem>[] items;
 	//tasks
@@ -72,9 +72,9 @@ public class WorldView {
 	
 	@SuppressWarnings("unchecked")
 	public static void reset(String worldName){
-		//setup tessellator
+			//setup tessellator
 		tessellator = new Tessellator();
-		//setup things
+			//setup things
 		sarah = new Sarah(new Vec(0, 5), null);
 		Inventory.reset();
 			//items
@@ -82,25 +82,25 @@ public class WorldView {
 		for(int i = 0; i < items.length; i++){
 			items[i] = new ArrayList<>();
 		}
-			//structures
-		int s_id = 0;
-		Tree.typeId = s_id++;
-		PalmTree.typeId = s_id++;
-		CandyTree.typeId = s_id++;
-		Bush.typeId = s_id++;
-		CandyBush.typeId = s_id++;
-		Cactus.typeId = s_id++;
-		Flower.typeId = s_id++;
-		CandyFlower.typeId = s_id++;
-		Bamboo.typeId = s_id++;
-		Grass_tuft.typeId = s_id++;
-		Cloud.typeId = s_id++;
-		Crack.typeId = s_id++;
-		Fossil.typeId = s_id++;
+			//worldObjects
+		int o_id = 0;
+		Tree.typeId = o_id++;
+		PalmTree.typeId = o_id++;
+		CandyTree.typeId = o_id++;
+		Bush.typeId = o_id++;
+		CandyBush.typeId = o_id++;
+		Cactus.typeId = o_id++;
+		Flower.typeId = o_id++;
+		CandyFlower.typeId = o_id++;
+		Bamboo.typeId = o_id++;
+		Grass_tuft.typeId = o_id++;
+		Cloud.typeId = o_id++;
+		Crack.typeId = o_id++;
+		Fossil.typeId = o_id++;
 		
-		structures = (List<Structure>[]) new List<?>[s_id];
-		for(int i = 0; i < structures.length; i++){
-			structures[i] = new ArrayList<>();
+		worldObjects = (List<WorldObject>[]) new List<?>[o_id];
+		for(int i = 0; i < worldObjects.length; i++){
+			worldObjects[i] = new ArrayList<>();
 		}
 			//creatures
 		int c_id = 1;//0 is sarah
@@ -155,8 +155,8 @@ public class WorldView {
 	}
 	
 	public static void updateStructures(int delta){
-		for(List<Structure> list : structures) for(int i = 0; i < list.size(); i++){
-			Structure s = list.get(i);
+		for(List<WorldObject> list : worldObjects) for(int i = 0; i < list.size(); i++){
+			WorldObject s = list.get(i);
 			if(s.pos.x < leftGenerator.pos.x || s.pos.x > rightGenerator.pos.x){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
@@ -274,7 +274,7 @@ public class WorldView {
 	}
 
 	public static void renderStructures(boolean front){
-		for(List<Structure> list : structures){
+		for(List<WorldObject> list : worldObjects){
 			if(list.size() > 0){
 				list.get(0).animator.tex.file.bind();
 				list.forEach((c) -> {if(front == c.front){c.render();}});
@@ -300,7 +300,7 @@ public class WorldView {
 		}
 		TextureFile.bindNone();
 		if(Settings.hitbox){
-			for(List<Structure> list : structures){
+			for(List<WorldObject> list : worldObjects){
 				list.forEach((c) -> {
 					GL11.glPushMatrix();
 					GL11.glTranslatef(c.pos.x, c.pos.y, 0);
@@ -365,7 +365,7 @@ public class WorldView {
 									continue events;
 								}
 							}
-							for(List<Structure> list : structures) for(Structure c : list){
+							for(List<WorldObject> list : worldObjects) for(WorldObject c : list){
 								if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
 									if(c.rightClickAction())
 									continue events;

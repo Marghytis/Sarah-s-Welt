@@ -3,6 +3,8 @@ package world.creatures;
 import item.DistantWeapon;
 import item.Item;
 import item.Weapon;
+import particles.BloodSplash;
+import particles.DeathDust;
 import util.Animator;
 import world.Material;
 import world.Node;
@@ -29,11 +31,11 @@ public abstract class Creature extends Thing {
 	
 	public void update(int dTime){
 		if(health <= 0){
-//			World.particleEffects.add(new DeathDust(pos.plus(animator.box.middle())));
-//			World.thingTasks.add(() -> {
-//				onDeath();
-//				World.creatures[id].remove(this);
-//			});
+			WorldView.particleEffects.add(new DeathDust(pos.plus(animator.box.middle())));
+			WorldView.thingTasks.add(() -> {
+				onDeath();
+				WorldView.creatures[id].remove(this);
+			});
 		} else {
 			pos.shift(vel);
 			
@@ -52,7 +54,7 @@ public abstract class Creature extends Thing {
 			} else {
 				health -= c.punchStrength;
 			}
-//			World.particleEffects.add(new BloodSplash(pos.plus(animator.box.middle())));
+			WorldView.particleEffects.add(new BloodSplash(pos.plus(animator.box.middle())));
 			return true;
 		}
 		return false;

@@ -10,7 +10,9 @@ public enum Material {
 	EARTH("materials/Earth", 3f, true),
 	GRASS("materials/Grass", 3f, true),
 	SOIL("materials/Soil", 3f, true),
-	CANDY("materials/Candy", 3f, true),;
+	CANDY("materials/Candy", 3f, true),
+	SAND("materials/Sand", 3f, true),
+	SANDSTONE("materials/SandStone", 3f, true),;
 	
 	public String name;
 	public TextureFile textureFile;

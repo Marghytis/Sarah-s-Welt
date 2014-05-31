@@ -1,4 +1,4 @@
-package world.structures;
+package worldObjects;
 
 import item.Inventory;
 import item.Item;
@@ -11,20 +11,14 @@ import util.Animator;
 import world.Node;
 import core.geom.Vec;
 
-public class Tree extends Structure{
+public class CandyTree extends WorldObject{
 
 	public static int typeId;
 	
 	public float size;
 	
-	static Animation[] anis = new Animation[]{
-			new Animation(0, 0),
-			new Animation(0, 1),
-			new Animation(0, 2),
-	};
-	
-	public Tree(int type, Vec pos, Node worldLink, float size){
-		super(new Animator(Res.TREE, anis[type]), pos, worldLink);
+	public CandyTree(Vec pos, Node worldLink, float size){
+		super(new Animator(Res.CANDY_TREE, new Animation(0, 0)), pos, worldLink, typeId);
 		this.size = size;
 		mirrored = random.nextBoolean();
 	}
@@ -34,7 +28,7 @@ public class Tree extends Structure{
 	}
 	
 	public boolean rightClickAction(){
-		return Inventory.addItem(Item.stick);
+		return Inventory.addItem(Item.candyCane);
 	}
 	
 }

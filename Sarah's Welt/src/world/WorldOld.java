@@ -30,21 +30,21 @@ import world.creatures.Scorpion;
 import world.creatures.Snail;
 import world.creatures.Trex;
 import world.creatures.Unicorn;
-import world.structures.Bamboo;
-import world.structures.Bush;
-import world.structures.Cactus;
-import world.structures.CandyBush;
-import world.structures.CandyFlower;
-import world.structures.CandyTree;
-import world.structures.Cloud;
-import world.structures.Crack;
-import world.structures.Flower;
-import world.structures.Fossil;
-import world.structures.Grass_tuft;
-import world.structures.PalmTree;
-import world.structures.Structure;
-import world.structures.Tree;
 import world.worldGen.SurfaceGenerator;
+import worldObjects.Bamboo;
+import worldObjects.Bush;
+import worldObjects.Cactus;
+import worldObjects.CandyBush;
+import worldObjects.CandyFlower;
+import worldObjects.CandyTree;
+import worldObjects.Cloud;
+import worldObjects.Crack;
+import worldObjects.Flower;
+import worldObjects.Fossil;
+import worldObjects.Grass_tuft;
+import worldObjects.PalmTree;
+import worldObjects.Tree;
+import worldObjects.WorldObject;
 import core.Menu;
 import core.Menu.View;
 import core.Settings;
@@ -57,7 +57,7 @@ public class WorldOld {
 
 	public static List<Node>[] contours;
 
-	public static List<Structure>[] structures;
+	public static List<WorldObject>[] worldObjects;
 	public static List<Creature>[] creatures;
 	public static List<WorldItem>[] items = (List<WorldItem>[]) (new ArrayList<?>[Item.list.size()]);
 	public static List<ParticleEffect> particleEffects = new ArrayList<>();
@@ -88,9 +88,9 @@ public class WorldOld {
 		Crack.typeId = s_id++;
 		Fossil.typeId = s_id++;
 		
-		structures = (List<Structure>[]) new List<?>[s_id];
-		for(int i = 0; i < structures.length; i++){
-			structures[i] = new ArrayList<>();
+		worldObjects = (List<WorldObject>[]) new List<?>[s_id];
+		for(int i = 0; i < worldObjects.length; i++){
+			worldObjects[i] = new ArrayList<>();
 		}
 
 		int c_id = 1;//0 is sarah
@@ -127,7 +127,7 @@ public class WorldOld {
 //		} else {
 		worldName = name;
 		tessellator = new Tessellator();
-		for(List<Structure> s : structures) s.clear();
+		for(List<WorldObject> s : worldObjects) s.clear();
 		for(List<Creature> s : creatures) s.clear();
 		for(List<Node> ns : contours) ns.clear();
 		generator = new SurfaceGenerator(Window.WIDTH + 400);
@@ -162,8 +162,8 @@ public class WorldOld {
 	}
 	
 	public static void updateStructures(int delta){
-		for(List<Structure> list : World.structures) for(int i = 0; i < list.size(); i++){
-			Structure s = list.get(i);
+		for(List<WorldObject> list : World.structures) for(int i = 0; i < list.size(); i++){
+			WorldObject s = list.get(i);
 			if(s.pos.x < generator.grassT.end.getPoint().x || s.pos.x > generator.grassT.start.getPoint().x){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
@@ -204,7 +204,7 @@ public class WorldOld {
 		GL11.glColor4f(1, 1, 1, 1);
 
 		//back
-		Structure.renderStructures(false);
+		WorldObject.renderStructures(false);
 		
 		WorldItem.renderItems();
 
@@ -225,7 +225,7 @@ public class WorldOld {
 		sarah.render();
 		GL11.glPopMatrix();
 
-		Structure.renderStructures(true);
+		WorldObject.renderStructures(true);
 		
 		//render health on creatures
 		if(Settings.health) for(List<Creature> list : creatures) for(Creature c : list){
@@ -279,7 +279,7 @@ public class WorldOld {
 							continue events;
 						}
 					}
-					for(List<Structure> list : structures) for(Structure c : list){
+					for(List<WorldObject> list : worldObjects) for(WorldObject c : list){
 						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
 							if(c.rightClickAction())
 							continue events;

@@ -6,8 +6,8 @@ import util.Animator;
 import world.Material;
 import world.Node;
 import world.WorldView;
-import world.structures.Cloud;
-import world.structures.Structure;
+import worldObjects.Cloud;
+import worldObjects.WorldObject;
 import core.Settings;
 import core.geom.Vec;
 
@@ -78,7 +78,7 @@ public class Snail extends WalkingCreature {
 	
 	public boolean findNextCloud(){
 		Cloud find = null; float distanceSq = 1000000;
-		for(Structure c : WorldView.structures[Cloud.typeId]){
+		for(WorldObject c : WorldView.worldObjects[Cloud.typeId]){
 			float dist = pos.minus(c.pos).lengthSqare();
 			if(dist < distanceSq){
 				find = (Cloud)c;
