@@ -1,4 +1,4 @@
-package worldObjects;
+package world.worldObjects;
 
 import util.Animator;
 import world.Node;

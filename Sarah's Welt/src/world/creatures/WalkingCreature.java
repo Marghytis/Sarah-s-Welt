@@ -75,37 +75,36 @@ public abstract class WalkingCreature extends Creature{
 		}
 		float v = d*WorldView.measureScale;
 		Vec intersection = null;
-		
-		Node node = worldLink.getLast().getLast().getLast().getLast().getLast().getLast().getLast().getLast();
+
 		Node finalNode = null;
-		for(int i = 0; i <= 16; i++){
-			//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
-			if(node.getPoint().x > node.getNext().getPoint().x){
-				Vec[] inter = Geom.circleIntersection(node.getPoint(), node.getNext().getPoint(), pos, v);
-	
-				if(inter[0] != null){
-					if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
-						if(intersection == null){
-							intersection = inter[0];
-							finalNode = node;
-						} else if(inter[0].y > intersection.y){
-							intersection = inter[0];
-							finalNode = node;
+		for(Material mat : Material.values()){//	iterate materials
+			if(mat.solid){
+				for(Node c : WorldView.contours[mat.ordinal()]){//	iterate lines
+					Node node = c;
+					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
+					do{
+						if(node.getPoint().x > node.getNext().getPoint().x){
+							Vec[] inter = Geom.circleIntersection(node.getPoint(), node.getNext().getPoint(), pos, v);
+				
+							if(inter[0] != null){
+								if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
+									if(intersection == null || inter[0].y > intersection.y){
+										intersection = inter[0];
+										finalNode = node;
+									}
+								}
+								if(inter[1] != null && ((inter[1].x-pos.x)*(v/Math.abs(v))) > 0){
+									if(intersection == null || inter[1].y > intersection.y){
+										intersection = inter[1];
+										finalNode = node;
+									}
+								}
+							}
 						}
-					}
-					if(inter[1] != null && ((inter[1].x-pos.x)*(v/Math.abs(v))) > 0){
-						if(intersection == null){
-							intersection = inter[1];
-							finalNode = node;
-						} else if(inter[1].y > intersection.y){
-							intersection = inter[1];
-							finalNode = node;
-						}
-					}
+						node = node.getNext();
+					} while(node != c);
 				}
 			}
-			
-			node = node.getNext();
 		}
 		if(intersection != null){
 			vel.set(intersection.minus(pos));
@@ -121,21 +120,23 @@ public abstract class WalkingCreature extends Creature{
 				for(Node c : WorldView.contours[mat.ordinal()]){//	iterate lines
 					Node n = c;
 					 do {
-						n = n.getNext();
-						Vec inters = new Vec();
-						boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getLast().getPoint(), n.getPoint(), inters);
-						if(found && (intersection == null || inters.y > intersection[1])){
-							if(intersection == null)intersection = new float[2];
-							intersection[0] = inters.x;
-							intersection[1] = inters.y;
-							pos.set(inters);
-							worldLink = n;
-							vP = (int) (vel.x/(velocityUnit*WorldView.measureScale*100));
-							vel.set(0, 0);
-							acc.set(0, 0);
-							g = true;
-							foundOne = true;
+						if(n.getPoint().x > n.getNext().getPoint().x){
+							Vec inters = new Vec();
+							boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getPoint(), n.getNext().getPoint(), inters);
+							if(found && (intersection == null || inters.y > intersection[1])){
+								if(intersection == null)intersection = new float[2];
+								intersection[0] = inters.x;
+								intersection[1] = inters.y;
+								pos.set(inters);
+								worldLink = n;
+								vP = (int) (vel.x/(velocityUnit*WorldView.measureScale*100));
+								vel.set(0, 0);
+								acc.set(0, 0);
+								g = true;
+								foundOne = true;
+							}
 						}
+						n = n.getNext();
 					} while (n != c);
 				}
 			}

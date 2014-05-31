@@ -1,4 +1,4 @@
-package worldObjects;
+package world.worldObjects;
 
 import item.Inventory;
 import item.Item;

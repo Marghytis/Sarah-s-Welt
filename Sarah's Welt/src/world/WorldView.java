@@ -30,20 +30,20 @@ import world.creatures.Scorpion;
 import world.creatures.Snail;
 import world.creatures.Trex;
 import world.creatures.Unicorn;
-import worldObjects.Bamboo;
-import worldObjects.Bush;
-import worldObjects.Cactus;
-import worldObjects.CandyBush;
-import worldObjects.CandyFlower;
-import worldObjects.CandyTree;
-import worldObjects.Cloud;
-import worldObjects.Crack;
-import worldObjects.Flower;
-import worldObjects.Fossil;
-import worldObjects.Grass_tuft;
-import worldObjects.PalmTree;
-import worldObjects.Tree;
-import worldObjects.WorldObject;
+import world.worldObjects.Bamboo;
+import world.worldObjects.Bush;
+import world.worldObjects.Cactus;
+import world.worldObjects.CandyBush;
+import world.worldObjects.CandyFlower;
+import world.worldObjects.CandyTree;
+import world.worldObjects.Cloud;
+import world.worldObjects.Crack;
+import world.worldObjects.Flower;
+import world.worldObjects.Fossil;
+import world.worldObjects.Grass_tuft;
+import world.worldObjects.PalmTree;
+import world.worldObjects.Tree;
+import world.worldObjects.WorldObject;
 import core.Menu;
 import core.Settings;
 import core.Window;
@@ -82,7 +82,7 @@ public class WorldView {
 		for(int i = 0; i < items.length; i++){
 			items[i] = new ArrayList<>();
 		}
-			//worldObjects
+			//world.worldObjects
 		int o_id = 0;
 		Tree.typeId = o_id++;
 		PalmTree.typeId = o_id++;

@@ -27,7 +27,7 @@ public class Sarah extends WalkingCreature {
 	public static Animation jump = new Animation(5, 3, false, 	1, 2, 3, 4, 5, 6);
 	public static Animation fly = new Animation(6, 3);
 	public static Animation land = new Animation(2, 3, false, 	5, 4, 3, 2, 1);
-	public static Animation run = new Animation(3, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
+	public static Animation run = new Animation(2, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
 	public static Animation sneak = new Animation(10, 5, true, 1, 2, 3, 2);
 	public static Animation crouch = new Animation(0, 5);
 	public static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 0);

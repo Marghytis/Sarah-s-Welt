@@ -1,4 +1,4 @@
-package worldObjects;
+package world.worldObjects;
 
 import org.lwjgl.opengl.GL11;
 

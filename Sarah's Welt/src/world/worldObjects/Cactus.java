@@ -1,4 +1,4 @@
-package worldObjects;
+package world.worldObjects;
 
 import resources.Res;
 import util.Animation;

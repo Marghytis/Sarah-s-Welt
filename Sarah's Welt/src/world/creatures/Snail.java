@@ -6,8 +6,8 @@ import util.Animator;
 import world.Material;
 import world.Node;
 import world.WorldView;
-import worldObjects.Cloud;
-import worldObjects.WorldObject;
+import world.worldObjects.Cloud;
+import world.worldObjects.WorldObject;
 import core.Settings;
 import core.geom.Vec;
 
