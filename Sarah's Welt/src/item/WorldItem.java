@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import util.Animator;
 import world.Node;
 import world.Thing;
+import world.WorldView;
 import core.geom.Vec;
 
 public class WorldItem extends Thing{
@@ -22,7 +23,7 @@ public class WorldItem extends Thing{
 				return false;
 			} else if (Inventory.stacks[i].item == Item.fist){
 				Inventory.stacks[i].item = item;
-//				World.items[item.id].remove(this);TODO
+				WorldView.thingTasks.add(() -> WorldView.items[item.id].remove(this));
 				return true;
 			}
 		}

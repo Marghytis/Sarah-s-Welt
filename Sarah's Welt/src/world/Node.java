@@ -73,4 +73,9 @@ public class Node {
 		this.next = node2;
 		node2.last = this;
 	}
+
+	public void connectTrue(Node node2) {
+		setNext(node2);
+		node2.setLast(this);
+	}
 }
