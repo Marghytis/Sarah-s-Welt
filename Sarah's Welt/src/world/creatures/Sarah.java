@@ -10,6 +10,7 @@ import resources.Res;
 import resources.TextureFile;
 import util.Animation;
 import util.Animator;
+import world.BasePoint.ZoneType;
 import world.Material;
 import world.Node;
 import world.WorldView;
@@ -58,8 +59,8 @@ public class Sarah extends WalkingCreature {
 				} else if(animator.animation == dismountCow){
 					ridingCow = false;
 					Cow newCow = riddenCow;
-					newCow.worldLink = worldLink;
-//					World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
+					newCow.worldLink = WorldView.sarah.worldLink;
+					WorldView.thingTasks.add(() -> ZoneType.spawnCreature(newCow, WorldView.sarah.worldLink, 2, random));
 					animator.setAnimation(stand);
 					animator.tex = Res.SARAH;
 					riddenCow = null;

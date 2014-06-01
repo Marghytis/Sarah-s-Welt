@@ -17,7 +17,7 @@ public class Datenbank {
             } else {
             	fresh = false;
             }
-            conn = DriverManager.getConnection("jdbc:sqlite:" + verzeichnis + dbname);            
+            conn = DriverManager.getConnection("jdbc:sqlite:" + verzeichnis + "\\" + dbname);            
             
         } catch (SQLException e) {
             e.printStackTrace();

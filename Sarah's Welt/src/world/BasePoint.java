@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import world.WorldView.Zone;
 import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Cow;
@@ -37,8 +38,9 @@ import core.geom.Vec;
 
 /**this class handles all the world generation mechanisms*/
 public class BasePoint {
+	public static ZoneType startZone = ZoneType.MEADOW;
 	Random random;
-	Zone zone = Zone.CANDY;
+	Zone zone;
 	boolean right;
 	Vec pos;
 	Structure[] levels;
@@ -47,27 +49,32 @@ public class BasePoint {
 	public BasePoint(boolean right, Vec pos){
 		this.right = right;
 		this.pos = pos;
-		levels = new Structure[zone.possibleStructures.length];
+		levels = new Structure[startZone.possibleStructures.length];
 		for(int s = 0; s < levels.length; s++) levels[s] = new Structure(s);
 		layers = new ArrayList<>();
 		random = new Random();
 	}
 	
-	public static void setupLayers(BasePoint p1, BasePoint p2){
-		float y = p1.pos.y;
-		for(AimLayer aim : p1.zone.finalLayers){
-			Node n1 = new Node(p1.pos.x, y);
+	public BasePoint setupLayers(){
+		BasePoint p2 = new BasePoint(!right, new Vec(pos));
+		zone = new Zone(startZone);
+		p2.zone = zone;
+		WorldView.zones.add(zone);
+		float y = pos.y;
+		for(AimLayer aim : zone.type.finalLayers){
+			Node n1 = new Node(pos.x, y);
 			y -= aim.thickness;
-			Node n2 = new Node(p1.pos.x, y);
+			Node n2 = new Node(pos.x, y);
 			
 			n1.connect(n2);
 			n2.connect(n1);
 
-			p1.layers.add(p1.new Layer(aim, aim.thickness, n1, n2));
+			layers.add(new Layer(aim, aim.thickness, n1, n2));
 			p2.layers.add(p2.new Layer(aim, aim.thickness, n1, n2));
 
 			WorldView.contours[aim.material.ordinal()].add(n1);
 		}
+		return p2;
 	}
 
 	float segmentLength = 20;
@@ -96,11 +103,11 @@ public class BasePoint {
 		for(int l = 0; l < levels.length; l++){
 			nextAngle += levels[l].next();
 			if(levels[l].type == null && random.nextInt(100) < 10){
-				levels[l].type = zone.possibleStructures[l][random.nextInt(zone.possibleStructures[l].length)];
+				levels[l].type = zone.type.possibleStructures[l][random.nextInt(zone.type.possibleStructures[l].length)];
 			}
 		}
 		if(random.nextInt(100) == 0){
-			setZone(Zone.values()[random.nextInt(Zone.values().length)]);
+			setZone(ZoneType.values()[random.nextInt(ZoneType.values().length)]);
 		}
 	}
 	public class LayerSorter {
@@ -108,8 +115,18 @@ public class BasePoint {
 		public LayerSorter(int prio){ this.prio = prio;}
 	}
 	
-	public void setZone(Zone z){
-		zone = z;
+	public void setZone(ZoneType z){
+		if(right){
+			zone.end = pos.x;
+			zone = new Zone(z);
+			zone.start = pos.x;
+			WorldView.zones.add(zone);
+		} else {
+			zone.start = pos.x;
+			zone = new Zone(z);
+			zone.end = pos.x;
+			WorldView.zones.add(zone);
+		}
 		for(Layer l : layers){
 			l.shrimp = true;
 		}
@@ -148,6 +165,7 @@ public class BasePoint {
 				WorldView.contours[thisOne.aim.material.ordinal()].add(nTop);
 			}
 		}
+		levels = new Structure[zone.type.possibleStructures.length];
 //		int posY = (int)((float)a*layers.size()/z.finalLayers.length);
 	}
 
@@ -187,7 +205,7 @@ public class BasePoint {
 	}
 	
 	public void spawnThings(){
-		for(ThingSpawner s : zone.spawners){
+		for(ThingSpawner s : zone.type.spawners){
 			s.doYourTask(right ? layers.get(0).endNodeTop : layers.get(0).endNodeTop.getLast(), random);
 		}
 	}
@@ -208,8 +226,8 @@ public class BasePoint {
 				stepPos++;
 				if(stepPos >= type.steps.length){
 					if(random.nextInt(10) < 1){
-						index = random.nextInt(zone.possibleStructures[level].length);
-						type = zone.possibleStructures[level][index];
+						index = random.nextInt(zone.type.possibleStructures[level].length);
+						type = zone.type.possibleStructures[level][index];
 					} else {
 						type = StructureType.FLAT;
 					}
@@ -218,7 +236,7 @@ public class BasePoint {
 			} else {
 				stepPos--;
 				if(stepPos <= -1){
-					type = zone.possibleStructures[level][random.nextInt(zone.possibleStructures[level].length)];
+					type = zone.type.possibleStructures[level][random.nextInt(zone.type.possibleStructures[level].length)];
 					stepPos = type.steps.length - 1;
 				}
 			}
@@ -314,10 +332,11 @@ public class BasePoint {
 		}
 	}
 	public interface Spawner {public abstract void spawn(Node node, Random random);}
+	
 	/**Zones: recht große Einteilung. es gibt zwischenzones, wo jede Schicht versucht, sich baldmöglichst anzupassen (aufhören, neu beginnen)*/
-	public static enum Zone {
+	public static enum ZoneType {
 		FOREST( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
-				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN, StructureType.ADER}},
+				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}, {StructureType.ADER}},
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Snail(new Vec(), null), node, 5, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
@@ -364,7 +383,7 @@ public class BasePoint {
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 40),
 									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Unicorn(new Vec(), null), node, 2, random), 1, 10),
-									new ThingSpawner((node, random) -> spawnCreature(new Heart(0, new Vec(), null), node, 100, random), 1, 10),
+									new ThingSpawner((node, random) -> spawnCreature(new Heart(1, new Vec(), null), node, 100, random), 1, 10),
 									
 									new ThingSpawner((node, random) -> spawnObject(new CandyFlower(random.nextInt(6), new Vec(), null), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new CandyTree(new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 70),
@@ -396,7 +415,7 @@ public class BasePoint {
 		StructureType[][] possibleStructures;//possible structure types for each level
 		ThingSpawner[] spawners;
 		
-		Zone(AimLayer[] finalLayers, StructureType[][] possibleStructures, ThingSpawner[] spawners) {
+		ZoneType(AimLayer[] finalLayers, StructureType[][] possibleStructures, ThingSpawner[] spawners) {
 			this.finalLayers = finalLayers;
 			this.possibleStructures = possibleStructures;
 			this.spawners = spawners;

@@ -25,7 +25,7 @@ public class Cow extends WalkingCreature{
 	
 	public void update(int dTime){
 		if(g){
-//			walkingAI(dTime);
+			walkingAI(dTime);
 		} else {
 			acc.shift(0, -0.00005f);
 			applyFriction(Material.AIR);
@@ -38,7 +38,7 @@ public class Cow extends WalkingCreature{
 	
 	int dir = 0;
 	public void walkingAI(float dTime){
-		wanderAbout();
+//		wanderAbout();
 		applyDirection(dir);
 		doStepping(velocityUnit*vP*dTime);
 	}

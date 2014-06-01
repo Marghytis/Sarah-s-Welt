@@ -17,6 +17,7 @@ import resources.Res;
 import resources.Shader;
 import resources.TextureFile;
 import util.Tessellator;
+import world.BasePoint.ZoneType;
 import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Cow;
@@ -54,9 +55,13 @@ public class WorldView {
 	//world information
 	public static float measureScale = 50;
 	public static String name;
+	public static WorldDatabase database;
 	//world generation
 	static BasePoint rightGenerator, leftGenerator;
 	static float widthHalf = 1000;
+	static float rimR;
+	static float rimL;
+	static List<Zone> zones;
 	//things
 	public static Sarah sarah;
 	public static List<Node>[] contours;
@@ -72,8 +77,9 @@ public class WorldView {
 	
 	@SuppressWarnings("unchecked")
 	public static void reset(String worldName){
-			//setup tessellator
+			//setup rendering
 		tessellator = new Tessellator();
+		light = new Lightmap(new TextureFile(Window.WIDTH, Window.HEIGHT));
 			//setup things
 		sarah = new Sarah(new Vec(0, 5), null);
 		Inventory.reset();
@@ -126,11 +132,10 @@ public class WorldView {
 		//setup world and generators
 		contours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		for(int i = 0; i < contours.length; i++) contours[i] = new ArrayList<>();
+		zones = new ArrayList<>();
 		rightGenerator = new BasePoint(true, new Vec(0, 0));
-		leftGenerator = new BasePoint(false, new Vec(0, 0));
-		BasePoint.setupLayers(rightGenerator, leftGenerator);
-		
-		
+		leftGenerator = rightGenerator.setupLayers();
+		database = new WorldDatabase(worldName);
 	}
 	
 	public static void update(int delta){
@@ -138,26 +143,94 @@ public class WorldView {
 		if(sarah.health <= 0){
 			View.DEATH.set();
 		}
-		
-		float destinationR = sarah.pos.x + widthHalf;
-		while(rightGenerator.pos.x < destinationR){
-			rightGenerator.shift();
-		}
-		float destinationL = sarah.pos.x - widthHalf;
-		//TODO add remove and load code later
-		while(leftGenerator.pos.x > destinationL){
-			leftGenerator.shift();
-		}
-		//TODO add remove and load code later
-		
-		updateStructures(delta);
+		updateContours();
+		updateObjects(delta);
+		executeTasks();
 		updateCreatures(delta);
+		updateItems();
+		updateEffects(delta);
 	}
 	
-	public static void updateStructures(int delta){
+	public static void updateContours(){
+		rimR = sarah.pos.x + widthHalf;
+//		database.tryToLoadUpTo(rimR);
+		while(rightGenerator.pos.x < rimR){
+			rightGenerator.shift();
+		}
+		rimL = sarah.pos.x - widthHalf;
+		//TODO add remove and load code later
+		while(leftGenerator.pos.x > rimL){
+			leftGenerator.shift();
+		}
+		rimR += 21;
+		rimL -= 21;
+		
+		//remove nodes
+		for(int m = 0; m < contours.length; m++){
+			List<Node> list = contours[m];
+			List<Node> save = new ArrayList<>();
+			contours : for(int node = 0; node  < list.size(); node ++){
+			Node n = list.get(node);
+			//replace the linking Node if its outside the view
+			if(n.getPoint().x < rimL){
+				Node n1 = n;
+				do { n1 = n1.getNext(); } while(n1.getPoint().x < rimL && n1 != n);
+					if(n1 == n){//the whole contour lies outside of the WorldView
+						//TODO save the whole contour
+						list.remove(node);
+						node--;
+						continue contours;
+					} else {
+						list.set(node, n1);
+						n = n1;
+					}
+				}
+				if(n.getPoint().x > rimR){
+					Node n1 = n;
+					do { n1 = n1.getNext(); } while(n1.getPoint().x > rimR && n1 != n);
+					if(n1 == n){//the whole contour lies outside of the WorldView
+						//TODO save the whole contour
+						list.remove(node);
+						node--;
+						continue contours;
+					} else {
+						list.set(node, n1);
+						n = n1;
+					}
+				}
+				Node n2 = n;
+				do {
+					if(n2.getNext().getPoint().x < rimL){
+						Node end = n2;
+						do {
+							save.add(n2);
+							n2 = n2.getNext();
+						} while(n2.getPoint().x < rimL && n2 != end);
+						if(n2 != end){
+							end.connect(n2);
+						}
+					}
+					if(n2.getNext().getPoint().x > rimR){
+						Node end = n2;
+						do {
+							save.add(n2);
+							n2 = n2.getNext();
+						} while(n2.getPoint().x > rimR && n2 != end);
+						if(n2 != end){
+							end.connect(n2);
+						}
+					}
+					n2 = n2.getNext();
+				} while(n2 != n);
+			}
+//			database.save(save.toArray(new Node[save.size()]), Material.values()[m].name());
+		}
+	}
+	
+	public static void updateObjects(int delta){
 		for(List<WorldObject> list : worldObjects) for(int i = 0; i < list.size(); i++){
 			WorldObject s = list.get(i);
-			if(s.pos.x < leftGenerator.pos.x || s.pos.x > rightGenerator.pos.x){
+			if(s.pos.x < rimL || s.pos.x > rimR){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			} else {
@@ -167,25 +240,40 @@ public class WorldView {
 	}
 	
 	public static void updateCreatures(int delta){
-		
-		for(Runnable r : thingTasks){
-			r.run();
-		}
 		thingTasks.clear();
 		for(List<Creature> list : creatures) for(int i = 0; i < list.size(); i++){
 			Creature s = list.get(i);
 			s.update(delta);
-			if(s.pos.x < leftGenerator.pos.x || s.pos.x > rightGenerator.pos.x){
+			if(s.pos.x < rimL || s.pos.x > rimR){
 				list.remove(i);//TODO SAVE IT!!!!
 				i--;
 			}
 		}
+	}
+	
+	public static void updateItems(){
+		for(List<WorldItem> list : items) for(int i = 0; i < list.size(); i++){
+			WorldItem it = list.get(i);
+			if(it.pos.x < rimL || it.pos.x > rimR){
+				list.remove(i);//TODO SAVE IT!!!!
+				i--;
+			}
+		}
+	}
+	
+	public static void updateEffects(int delta){
 		for(int i = 0; i < particleEffects.size(); i++){
 			particleEffects.get(i).tick(delta);
 			if(!particleEffects.get(i).living()){
 				particleEffects.remove(i);
 				i--;
 			}
+		}
+	}
+	
+	public static void executeTasks(){
+		for(Runnable r : thingTasks){
+			r.run();
 		}
 	}
 	
@@ -279,7 +367,7 @@ public class WorldView {
 				list.get(0).animator.tex.file.bind();
 				list.forEach((c) -> {if(front == c.front){c.render();}});
 				
-				if(Settings.shader && list.get(0) instanceof Flower){
+				if(Settings.shader && (list.get(0) instanceof Flower || list.get(0) instanceof CandyFlower)){
 					GL11.glPushMatrix();
 					GL11.glLoadIdentity();
 					light.bind();
@@ -402,6 +490,23 @@ public class WorldView {
 					
 				}
 			}
+		}
+	}
+	public static ZoneType getZoneType(float x){
+		for(Zone z : zones){
+			if(z.start < x && z.end > x){
+				return z.type;
+			}
+		}
+		return null;
+	}
+	public static class Zone {
+		public ZoneType type;
+		public float start;
+		public float end;
+		
+		public Zone(ZoneType type){
+			this.type = type;
 		}
 	}
 }

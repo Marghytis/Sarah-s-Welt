@@ -11,7 +11,7 @@ import core.geom.Vec;
 public class WorldDatabase extends Datenbank{
 	
 	public WorldDatabase(String worldName){
-		super("worlds/", worldName);
+		super("worlds", worldName);
 		if(fresh){
 			createDB();
 		}
