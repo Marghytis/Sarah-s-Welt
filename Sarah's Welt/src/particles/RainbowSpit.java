@@ -3,7 +3,7 @@ package particles;
 import particles.Particle.ParticleType;
 import resources.TextureFile;
 import util.Color;
-import world.World;
+import world.WorldView;
 import world.creatures.Unicorn;
 import core.geom.Vec;
 
@@ -44,9 +44,9 @@ public class RainbowSpit implements ParticleEffect{
 
 		public void velocityInterpolator(Particle p) {
 			p.vel.y -= 0.002f;
-			if(World.sarah != null){
-				if(World.sarah.animator.tex.texs[0][0].box.plus(World.sarah.pos).contains(p.pos)){
-					World.sarah.hitBy(source, null);
+			if(WorldView.sarah != null){
+				if(WorldView.sarah.animator.tex.texs[0][0].box.plus(WorldView.sarah.pos).contains(p.pos)){
+					WorldView.sarah.hitBy(source, null);
 				}
 			}
 		}

@@ -2,7 +2,7 @@ package item;
 
 import resources.Texture;
 import util.Animation;
-import world.World;
+import world.WorldView;
 import core.geom.Quad;
 
 public class DistantWeapon extends Item{
@@ -20,7 +20,7 @@ public class DistantWeapon extends Item{
 	public boolean use(float x, float y){
 		if(super.use(x, y)){
 			startEffect(x, y);
-			World.sarah.useItem(this);
+			WorldView.sarah.useItem(this);
 			return true;
 		} else {
 			return false;

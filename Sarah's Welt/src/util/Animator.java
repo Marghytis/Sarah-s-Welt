@@ -54,7 +54,7 @@ public class Animator {
 	}
 	
 	public void setAnimation(Animation ani){
-		if(!ani.equals(animation)){
+		if(!(ani == null) && !ani.equals(animation)){
 			animation = ani;
 			frame = 0;
 		}

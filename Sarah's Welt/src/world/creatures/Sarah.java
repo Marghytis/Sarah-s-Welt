@@ -10,10 +10,10 @@ import resources.Res;
 import resources.TextureFile;
 import util.Animation;
 import util.Animator;
+import world.BasePoint.ZoneType;
 import world.Material;
 import world.Node;
-import world.World;
-import world.worldGen.Biome;
+import world.WorldView;
 import core.Settings;
 import core.geom.Vec;
 
@@ -28,7 +28,7 @@ public class Sarah extends WalkingCreature {
 	public static Animation jump = new Animation(5, 3, false, 	1, 2, 3, 4, 5, 6);
 	public static Animation fly = new Animation(6, 3);
 	public static Animation land = new Animation(2, 3, false, 	5, 4, 3, 2, 1);
-	public static Animation run = new Animation(3, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
+	public static Animation run = new Animation(2, 2, true, 	1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5);
 	public static Animation sneak = new Animation(10, 5, true, 1, 2, 3, 2);
 	public static Animation crouch = new Animation(0, 5);
 	public static Animation punch = new Animation(1, 4, false, 1, 2, 3, 4, 5, 6, 7, 8, 0);
@@ -55,17 +55,17 @@ public class Sarah extends WalkingCreature {
 					System.out.println("Test");
 				}
 				if(!ridingCow){
-					World.sarah.animator.animation = stand;
+					animator.animation = stand;
 				} else if(animator.animation == dismountCow){
 					ridingCow = false;
 					Cow newCow = riddenCow;
-					newCow.worldLink = World.sarah.worldLink;
-					World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
-					World.sarah.animator.setAnimation(stand);
-					World.sarah.animator.tex = Res.SARAH;
+					newCow.worldLink = WorldView.sarah.worldLink;
+					WorldView.thingTasks.add(() -> ZoneType.spawnCreature(newCow, WorldView.sarah.worldLink, 2, random));
+					animator.setAnimation(stand);
+					animator.tex = Res.SARAH;
 					riddenCow = null;
 				} else {
-					World.sarah.animator.setAnimation(walkOnCow);
+					animator.setAnimation(walkOnCow);
 				}
 			}
 		};
@@ -227,13 +227,13 @@ public class Sarah extends WalkingCreature {
 		if(g){
 			if(ridingCow){
 				Cow newCow = riddenCow;
-				newCow.worldLink = World.sarah.worldLink;
-				World.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));
+				newCow.worldLink = worldLink;
+//				WorldView.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, WorldView.sarah.worldLink, 2));//TODO
 			}
 			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
 			ridingCow = true;
 			riddenCow = c;
-			World.thingTasks.add(() -> World.creatures[Cow.typeId].remove(c));
+			WorldView.thingTasks.add(() -> WorldView.creatures[Cow.typeId].remove(c));
 		}
 	}
 	

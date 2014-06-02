@@ -3,7 +3,7 @@ package item;
 import particles.BasicMagicEffect;
 import particles.MagicEffect;
 import resources.Texture;
-import world.World;
+import world.WorldView;
 import world.creatures.Sarah;
 import core.geom.Quad;
 import core.geom.Vec;
@@ -22,12 +22,12 @@ public class MagicWeapon extends DistantWeapon{
 	}
 	
 	public boolean use(float x, float y){
-		return World.sarah.mana - manaUse >= 0 && super.use(x, y);
+		return WorldView.sarah.mana - manaUse >= 0 && super.use(x, y);
 	}
 	
 	public void startEffect(float x, float y){
-		World.particleEffects.add(new BasicMagicEffect(World.sarah.pos.minus(World.sarah.animator.box).plus(new Vec(World.sarah.getHandPosition()[0], World.sarah.getHandPosition()[1])), new Vec(x - (World.sarah.animator.box.middle().x + World.sarah.pos.x), y - (World.sarah.animator.box.middle().y + World.sarah.pos.y)).normalise(), World.sarah));
-		World.sarah.mana -= manaUse;
+		WorldView.particleEffects.add(new BasicMagicEffect(WorldView.sarah.pos.minus(WorldView.sarah.animator.box).plus(new Vec(WorldView.sarah.getHandPosition()[0], WorldView.sarah.getHandPosition()[1])), new Vec(x - (WorldView.sarah.animator.box.middle().x + WorldView.sarah.pos.x), y - (WorldView.sarah.animator.box.middle().y + WorldView.sarah.pos.y)).normalise(), WorldView.sarah));
+		WorldView.sarah.mana -= manaUse;
 	}
 	
 }

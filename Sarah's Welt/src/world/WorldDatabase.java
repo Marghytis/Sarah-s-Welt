@@ -11,7 +11,7 @@ import core.geom.Vec;
 public class WorldDatabase extends Datenbank{
 	
 	public WorldDatabase(String worldName){
-		super("worlds/", worldName);
+		super("worlds", worldName);
 		if(fresh){
 			createDB();
 		}
@@ -88,21 +88,21 @@ public class WorldDatabase extends Datenbank{
       }
 	}
 	
-	 public void createDB() {
-            try {
-                Statement sql = conn.createStatement();
+	 public void createDB(){
+        try {
+            Statement sql = conn.createStatement();
 
-                String sqlCreate = 
-            		"CREATE TABLE 'World' ('x' FLOAT NOT NULL DEFAULT 0);"
-                +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'Material' VARCHAR NOT NULL DEFAULT 'AIR', 'next_ID' INTEGER, 'last_ID' INTEGER, 'pX' FLOAT DEFAULT 0, 'pY' FLOAT DEFAULT 0);"
-                ;
+            String sqlCreate = 
+        		"CREATE TABLE 'World' ('x' FLOAT NOT NULL DEFAULT 0);"
+            +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'Material' VARCHAR NOT NULL DEFAULT 'AIR', 'next_ID' INTEGER, 'last_ID' INTEGER, 'pX' FLOAT DEFAULT 0, 'pY' FLOAT DEFAULT 0);"
+            ;
 
-                sql.executeUpdate(sqlCreate);
-                sql.close();
+            sql.executeUpdate(sqlCreate);
+            sql.close();
 
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-	    }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 	
 }

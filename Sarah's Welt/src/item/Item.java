@@ -5,13 +5,15 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import particles.BerryEat;
 import resources.Res;
 import resources.Texture;
 import util.Animation;
-import world.World;
+import world.WorldView;
 import world.creatures.Sarah;
 import core.Window;
 import core.geom.Quad;
+import core.geom.Vec;
 
 public class Item {
 
@@ -30,6 +32,18 @@ public class Item {
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Shovel", 700, 4);
 	public static final MagicWeapon horn = new MagicWeapon(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[5][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Horn", 1000, 3, 2);
+	public static final Item berry = new Item(Res.ITEMS_WORLD.texs[0][0], Res.ITEMS_INV.texs[6][0], Res.ITEMS_INV.texs[6][0],
+			new Quad(-25, -2, 50, 50), new Quad(-10, -10, 40, 40), 0, "Berry", 0, null){
+		public boolean use(float x, float y){
+			Inventory.stacks[Inventory.selectedItem].item = Item.fist;
+			if(WorldView.sarah.mana + 2 <= 30 && super.use(x, y)){
+				WorldView.sarah.mana += 2;
+				WorldView.particleEffects.add(new BerryEat(new Vec(WorldView.sarah.pos.x + (WorldView.sarah.animator.box.size.x/2), WorldView.sarah.pos.y + (WorldView.sarah.animator.box.size.y/2))));
+				return true;
+			}
+			return false;
+		}
+	};
 	
 	public Texture texWorld;
 	public Texture texHand;
@@ -64,7 +78,7 @@ public class Item {
 	
 	public boolean use(float x, float y){
 		if(coolDown <= 0){
-			World.sarah.useItem(this);
+			WorldView.sarah.useItem(this);
 			coolDown = coolDownStart;
 			return true;
 		}
@@ -78,20 +92,20 @@ public class Item {
 	
 	public void renderHand(){
 		if(texHand == null) return;
-		int[] handPos = World.sarah.getHandPosition();
+		int[] handPos = WorldView.sarah.getHandPosition();
 		int[] sarahHandPos = new int[]{handPos[0], handPos[1], handPos[2]};
-		if(World.sarah.mirrored){
-			sarahHandPos[0] = (int) (World.sarah.animator.tex.box.size.x - sarahHandPos[0]);
+		if(WorldView.sarah.mirrored){
+			sarahHandPos[0] = (int) (WorldView.sarah.animator.tex.box.size.x - sarahHandPos[0]);
 			sarahHandPos[2] = 180 - sarahHandPos[2];
 		}
 		
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		GL11.glTranslatef((Window.WIDTH/2) + World.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) + World.sarah.animator.tex.box.y + sarahHandPos[1], 0);
+		GL11.glTranslatef((Window.WIDTH/2) + WorldView.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) + WorldView.sarah.animator.tex.box.y + sarahHandPos[1], 0);
 		GL11.glRotatef(defaultRotationHand + sarahHandPos[2], 0, 0, 1);
 		
 		texHand.file.bind();
-		if(!World.sarah.mirrored){
+		if(!WorldView.sarah.mirrored){
 			boxHand.drawTex(texHand);
 		} else {
 			boxHand.drawTexFlipped(texHand);

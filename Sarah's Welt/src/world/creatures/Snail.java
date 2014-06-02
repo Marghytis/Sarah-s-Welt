@@ -5,9 +5,9 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.World;
-import world.structures.Cloud;
-import world.structures.Structure;
+import world.WorldView;
+import world.worldObjects.Cloud;
+import world.worldObjects.WorldObject;
 import core.Settings;
 import core.geom.Vec;
 
@@ -54,15 +54,15 @@ public class Snail extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		World.sarah.hitBy(this, null);
+		WorldView.sarah.hitBy(this, null);
 		animator.setAnimation(stand);
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
-			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
+		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 22500){
+			if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
-			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
+			} else if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x + WorldView.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
@@ -78,7 +78,7 @@ public class Snail extends WalkingCreature {
 	
 	public boolean findNextCloud(){
 		Cloud find = null; float distanceSq = 1000000;
-		for(Structure c : World.structures[Cloud.typeId]){
+		for(WorldObject c : WorldView.worldObjects[Cloud.typeId]){
 			float dist = pos.minus(c.pos).lengthSqare();
 			if(dist < distanceSq){
 				find = (Cloud)c;
