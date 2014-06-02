@@ -247,7 +247,7 @@ public class Sarah extends WalkingCreature {
 	}
 	
 	public void dismountCow(){
-		if(ridingCow){
+		if(g && ridingCow){
 			animator.setAnimation(dismountCow);
 		}
 	}
