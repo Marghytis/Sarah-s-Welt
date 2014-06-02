@@ -52,7 +52,7 @@ public class Res {
 	public static final StackedTextures INVENTORY = new StackedTextures("items/Inventory", 1, 2);
 	public static final StackedTextures ITEMS_WORLD = new StackedTextures("items/ItemsWorld", 5, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_HAND = new StackedTextures("items/ItemsHand", 6, 1, -0.5f, -0.5f);
-	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 6, 1, -0.5f, -0.5f);
+	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 7, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_WEAPONS = new StackedTextures("items/Weapons", 1, 6, -0.5f, -0.5f);
 	
 	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
