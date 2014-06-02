@@ -165,7 +165,7 @@ public class BasePoint {
 				WorldView.contours[thisOne.aim.material.ordinal()].add(nTop);
 			}
 		}
-		levels = new Structure[zone.type.possibleStructures.length];
+//		levels = new Structure[zone.type.possibleStructures.length];
 //		int posY = (int)((float)a*layers.size()/z.finalLayers.length);
 	}
 
