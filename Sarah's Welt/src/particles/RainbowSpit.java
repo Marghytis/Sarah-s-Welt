@@ -9,7 +9,7 @@ import core.geom.Vec;
 
 public class RainbowSpit implements ParticleEffect{
 	
-	public static final ParticleType RAINBOW = new ParticleType(new TextureFile("particles/RainbowParticle"));
+	public static final ParticleType RAINBOW = new ParticleType(new TextureFile("particles/Spark"));
 	
 	public ParticleEmitter rainbow = new ParticleEmitter(210, 200, RAINBOW, 1000){
 		
@@ -46,7 +46,7 @@ public class RainbowSpit implements ParticleEffect{
 			p.vel.y -= 0.002f;
 			if(World.sarah != null){
 				if(World.sarah.animator.tex.texs[0][0].box.plus(World.sarah.pos).contains(p.pos)){
-					World.sarah.hitBy(source);
+					World.sarah.hitBy(source, null);
 				}
 			}
 		}
@@ -77,7 +77,7 @@ public class RainbowSpit implements ParticleEffect{
 		this.source = source;
 	}
 	
-	public void tick(int delta) {
+	public void tick(float delta) {
 		if(live < 1000){
 			rainbow.emitting = false;
 		}

@@ -1,5 +1,8 @@
 package world.structures;
 
+import item.Inventory;
+import item.Item;
+
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
@@ -22,6 +25,10 @@ public class CandyTree extends Structure{
 	
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
+	}
+	
+	public boolean rightClickAction(){
+		return Inventory.addItem(Item.candyCane);
 	}
 	
 }

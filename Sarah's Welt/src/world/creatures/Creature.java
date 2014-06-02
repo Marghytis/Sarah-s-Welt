@@ -1,6 +1,7 @@
 package world.creatures;
 
-import item.Inventory;
+import item.DistantWeapon;
+import item.Item;
 import item.Weapon;
 
 import java.util.List;
@@ -73,8 +74,11 @@ public abstract class Creature extends Thing {
 	
 	public void update(int dTime){
 		if(health <= 0){
-			World.particleEffects.add(new DeathDust(pos.plus(animator.tex.box.middle())));
-			World.thingTasks.add(() -> World.creatures[id].remove(this));
+			World.particleEffects.add(new DeathDust(pos.plus(animator.box.middle())));
+			World.thingTasks.add(() -> {
+				onDeath();
+				World.creatures[id].remove(this);
+			});
 		} else {
 			pos.shift(vel);
 			
@@ -85,15 +89,15 @@ public abstract class Creature extends Thing {
 		}
 	}
 	
-	public boolean hitBy(Creature c){
-		if(hit == 0 && c.pos.minus(pos).length() < c.hitradius){
+	public boolean hitBy(Creature c, Item weapon){
+		if(hit == 0 && (c.pos.minus(pos).length() < c.hitradius || weapon instanceof DistantWeapon)){
 			hit = 40;
-			if((c instanceof Sarah) && Inventory.stacks[Inventory.selectedItem].item != null){
-				health -= ((Weapon)Inventory.stacks[Inventory.selectedItem].item).power;
+			if((c instanceof Sarah)){
+				health -= weapon instanceof DistantWeapon ? ((DistantWeapon)weapon).distPower : ((Weapon)weapon).power;
 			} else {
 				health -= c.punchStrength;
 			}
-			World.particleEffects.add(new BloodSplash(pos.plus(animator.tex.box.middle())));
+			World.particleEffects.add(new BloodSplash(pos.plus(animator.box.middle())));
 			return true;
 		}
 		return false;
@@ -116,4 +120,6 @@ public abstract class Creature extends Thing {
 			mirrored = false;
 		}
 	}
+	
+	protected void onDeath(){}
 }

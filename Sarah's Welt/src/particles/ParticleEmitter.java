@@ -15,12 +15,25 @@ public class ParticleEmitter{
 	public boolean emitting = true;
 	int startLife;
 	
+	/**
+	 * 
+	 * @param particleAmount
+	 * @param spawnRate spawns per second
+	 * @param type
+	 * @param startLife in microseconds
+	 */
 	public ParticleEmitter(int particleAmount, int spawnRate, ParticleType type, int startLife){
 		particles = new Particle[particleAmount];
 		for(int i = 0; i < particles.length; i++){
 			particles[i] = new Particle();
 		}
-		this.interval = 1000/spawnRate;
+		if(spawnRate > 0){
+			this.interval = 1000000/spawnRate;
+		} else {
+			emitting = false;
+			this.interval = Integer.MAX_VALUE;
+		}
+		
 		this.type = type;
 		this.startLife = startLife;
 	}
@@ -29,7 +42,7 @@ public class ParticleEmitter{
 	public Random random = new Random();
 	
 	int index;
-	public void emittParticle(int age){
+	public void emittParticle(float age){
 		Particle p = particles[index++];
 		makeParticle(p);
 		tickParticle(p, age);
@@ -38,16 +51,17 @@ public class ParticleEmitter{
 	}
 	
 	public void makeParticle(Particle p){};
+	public void killParticle(Particle p){};
 	public void velocityInterpolator(Particle p){};
 	public void colorInterpolator(Particle p){};
 	public void rotationInterpolator(Particle p){};
 	public void radiusInterpolator(Particle p){};
 	
-	int overFlow;
-	public void tick(int delta){
+	float overFlow;
+	public void tick(float delta){
 		if(emitting){
-			int timePassed = delta+overFlow;
-			int count = timePassed/interval;
+			float timePassed = delta+overFlow;
+			float count = timePassed/interval;
 			for(int i = 0; i < count; i++){
 				emittParticle(timePassed - (count*interval));
 			}
@@ -62,13 +76,16 @@ public class ParticleEmitter{
 		}
 	}
 	
-	public void tickParticle(Particle p, int delta){
+	public void tickParticle(Particle p, float delta){
 		velocityInterpolator(p);
 		colorInterpolator(p);
 		rotationInterpolator(p);
 		radiusInterpolator(p);
 		p.pos.shift(p.vel.scaledBy(delta));
 		p.live -= delta;
+		if(p.live <= 0){
+			killParticle(p);
+		}
 	}
 
 	public void render(){

@@ -27,14 +27,14 @@ public class Menu {
 		while(Keyboard.next()){
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
 				if(view == View.MAIN){
-					View.EMPTY.set();
+					View.WORLD.set();
 				} else {
 					View.MAIN.set();
 				}
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
 				if(view == View.DEBUG){
-					View.EMPTY.set();
+					View.WORLD.set();
 				} else {
 					View.DEBUG.set();
 				}
@@ -85,14 +85,37 @@ public class Menu {
 	}
 	
 	public enum View {
-		EMPTY(false){
+		WORLD(false){
+			
+			Quad health = new Quad(0.45f, 0.595f, 0.1f, 0.01f);
+			Quad mana = new Quad(0.1f, 0.05f, 0.8f, 0.03f);
+			
 			void setup(){buttons = new Button[0];}
+			
+			public void render(){
+				TextureFile.bindNone();
+				GL11.glScalef(Window.WIDTH, Window.HEIGHT, 0);
+				//full box
+				GL11.glColor4f(1, 1, 1, 0.2f);
+				Quad.draw(health.x, health.y, health.x+health.size.x, health.y + health.size.y);
+				Quad.draw(mana.x, mana.y, mana.x+mana.size.x, mana.y + mana.size.y);
+				//health/mana
+				GL11.glColor4f(0.8f, 0, 0, 0.5f);
+				Quad.draw(health.x, health.y, health.x + (World.sarah.health/30.0f*health.size.x), health.y + health.size.y);
+				GL11.glColor4f(0.8f, 0, 0.8f, 0.5f);
+				Quad.draw(mana.x, mana.y, mana.x + (World.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
+				//outline
+				GL11.glColor4f(0.7f, 0.7f, 0.7f, 1);
+				health.outline();
+				mana.outline();
+				GL11.glColor3f(1, 1, 1);
+			}
 		},
 		MAIN(true){
 			void setup(){
 				buttons = new Button[]{
 					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){World.load("TestWorld", 10);}}),
-					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = EMPTY;}}),
+					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = WORLD;}}),
 					new Button("Options", 3/16.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
 					new Button("Exit", 3/16.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
 				};
@@ -123,12 +146,31 @@ public class Menu {
 			}
 		},
 		INVENTORY(false){
+			
+			Quad health = new Quad(0.45f, 0.595f, 0.1f, 0.01f);
+			Quad mana = new Quad(0.1f, 0.05f, 0.8f, 0.03f);
 						
 			void setup(){
 			}
 			
 			public void render(){
 				Inventory.render();
+				TextureFile.bindNone();
+				GL11.glScalef(Window.WIDTH, Window.HEIGHT, 0);
+				//full box
+				GL11.glColor4f(1, 1, 1, 0.2f);
+				Quad.draw(health.x, health.y, health.x+health.size.x, health.y + health.size.y);
+				Quad.draw(mana.x, mana.y, mana.x+mana.size.x, mana.y + mana.size.y);
+				//health/mana
+				GL11.glColor4f(0.8f, 0, 0, 0.5f);
+				Quad.draw(health.x, health.y, health.x + (World.sarah.health/30.0f*health.size.x), health.y + health.size.y);
+				GL11.glColor4f(0.8f, 0, 0.8f, 0.5f);
+				Quad.draw(mana.x, mana.y, mana.x + (World.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
+				//outline
+				GL11.glColor4f(0.7f, 0.7f, 0.7f, 1);
+				health.outline();
+				mana.outline();
+				GL11.glColor3f(1, 1, 1);
 			}
 		},
 		CONTROLS(true){

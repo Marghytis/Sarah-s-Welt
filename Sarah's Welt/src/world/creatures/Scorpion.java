@@ -52,7 +52,7 @@ public class Scorpion extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		World.sarah.hitBy(this);
+		World.sarah.hitBy(this, null);
 		animator.setAnimation(stand);
 	}
 	

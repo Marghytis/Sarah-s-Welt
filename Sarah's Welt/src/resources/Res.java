@@ -43,7 +43,7 @@ public class Res {
 	public static final StackedTextures UNICORN_HAIR  = new StackedTextures("creatures/Unicorn_hair", 6, 3, -0.5f, -0.1f);
 	public static final StackedTextures TREX  = new StackedTextures("creatures/Trex", 9, 4, -0.5f, -0.05f);
 
-	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 8, -0.5f, -0.1f);
+	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 10, -0.5f, -0.1f);
 	public static final List<int[][]> SARAH_ITEMCOORDS = readTextureCoordinator("res/creatures/Sarah.txt");
 	public static final StackedTextures SARAH_ON_COW = new StackedTextures("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
 	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
@@ -51,8 +51,8 @@ public class Res {
 	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2, -0.5f, -0.5f);
 	public static final StackedTextures INVENTORY = new StackedTextures("items/Inventory", 1, 2);
 	public static final StackedTextures ITEMS_WORLD = new StackedTextures("items/ItemsWorld", 5, 1, -0.5f, -0.5f);
-	public static final StackedTextures ITEMS_HAND = new StackedTextures("items/ItemsHand", 5, 1, -0.5f, -0.5f);
-	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 5, 1, -0.5f, -0.5f);
+	public static final StackedTextures ITEMS_HAND = new StackedTextures("items/ItemsHand", 6, 1, -0.5f, -0.5f);
+	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 6, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_WEAPONS = new StackedTextures("items/Weapons", 1, 6, -0.5f, -0.5f);
 	
 	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;

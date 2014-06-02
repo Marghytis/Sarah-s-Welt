@@ -251,19 +251,17 @@ public class World {
 	
 	public static void mouseListening(){
 		//add later
-		while(Mouse.next()){
+		events : while(Mouse.next()){
 			if(Mouse.getEventButtonState()){
 				if(Mouse.getEventButton() == 0){
-					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
-					int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
-					for(List<Creature> list : creatures) for(Creature c : list){
-						if(!(c instanceof Gnat) && (c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
-							c.hitBy(sarah);
-						}
-					}
-					sarah.punch();
+					boolean clickedInWorld = true;
 					if(Menu.view == View.INVENTORY){
-						Inventory.mouseClickedAt(Mouse.getEventX(), Mouse.getEventY());
+						clickedInWorld = !Inventory.mouseClickedAt(Mouse.getEventX(), Mouse.getEventY());
+					}
+					if(clickedInWorld){
+						int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
+						int y = Mouse.getEventY() + (int)sarah.pos.y - (Window.HEIGHT/2);
+						Inventory.getSelectedItem().use(x, y);
 					}
 				} else if(Mouse.getEventButton() == 1){
 					int x = Mouse.getEventX() + (int)sarah.pos.x - (Window.WIDTH/2);
@@ -271,12 +269,20 @@ public class World {
 					for(List<Creature> list : creatures) for(int ci = 0; ci < list.size(); ci++){
 						Creature c = list.get(ci);
 						if(!(c instanceof Gnat) && (c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
-							c.rightClickAction();
+							if(c.rightClickAction())
+							continue events;
 						}
 					}
 					for(List<WorldItem> list : items) for(WorldItem c : list){
 						if((c.pos.x + c.item.boxWorld.x < x && c.pos.x + c.item.boxWorld.x + c.item.boxWorld.size.x > x) && (c.pos.y + c.item.boxWorld.y < y && c.pos.y + c.item.boxWorld.y + c.item.boxWorld.size.y > y)){
-							c.rightClickAction();
+							if(c.rightClickAction())
+							continue events;
+						}
+					}
+					for(List<Structure> list : structures) for(Structure c : list){
+						if((c.pos.x + c.animator.tex.box.x < x && c.pos.x + c.animator.tex.box.x + c.animator.tex.box.size.x > x) && (c.pos.y + c.animator.tex.box.y < y && c.pos.y + c.animator.tex.box.y + c.animator.tex.box.size.y > y)){
+							if(c.rightClickAction())
+							continue events;
 						}
 					}
 				}
@@ -301,7 +307,7 @@ public class World {
 					case Keyboard.KEY_F: Menu.buttonPressed(View.DEBUG.buttons[0]); break;
 					case Keyboard.KEY_I:
 						if(Menu.view == View.INVENTORY){
-							View.EMPTY.set();
+							View.WORLD.set();
 						} else {
 							View.INVENTORY.set();
 						} break;

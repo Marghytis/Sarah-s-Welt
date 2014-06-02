@@ -8,6 +8,10 @@ public class Quad extends Vec{
 
 	public Vec size;
 	
+	public Quad(){
+		this(0, 0, 0, 0);
+	}
+	
 	public Quad(float x, float y, float width, float height){
 		super(x, y);
 		size = new Vec(width, height);
@@ -25,6 +29,10 @@ public class Quad extends Vec{
 	
 	public Quad plus(Vec v){
 		return new Quad(x + v.x, y + v.y, size.x, size.y);
+	}
+	
+	public Quad scaledBy(float f){
+		return new Quad(x * f, y * f, size.x * f, size.y * f);
 	}
 
 	/**
@@ -78,6 +86,16 @@ public class Quad extends Vec{
 			GL11.glVertex2f(x, 			y + size.y);
 		GL11.glEnd();
 	}
+
+	public static void draw(float x1, float y1, float x2, float y2){
+		
+		GL11.glBegin(GL11.GL_QUADS);
+			GL11.glVertex2f(x1, y1);
+			GL11.glVertex2f(x2, y1);
+			GL11.glVertex2f(x2, y2);
+			GL11.glVertex2f(x1, y2);
+		GL11.glEnd();
+	}
 	
 	/**
 	 * Doesn't unbind the texture
@@ -93,6 +111,11 @@ public class Quad extends Vec{
 	
 	public Vec middle(){
 		return new Vec(x + (size.x/2), y + (size.y/2));
+	}
+	
+	public boolean intersects(Quad quad){
+		return quad.contains(this) || quad.contains(x, y + size.y) || quad.contains(x + size.x, y + size.y) || quad.contains(x + size.x, y)
+				|| contains(quad) || contains(quad.x, quad.y + quad.size.y) || contains(quad.x + quad.size.x, quad.y + quad.size.y) || contains(quad.x + quad.size.x, quad.y);
 	}
 	
 	public boolean contains(Vec v){
