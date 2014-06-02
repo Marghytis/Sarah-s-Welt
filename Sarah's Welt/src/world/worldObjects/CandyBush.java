@@ -1,4 +1,4 @@
-package world.structures;
+package world.worldObjects;
 
 import org.lwjgl.opengl.GL11;
 
@@ -8,12 +8,12 @@ import util.Animator;
 import world.Node;
 import core.geom.Vec;
 
-public class CandyBush extends Structure{
+public class CandyBush extends WorldObject{
 
 	public static int typeId;
 	
 	public CandyBush(int type, Vec pos, Node worldLink){
-		super(new Animator(Res.CANDY_BUSH, new Animation(0, type)), pos, worldLink);
+		super(new Animator(Res.CANDY_BUSH, new Animation(0, type)), pos, worldLink, typeId);
 		this.front = random.nextInt(10) == 0;
 	}
 	

@@ -13,7 +13,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.World;
+import world.WorldView;
 import core.Settings;
 import core.geom.Vec;
 
@@ -88,21 +88,21 @@ public class Unicorn extends WalkingCreature {
 			headX = pos.x - 50;
 		}
 		
-		float distSquare = pos.minus(World.sarah.pos).lengthSqare();
+		float distSquare = pos.minus(WorldView.sarah.pos).lengthSqare();
 		
 		if(distSquare < 160000){
 			if(distSquare < 22500){
 				if(spitCount <= 0){
 					animator.setAnimation(punch);
-					World.particleEffects.add(new RainbowSpit(headX, headY, this));
+					WorldView.particleEffects.add(new RainbowSpit(headX, headY, this));
 					spitting = true;
 					spitCount = 1000;
 				}
 			}
 			dir = 0;
-			if(World.sarah.pos.x > pos.x + 20){
+			if(WorldView.sarah.pos.x > pos.x + 20){
 				dir = 1;
-			} else if(World.sarah.pos.x < pos.x - 20){
+			} else if(WorldView.sarah.pos.x < pos.x - 20){
 				dir = -1;
 			}
 			maxSpeed = 6;

@@ -28,7 +28,6 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 //		tessellator.gluTessProperty(GLU.GLU_TESS_BOUNDARY_ONLY, GL11.GL_TRUE);
 	}
 	float texWidth, texHeight;
-	
 	public void tessellateOneNode(List<Node> nodes, float texWidth, float texHeight){
 		this.texWidth = texWidth;
 		this.texHeight = texHeight;
@@ -36,17 +35,18 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 		tessellator.gluTessBeginPolygon(null);
 		{
 			for(int i1 = 0; i1 < nodes.size(); i1++){
-				if(nodes.get(i1) != null){
+				Node node = nodes.get(i1);
+				if(node != null){
 				tessellator.gluTessBeginContour();
 				{
-					Node n = nodes.get(i1);
+					Node n = node;
 					do {
 						Vec p = n.getPoint();
 						double[] coords = new double[]{p.x, p.y, 0};
 						float[] data = new float[]{p.x, p.y, p.x/texWidth, -p.y/texHeight};
 						tessellator.gluTessVertex(coords, 0, data);
 						n = n.getNext();
-					} while(n != nodes.get(i1));
+					} while(n != node);
 				}
 				tessellator.gluTessEndContour();
 				}

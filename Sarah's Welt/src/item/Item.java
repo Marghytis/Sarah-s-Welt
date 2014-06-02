@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import resources.Res;
 import resources.Texture;
 import util.Animation;
-import world.World;
+import world.WorldView;
 import world.creatures.Sarah;
 import core.Window;
 import core.geom.Quad;
@@ -64,7 +64,7 @@ public class Item {
 	
 	public boolean use(float x, float y){
 		if(coolDown <= 0){
-			World.sarah.useItem(this);
+			WorldView.sarah.useItem(this);
 			coolDown = coolDownStart;
 			return true;
 		}
@@ -78,20 +78,20 @@ public class Item {
 	
 	public void renderHand(){
 		if(texHand == null) return;
-		int[] handPos = World.sarah.getHandPosition();
+		int[] handPos = WorldView.sarah.getHandPosition();
 		int[] sarahHandPos = new int[]{handPos[0], handPos[1], handPos[2]};
-		if(World.sarah.mirrored){
-			sarahHandPos[0] = (int) (World.sarah.animator.tex.box.size.x - sarahHandPos[0]);
+		if(WorldView.sarah.mirrored){
+			sarahHandPos[0] = (int) (WorldView.sarah.animator.tex.box.size.x - sarahHandPos[0]);
 			sarahHandPos[2] = 180 - sarahHandPos[2];
 		}
 		
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		GL11.glTranslatef((Window.WIDTH/2) + World.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) + World.sarah.animator.tex.box.y + sarahHandPos[1], 0);
+		GL11.glTranslatef((Window.WIDTH/2) + WorldView.sarah.animator.tex.box.x + sarahHandPos[0], (Window.HEIGHT/2) + WorldView.sarah.animator.tex.box.y + sarahHandPos[1], 0);
 		GL11.glRotatef(defaultRotationHand + sarahHandPos[2], 0, 0, 1);
 		
 		texHand.file.bind();
-		if(!World.sarah.mirrored){
+		if(!WorldView.sarah.mirrored){
 			boxHand.drawTex(texHand);
 		} else {
 			boxHand.drawTexFlipped(texHand);

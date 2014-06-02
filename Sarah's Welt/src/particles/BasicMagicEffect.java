@@ -6,7 +6,7 @@ import java.util.List;
 
 import particles.Particle.ParticleType;
 import resources.TextureFile;
-import world.World;
+import world.WorldView;
 import world.creatures.Creature;
 import world.creatures.Gnat;
 import core.geom.Vec;
@@ -26,11 +26,11 @@ public class BasicMagicEffect extends MagicEffect{
 		}
 
 		public void velocityInterpolator(Particle p) {
-			for(List<Creature> list : World.creatures) for(Creature c : list){
+			for(List<Creature> list : WorldView.creatures) for(Creature c : list){
 				if(!(c instanceof Gnat) && c.animator.box.plus(c.pos).intersects(type.tex.box.scaledBy(p.rad).plus(p.pos))){
 					c.hitBy(source, Item.horn);
 					p.live = 0;
-					World.particleEffects.add(new BasicMagicDissapperance(c.pos));
+					WorldView.particleEffects.add(new BasicMagicDissapperance(c.pos));
 					break;
 				}
 			}

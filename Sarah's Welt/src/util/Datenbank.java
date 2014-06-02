@@ -6,17 +6,18 @@ import java.sql.SQLException;
 
 public class Datenbank {
 	
-	protected Connection conn;
-	protected boolean fresh = true;;
+	public Connection conn;
+	public boolean fresh = true;
 
     public Datenbank(String verzeichnis, String dbname) {
         try {
             if (Class.forName("org.sqlite.JDBC") == null) {
                 Class.forName("org.sqlite.JDBC").newInstance();
+                fresh = true;
             } else {
             	fresh = false;
             }
-            conn = DriverManager.getConnection("jdbc:sqlite:" + verzeichnis + dbname);            
+            conn = DriverManager.getConnection("jdbc:sqlite:" + verzeichnis + "\\" + dbname);            
             
         } catch (SQLException e) {
             e.printStackTrace();

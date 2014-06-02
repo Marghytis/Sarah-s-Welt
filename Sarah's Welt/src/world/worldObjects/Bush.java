@@ -1,4 +1,4 @@
-package world.structures;
+package world.worldObjects;
 
 import org.lwjgl.opengl.GL11;
 
@@ -8,12 +8,12 @@ import util.Animator;
 import world.Node;
 import core.geom.Vec;
 
-public class Bush extends Structure{
+public class Bush extends WorldObject{
 
 	public static int typeId;
 	
 	public Bush(int type, Vec pos, Node worldLink){
-		super(new Animator(Res.BUSH, new Animation(0, type)), pos, worldLink);
+		super(new Animator(Res.BUSH, new Animation(0, type)), pos, worldLink, typeId);
 		this.front = random.nextInt(10) == 0;
 	}
 	

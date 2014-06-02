@@ -14,19 +14,19 @@ import sound.Sound;
 public class Res {
 
 	//Structures
-	public static final StackedTextures CLOUD = new StackedTextures("structures/Cloud", 1, 1, -0.5f, -0.5f);
-	public static final StackedTextures TREE = new StackedTextures("structures/Tree", 1, 3, -0.5f, -0.3f);
-	public static final StackedTextures PALM_TREE = new StackedTextures("structures/PalmTree", 1, 3, -0.5f, -0.03f);
-	public static final StackedTextures CANDY_TREE = new StackedTextures("structures/CandyTree", 1, 1, -0.5f, -0.2f);
-	public static final StackedTextures BAMBOO = new StackedTextures("structures/Bamboo", 1, 4, -0.5f, -0.02f);
-	public static final StackedTextures BUSH = new StackedTextures("structures/Bush", 1, 2, -0.5f, -0.02f);
-	public static final StackedTextures CANDY_BUSH = new StackedTextures("structures/CandyBush", 1, 2, -0.5f, -0.2f);
-	public static final StackedTextures CACTUS = new StackedTextures("structures/Cactus", 1, 3, -0.5f, -0.05f);
-	public static final StackedTextures GRASS_TUFT = new StackedTextures("structures/Grass_tuft", 4, 1, -0.5f, -0.2f);
-	public static final StackedTextures FLOWER = new StackedTextures("structures/Flower", 1, 3, -0.5f, 0f);
-	public static final StackedTextures CANDY_FLOWER = new StackedTextures("structures/Candy", 1, 6, -0.5f, 0f);
-	public static final StackedTextures CRACK = new StackedTextures("structures/Crack", 1, 4, -0.5f, -0.5f);
-	public static final StackedTextures FOSSIL = new StackedTextures("structures/Fossil", 1, 3, -0.5f, -0.5f);
+	public static final StackedTextures CLOUD = new StackedTextures("worldObjects/Cloud", 1, 1, -0.5f, -0.5f);
+	public static final StackedTextures TREE = new StackedTextures("worldObjects/Tree", 1, 3, -0.5f, -0.3f);
+	public static final StackedTextures PALM_TREE = new StackedTextures("worldObjects/PalmTree", 1, 3, -0.5f, -0.03f);
+	public static final StackedTextures CANDY_TREE = new StackedTextures("worldObjects/CandyTree", 1, 1, -0.5f, -0.2f);
+	public static final StackedTextures BAMBOO = new StackedTextures("worldObjects/Bamboo", 1, 4, -0.5f, -0.02f);
+	public static final StackedTextures BUSH = new StackedTextures("worldObjects/Bush", 1, 2, -0.5f, -0.02f);
+	public static final StackedTextures CANDY_BUSH = new StackedTextures("worldObjects/CandyBush", 1, 2, -0.5f, -0.2f);
+	public static final StackedTextures CACTUS = new StackedTextures("worldObjects/Cactus", 1, 3, -0.5f, -0.05f);
+	public static final StackedTextures GRASS_TUFT = new StackedTextures("worldObjects/Grass_tuft", 4, 1, -0.5f, -0.2f);
+	public static final StackedTextures FLOWER = new StackedTextures("worldObjects/Flower", 1, 3, -0.5f, 0f);
+	public static final StackedTextures CANDY_FLOWER = new StackedTextures("worldObjects/Candy", 1, 6, -0.5f, 0f);
+	public static final StackedTextures CRACK = new StackedTextures("worldObjects/Crack", 1, 4, -0.5f, -0.5f);
+	public static final StackedTextures FOSSIL = new StackedTextures("worldObjects/Fossil", 1, 3, -0.5f, -0.5f);
 
 	public static final Texture FLOWER_LIGHT = new Texture("Light_dimmed");
 	

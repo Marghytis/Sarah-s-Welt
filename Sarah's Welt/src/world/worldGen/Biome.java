@@ -19,19 +19,19 @@ import world.creatures.Scorpion;
 import world.creatures.Snail;
 import world.creatures.Trex;
 import world.creatures.Unicorn;
-import world.structures.Bamboo;
-import world.structures.Bush;
-import world.structures.Cactus;
-import world.structures.CandyBush;
-import world.structures.CandyFlower;
-import world.structures.CandyTree;
-import world.structures.Cloud;
-import world.structures.Crack;
-import world.structures.Flower;
-import world.structures.Fossil;
-import world.structures.Grass_tuft;
-import world.structures.Structure;
-import world.structures.Tree;
+import world.worldObjects.Bamboo;
+import world.worldObjects.Bush;
+import world.worldObjects.Cactus;
+import world.worldObjects.CandyBush;
+import world.worldObjects.CandyFlower;
+import world.worldObjects.CandyTree;
+import world.worldObjects.Cloud;
+import world.worldObjects.Crack;
+import world.worldObjects.Flower;
+import world.worldObjects.Fossil;
+import world.worldObjects.Grass_tuft;
+import world.worldObjects.Tree;
+import world.worldObjects.WorldObject;
 import core.geom.Vec;
 
 public enum Biome {
@@ -233,7 +233,7 @@ public enum Biome {
 		World.creatures[typeId].add(c);
 	}
 	
-	public static void spawnStructure(int typeId, Structure c, Node n, float yOffset){
+	public static void spawnStructure(int typeId, WorldObject c, Node n, float yOffset){
 		c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
 		World.structures[typeId].add(c);
 	}
