@@ -44,9 +44,14 @@ public class Res {
 	public static final StackedTextures TREX  = new StackedTextures("creatures/Trex", 9, 4, -0.5f, -0.05f);
 
 	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 10, -0.5f, -0.1f);
-	public static final List<int[][]> SARAH_ITEMCOORDS = readTextureCoordinator("res/creatures/Sarah.txt");
+	public static final List<int[][]> SARAH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
+	public static final List<int[][]> SARAH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_Horn.txt");
 	public static final StackedTextures SARAH_ON_COW = new StackedTextures("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
+	public static final List<int[][]> SARAH_ON_COW_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow.txt");
+	public static final List<int[][]> SARAH_ON_COW_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow_horn.txt");
 	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
+//	public static final List<int[][]> SARAH_DEATH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
+//	public static final List<int[][]> SARAH_DEATH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
 	
 	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2, -0.5f, -0.5f);
 	public static final StackedTextures INVENTORY = new StackedTextures("items/Inventory", 1, 2);

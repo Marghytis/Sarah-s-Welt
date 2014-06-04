@@ -30,7 +30,7 @@ public class Item {
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Candy cane", 1000, 3);
 	public static final Sword shovel = new Sword(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[4][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Shovel", 700, 4);
-	public static final MagicWeapon horn = new MagicWeapon(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[5][0],
+	public static final MagicWeapon horn = new MagicWeapon(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_HAND.texs[5][0], Res.ITEMS_INV.texs[5][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Horn", 1000, 3, 2);
 	public static final Item berry = new Item(Res.ITEMS_WORLD.texs[0][0], Res.ITEMS_INV.texs[6][0], Res.ITEMS_INV.texs[6][0],
 			new Quad(-25, -2, 50, 50), new Quad(-10, -10, 300, 300), 0, "Berry", 0, null){
@@ -92,7 +92,12 @@ public class Item {
 	
 	public void renderHand(){
 		if(texHand == null) return;
-		int[] handPos = WorldView.sarah.getHandPosition();
+		int[] handPos;
+		if(this instanceof MagicWeapon){
+			handPos = WorldView.sarah.getHeadPosition();
+		} else {
+			handPos = WorldView.sarah.getHandPosition();
+		}
 		int[] sarahHandPos = new int[]{handPos[0], handPos[1], handPos[2]};
 		if(WorldView.sarah.mirrored){
 			sarahHandPos[0] = (int) (WorldView.sarah.animator.tex.box.size.x - sarahHandPos[0]);
