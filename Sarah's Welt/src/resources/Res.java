@@ -77,7 +77,6 @@ public class Res {
 	}
 
 	public static List<int[][]> readTextureCoordinator(String file){
-		System.out.println(file);
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
 			String line;
