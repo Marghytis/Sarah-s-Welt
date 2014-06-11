@@ -38,7 +38,7 @@ public class Bird extends WalkingCreature{
 			applyFriction(Material.AIR);
 		} else {
 			if(random.nextInt(300) == 0){
-				animator.setAnimation(variant == 0 ? flap1 : flap2);
+				animator.setAnimation(flap);
 				pos.y++;
 				accelerateFromGround(new Vec(0, 0.0001f));
 				dir = random.nextBoolean() ? 1 : -1;
@@ -47,7 +47,7 @@ public class Bird extends WalkingCreature{
 		
 		if(!g){
 			if(collision()){
-				animator.setAnimation(variant == 0 ? sit1 : sit2);
+				animator.setAnimation(sit);
 			}
 		}
 		
@@ -56,7 +56,7 @@ public class Bird extends WalkingCreature{
 
 	public boolean hitBy(Creature c, Weapon w){
 		if(super.hitBy(c, w)){
-			animator.setAnimation(variant == 0 ? flap1 : flap2);
+			animator.setAnimation(flap);
 			return true;
 		} else {
 			return false;
