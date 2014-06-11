@@ -13,19 +13,21 @@ public class Bird extends WalkingCreature{
 
 	public static int typeId;
 
-	public static Animation sit1 = new Animation(0, 0);
-	public static Animation flap1 = new Animation(5, 0, true, 1, 2, 3, 4, 3, 2, 1);
-	public static Animation sit2 = new Animation(0, 1);
-	public static Animation flap2 = new Animation(5, 1, true, 1, 2, 3, 4, 3, 2, 1);
+	public static Animation sit = new Animation(0, 0);
+	public static Animation flap = new Animation(5, 0, true, 1, 2, 3, 4, 3, 2, 1);
 	
 	public int variant;
 	
 	public Bird(int variant, Vec p, Node worldLink, int frame){
-		super(new Animator(Res.BIRD, variant == 0 ? flap1 : flap2), p, worldLink, typeId);
+		super(new Animator(Res.BIRD, flap), p, worldLink, typeId);
 		front = true;
 		health = 5;
 		animator.frame = frame;
 		this.variant = variant;
+	}
+	
+	public void beforeRender(){
+		animator.animation.y = variant;
 	}
 	
 	int dir = 1;
