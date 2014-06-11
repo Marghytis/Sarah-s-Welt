@@ -13,19 +13,21 @@ public class Bird extends WalkingCreature{
 
 	public static int typeId;
 
-	public static Animation sit1 = new Animation(0, 0);
-	public static Animation flap1 = new Animation(5, 0, true, 1, 2, 3, 4, 3, 2, 1);
-	public static Animation sit2 = new Animation(0, 1);
-	public static Animation flap2 = new Animation(5, 1, true, 1, 2, 3, 4, 3, 2, 1);
+	public static Animation sit = new Animation(0, 0);
+	public static Animation flap = new Animation(5, 0, true, 1, 2, 3, 4, 3, 2, 1);
 	
 	public int variant;
 	
 	public Bird(int variant, Vec p, Node worldLink, int frame){
-		super(new Animator(Res.BIRD, variant == 0 ? flap1 : flap2), p, worldLink, typeId);
+		super(new Animator(Res.BIRD, flap), p, worldLink, typeId);
 		front = true;
 		health = 5;
 		animator.frame = frame;
 		this.variant = variant;
+	}
+	
+	public void beforeRender(){
+		animator.animation.y = variant;
 	}
 	
 	int dir = 1;
@@ -36,7 +38,7 @@ public class Bird extends WalkingCreature{
 			applyFriction(Material.AIR);
 		} else {
 			if(random.nextInt(300) == 0){
-				animator.setAnimation(variant == 0 ? flap1 : flap2);
+				animator.setAnimation(flap);
 				pos.y++;
 				accelerateFromGround(new Vec(0, 0.0001f));
 				dir = random.nextBoolean() ? 1 : -1;
@@ -45,7 +47,7 @@ public class Bird extends WalkingCreature{
 		
 		if(!g){
 			if(collision()){
-				animator.setAnimation(variant == 0 ? sit1 : sit2);
+				animator.setAnimation(sit);
 			}
 		}
 		
@@ -54,7 +56,7 @@ public class Bird extends WalkingCreature{
 
 	public boolean hitBy(Creature c, Weapon w){
 		if(super.hitBy(c, w)){
-			animator.setAnimation(variant == 0 ? flap1 : flap2);
+			animator.setAnimation(flap);
 			return true;
 		} else {
 			return false;

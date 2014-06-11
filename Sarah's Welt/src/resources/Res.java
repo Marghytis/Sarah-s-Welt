@@ -47,11 +47,11 @@ public class Res {
 	public static final StackedTextures TREX  = new StackedTextures("creatures/Trex", 9, 4, -0.5f, -0.05f);
 
 	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 10, -0.5f, -0.1f);
-	public static final List<int[][]> SARAH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
-	public static final List<int[][]> SARAH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_Horn.txt");
+	public static final List<int[][]> SARAH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt", 3);
+	public static final List<int[][]> SARAH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_Horn.txt", 3);
 	public static final StackedTextures SARAH_ON_COW = new StackedTextures("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
-	public static final List<int[][]> SARAH_ON_COW_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow.txt");
-	public static final List<int[][]> SARAH_ON_COW_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow_horn.txt");
+	public static final List<int[][]> SARAH_ON_COW_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow.txt", 3);
+	public static final List<int[][]> SARAH_ON_COW_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow_horn.txt", 3);
 	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
 //	public static final List<int[][]> SARAH_DEATH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
 //	public static final List<int[][]> SARAH_DEATH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
@@ -79,7 +79,7 @@ public class Res {
 //		AL10.alDeleteSources(test.source);
 	}
 
-	public static List<int[][]> readTextureCoordinator(String file){
+	public static List<int[][]> readTextureCoordinator(String file, int coordsPerVertex){
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
 			String line;
@@ -89,11 +89,14 @@ public class Res {
 			while((line = reader.readLine()) != null){
 				String[] vertices = line.split(";");
 				
-				int[][] output = new int[vertices.length][3];
+				int[][] output = new int[vertices.length][coordsPerVertex];
 				
 				for(int i = 0; i < vertices.length; i++){
 					String[] coords = vertices[i].split(",");
-					output[i] = new int[]{Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])};
+					output[i] = new int[coordsPerVertex];
+					for(int f = 0; f < coordsPerVertex; f++){
+						output[i][f] = Integer.parseInt(coords[f]);
+					}
 				}
 				
 				kA.add(output);
