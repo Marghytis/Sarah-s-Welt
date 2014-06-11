@@ -20,6 +20,7 @@ public class WorldDatabase extends Datenbank{
 	public boolean didFirstSave;
 	
 	public void loadWorld(){
+		didFirstSave = false;
 		try {
             Statement sql = conn.createStatement();
 
@@ -120,7 +121,7 @@ public class WorldDatabase extends Datenbank{
 	}
 	
 	public void firstSave(List<Node>[] contours){
-
+		
         try {
         	Statement sql = conn.createStatement();
 			sql.execute("DROP TABLE IF EXISTS 'Node'");
@@ -155,6 +156,7 @@ public class WorldDatabase extends Datenbank{
 	            ex.printStackTrace();
 	        }
 		}
+		didFirstSave = true;
 	}
 	
 	 public void createDB(){

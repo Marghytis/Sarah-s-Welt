@@ -475,6 +475,9 @@ public class WorldView {
 				Menu.view = View.DEBUG;
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
+				if(!database.didFirstSave) database.firstSave(contours);
+				database.saveNew(newNodes);
+				database.saveChanged(changedNodes);
 				Menu.view = View.MAIN;
 			} else {
 				if(Keyboard.getEventKeyState()){
