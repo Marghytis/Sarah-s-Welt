@@ -47,9 +47,13 @@ public class BasePoint {
 	public List<Layer> layers;
 	
 	public BasePoint(boolean right, Vec pos){
+		this(right, pos, startZone);
+	}
+	
+	public BasePoint(boolean right, Vec pos, ZoneType zoneType){
 		this.right = right;
 		this.pos = pos;
-		levels = new Structure[startZone.possibleStructures.length];
+		levels = new Structure[zoneType.possibleStructures.length];
 		for(int s = 0; s < levels.length; s++) levels[s] = new Structure(s);
 		layers = new ArrayList<>();
 		random = new Random();

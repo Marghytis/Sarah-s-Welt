@@ -21,11 +21,11 @@ public class WorldDatabase extends Datenbank{
 	
 	public void loadWorld(){
 		didFirstSave = false;
+		createDB();
 		try {
             Statement sql = conn.createStatement();
 
             ResultSet ergebnis = sql.executeQuery("SELECT nodeAmount FROM World");//TODO
-            
             ergebnis.next();
             	Node.indexIndex = ergebnis.getInt("nodeAmount");
             ergebnis.close();
@@ -36,7 +36,7 @@ public class WorldDatabase extends Datenbank{
 		try {
             Statement sql = conn.createStatement();
 
-            ResultSet ergebnis = sql.executeQuery("SELECT n_ID, Material, next_ID, last_ID, p_x, p_y FROM Node");
+            ResultSet ergebnis = sql.executeQuery("SELECT n_ID, Material, next_ID, last_ID, pX, pY FROM Node");
             
             Node[] allNodes = new Node[Node.indexIndex];
             
@@ -45,10 +45,10 @@ public class WorldDatabase extends Datenbank{
             	String mat = ergebnis.getString("Material");
             	int next_ID = ergebnis.getInt("next_ID");
             	int last_ID = ergebnis.getInt("last_ID");
-            	int p_x = ergebnis.getInt("p_x");
-            	int p_y = ergebnis.getInt("p_y");
+            	int pX = ergebnis.getInt("pX");
+            	int pY = ergebnis.getInt("pY");
             	
-            	Node node = new Node(p_x, p_y);
+            	Node node = new Node(pX, pY);
             	node.index = n_ID;
             	node.nextIndex = next_ID;
             	node.lastIndex = last_ID;
@@ -72,7 +72,7 @@ public class WorldDatabase extends Datenbank{
 		for(int mat = 0; mat < contours.length; mat++){
 			List<Node> nodes = contours[mat];
 			try {
-	            PreparedStatement p = conn.prepareStatement("UPDATE Node SET next_ID = ?, last_ID = ?, p_x = ?, p_y = ? WHERE n_ID = ?");
+	            PreparedStatement p = conn.prepareStatement("UPDATE Node SET next_ID = ?, last_ID = ?, pX = ?, pY = ? WHERE n_ID = ?");
 	            
 	            for(Node node : nodes){
 		            p.setInt(3, node.nextIndex);
@@ -98,7 +98,7 @@ public class WorldDatabase extends Datenbank{
 			List<Node> nodes = contours[mat];
 			String material = Material.values()[mat].name;
 			try {
-	            PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, Material, next_ID, last_ID, p_x, p_y) VALUES (?,?,?,?,?)");
+	            PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, Material, next_ID, last_ID, pX, pY) VALUES (?,?,?,?,?)");
 	            
 	            for(Node node : nodes){
 		            p.setInt(1, node.index);
@@ -121,22 +121,11 @@ public class WorldDatabase extends Datenbank{
 	}
 	
 	public void firstSave(List<Node>[] contours){
-		
-        try {
-        	Statement sql = conn.createStatement();
-			sql.execute("DROP TABLE IF EXISTS 'Node'");
-			sql.execute("CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'Material' VARCHAR NOT NULL DEFAULT 'AIR', 'next_ID' INTEGER, 'last_ID' INTEGER, 'pX' FLOAT DEFAULT 0, 'pY' FLOAT DEFAULT 0)");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("COULDN'T SAVE WORLD DATA!!!!");
-			return;
-		}
-		
 		for(int mat = 0; mat < contours.length; mat++){
 			List<Node> nodes = contours[mat];
 			String material = Material.values()[mat].name;
 			try {
-	            PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, Material, next_ID, last_ID, p_x, p_y) VALUES (?,?,?,?,?)");
+	            PreparedStatement p = conn.prepareStatement("INSERT INTO Node (n_ID, Material, next_ID, last_ID, pX, pY) VALUES (?,?,?,?,?)");
 	            
 	            for(Node node : nodes){
 		            p.setInt(1, node.index);
@@ -163,8 +152,11 @@ public class WorldDatabase extends Datenbank{
         try {
             Statement sql = conn.createStatement();
 
-            String sqlCreate = 
-        		"CREATE TABLE 'World' ('nodeAmount' INT NOT NULL DEFAULT 0);"
+            String sqlCreate =
+            	"DROP TABLE IF EXISTS 'World';"
+        	+	"CREATE TABLE 'World' ('nodeAmount' INT NOT NULL DEFAULT 0);"
+            +   "INSERT INTO World (nodeAmount) VALUES (0);"
+            +	"DROP TABLE IF EXISTS 'Node';"
             +	"CREATE TABLE 'Node' ('n_ID' INTEGER PRIMARY KEY NOT NULL, 'Material' VARCHAR NOT NULL DEFAULT 'AIR', 'next_ID' INTEGER, 'last_ID' INTEGER, 'pX' FLOAT DEFAULT 0, 'pY' FLOAT DEFAULT 0);"
             ;
 

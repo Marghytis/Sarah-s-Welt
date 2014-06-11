@@ -137,10 +137,14 @@ public class WorldView {
 		contours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		for(int i = 0; i < contours.length; i++) contours[i] = new ArrayList<>();
 		zones = new ArrayList<>();
-		rightGenerator = new BasePoint(true, new Vec(0, 0));
-		leftGenerator = rightGenerator.setupLayers();
 		database = new WorldDatabase(worldName);
-		database.loadWorld();
+		if(database.fresh){
+			rightGenerator = new BasePoint(true, new Vec(0, 0));
+			leftGenerator = rightGenerator.setupLayers();
+			database.fresh = false;
+		} else {
+			database.loadWorld();
+		}
 	}
 	
 	public static void update(int delta){
