@@ -56,6 +56,8 @@ public class WorldView {
 	public static float measureScale = 50;
 	public static String name;
 	public static WorldDatabase database;
+	public static List<Node>[] changedNodes;
+	public static List<Node>[] newNodes;
 	//world generation
 	static BasePoint rightGenerator, leftGenerator;
 	static float widthHalf = 1000;
@@ -130,12 +132,15 @@ public class WorldView {
 		particleEffects = new ArrayList<>();
 		
 		//setup world and generators
+		changedNodes = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
+		newNodes = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		contours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		for(int i = 0; i < contours.length; i++) contours[i] = new ArrayList<>();
 		zones = new ArrayList<>();
 		rightGenerator = new BasePoint(true, new Vec(0, 0));
 		leftGenerator = rightGenerator.setupLayers();
 		database = new WorldDatabase(worldName);
+		database.loadWorld();
 	}
 	
 	public static void update(int delta){
