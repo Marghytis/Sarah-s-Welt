@@ -1,18 +1,9 @@
 package world.worldObjects;
 
-import item.Inventory;
-import item.Item;
-
-import org.lwjgl.opengl.GL11;
-
 import resources.Res;
-import resources.StackedTextures;
 import util.Animation;
 import util.Animator;
-import util.Color;
 import world.Node;
-import world.WorldView;
-import core.Window;
 import core.geom.Vec;
 
 public class JungleFlower extends WorldObject {
@@ -33,11 +24,6 @@ public static int typeId;
 		super(new Animator(Res.JUNGLE_FLOWER, anis[type]), pos, worldLink, typeId);
 
 		mirrored = random.nextBoolean();
-	}
-	
-	
-	public boolean rightClickAction(){
-		return Inventory.addItem(Item.stick);
 	}
 	
 }

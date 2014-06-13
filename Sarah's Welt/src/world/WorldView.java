@@ -42,13 +42,16 @@ import world.worldObjects.Crack;
 import world.worldObjects.Flower;
 import world.worldObjects.Fossil;
 import world.worldObjects.Grass_tuft;
+import world.worldObjects.JungleFlower;
+import world.worldObjects.JunglePlants;
+import world.worldObjects.JungleTree;
 import world.worldObjects.PalmTree;
 import world.worldObjects.Tree;
 import world.worldObjects.WorldObject;
 import core.Menu;
+import core.Menu.View;
 import core.Settings;
 import core.Window;
-import core.Menu.View;
 import core.geom.Vec;
 
 public class WorldView {
@@ -93,16 +96,23 @@ public class WorldView {
 		Tree.typeId = o_id++;
 		PalmTree.typeId = o_id++;
 		CandyTree.typeId = o_id++;
+		JungleTree.typeId = o_id++;
+		Bamboo.typeId = o_id++;
+		
 		Bush.typeId = o_id++;
 		CandyBush.typeId = o_id++;
+		JunglePlants.typeId = o_id++;
 		Cactus.typeId = o_id++;
+		
 		Flower.typeId = o_id++;
 		CandyFlower.typeId = o_id++;
-		Bamboo.typeId = o_id++;
 		Grass_tuft.typeId = o_id++;
+		
 		Cloud.typeId = o_id++;
 		Crack.typeId = o_id++;
 		Fossil.typeId = o_id++;
+		
+		JungleFlower.typeId = o_id++;
 		
 		worldObjects = (List<WorldObject>[]) new List<?>[o_id];
 		for(int i = 0; i < worldObjects.length; i++){
