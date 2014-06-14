@@ -90,7 +90,7 @@ public class WorldView {
 		for(int i = 0; i < items.length; i++){
 			items[i] = new ArrayList<>();
 		}
-			//world.worldObjects
+			//worldObjects
 		int o_id = 0;
 		Tree.typeId = o_id++;
 		PalmTree.typeId = o_id++;

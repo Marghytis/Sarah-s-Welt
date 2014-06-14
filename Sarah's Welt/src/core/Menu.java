@@ -2,6 +2,8 @@ package core;
 
 import item.Inventory;
 
+import javax.swing.JOptionPane;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -112,6 +114,19 @@ public class Menu {
 			}
 		},
 		MAIN(true){
+			void setup(){
+				buttons = new Button[]{
+					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){
+						String worldName =  JOptionPane.showInputDialog("World name:", "");
+						WorldView.reset(worldName);}}),
+					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = WORLD;}}),
+					new Button("Options", 3/16.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
+					new Button("Exit", 3/16.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
+				};
+			}
+		},
+		CREATE_WORLD(true){
+			
 			void setup(){
 				buttons = new Button[]{
 					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){WorldView.reset("TestWorld");}}),
