@@ -34,6 +34,7 @@ import world.worldObjects.Grass_tuft;
 import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
 import world.worldObjects.JungleTree;
+import world.worldObjects.PalmTree;
 import world.worldObjects.Tree;
 import world.worldObjects.WorldObject;
 import core.geom.Vec;
@@ -110,7 +111,15 @@ public class BasePoint {
 			}
 		}
 		if(random.nextInt(100) == 0){
-			setZone(ZoneType.values()[random.nextInt(ZoneType.values().length)]);
+			if(zone.type==ZoneType.DESERT && random.nextInt(3) == 0){
+				setZone(ZoneType.OASIS);
+			}
+			else if(zone.type==ZoneType.OASIS){
+				setZone(ZoneType.DESERT);
+			}
+			else {
+				setZone(ZoneType.values()[random.nextInt(ZoneType.values().length-1)]);
+			}
 		}
 	}
 	public class LayerSorter {
@@ -429,7 +438,19 @@ public class BasePoint {
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 				
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
-				});
+				}),
+		OASIS( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.SANDSTONE, 60, 2f, 70), new AimLayer(Material.STONE, 10000, 200, 0)},
+				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}, {StructureType.ADER}},
+				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Scorpion(new Vec(), null), node, 5, random), 1, 10),
+									new ThingSpawner((node, random) -> spawnCreature(new Gnat(new Vec(), null), node, 40, random), 1, 80),
+									
+									new ThingSpawner((node, random) -> spawnObject(new PalmTree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 80),
+									new ThingSpawner((node, random) -> spawnObject(new Grass_tuft(new Vec(), null, random.nextInt(Grass_tuft.wave.sequence.length)), node, 0, random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Crack.crack.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									
+									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
+				}),;
 		
 		AimLayer[] finalLayers;
 		StructureType[][] possibleStructures;//possible structure types for each level
