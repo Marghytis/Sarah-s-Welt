@@ -53,7 +53,6 @@ public class BasePoint {
 		this.right = right;
 		this.pos = pos;
 		levels = new Structure[startZone.possibleStructures.length];
-		System.out.println(startZone.possibleStructures.length);
 		for(int s = 0; s < levels.length; s++) levels[s] = new Structure(s);
 		layers = new ArrayList<>();
 		random = new Random();
@@ -361,7 +360,7 @@ public class BasePoint {
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}},
 				new ThingSpawner[]{ 
 //									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
-//									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(3), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
+									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(3), new Vec(), null, random.nextInt(Bird.flap.sequence.length)), node, 20, random), 1, 100),
 //									new ThingSpawner((node, random) -> spawnCreature(new Heart(0, new Vec(), null), node, 100, random), 1, 10),
 //									new ThingSpawner((node, random) -> spawnCreature(new Gnat(new Vec(), null), node, 40, random), 1, 330),
 //									

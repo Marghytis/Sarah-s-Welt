@@ -15,7 +15,6 @@ public class Inventory {
 		for(ItemStack stack : stacks){
 			if(stack.item != null && stack.item.coolDown > 0) stack.item.coolDown -= delta;
 		}
-		stacks[4].item = Item.horn;
 	}
 	
 	public static void reset(){
