@@ -14,15 +14,15 @@ public class DB_Verbinder {
     protected Connection actualConnection;
 
     /**
-     * Öffnet eine Verbindung zur Datenbank. Falls die DB noch nicht erstellt,
+     * Öffnet eine Verbindung zur Database. Falls die DB noch nicht erstellt,
      * wird sie angelegt.
      *
      * @param verzeichnis - Verzeichnis, in dem die DB-Datei gespeichert ist.
-     * @param dbname - Name der Datenbank
+     * @param dbname - Name der Database
      * @return wahr oder falsch
      */
     public boolean db_open(String verzeichnis, String dbname) {
-        System.out.println("Öffne Datenbank: " + verzeichnis + dbname);
+        System.out.println("Öffne Database: " + verzeichnis + dbname);
 
         boolean dbtest = false;
         try {

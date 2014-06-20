@@ -4,14 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import util.Datenbank;
+import util.Database;
 
 public class DB_Test {
 
-	static Datenbank db;
+	static Database db;
 	
 	public static void main(String[] args){
-		db = new Datenbank("", "huhu");
+		db = new Database("", "huhu");
 //		if(db.fresh){
 			createDB();
 //		}
