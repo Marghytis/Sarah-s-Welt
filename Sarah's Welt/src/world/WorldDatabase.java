@@ -128,8 +128,8 @@ public class WorldDatabase extends Database{
 	public void saveGenerators(BasePoint p1, BasePoint p2){
 		try {
 			Statement s = conn.createStatement();
-			
-			s.execute("UPDATE Generators SET )
+
+			s.execute("TRUNCATE TABLE 'Generators'");
 			
 			s.close();
 		} catch (SQLException ex) {
