@@ -377,7 +377,7 @@ public class BasePoint {
 									new ThingSpawner((node, random) -> spawnObject(new JungleTree(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new JungleFlower(random.nextInt(5), new Vec(), null) , node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new JunglePlants(random.nextInt(5), new Vec(), null, 0.5f + random.nextFloat()) , node, 0, random), 1, 200),
-									new ThingSpawner((node, random) -> spawnObject(new JungleBush(new Vec(), node, 0.5f + random.nextFloat()) , node, 0, random), 1, 500),
+									new ThingSpawner((node, random) -> spawnObject(new JungleBush(new Vec(), node, 0.3f + (5*random.nextFloat()), false) , node, 0, random), 1, 500),
 //									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Crack.crack.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 //									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 //									
