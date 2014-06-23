@@ -28,6 +28,7 @@ public class Res {
 	public static final StackedTextures CACTUS = new StackedTextures("worldObjects/Cactus", 1, 3, -0.5f, -0.05f);
 	public static final StackedTextures GRASS_TUFT = new StackedTextures("worldObjects/Grass_tuft", 4, 1, -0.5f, -0.2f);
 	public static final StackedTextures FLOWER = new StackedTextures("worldObjects/Flower", 1, 3, -0.5f, 0f);
+	public static final StackedTextures PYRAMIDE = new StackedTextures("worldObjects/Pyramide", 1, 4, -0.5f, -0.2f);
 	public static final StackedTextures CANDY_FLOWER = new StackedTextures("worldObjects/Candy", 1, 6, -0.5f, 0f);
 	public static final StackedTextures CRACK = new StackedTextures("worldObjects/Crack", 1, 4, -0.5f, -0.5f);
 	public static final StackedTextures FOSSIL = new StackedTextures("worldObjects/Fossil", 1, 3, -0.5f, -0.5f);
