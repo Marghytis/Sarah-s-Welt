@@ -76,7 +76,8 @@ public class BasePoint {
 			layers.add(new Layer(aim, aim.thickness, n1, n2));
 			p2.layers.add(p2.new Layer(aim, aim.thickness, n1, n2));
 
-			WorldView.contours[aim.material.ordinal()].add(n1);
+			WorldView.loadedContours[aim.material.ordinal()].add(n1);
+			WorldView.allNodes.add(n1);
 		}
 		return p2;
 	}
@@ -166,7 +167,8 @@ public class BasePoint {
 				Layer thisOne = layers.get(l);
 				thisOne.endNodeBot = nBot;
 				thisOne.endNodeTop = nTop;
-				WorldView.contours[thisOne.aim.material.ordinal()].add(nTop);
+				WorldView.loadedContours[thisOne.aim.material.ordinal()].add(nTop);
+				WorldView.allNodes.add(nTop);
 			}
 		}
 //		levels = new Structure[zone.type.possibleStructures.length];

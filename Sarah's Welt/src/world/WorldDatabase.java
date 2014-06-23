@@ -52,8 +52,9 @@ public class WorldDatabase extends Datenbank{
             	node.index = n_ID;
             	node.nextIndex = next_ID;
             	node.lastIndex = last_ID;
-            	
-            	WorldView.contours[Material.valueOf(mat).ordinal()].add(node);
+
+            	WorldView.loadedContours[Material.valueOf(mat).ordinal()].add(node);
+            	WorldView.allNodes.add(node);
             	allNodes[n_ID] = node;
             }
             

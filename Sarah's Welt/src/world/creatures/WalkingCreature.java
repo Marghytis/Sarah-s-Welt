@@ -79,7 +79,7 @@ public abstract class WalkingCreature extends Creature{
 		Node finalNode = null;
 		for(Material mat : Material.values()){//	iterate materials
 			if(mat.solid){
-				for(Node c : WorldView.contours[mat.ordinal()]){//	iterate lines
+				for(Node c : WorldView.loadedContours[mat.ordinal()]){//	iterate lines
 					Node node = c;
 					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
 					do{
@@ -117,7 +117,7 @@ public abstract class WalkingCreature extends Creature{
 		boolean foundOne = false;
 		for(Material mat : Material.values()){//	iterate materials
 			if(mat.solid){
-				for(Node c : WorldView.contours[mat.ordinal()]){//	iterate lines
+				for(Node c : WorldView.loadedContours[mat.ordinal()]){//	iterate lines
 					Node n = c;
 					 do {
 						if(n.getPoint().x > n.getNext().getPoint().x){
