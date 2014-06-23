@@ -36,6 +36,7 @@ import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
 import world.worldObjects.JungleTree;
 import world.worldObjects.PalmTree;
+import world.worldObjects.Pyramide;
 import world.worldObjects.Tree;
 import world.worldObjects.WorldObject;
 import core.geom.Vec;
@@ -385,6 +386,7 @@ public class BasePoint {
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Heart(0, new Vec(), null), node, 100, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Scorpion(new Vec(), null), node, 5, random), 1, 30),
 									
+									new ThingSpawner((node, random) -> spawnObject(new Pyramide(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnObject(new Cactus(random.nextInt(3), new Vec(), null), node, 0, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 100),

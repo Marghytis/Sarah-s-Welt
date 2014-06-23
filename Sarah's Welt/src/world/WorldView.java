@@ -47,6 +47,7 @@ import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
 import world.worldObjects.JungleTree;
 import world.worldObjects.PalmTree;
+import world.worldObjects.Pyramide;
 import world.worldObjects.Tree;
 import world.worldObjects.WorldObject;
 import core.Menu;
@@ -100,6 +101,7 @@ public class WorldView {
 		CandyTree.typeId = o_id++;
 		JungleTree.typeId = o_id++;
 		Bamboo.typeId = o_id++;
+		Pyramide.typeId = o_id++;
 		
 		Bush.typeId = o_id++;
 		CandyBush.typeId = o_id++;
