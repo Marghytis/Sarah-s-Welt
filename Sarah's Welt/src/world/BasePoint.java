@@ -43,7 +43,7 @@ import core.geom.Vec;
 
 /**this class handles all the world generation mechanisms*/
 public class BasePoint {
-	public static ZoneType startZone = ZoneType.DESERT;
+	public static ZoneType startZone = ZoneType.JUNGLE;
 	Random random;
 	Zone zone;
 	boolean right;

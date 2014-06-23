@@ -27,6 +27,7 @@ public class Bird extends WalkingCreature{
 	}
 	
 	public void beforeRender(){
+		super.beforeRender();
 		animator.animation.y = variant;
 	}
 	
