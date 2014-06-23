@@ -66,7 +66,8 @@ public class WorldView {
 	static List<Zone> zones;
 	//things
 	public static Sarah sarah;
-	public static List<Node>[] contours;
+	public static List<Node>[] loadedContours;
+	public static List<Node> allNodes;
 	public static List<WorldObject>[] worldObjects;
 	public static List<Creature>[] creatures;
 	public static List<WorldItem>[] items;
@@ -134,8 +135,9 @@ public class WorldView {
 		//setup world and generators
 		changedNodes = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		newNodes = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
-		contours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
-		for(int i = 0; i < contours.length; i++) contours[i] = new ArrayList<>();
+		loadedContours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
+		allNodes = new ArrayList<>();
+		for(int i = 0; i < loadedContours.length; i++) loadedContours[i] = new ArrayList<>();
 		zones = new ArrayList<>();
 		database = new WorldDatabase(worldName);
 		if(database.fresh){
@@ -175,8 +177,8 @@ public class WorldView {
 		rimL -= 21;
 		
 		//remove nodes
-		for(int m = 0; m < contours.length; m++){
-			List<Node> list = contours[m];
+		for(int m = 0; m < loadedContours.length; m++){
+			List<Node> list = loadedContours[m];
 			List<Node> save = new ArrayList<>();
 			contours : for(int node = 0; node  < list.size(); node ++){
 			Node n = list.get(node);
@@ -301,7 +303,7 @@ public class WorldView {
 		Material[] mats = Material.values();
 		for(int i = 0; i < mats.length; i++){
 			mats[i].textureFile.bind();
-			tessellator.tessellateOneNode(contours[i], Material.GRASS.textureFile.width, Material.GRASS.textureFile.height);
+			tessellator.tessellateOneNode(loadedContours[i], Material.GRASS.textureFile.width, Material.GRASS.textureFile.height);
 		}
 		TextureFile.bindNone();
 		
@@ -479,7 +481,7 @@ public class WorldView {
 				Menu.view = View.DEBUG;
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
-				if(!database.didFirstSave) database.firstSave(contours);
+				if(!database.didFirstSave) database.firstSave(loadedContours);
 				database.saveNew(newNodes);
 				database.saveChanged(changedNodes);
 				Menu.view = View.MAIN;

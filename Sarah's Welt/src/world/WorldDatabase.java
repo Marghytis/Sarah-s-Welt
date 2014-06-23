@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import util.Database;
+import util.Datenbank;
 
 public class WorldDatabase extends Database{
 	
@@ -44,6 +44,36 @@ public class WorldDatabase extends Database{
 	public void loadWorldContours() throws SQLException {
 		Statement sql = conn.createStatement();
 
+            ResultSet ergebnis = sql.executeQuery("SELECT n_ID, Material, next_ID, last_ID, pX, pY FROM Node");
+            
+            Node[] allNodes = new Node[Node.indexIndex];
+            
+            while(ergebnis.next()){
+            	int n_ID = ergebnis.getInt("n_ID");
+            	String mat = ergebnis.getString("Material");
+            	int next_ID = ergebnis.getInt("next_ID");
+            	int last_ID = ergebnis.getInt("last_ID");
+            	int pX = ergebnis.getInt("pX");
+            	int pY = ergebnis.getInt("pY");
+            	
+            	Node node = new Node(pX, pY);
+            	node.index = n_ID;
+            	node.nextIndex = next_ID;
+            	node.lastIndex = last_ID;
+
+            	WorldView.loadedContours[Material.valueOf(mat).ordinal()].add(node);
+            	WorldView.allNodes.add(node);
+            	allNodes[n_ID] = node;
+            }
+            
+            for(Node n : allNodes){
+            	n.setLast(allNodes[n.lastIndex]);
+            	n.setNext(allNodes[n.nextIndex]);
+            }
+            ergebnis.close();
+            sql.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         ResultSet ergebnis = sql.executeQuery("SELECT n_ID, Material, next_ID, last_ID, pX, pY FROM Node");
         
         Node[] allNodes = new Node[Node.indexIndex];
