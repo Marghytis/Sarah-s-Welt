@@ -31,6 +31,7 @@ import world.worldObjects.Crack;
 import world.worldObjects.Flower;
 import world.worldObjects.Fossil;
 import world.worldObjects.Grass_tuft;
+import world.worldObjects.JungleBush;
 import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
 import world.worldObjects.JungleTree;
@@ -376,7 +377,7 @@ public class BasePoint {
 									new ThingSpawner((node, random) -> spawnObject(new JungleTree(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new JungleFlower(random.nextInt(5), new Vec(), null) , node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new JunglePlants(random.nextInt(5), new Vec(), null, 0.5f + random.nextFloat()) , node, 0, random), 1, 200),
-//									new ThingSpawner((node, random) -> spawnObject(new Grass_tuft(new Vec(), null, random.nextInt(Grass_tuft.wave.sequence.length)), node, 0, random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new JungleBush( new Vec(), null, 0.5f + random.nextFloat()) , node, 0, random), 1, 500),
 //									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Crack.crack.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 //									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 //									

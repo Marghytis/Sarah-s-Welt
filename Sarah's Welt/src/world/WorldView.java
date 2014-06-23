@@ -42,6 +42,7 @@ import world.worldObjects.Crack;
 import world.worldObjects.Flower;
 import world.worldObjects.Fossil;
 import world.worldObjects.Grass_tuft;
+import world.worldObjects.JungleBush;
 import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
 import world.worldObjects.JungleTree;
@@ -93,6 +94,7 @@ public class WorldView {
 		}
 			//world.worldObjects
 		int o_id = 0;
+		JungleBush.typeId = o_id++;
 		Tree.typeId = o_id++;
 		PalmTree.typeId = o_id++;
 		CandyTree.typeId = o_id++;
