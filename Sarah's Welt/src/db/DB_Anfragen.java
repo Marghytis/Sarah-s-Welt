@@ -182,7 +182,7 @@ public class DB_Anfragen extends DB_Verbinder {
     }
 
     /**
-     * BEISPIEL für das Erstellen einer neuen Datenbank.
+     * BEISPIEL für das Erstellen einer neuen Database.
      *
      * KOMMT HIER NICHT ZUM EINSATZ!
      *
