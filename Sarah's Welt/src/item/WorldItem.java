@@ -16,7 +16,7 @@ public class WorldItem extends Thing{
 		super(new Animator(item.texWorld), pos, worldLink);
 		this.item = item;
 	}
-	
+
 	public boolean rightClickAction(){
 		for(int i = 0; i < Inventory.stacks.length; i++){
 			if(Inventory.stacks[i].item == item){

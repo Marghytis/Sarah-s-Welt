@@ -7,10 +7,7 @@ import core.geom.Vec;
 
 public abstract class WorldObject extends Thing{
 
-	public int id;
-	
-	public WorldObject(Animator ani, Vec pos, Node worldLink, int id){
+	public WorldObject(Animator ani, Vec pos, Node worldLink){
 		super(ani, pos, worldLink);
-		this.id = id;
 	}
 }

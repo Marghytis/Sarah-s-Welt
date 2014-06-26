@@ -10,8 +10,8 @@ import core.geom.Quad;
 public class ItemStack extends Quad{
 
 	public Item item = null;
-	int count = 0;
-	int slot;
+	public int count = 0;
+	public int slot;
 	
 	public ItemStack(int slot){
 		super((slot+1)*(Window.WIDTH/7) -50, Window.HEIGHT/5 -50, 100, 100);

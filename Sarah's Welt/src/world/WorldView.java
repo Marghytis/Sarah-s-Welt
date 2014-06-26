@@ -56,6 +56,7 @@ public class WorldView {
 	public static float measureScale = 50;
 	public static String name;
 	public static WorldDatabase database;
+	public static List<Node> allNodes;
 	public static List<Node>[] changedNodes;
 	public static List<Node>[] newNodes;
 	//world generation
@@ -67,9 +68,8 @@ public class WorldView {
 	//things
 	public static Sarah sarah;
 	public static List<Node>[] loadedContours;
-	public static List<Node> allNodes;
 	public static List<WorldObject>[] worldObjects;
-	public static List<Creature>[] creatures;
+	public static List<Creature>[] creatures; public static Class<? extends Creature>[] creatureTypes;
 	public static List<WorldItem>[] items;
 	//tasks
 	public static List<Runnable> thingTasks = new ArrayList<>();
@@ -112,20 +112,21 @@ public class WorldView {
 			worldObjects[i] = new ArrayList<>();
 		}
 			//creatures
-		int c_id = 1;//0 is sarah
-		Snail.typeId = c_id++;
-		Butterfly.typeId = c_id++;
-		Heart.typeId = c_id++;
-		Rabbit.typeId = c_id++;
-		Bird.typeId = c_id++;
-		Panda.typeId = c_id++;
-		Cow.typeId = c_id++;
-		Gnat.typeId = c_id++;
-		Unicorn.typeId = c_id++;
-		Scorpion.typeId = c_id++;
-		Trex.typeId = c_id++;
+		creatureTypes = new Class[]{
+				Snail.class,
+				Butterfly.class,
+				Heart.class,
+				Rabbit.class,
+				Bird.class,
+				Panda.class, 
+				Cow.class,
+				Gnat.class,
+				Unicorn.class,
+				Scorpion.class,
+				Trex.class
+		};
 		
-		creatures = (List<Creature>[]) new List<?>[c_id];
+		creatures = (List<Creature>[]) new List<?>[creatureTypes.length];
 		for(int i = 0; i < creatures.length; i++){
 			creatures[i] = new ArrayList<>();
 		}
@@ -133,10 +134,10 @@ public class WorldView {
 		particleEffects = new ArrayList<>();
 		
 		//setup world and generators
+		allNodes = new ArrayList<>();
 		changedNodes = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		newNodes = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
 		loadedContours = (ArrayList<Node>[]) new ArrayList<?>[Material.values().length];
-		allNodes = new ArrayList<>();
 		for(int i = 0; i < loadedContours.length; i++) loadedContours[i] = new ArrayList<>();
 		zones = new ArrayList<>();
 		database = new WorldDatabase(worldName);

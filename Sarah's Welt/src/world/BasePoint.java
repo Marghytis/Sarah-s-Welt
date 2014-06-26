@@ -242,7 +242,12 @@ public class BasePoint {
 			} else {
 				stepPos--;
 				if(stepPos <= -1){
-					type = zone.type.possibleStructures[level][random.nextInt(zone.type.possibleStructures[level].length)];
+					if(random.nextInt(10) < 1){
+						index = random.nextInt(zone.type.possibleStructures[level].length);
+						type = zone.type.possibleStructures[level][index];
+					} else {
+						type = StructureType.FLAT;
+					}
 					stepPos = type.steps.length - 1;
 				}
 			}
@@ -265,7 +270,7 @@ public class BasePoint {
 			this.steps = steps;
 		}
 	}
-	public class Layer {
+	public static class Layer {
 		AimLayer aim;
 		float thickness;
 
@@ -429,12 +434,12 @@ public class BasePoint {
 
 		public static void spawnCreature(Creature c, Node n, float yOffset, Random random){
 			c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-			WorldView.creatures[c.id].add(c);
+			WorldView.creatures[World.creatureTypes.indexOf(c.getClass())].add(c);
 		}
 
 		public static void spawnObject(WorldObject c, Node n, float yOffset, Random random){
 			c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-			WorldView.worldObjects[c.id].add(c);
+			WorldView.worldObjects[c.typeID].add(c);
 		}
 
 		public static void spawnItem(WorldItem c, Node n, float yOffset, Random random){

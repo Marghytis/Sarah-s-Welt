@@ -9,6 +9,7 @@ import util.Animator;
 import world.Material;
 import world.Node;
 import world.Thing;
+import world.World;
 import world.WorldView;
 import core.geom.Vec;
 
@@ -22,11 +23,9 @@ public abstract class Creature extends Thing {
 	public int hitradius = 100; //only relevant, if its aggressive
 	public int health = 20;
 	public int punchStrength = 1;
-	public int id;
 	
-	public Creature(Animator ani, Vec pos, Node worldLink, int id){
+	public Creature(Animator ani, Vec pos, Node worldLink){
 		super(ani, pos, worldLink);
-		this.id = id;
 	}
 	
 	public void update(int dTime){
@@ -34,7 +33,7 @@ public abstract class Creature extends Thing {
 			WorldView.particleEffects.add(new DeathDust(pos.plus(animator.box.middle())));
 			WorldView.thingTasks.add(() -> {
 				onDeath();
-				WorldView.creatures[id].remove(this);
+				World.creatures[World.creatureTypes.indexOf(getClass())].remove(this);
 			});
 		} else {
 			pos.shift(vel);
