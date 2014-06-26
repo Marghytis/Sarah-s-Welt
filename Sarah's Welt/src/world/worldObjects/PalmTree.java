@@ -9,13 +9,11 @@ import world.Node;
 import core.geom.Vec;
 
 public class PalmTree extends WorldObject{
-
-	public static int typeId;
 	
 	public float size;
 	
 	public PalmTree(int type, Vec pos, Node worldLink, float size){
-		super(new Animator(Res.PALM_TREE, new Animation(0, type)), pos, worldLink, typeId);
+		super(new Animator(Res.PALM_TREE, new Animation(0, type)), pos, worldLink);
 		this.size = size;
 		mirrored = random.nextBoolean();
 	}

@@ -13,8 +13,6 @@ import core.Window;
 import core.geom.Vec;
 
 public class Flower extends WorldObject {
-
-	public static int typeId;
 	
 	public int type;
 	public static Color[] colors = {
@@ -26,13 +24,13 @@ public class Flower extends WorldObject {
 	public Color color;
 	
 	public Flower(int type, Vec pos, Node worldLink){
-		super(new Animator(Res.FLOWER, new Animation(0, type)), pos, worldLink, typeId);
+		super(new Animator(Res.FLOWER, new Animation(0, type)), pos, worldLink);
 		this.type = type;
 		this.color = colors[type];
 	}
 	
 	protected Flower(int type, Vec pos, Node worldLink, StackedTextures tex, Color lightColor){
-		super(new Animator(tex, new Animation(0, type)), pos, worldLink, typeId);
+		super(new Animator(tex, new Animation(0, type)), pos, worldLink);
 		this.type = type;
 		this.color = lightColor;
 	}

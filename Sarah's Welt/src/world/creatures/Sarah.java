@@ -45,7 +45,7 @@ public class Sarah extends WalkingCreature {
 	public int mana = 20;
 	
 	public Sarah(Vec pos, Node worldLink){
-		super(new Animator(Res.SARAH, stand), pos, worldLink, 0);
+		super(new Animator(Res.SARAH, stand), pos, worldLink);
 		hitradius = 60;
 		punchStrength = 2;
 		maxSpeed = 10;
@@ -174,7 +174,7 @@ public class Sarah extends WalkingCreature {
 		}
 		animator.tex.file.bind();
 		
-		if(ridingCow && g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+		if(ridingCow && g)alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
 		else if(Settings.flying){
 			GL11.glRotatef(vel.angle()*(180/(float)Math.PI) - 90, 0, 0, 1);
 		}

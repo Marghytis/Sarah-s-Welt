@@ -12,8 +12,6 @@ import world.Node;
 import core.geom.Vec;
 
 public class Tree extends WorldObject{
-
-	public static int typeId;
 	
 	public float size;
 	
@@ -24,7 +22,7 @@ public class Tree extends WorldObject{
 	};
 	
 	public Tree(int type, Vec pos, Node worldLink, float size){
-		super(new Animator(Res.TREE, anis[type]), pos, worldLink, typeId);
+		super(new Animator(Res.TREE, anis[type]), pos, worldLink);
 		this.size = size;
 		mirrored = random.nextBoolean();
 	}

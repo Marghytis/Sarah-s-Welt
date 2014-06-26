@@ -47,4 +47,15 @@ public abstract class Thing {
 	protected void beforeRender(){}
 
 	protected void afterRender(){}
+
+	
+	public void alignWithGround(){
+		GL11.glRotatef(worldLink.p.minus(worldLink.next.p).angle()*(180/(float)Math.PI), 0, 0, 1);
+	}
+	
+	public String createMetaString(){
+		return "";
+	}
+	
+	public void applyMetaString(String string){}
 }

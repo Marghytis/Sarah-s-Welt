@@ -12,13 +12,11 @@ import world.Node;
 import core.geom.Vec;
 
 public class CandyTree extends WorldObject{
-
-	public static int typeId;
 	
 	public float size;
 	
 	public CandyTree(Vec pos, Node worldLink, float size){
-		super(new Animator(Res.CANDY_TREE, new Animation(0, 0)), pos, worldLink, typeId);
+		super(new Animator(Res.CANDY_TREE, new Animation(0, 0)), pos, worldLink);
 		this.size = size;
 		mirrored = random.nextBoolean();
 	}

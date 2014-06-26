@@ -12,8 +12,6 @@ import core.geom.Vec;
 
 public class Cloud extends WorldObject{
 
-	public static int typeId;
-
 	private RainEffect effect;
 	public float size;
 	
@@ -21,7 +19,7 @@ public class Cloud extends WorldObject{
 	private boolean raining = false;//should not simply be set, because you maybe need to create the effect first
 	
 	public Cloud(Vec pos, Node worldLink, float size, boolean raining){
-		super(new Animator(Res.CLOUD, new Animation(0, 0)), pos, worldLink, typeId);
+		super(new Animator(Res.CLOUD, new Animation(0, 0)), pos, worldLink);
 		this.size = size;
 		effect = new RainEffect(new Vec(pos.x + ((animator.tex.box.x*size)/2), pos.y + (animator.tex.box.y*size) + 650), (animator.tex.box.size.x*size)/2, (animator.tex.box.size.y*size)/2);
 		front = false;

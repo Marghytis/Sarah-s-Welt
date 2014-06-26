@@ -10,11 +10,10 @@ import core.geom.Vec;
 
 public class Bamboo extends WorldObject{
 
-	public static int typeId;
 	public float size;
 	
 	public Bamboo(int type, Vec pos, Node worldLink, float size){
-		super(new Animator(Res.BAMBOO, new Animation(0, type)), pos, worldLink, typeId);
+		super(new Animator(Res.BAMBOO, new Animation(0, type)), pos, worldLink);
 		this.front = random.nextInt(10) == 0;
 		this.size = size;
 		mirrored = random.nextBoolean();

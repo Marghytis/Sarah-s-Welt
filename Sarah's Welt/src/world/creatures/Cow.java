@@ -1,7 +1,5 @@
 package world.creatures;
 
-import org.lwjgl.opengl.GL11;
-
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -11,13 +9,11 @@ import world.WorldView;
 import core.geom.Vec;
 
 public class Cow extends WalkingCreature{
-
-	public static int typeId;
 	
 	static Animation chew = new Animation(5, 0, true, 0, 1, 2, 3, 4, 5, 6);
 	
 	public Cow(Vec p, Node worldLink){
-		super(new Animator(Res.COW, chew), p, worldLink, typeId);
+		super(new Animator(Res.COW, chew), p, worldLink);
 		maxSpeed = 5;
 		health = 10;
 		punchStrength = 1;
@@ -58,6 +54,6 @@ public class Cow extends WalkingCreature{
 	}
 	
 	public void beforeRender(){
-		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+		if(g)alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
 }

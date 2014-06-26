@@ -1,7 +1,5 @@
 package world.creatures;
 
-import org.lwjgl.opengl.GL11;
-
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -12,8 +10,6 @@ import core.Settings;
 import core.geom.Vec;
 
 public class Rabbit extends WalkingCreature {
-
-	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
 	static Animation hitt = new Animation(2, 0);
@@ -21,7 +17,7 @@ public class Rabbit extends WalkingCreature {
 	static Animation punch = new Animation(5, 1, false, 1, 2, 3, 4, 1);
 	
 	public Rabbit(Vec p, Node worldLink){
-		super(new Animator(Res.RABBIT, stand), p, worldLink, typeId);
+		super(new Animator(Res.RABBIT, stand), p, worldLink);
 //		hitradius = 50;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
@@ -93,6 +89,6 @@ public class Rabbit extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
-		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
+		if(g)alignWithGround();
 	}
 }
