@@ -47,7 +47,7 @@ public class Bird extends WalkingCreature{
 		}
 		
 		if(!g){
-			if(collision()){
+			if(collision(false)){
 				animator.setAnimation(sit);
 			}
 		}

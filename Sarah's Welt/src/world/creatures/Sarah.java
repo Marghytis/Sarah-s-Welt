@@ -118,7 +118,7 @@ public class Sarah extends WalkingCreature {
 	}
 	
 	public boolean collision(){
-		if(super.collision()){
+		if(super.collision(true)){
 			if(!ridingCow)animator.setAnimation(land);
 			return true;
 		}

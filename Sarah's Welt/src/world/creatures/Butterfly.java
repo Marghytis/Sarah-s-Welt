@@ -33,7 +33,7 @@ public class Butterfly extends WalkingCreature{
 			}
 		}
 		
-		if(!g) collision();
+		if(!g) collision(false);
 		
 		super.update(dTime);
 	}

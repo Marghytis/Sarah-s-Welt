@@ -31,7 +31,7 @@ public class Cow extends WalkingCreature{
 			applyFriction(Material.AIR);
 			
 			//do movement in air
-			collision();
+			collision(true);
 		}
 		super.update(dTime);
 	}

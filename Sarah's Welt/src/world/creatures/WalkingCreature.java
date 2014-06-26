@@ -112,11 +112,11 @@ public abstract class WalkingCreature extends Creature{
 		}
 	}
 	
-	public boolean collision(){
+	public boolean collision(boolean onlySolid){
 		float[] intersection = null;
 		boolean foundOne = false;
 		for(Material mat : Material.values()){//	iterate materials
-			if(mat.solid){
+			if(!onlySolid || mat.solid){
 				for(Node c : WorldView.contours[mat.ordinal()]){//	iterate lines
 					Node n = c;
 					 do {

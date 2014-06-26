@@ -25,7 +25,7 @@ public class Heart extends WalkingCreature{
 	
 	public void update(int dTime){
 		if(!g){
-			collision();
+			collision(false);
 		}
 		health--;
 		super.update(dTime);
