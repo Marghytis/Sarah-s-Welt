@@ -20,6 +20,8 @@ public class Res {
 	public static final StackedTextures JUNGLE_PLANTS = new StackedTextures("worldObjects/Fern", 1, 5, -0.5f, -0.2f);
 	public static final StackedTextures JUNGLE_FLOWER = new StackedTextures("worldObjects/JungleFlower", 1, 5, -0.5f, 0f);
 	public static final StackedTextures JUNGLE_BUSH = new StackedTextures("worldObjects/JungleBush", 1, 1, -0.5f, -0.2f);
+	public static final StackedTextures GIANTPLANT = new StackedTextures("worldObjects/GiantPlant", 1, 4, -0.5f, -0.2f);
+	public static final StackedTextures GIANTGRAS = new StackedTextures("worldObjects/GiantGras", 1, 3, -0.5f, -0.2f);
 	public static final StackedTextures PALM_TREE = new StackedTextures("worldObjects/PalmTree", 1, 3, -0.5f, -0.03f);
 	public static final StackedTextures CANDY_TREE = new StackedTextures("worldObjects/CandyTree", 1, 1, -0.5f, -0.2f);
 	public static final StackedTextures BAMBOO = new StackedTextures("worldObjects/Bamboo", 1, 4, -0.5f, -0.02f);

@@ -41,6 +41,8 @@ import world.worldObjects.Cloud;
 import world.worldObjects.Crack;
 import world.worldObjects.Flower;
 import world.worldObjects.Fossil;
+import world.worldObjects.GiantGras;
+import world.worldObjects.GiantPlant;
 import world.worldObjects.Grass_tuft;
 import world.worldObjects.JungleBush;
 import world.worldObjects.JungleFlower;
@@ -107,10 +109,12 @@ public class WorldView {
 		CandyBush.typeId = o_id++;
 		JunglePlants.typeId = o_id++;
 		Cactus.typeId = o_id++;
+		GiantPlant.typeId = o_id++;
 		
 		Flower.typeId = o_id++;
 		CandyFlower.typeId = o_id++;
 		Grass_tuft.typeId = o_id++;
+		GiantGras.typeId = o_id++;
 		
 		Cloud.typeId = o_id++;
 		Crack.typeId = o_id++;

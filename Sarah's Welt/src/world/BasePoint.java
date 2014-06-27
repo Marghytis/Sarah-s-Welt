@@ -30,6 +30,8 @@ import world.worldObjects.Cloud;
 import world.worldObjects.Crack;
 import world.worldObjects.Flower;
 import world.worldObjects.Fossil;
+import world.worldObjects.GiantGras;
+import world.worldObjects.GiantPlant;
 import world.worldObjects.Grass_tuft;
 import world.worldObjects.JungleBush;
 import world.worldObjects.JungleFlower;
@@ -44,7 +46,7 @@ import core.geom.Vec;
 
 /**this class handles all the world generation mechanisms*/
 public class BasePoint {
-	public static ZoneType startZone = ZoneType.JUNGLE;
+	public static ZoneType startZone = ZoneType.GIANTS;
 	Random random;
 	Zone zone;
 	boolean right;
@@ -367,6 +369,20 @@ public class BasePoint {
 									
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
+		GIANTS( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
+				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}},
+				new ThingSpawner[]{ 
+//								new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
+//								new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(3), new Vec(), null, random.nextInt(Bird.flap.sequence.length)), node, 20, random), 1, 100),
+//								new ThingSpawner((node, random) -> spawnCreature(new Gnat(new Vec(), null), node, 40, random), 1, 500),
+//									
+								new ThingSpawner((node, random) -> spawnObject(new GiantPlant(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat()) , node, 0, random), 1, 200),
+								new ThingSpawner((node, random) -> spawnObject(new GiantGras(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()) , node, 0, random), 1, 400),
+//								new ThingSpawner((node, random) -> spawnObject(new JunglePlants(random.nextInt(5), new Vec(), null, 0.5f + random.nextFloat()) , node, 0, random), 1, 200),
+//								new ThingSpawner((node, random) -> spawnObject(new JungleBush(new Vec(), node, 0.5f + random.nextFloat(), false) , node, 0, random), 1, 250),
+								new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Crack.crack.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+								new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+		}),
 		JUNGLE( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}},
 				new ThingSpawner[]{ 
