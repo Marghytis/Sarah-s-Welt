@@ -1,26 +1,22 @@
 package world.creatures;
 
-import org.lwjgl.opengl.GL11;
-
 import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.WorldView;
+import world.World;
 import core.Settings;
 import core.geom.Vec;
 
 public class Scorpion extends WalkingCreature {
-
-	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
 	static Animation walk = new Animation(5, 0, true, 1, 2, 3, 4, 5, 6);
 	static Animation punch = new Animation(5, 1, false, 0, 1, 2, 3);
 	
 	public Scorpion(Vec p, Node worldLink){
-		super(new Animator(Res.SCORPION, stand), p, worldLink, typeId);
+		super(new Animator(Res.SCORPION, stand), p, worldLink, false, CreatureType.SCORPION);
 //		hitradius = 50;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
@@ -52,7 +48,7 @@ public class Scorpion extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		WorldView.sarah.hitBy(this, null);
+		World.sarah.hitBy(this, null);
 		animator.setAnimation(stand);
 	}
 	
@@ -63,10 +59,10 @@ public class Scorpion extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 22500){
-			if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x > pos.x){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
+			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
-			} else if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x + WorldView.sarah.animator.tex.box.size.x < pos.x){
+			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
@@ -92,6 +88,18 @@ public class Scorpion extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
-		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
+		if(g) alignWithGround();
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Scorpion s = new Scorpion(new Vec(x, y), worldLink);
+		s.vel.set(vX, vY);
+		s.health = health;
+		return s;
+	}
+
+	public String createMetaString() {
+		return "";
 	}
 }

@@ -25,6 +25,8 @@ public class Node {
 	public Node(int index, Vec p, Material mat){
 		this._id = index;
 		this.p = p;
+		this.mat = mat;
+		World.nodes[mat.ordinal()].add(this);
 	}
 
 	public void connectReal(Node node2) {

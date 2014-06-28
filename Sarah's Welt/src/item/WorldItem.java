@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import util.Animator;
 import world.Node;
 import world.Thing;
+import world.World;
 import world.WorldView;
 import core.geom.Vec;
 
@@ -13,7 +14,7 @@ public class WorldItem extends Thing{
 	public Item item;
 	
 	public WorldItem(Item item, Vec pos, Node worldLink) {
-		super(new Animator(item.texWorld), pos, worldLink);
+		super(new Animator(item.texWorld), pos, worldLink, false);
 		this.item = item;
 	}
 
@@ -23,7 +24,7 @@ public class WorldItem extends Thing{
 				return false;
 			} else if (Inventory.stacks[i].item == Item.fist){
 				Inventory.stacks[i].item = item;
-				WorldView.thingTasks.add(() -> WorldView.items[item.id].remove(this));
+				WorldView.thingTasks.add(() -> World.items[item.id].remove(this));
 				return true;
 			}
 		}
@@ -37,6 +38,10 @@ public class WorldItem extends Thing{
 		item.renderWorld();
 		
 		GL11.glPopMatrix();
+	}
+
+	public String createMetaString() {
+		return "";
 	}
 	
 }

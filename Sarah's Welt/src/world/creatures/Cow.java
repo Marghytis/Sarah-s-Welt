@@ -5,7 +5,7 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.WorldView;
+import world.World;
 import core.geom.Vec;
 
 public class Cow extends WalkingCreature{
@@ -13,7 +13,7 @@ public class Cow extends WalkingCreature{
 	static Animation chew = new Animation(5, 0, true, 0, 1, 2, 3, 4, 5, 6);
 	
 	public Cow(Vec p, Node worldLink){
-		super(new Animator(Res.COW, chew), p, worldLink);
+		super(new Animator(Res.COW, chew), p, worldLink, false, CreatureType.COW);
 		maxSpeed = 5;
 		health = 10;
 		punchStrength = 1;
@@ -40,8 +40,8 @@ public class Cow extends WalkingCreature{
 	}
 	
 	public boolean rightClickAction(){
-		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 400){
-			WorldView.sarah.mountCow(this);
+		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
+			World.sarah.mountCow(this);
 			return true;
 		}
 		return false;
@@ -55,5 +55,17 @@ public class Cow extends WalkingCreature{
 	
 	public void beforeRender(){
 		if(g)alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Cow c = new Cow(new Vec(x, y), worldLink);
+		c.vel.set(vX, vY);
+		c.health = health;
+		return c;
+	}
+
+	public String createMetaString() {
+		return "";
 	}
 }

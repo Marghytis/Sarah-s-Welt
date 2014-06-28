@@ -11,20 +11,20 @@ import core.geom.Vec;
 
 public class Bird extends WalkingCreature{
 
-	public static int typeId;
-
-	public static Animation sit1 = new Animation(0, 0);
-	public static Animation flap1 = new Animation(5, 0, true, 1, 2, 3, 4, 3, 2, 1);
-	public static Animation sit2 = new Animation(0, 1);
-	public static Animation flap2 = new Animation(5, 1, true, 1, 2, 3, 4, 3, 2, 1);
+	public static Animation[] flap = new Animation[]{
+		new Animation(5, 0, true, 1, 2, 3, 4, 3, 2, 1),
+		new Animation(5, 1, true, 1, 2, 3, 4, 3, 2, 1)
+	};
+	public static Animation[] sit = new Animation[]{
+		new Animation(0, 1),
+		new Animation(0, 1)};
 	
 	public int variant;
 	
-	public Bird(int variant, Vec p, Node worldLink, int frame){
-		super(new Animator(Res.BIRD, variant == 0 ? flap1 : flap2), p, worldLink, typeId);
-		front = true;
+	public Bird(int variant, Vec p, Node worldLink){
+		super(new Animator(Res.BIRD, flap[variant]), p, worldLink, true, CreatureType.BIRD);
 		health = 5;
-		animator.frame = frame;
+		animator.frame = random.nextInt(flap[0].sequence.length);
 		this.variant = variant;
 	}
 	
@@ -36,7 +36,7 @@ public class Bird extends WalkingCreature{
 			applyFriction(Material.AIR);
 		} else {
 			if(random.nextInt(300) == 0){
-				animator.setAnimation(variant == 0 ? flap1 : flap2);
+				animator.setAnimation(flap[variant]);
 				pos.y++;
 				accelerateFromGround(new Vec(0, 0.0001f));
 				dir = random.nextBoolean() ? 1 : -1;
@@ -45,7 +45,7 @@ public class Bird extends WalkingCreature{
 		
 		if(!g){
 			if(collision()){
-				animator.setAnimation(variant == 0 ? sit1 : sit2);
+				animator.setAnimation(sit[variant]);
 			}
 		}
 		
@@ -54,10 +54,24 @@ public class Bird extends WalkingCreature{
 
 	public boolean hitBy(Creature c, Weapon w){
 		if(super.hitBy(c, w)){
-			animator.setAnimation(variant == 0 ? flap1 : flap2);
+			animator.setAnimation(flap[variant]);
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		int variant = Integer.parseInt(metaString);
+		
+		Bird b = new Bird(variant, new Vec(x, y), worldLink);
+		b.vel.set(vX, vY);
+		b.health = health;
+		return b;
+	}
+
+	public String createMetaString() {
+		return variant + "";
 	}
 }

@@ -9,12 +9,9 @@ import core.geom.Vec;
 
 
 public class Gnat extends WalkingCreature{
-
-	public static int typeId;
 		
 	public Gnat(Vec p, Node worldLink){
-		super(new Animator(null), p, worldLink, typeId);
-		front = true;
+		super(new Animator(null), p, worldLink, true, CreatureType.GNAT);
 		health = 5;
 	}
 	
@@ -39,5 +36,17 @@ public class Gnat extends WalkingCreature{
 		GL11.glVertex2f(pos.x, pos.y-1);
 		GL11.glVertex2f(pos.x-1, pos.y);
 		GL11.glVertex2f(pos.x, pos.y);
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Gnat g = new Gnat(new Vec(x, y), worldLink);
+		g.vel.set(vX, vY);
+		g.health = health;
+		return g;
+	}
+
+	public String createMetaString() {
+		return "";
 	}
 }

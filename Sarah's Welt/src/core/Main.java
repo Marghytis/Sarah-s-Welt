@@ -6,17 +6,19 @@ import org.lwjgl.opengl.GL11;
 import resources.Res;
 import resources.TextureFile;
 import world.Calendar;
+import world.World;
 import world.WorldView;
 
 public class Main {
 
 	public static void main(String[] args){
-//		Window.create("Sarahs Welt", 1200, 800);
-		Window.createFullScreen("Sarahs Welt");
+		Window.create("Sarahs Welt", 1200, 800);
+//		Window.createFullScreen("Sarahs Welt");
 		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();
 		Res.load();
-		WorldView.reset("TestWelt");
+		World.load("TestWelt");
+		WorldView.reset();
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){

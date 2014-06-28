@@ -9,17 +9,18 @@ import core.geom.Vec;
 
 
 public class Butterfly extends WalkingCreature{
+	
+	public static Animation[] flap = new Animation[]{
+		new Animation(5, 0, true, 0, 1, 2, 3, 2, 1),
+		new Animation(5, 1, true, 0, 1, 2, 3, 2, 1)};
+	
+	public int variant;
 
-	public static int typeId;
-	
-	public static Animation flap1 = new Animation(5, 0, true, 0, 1, 2, 3, 2, 1);
-	public static Animation flap2 = new Animation(5, 1, true, 0, 1, 2, 3, 2, 1);
-	
-	public Butterfly(int type, Vec p, Node worldLink, int frame){
-		super(new Animator(Res.BUTTERFLY, type == 0 ? flap1 : flap2), p, worldLink, typeId);
-		front = true;
+	public Butterfly(int variant, Vec p, Node worldLink){
+		super(new Animator(Res.BUTTERFLY, flap[variant]), p, worldLink, true, CreatureType.BUTTERFLY);
 		health = 5;
-		animator.frame = frame;
+		animator.frame = random.nextInt(flap[0].sequence.length);
+		this.variant = variant;
 	}
 	
 	public void update(int dTime){
@@ -36,5 +37,19 @@ public class Butterfly extends WalkingCreature{
 		if(!g) collision();
 		
 		super.update(dTime);
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		int variant = Integer.parseInt(metaString);
+		
+		Butterfly b = new Butterfly(variant, new Vec(x, y), worldLink);
+		b.vel.set(vX, vY);
+		b.health = health;
+		return b;
+	}
+
+	public String createMetaString() {
+		return variant + "";
 	}
 }

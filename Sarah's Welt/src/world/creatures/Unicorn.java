@@ -3,7 +3,6 @@ package world.creatures;
 import item.Inventory;
 import item.Item;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import particles.RainbowSpit;
@@ -13,13 +12,12 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
+import world.World;
 import world.WorldView;
 import core.Settings;
 import core.geom.Vec;
 
 public class Unicorn extends WalkingCreature {
-
-	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
 	static Animation hitt = new Animation(10, 1, true, 0, 1, 0);
@@ -29,7 +27,7 @@ public class Unicorn extends WalkingCreature {
 	boolean spitting = false;
 	
 	public Unicorn(Vec p, Node worldLink){
-		super(new Animator(Res.UNICORN, stand), p, worldLink, typeId);
+		super(new Animator(Res.UNICORN, stand), p, worldLink, false, CreatureType.UNICORN);
 		hitradius = 200;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
@@ -88,7 +86,7 @@ public class Unicorn extends WalkingCreature {
 			headX = pos.x - 50;
 		}
 		
-		float distSquare = pos.minus(WorldView.sarah.pos).lengthSqare();
+		float distSquare = pos.minus(World.sarah.pos).lengthSqare();
 		
 		if(distSquare < 160000){
 			if(distSquare < 22500){
@@ -100,9 +98,9 @@ public class Unicorn extends WalkingCreature {
 				}
 			}
 			dir = 0;
-			if(WorldView.sarah.pos.x > pos.x + 20){
+			if(World.sarah.pos.x > pos.x + 20){
 				dir = 1;
-			} else if(WorldView.sarah.pos.x < pos.x - 20){
+			} else if(World.sarah.pos.x < pos.x - 20){
 				dir = -1;
 			}
 			maxSpeed = 6;
@@ -140,7 +138,7 @@ public class Unicorn extends WalkingCreature {
 			turnUp = !turnUp;
 			colorCounter = 0;
 		}
-		if(g) GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
+		if(g) alignWithGround();
 		float[] color = new float[]{sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f};
 		
 		if(Settings.shader){
@@ -160,5 +158,17 @@ public class Unicorn extends WalkingCreature {
 	
 	protected void onDeath(){
 		Inventory.addItem(Item.horn);
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Unicorn u = new Unicorn(new Vec(x, y), worldLink);
+		u.vel.set(vX, vY);
+		u.health = health;
+		return u;
+	}
+
+	public String createMetaString() {
+		return "";
 	}
 }

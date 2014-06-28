@@ -5,13 +5,11 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.WorldView;
+import world.World;
 import core.Settings;
 import core.geom.Vec;
 
 public class Panda extends WalkingCreature {
-
-	public static int typeId;
 
 	static Animation sit = new Animation(0, 0);
 	static Animation punch = new Animation(3, 0, false, 1, 2, 3, 4, 5);
@@ -19,10 +17,9 @@ public class Panda extends WalkingCreature {
 
 	
 	public Panda(Vec p, Node worldLink){
-		super(new Animator(Res.PANDA, sit), p, worldLink, typeId);
+		super(new Animator(Res.PANDA, sit), p, worldLink, true, CreatureType.PANDA);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
-		front = true;
 	}
 	
 	public void update(int dTime){
@@ -48,12 +45,12 @@ public class Panda extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		WorldView.sarah.hitBy(this, null);
+		World.sarah.hitBy(this, null);
 		animator.setAnimation(sit);
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 1600){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 1600){
 			animator.setAnimation(punch);
 			return true;
 		}
@@ -63,9 +60,9 @@ public class Panda extends WalkingCreature {
 	protected void beforeRender(){
 		super.beforeRender();
 		
-		if(pos.x < WorldView.sarah.pos.x){
+		if(pos.x < World.sarah.pos.x){
 			mirrored = true;
-		} else if(pos.x > WorldView.sarah.pos.x){
+		} else if(pos.x > World.sarah.pos.x){
 			mirrored = false;
 		}
 		
@@ -76,4 +73,15 @@ public class Panda extends WalkingCreature {
 		}
 	}
 
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Panda p = new Panda(new Vec(x, y), worldLink);
+		p.vel.set(vX, vY);
+		p.health = health;
+		return p;
+	}
+
+	public String createMetaString() {
+		return "";
+	}
 }

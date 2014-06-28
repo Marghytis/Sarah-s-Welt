@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import resources.Res;
 import world.WorldView.Zone;
 import world.creatures.Bird;
 import world.creatures.Butterfly;
@@ -57,33 +58,32 @@ public class BasePoint {
 		for(int s = 0; s < levels.length; s++) levels[s] = new Structure(s);
 		layers = new ArrayList<>();
 		random = new Random();
+		nextAngle = right ? 0 : Math.PI;
 	}
 	
 	public BasePoint setupLayers(){
 		BasePoint p2 = new BasePoint(!right, new Vec(pos));
 		zone = new Zone(startZone);
 		p2.zone = zone;
-		WorldView.zones.add(zone);
+		World.zones.add(zone);
 		float y = pos.y;
 		for(AimLayer aim : zone.type.finalLayers){
-			Node n1 = new Node(pos.x, y);
+			Node n1 = new Node(pos.x, y, aim.material);
 			y -= aim.thickness;
-			Node n2 = new Node(pos.x, y);
-			
-			n1.connect(n2);
-			n2.connect(n1);
+			Node n2 = new Node(pos.x, y, aim.material);
 
-			layers.add(new Layer(aim, aim.thickness, n1, n2));
-			p2.layers.add(p2.new Layer(aim, aim.thickness, n1, n2));
-
-			WorldView.loadedContours[aim.material.ordinal()].add(n1);
-			WorldView.allNodes.add(n1);
+			Layer thisOne = new Layer(aim, aim.thickness, n1, n2);
+			thisOne.right = right;
+			Layer otherOne = new Layer(aim, aim.thickness, n1, n2);
+			otherOne.right = !right;
+			layers.add(thisOne);
+			p2.layers.add(otherOne);
 		}
 		return p2;
 	}
 
 	float segmentLength = 20;
-	public double nextAngle = 0;
+	public double nextAngle;
 	
 	public void shift(){
 		float dx = (float)(segmentLength*Math.cos(nextAngle));
@@ -125,28 +125,30 @@ public class BasePoint {
 			zone.end = pos.x;
 			zone = new Zone(z);
 			zone.start = pos.x;
-			WorldView.zones.add(zone);
+			World.zones.add(zone);
 		} else {
 			zone.start = pos.x;
 			zone = new Zone(z);
 			zone.end = pos.x;
-			WorldView.zones.add(zone);
+			World.zones.add(zone);
 		}
 		for(Layer l : layers){
 			l.shrimp = true;
 		}
 		for(int a = 0; a < z.finalLayers.length; a++){
-			layers.add(new Layer(z.finalLayers[a], 0, null, null));
+			layers.add(new Layer(z.finalLayers[a], 0));
 		}
 		layers.sort((Layer l1, Layer l2) -> l2.aim.priority - l1.aim.priority);
 
+		//give the new layers starting point in between the other layers
 		for(int l = 0; l < layers.size(); l++){
 			if(layers.get(l).endNodeTop == null){
 				Node nTop = null;
+				//search the next already existing layer to the top or bottom and take its point as a starting point
 				int f = 1;
 				while(l - f > -1){
 					if(layers.get(l - f).endNodeBot != null){
-						nTop = new Node(new Vec(pos.x, layers.get(l - f).endNodeBot.getPoint().y));
+						nTop = new Node(new Vec(pos.x, layers.get(l - f).endNodeBot.p.y), layers.get(l - f).endNodeBot.mat);
 						break;
 					}
 					f++;
@@ -154,21 +156,14 @@ public class BasePoint {
 				int f2 = 1;
 				while(l + f2 < layers.size()){
 					if(layers.get(l + f2).endNodeTop != null){
-						nTop = new Node(new Vec(pos.x, layers.get(l + f2).endNodeTop.getPoint().y));
+						nTop = new Node(new Vec(pos.x, layers.get(l + f2).endNodeTop.p.y), layers.get(l + f2).endNodeTop.mat);
 						break;
 					}
 					f2++;
 				}
-				Node nBot = new Node(new Vec(nTop.getPoint()));
+				Node nBot = new Node(new Vec(nTop.p), nTop.mat);
 				
-				nTop.connectTrue(nBot);
-				nBot.connectTrue(nTop);
-				
-				Layer thisOne = layers.get(l);
-				thisOne.endNodeBot = nBot;
-				thisOne.endNodeTop = nTop;
-				WorldView.loadedContours[thisOne.aim.material.ordinal()].add(nTop);
-				WorldView.allNodes.add(nTop);
+				layers.get(l).start(nTop, nBot);
 			}
 		}
 //		levels = new Structure[zone.type.possibleStructures.length];
@@ -197,9 +192,9 @@ public class BasePoint {
 					layer.reachedAim = true;
 				}
 			}
-			Node nTop = new Node(pos.x, y);
+			Node nTop = new Node(pos.x, y, layer.aim.material);
 			y -= layer.thickness;
-			Node nBot = new Node(pos.x, y);
+			Node nBot = new Node(pos.x, y, layer.aim.material);
 
 			layer.attach(nTop, nBot);
 		}
@@ -212,7 +207,7 @@ public class BasePoint {
 	
 	public void spawnThings(){
 		for(ThingSpawner s : zone.type.spawners){
-			s.doYourTask(right ? layers.get(0).endNodeTop : layers.get(0).endNodeTop.getLast(), random);
+			s.doYourTask(right ? layers.get(0).endNodeTop : layers.get(0).endNodeTop.last, random);
 		}
 	}
 
@@ -270,7 +265,7 @@ public class BasePoint {
 			this.steps = steps;
 		}
 	}
-	public static class Layer {
+	public class Layer {
 		AimLayer aim;
 		float thickness;
 
@@ -279,26 +274,37 @@ public class BasePoint {
 		
 		boolean reachedAim;
 		boolean shrimp;
+		boolean right;
 
-		public Layer(AimLayer aim, float startThickness, Node nTop, Node nBot){
+		public Layer(AimLayer aim, float startThickness){
 			this.aim = aim;
 			this.thickness = startThickness;
-			this.endNodeTop = nTop;
-			this.endNodeBot = nBot;
+		}
+
+		public Layer(AimLayer aim, float startThickness, Node nTop, Node nBot){
+			this(aim, startThickness);
+			start(nTop, nBot);
+		}
+		
+		public void start(Node top, Node bot){
+			this.endNodeTop = top;
+			this.endNodeBot = bot;
+			bot.connectReal(top);
+			top.connectReal(bot);
 		}
 
 		public void attach(Node top, Node bot){
 			if(right){
-				endNodeBot.connectTrue(bot);
-				bot.connectTrue(top);
-				top.connectTrue(endNodeTop);
+				endNodeBot.connectReal(bot);
+				bot.connectReal(top);
+				top.connectReal(endNodeTop);
 	
 				endNodeTop = top;
 				endNodeBot = bot;
 			} else {
-				endNodeTop.connectTrue(top);
-				top.connectTrue(bot);
-				bot.connectTrue(endNodeBot);
+				endNodeTop.connectReal(top);
+				top.connectReal(bot);
+				bot.connectReal(endNodeBot);
 	
 				endNodeTop = top;
 				endNodeBot = bot;
@@ -349,8 +355,8 @@ public class BasePoint {
 		FOREST( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}, {StructureType.ADER}},
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Snail(new Vec(), null), node, 5, random), 1, 10),
-									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
-									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
+									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null), node, 20, random), 1, 10),
+									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null), node, 20, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Heart(0, new Vec(), null), node, 100, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Gnat(new Vec(), null), node, 40, random), 1, 330),
 									new ThingSpawner((node, random) -> spawnCreature(new Trex(new Vec(), null), node, 5, random), 1, 10),
@@ -358,10 +364,10 @@ public class BasePoint {
 									new ThingSpawner((node, random) -> spawnObject(new Tree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Bush(random.nextInt(2), new Vec(), node), node, 0, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnObject(new Flower(0, new Vec(), null), node, 0, random), 1, 200),
-									new ThingSpawner((node, random) -> spawnObject(new Grass_tuft(new Vec(), null, random.nextInt(Grass_tuft.wave.sequence.length)), node, 0, random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Grass_tuft(new Vec(), null), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 200, random), 1, 40),
-									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Crack.crack.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
-									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
@@ -371,36 +377,36 @@ public class BasePoint {
 									new ThingSpawner((node, random) -> spawnCreature(new Scorpion(new Vec(), null), node, 5, random), 1, 30),
 									
 									new ThingSpawner((node, random) -> spawnObject(new Cactus(random.nextInt(3), new Vec(), null), node, 0, random), 1, 100),
-									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
-									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 100),
+									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 100),
 									
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
 		BAMBOO_FOREST( new AimLayer[]{new AimLayer(Material.SOIL, 10, 0.2f, 98), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}},
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Panda(new Vec(), null), node, 5, random), 1, 30),
-									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 100),
+									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null), node, 20, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnCreature(new Heart(0, new Vec(), null), node, 100, random), 1, 10),
 									
 									new ThingSpawner((node, random) -> spawnObject(new Bamboo(random.nextInt(4), new Vec(), null, random.nextFloat() + 0.5f), node, 0, random), 2, 800),
 									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 400, random), 1, 40),
-									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 10, 100),
-									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(4), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 10, 100),
+									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
 		CANDY( new AimLayer[]{new AimLayer(Material.CANDY, 10, 0.2f, 100), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}},
-				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 40),
-									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
+				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null), node, 20, random), 1, 40),
+									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null), node, 20, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Unicorn(new Vec(), null), node, 2, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Heart(1, new Vec(), null), node, 100, random), 1, 10),
 									
 									new ThingSpawner((node, random) -> spawnObject(new CandyFlower(random.nextInt(6), new Vec(), null), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new CandyTree(new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 70),
 									new ThingSpawner((node, random) -> spawnObject(new CandyBush(random.nextInt(2), new Vec(), node), node, 0, random), 1, 200),
-									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Crack.crack.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
-									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 				
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
@@ -409,15 +415,15 @@ public class BasePoint {
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Snail(new Vec(), null), node, 5, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Cow(new Vec(), null), node, 5, random), 1, 20),
 									new ThingSpawner((node, random) -> spawnCreature(new Rabbit(new Vec(), null), node, 5, random), 1, 10),
-									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 20),
+									new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null), node, 20, random), 1, 20),
 									new ThingSpawner((node, random) -> spawnCreature(new Heart(0, new Vec(), null), node, 100, random), 1, 10),
 									
-									new ThingSpawner((node, random) -> spawnObject(new Grass_tuft(new Vec(), null, random.nextInt(Grass_tuft.wave.sequence.length)), node, 0, random), 2, 800),
+									new ThingSpawner((node, random) -> spawnObject(new Grass_tuft(new Vec(), null), node, 0, random), 2, 800),
 									new ThingSpawner((node, random) -> spawnObject(new Bush(random.nextInt(2), new Vec(), node), node, 0, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnObject(new Tree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 400, random), 1, 40),
-									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Crack.crack.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
-									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Fossil.fossil.length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 				
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				});
@@ -433,18 +439,18 @@ public class BasePoint {
 		}
 
 		public static void spawnCreature(Creature c, Node n, float yOffset, Random random){
-			c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-			WorldView.creatures[World.creatureTypes.indexOf(c.getClass())].add(c);
+			c.pos.set(n.p.plus(n.next.p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
+			World.creatures[c.type.ordinal()].add(c);
 		}
 
 		public static void spawnObject(WorldObject c, Node n, float yOffset, Random random){
-			c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-			WorldView.worldObjects[c.typeID].add(c);
+			c.pos.set(n.p.plus(n.next.p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
+			World.worldObjects[c.type.ordinal()].add(c);
 		}
 
 		public static void spawnItem(WorldItem c, Node n, float yOffset, Random random){
-			c.pos.set(n.getPoint().plus(n.getNext().getPoint().minus(n.getPoint()).scaledBy(random.nextFloat())).plus(0, yOffset));
-			WorldView.items[c.item.id].add(c);
+			c.pos.set(n.p.plus(n.next.p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
+			World.items[c.item.id].add(c);
 		}
 	}
 }

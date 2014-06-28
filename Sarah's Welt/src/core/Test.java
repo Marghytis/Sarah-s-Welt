@@ -25,17 +25,6 @@ import core.geom.Vec;
 public class Test {
 	public static void main(String[] args) {
 //		new Test();
-		List<Vec> vecs = new ArrayList<>();
-		for(int i = 0; i < 1000000; i++){
-			vecs.add(new Vec(1,1));
-		}
-		Vec shift = new Vec(1, 1);
-		long time = System.currentTimeMillis();
-		for(int i = 0; i < 1000; i++){
-			vecs.get(i).shift(shift);
-		}
-		long time2 = System.currentTimeMillis();
-		System.out.println((time2-time));
 	}
 	
 	public int WIDTH = 1000, HEIGHT = 500;

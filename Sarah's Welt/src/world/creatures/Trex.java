@@ -5,13 +5,11 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.WorldView;
+import world.World;
 import core.Settings;
 import core.geom.Vec;
 
 public class Trex extends WalkingCreature {
-
-	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
 	static Animation walk = new Animation(8, 0, true, 0, 1, 2, 3, 4, 5, 6, 7);
@@ -20,7 +18,7 @@ public class Trex extends WalkingCreature {
 //	static Animation chew = new Animation(5, 3, false, 0, 1, 2, 3);
 	
 	public Trex(Vec p, Node worldLink){
-		super(new Animator(Res.TREX, stand), p, worldLink, typeId);
+		super(new Animator(Res.TREX, stand), p, worldLink, false, CreatureType.TREX);
 //		hitradius = 50;
 		maxSpeed = 2;
 		animator.doOnReady = () -> donePunch();
@@ -52,7 +50,7 @@ public class Trex extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		WorldView.sarah.hitBy(this, null);
+		World.sarah.hitBy(this, null);
 		animator.setAnimation(stand);
 	}
 	
@@ -63,10 +61,10 @@ public class Trex extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 90000){
-			if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x > pos.x){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 90000){
+			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
-			} else if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x + WorldView.sarah.animator.tex.box.size.x < pos.x){
+			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
@@ -92,5 +90,17 @@ public class Trex extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Trex t = new Trex(new Vec(x, y), worldLink);
+		t.vel.set(vX, vY);
+		t.health = health;
+		return t;
+	}
+
+	public String createMetaString() {
+		return "";
 	}
 }

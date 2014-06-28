@@ -10,7 +10,7 @@ import org.lwjgl.util.glu.GLUtessellator;
 import org.lwjgl.util.glu.GLUtessellatorCallbackAdapter;
 
 import world.Node;
-import core.geom.Vec;
+import world.WorldView;
 
 public class Tessellator extends GLUtessellatorCallbackAdapter{
 	
@@ -28,27 +28,31 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 //		tessellator.gluTessProperty(GLU.GLU_TESS_BOUNDARY_ONLY, GL11.GL_TRUE);
 	}
 	float texWidth, texHeight;
-	public void tessellateOneNode(List<Node> nodes, float texWidth, float texHeight){
+	public void tessellateNodes(List<Node> nodes, float texWidth, float texHeight){
 		this.texWidth = texWidth;
 		this.texHeight = texHeight;
 		
+		boolean[] used = new boolean[nodes.size()];
+		
 		tessellator.gluTessBeginPolygon(null);
 		{
-			for(int i1 = 0; i1 < nodes.size(); i1++){
-				Node node = nodes.get(i1);
-				if(node != null){
-				tessellator.gluTessBeginContour();
-				{
-					Node n = node;
-					do {
-						Vec p = n.getPoint();
-						double[] coords = new double[]{p.x, p.y, 0};
-						float[] data = new float[]{p.x, p.y, p.x/texWidth, -p.y/texHeight};
-						tessellator.gluTessVertex(coords, 0, data);
-						n = n.getNext();
-					} while(n != node);
-				}
-				tessellator.gluTessEndContour();
+			for(int i = 0; i < nodes.size(); i++){
+				Node node = nodes.get(i);
+				if(!used[i]){
+					tessellator.gluTessBeginContour();
+					{
+						Node n = node;
+						do {
+							used[nodes.indexOf(n)] = true;
+							if(n.p.x >= WorldView.rimL && n.p.x <= WorldView.rimR){
+								double[] coords = new double[]{n.p.x, n.p.y, 0};
+								float[] data = new float[]{n.p.x, n.p.y, n.p.x/texWidth, -n.p.y/texHeight};
+								tessellator.gluTessVertex(coords, 0, data);
+							}
+							n = n.next;
+						} while(n != node && !used[nodes.indexOf(n)]);
+					}
+					tessellator.gluTessEndContour();
 				}
 			}
 		}
