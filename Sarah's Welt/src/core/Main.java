@@ -12,7 +12,7 @@ import world.WorldView;
 public class Main {
 
 	public static void main(String[] args){
-		Window.create("Sarahs Welt", 1200, 800);
+		Window.create("Sarahs Welt 1.0", 1200, 800);
 //		Window.createFullScreen("Sarahs Welt");
 		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();

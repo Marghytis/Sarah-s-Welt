@@ -173,8 +173,10 @@ public class Generator {
 	}
 	
 	public void spawnThings(){
-		for(ThingSpawner s : zone.type.spawners){
-			s.doYourTask(right ? layers.get(0).endNodeTop : layers.get(0).endNodeTop.last, random);
+		if(layers.get(0).aim.material != Material.WATER){
+			for(ThingSpawner s : zone.type.spawners){
+				s.doYourTask(right ? layers.get(0).endNodeTop : layers.get(0).endNodeTop.last, random);
+			}
 		}
 	}
 
