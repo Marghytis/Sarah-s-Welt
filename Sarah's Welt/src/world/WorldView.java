@@ -16,7 +16,7 @@ import resources.Res;
 import resources.Shader;
 import resources.TextureFile;
 import util.Tessellator;
-import world.BasePoint.ZoneType;
+import world.Zone.ZoneType;
 import world.creatures.Creature;
 import world.creatures.Gnat;
 import world.worldObjects.CandyFlower;
@@ -38,12 +38,20 @@ public class WorldView {
 	public static List<ParticleEffect> particleEffects;
 	public static Lightmap light;
 	
+	public static List<Node>[] contours;
+	
+	@SuppressWarnings("unchecked")
 	public static void reset(){
 			//setup rendering
 		tessellator = new Tessellator();
 		light = new Lightmap(new TextureFile(Window.WIDTH, Window.HEIGHT));
 			//particle effects
 		particleEffects = new ArrayList<>();
+		
+		contours = (List<Node>[]) new ArrayList<?>[World.nodes.length];
+		
+		World.updateContours();
+		setContourNodes();
 	}
 	
 	public static void update(int delta){
@@ -52,11 +60,32 @@ public class WorldView {
 			View.DEATH.set();
 		}
 		World.updateContours();
+		setContourNodes();
 		updateObjects(delta);
 		executeTasks();
 		updateCreatures(delta);
 		updateItems(delta);
 		updateEffects(delta);
+	}
+	
+	public static void setContourNodes(){
+		for(int mat = 0; mat < World.nodes.length; mat++){
+			List<Node> contourStarts = new ArrayList<>();
+			boolean[] used = new boolean[World.nodes[mat].size()];
+			for(int i = 0; i < World.nodes[mat].size(); i++){
+				if(!used[i]){
+					Node start = World.nodes[mat].get(i);
+					contourStarts.add(start);
+					Node n = start;
+					do {
+						used[World.nodes[mat].indexOf(n)] = true;
+						n = n.next;
+					} while(n != start);
+				}
+			}
+			contours[mat] = new ArrayList<>();
+			contours[mat].addAll(contourStarts);
+		}
 	}
 	
 	public static void updateObjects(int delta){
@@ -115,7 +144,7 @@ public class WorldView {
 		Material[] mats = Material.values();
 		for(int i = 0; i < mats.length; i++){
 			mats[i].textureFile.bind();
-			tessellator.tessellateNodes(World.nodes[i], mats[i].textureFile.width, mats[i].textureFile.height);
+			tessellator.tessellateSingleNodes(contours[i], mats[i].textureFile.width, mats[i].textureFile.height);
 		}
 		TextureFile.bindNone();
 		
@@ -206,7 +235,11 @@ public class WorldView {
 							list.forEach((c) -> {
 								GL11.glPushMatrix();
 								if(front == c.front){
-									((Flower)c).renderLight();
+									if(c instanceof Flower){
+										((Flower)c).renderLight();
+									} else {
+										((CandyFlower)c).renderLight();
+									}
 								}
 								GL11.glPopMatrix();
 							});
@@ -336,14 +369,5 @@ public class WorldView {
 			}
 		}
 		return null;
-	}
-	public static class Zone {
-		public ZoneType type;
-		public float start;
-		public float end;
-		
-		public Zone(ZoneType type){
-			this.type = type;
-		}
 	}
 }

@@ -28,32 +28,26 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 //		tessellator.gluTessProperty(GLU.GLU_TESS_BOUNDARY_ONLY, GL11.GL_TRUE);
 	}
 	float texWidth, texHeight;
-	public void tessellateNodes(List<Node> nodes, float texWidth, float texHeight){
+	public void tessellateSingleNodes(List<Node> nodes, float texWidth, float texHeight){
 		this.texWidth = texWidth;
 		this.texHeight = texHeight;
 		
-		boolean[] used = new boolean[nodes.size()];
-		
 		tessellator.gluTessBeginPolygon(null);
 		{
-			for(int i = 0; i < nodes.size(); i++){
-				Node node = nodes.get(i);
-				if(!used[i]){
-					tessellator.gluTessBeginContour();
-					{
-						Node n = node;
-						do {
-							used[nodes.indexOf(n)] = true;
-							if(n.p.x >= WorldView.rimL && n.p.x <= WorldView.rimR){
-								double[] coords = new double[]{n.p.x, n.p.y, 0};
-								float[] data = new float[]{n.p.x, n.p.y, n.p.x/texWidth, -n.p.y/texHeight};
-								tessellator.gluTessVertex(coords, 0, data);
-							}
-							n = n.next;
-						} while(n != node && !used[nodes.indexOf(n)]);
-					}
-					tessellator.gluTessEndContour();
+			for(Node node : nodes){
+				tessellator.gluTessBeginContour();
+				{
+					Node n = node;
+					do {
+						if(n.p.x >= WorldView.rimL && n.p.x <= WorldView.rimR){
+							double[] coords = new double[]{n.p.x, n.p.y, 0};
+							float[] data = new float[]{n.p.x, n.p.y, n.p.x/texWidth, -n.p.y/texHeight};
+							tessellator.gluTessVertex(coords, 0, data);
+						}
+						n = n.next;
+					} while(n != node);
 				}
+				tessellator.gluTessEndContour();
 			}
 		}
 		tessellator.gluTessEndPolygon();

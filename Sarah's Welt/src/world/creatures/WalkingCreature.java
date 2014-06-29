@@ -79,36 +79,32 @@ public abstract class WalkingCreature extends Creature{
 
 		Node finalNode = null;
 		for(Material mat : Material.values()){//	iterate materials
+			int ordinal = mat.ordinal();
 			if(mat.solid){
-				boolean[] used = new boolean[World.nodes[mat.ordinal()].size()];
-				for(int i = 0; i < World.nodes[mat.ordinal()].size(); i++){//	iterate lines
-					Node c = World.nodes[mat.ordinal()].get(i);
-					if(!used[i]){
-						Node node = c;
-						//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
-						do{
-							used[World.nodes[mat.ordinal()].indexOf(node)] = true;
-							if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
-								Vec[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
-					
-								if(inter[0] != null){
-									if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
-										if(intersection == null || inter[0].y > intersection.y){
-											intersection = inter[0];
-											finalNode = node;
-										}
+				for(Node c : WorldView.contours[ordinal]){//	iterate lines
+					Node node = c;
+					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
+					do{
+						if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
+							Vec[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
+				
+							if(inter[0] != null){
+								if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
+									if(intersection == null || inter[0].y > intersection.y){
+										intersection = inter[0];
+										finalNode = node;
 									}
-									if(inter[1] != null && ((inter[1].x-pos.x)*(v/Math.abs(v))) > 0){
-										if(intersection == null || inter[1].y > intersection.y){
-											intersection = inter[1];
-											finalNode = node;
-										}
+								}
+								if(inter[1] != null && ((inter[1].x-pos.x)*(v/Math.abs(v))) > 0){
+									if(intersection == null || inter[1].y > intersection.y){
+										intersection = inter[1];
+										finalNode = node;
 									}
 								}
 							}
-							node = node.next;
-						} while(node != c && !used[World.nodes[mat.ordinal()].indexOf(node)]);
-					}
+						}
+						node = node.next;
+					} while(node != c);
 				}
 			}
 		}
@@ -124,34 +120,28 @@ public abstract class WalkingCreature extends Creature{
 		for(Material mat : Material.values()){//	iterate materials
 			int ordinal = mat.ordinal();
 			if(mat.solid){
-				boolean[] used = new boolean[World.nodes[ordinal].size()];
-				for(int i = 0; i < World.nodes[ordinal].size(); i++){//	iterate lines
-					Node c = World.nodes[ordinal].get(i);
-					if(!used[i]){
-						Node node = c;
-						//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
-						do{
-							int index = World.nodes[ordinal].indexOf(node);
-							used[index] = true;
-							if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
-								Vec inters = new Vec();
-								boolean found = Geom.intersectionLines(pos, pos.plus(vel), node.p, node.next.p, inters);
-								if(found && (intersection == null || inters.y > intersection[1])){
-									if(intersection == null)intersection = new float[2];
-									intersection[0] = inters.x;
-									intersection[1] = inters.y;
-									pos.set(inters);
-									worldLink = node;
-									vP = (int) (vel.x/(velocityUnit*World.measureScale*100));
-									vel.set(0, 0);
-									acc.set(0, 0);
-									g = true;
-									foundOne = true;
-								}
+				for(Node c : WorldView.contours[ordinal]){//	iterate lines
+					Node node = c;
+					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
+					do{
+						if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
+							Vec inters = new Vec();
+							boolean found = Geom.intersectionLines(pos, pos.plus(vel), node.p, node.next.p, inters);
+							if(found && (intersection == null || inters.y > intersection[1])){
+								if(intersection == null)intersection = new float[2];
+								intersection[0] = inters.x;
+								intersection[1] = inters.y;
+								pos.set(inters);
+								worldLink = node;
+								vP = (int) (vel.x/(velocityUnit*World.measureScale*100));
+								vel.set(0, 0);
+								acc.set(0, 0);
+								g = true;
+								foundOne = true;
 							}
-							node = node.next;
-						} while (node != c && !used[World.nodes[ordinal].indexOf(node)]);
-					}
+						}
+						node = node.next;
+					} while (node != c);
 				}
 			}
 		}

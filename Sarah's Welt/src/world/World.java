@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.Database;
-import world.BasePoint.AimLayer;
-import world.BasePoint.Layer;
-import world.BasePoint.Structure;
-import world.BasePoint.ZoneType;
-import world.WorldView.Zone;
+import world.Zone.ZoneType;
 import world.creatures.Creature;
 import world.creatures.Creature.CreatureType;
 import world.creatures.Sarah;
+import world.generation.Generator;
+import world.generation.Generator.Structure;
+import world.generation.Layer;
+import world.generation.Layer.AimLayer;
 import world.worldObjects.WorldObject;
 import world.worldObjects.WorldObject.ObjectType;
 import core.geom.Vec;
@@ -30,7 +30,7 @@ public class World {
 	public static float measureScale = 50;
 	public static String name;
 
-	public static BasePoint rightGenerator, leftGenerator;
+	public static Generator rightGenerator, leftGenerator;
 	
 	public static Sarah sarah;
 	public static List<Node>[] nodes;
@@ -107,8 +107,9 @@ public class World {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			rightGenerator = new BasePoint(true, new Vec(0, 0));
-			leftGenerator = rightGenerator.setupLayers();
+			Generator[] gens = Generator.createStartGenerators(new Vec(0, 0));
+			rightGenerator = gens[0];
+			leftGenerator = gens[1];
 		} else {
 			try {
 				loadNodes();
@@ -524,7 +525,7 @@ public class World {
         	boolean right = ergebnis.getBoolean("right");
         	Zone zone = zones.get(ergebnis.getInt("zone"));
         	Vec pos = new Vec(ergebnis.getFloat("x"), ergebnis.getFloat("y"));
-        	BasePoint bp = new BasePoint(right, pos, zone.type);
+        	Generator bp = new Generator(right, pos, zone.type);
         	bp.zone = zone;
         	
         	if(right){
@@ -579,12 +580,12 @@ public class World {
         	
     		
         	if(right){
-	    		Layer layer = rightGenerator.new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, endNodeT, endNodeB);
+	    		Layer layer = new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, endNodeT, endNodeB, true);
 	    		layer.shrimp = shrink;
 	    		layer.reachedAim = reachedAim;
         		rightGenerator.layers.add(layer);
         	} else {
-	    		Layer layer = leftGenerator.new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, endNodeT, endNodeB);
+	    		Layer layer = new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, endNodeT, endNodeB, false);
 	    		layer.shrimp = shrink;
 	    		layer.reachedAim = reachedAim;
         		leftGenerator.layers.add(layer);

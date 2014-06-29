@@ -10,11 +10,11 @@ import resources.Res;
 import resources.TextureFile;
 import util.Animation;
 import util.Animator;
-import world.BasePoint.ZoneType;
 import world.Material;
 import world.Node;
 import world.World;
 import world.WorldView;
+import world.Zone.ZoneType;
 import core.Settings;
 import core.geom.Vec;
 
