@@ -88,7 +88,15 @@ public class Generator {
 			}
 		}
 		if(random.nextInt(100) == 0){
-			setZone(ZoneType.values()[random.nextInt(ZoneType.values().length)]);
+			if(zone.type==ZoneType.DESERT && random.nextInt(3) == 0){
+				setZone(ZoneType.OASIS);
+			}
+			else if(zone.type==ZoneType.OASIS){
+				setZone(ZoneType.DESERT);
+			}
+			else {
+				setZone(ZoneType.values()[random.nextInt(ZoneType.values().length-1)]);
+			}
 		}
 	}
 	
