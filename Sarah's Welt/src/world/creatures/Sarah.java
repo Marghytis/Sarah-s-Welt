@@ -10,10 +10,11 @@ import resources.Res;
 import resources.TextureFile;
 import util.Animation;
 import util.Animator;
-import world.BasePoint.ZoneType;
 import world.Material;
 import world.Node;
+import world.World;
 import world.WorldView;
+import world.Zone.ZoneType;
 import core.Settings;
 import core.geom.Vec;
 
@@ -45,7 +46,11 @@ public class Sarah extends WalkingCreature {
 	public int mana = 20;
 	
 	public Sarah(Vec pos, Node worldLink){
-		super(new Animator(Res.SARAH, stand), pos, worldLink, 0);
+		this(pos, worldLink, 20, false);
+	}
+	
+	protected Sarah(Vec pos, Node worldLink, int mana, boolean ridingCow){
+		super(new Animator(Res.SARAH, stand), pos, worldLink, false, null);
 		hitradius = 60;
 		punchStrength = 2;
 		maxSpeed = 10;
@@ -57,10 +62,10 @@ public class Sarah extends WalkingCreature {
 				if(!ridingCow){
 					animator.animation = stand;
 				} else if(animator.animation == dismountCow){
-					ridingCow = false;
+					this.ridingCow = false;
 					Cow newCow = riddenCow;
-					newCow.worldLink = WorldView.sarah.worldLink;
-					WorldView.thingTasks.add(() -> ZoneType.spawnCreature(newCow, WorldView.sarah.worldLink, 2, random));
+					newCow.worldLink = World.sarah.worldLink;
+					WorldView.thingTasks.add(() -> ZoneType.spawnCreature(newCow, World.sarah.worldLink, 2, random));
 					animator.setAnimation(stand);
 					animator.tex = Res.SARAH;
 					riddenCow = null;
@@ -174,7 +179,7 @@ public class Sarah extends WalkingCreature {
 		}
 		animator.tex.file.bind();
 		
-		if(ridingCow && g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+		if(ridingCow && g)alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
 		else if(Settings.flying){
 			GL11.glRotatef(vel.angle()*(180/(float)Math.PI) - 90, 0, 0, 1);
 		}
@@ -228,12 +233,12 @@ public class Sarah extends WalkingCreature {
 			if(ridingCow){
 				Cow newCow = riddenCow;
 				newCow.worldLink = worldLink;
-//				WorldView.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, WorldView.sarah.worldLink, 2));//TODO
+//				WorldView.thingTasks.add(() -> Biome.spawnCreature(Cow.typeId, newCow, World.sarah.worldLink, 2));//TODO
 			}
 			animator.setAnimation(mountCow); animator.tex = Res.SARAH_ON_COW;
 			ridingCow = true;
 			riddenCow = c;
-			WorldView.thingTasks.add(() -> WorldView.creatures[Cow.typeId].remove(c));
+			WorldView.thingTasks.add(() -> World.creatures[CreatureType.COW.ordinal()].remove(c));
 		}
 	}
 	
@@ -265,5 +270,21 @@ public class Sarah extends WalkingCreature {
 		if(g && ridingCow){
 			animator.setAnimation(dismountCow);
 		}
+	}
+
+	public static Sarah createNewSarah(float x, float y, float vX, float vY, int health, Node worldLink, String metaString){
+
+		String[] args = metaString.split(";");
+		int mana = Integer.parseInt(args[0]);
+		boolean ridingCow = Boolean.parseBoolean(args[1]);
+		
+		Sarah s = new Sarah(new Vec(x, y), worldLink, mana, ridingCow);
+		s.vel.set(vX, vY);
+		s.health = health;
+		return s;
+	}
+
+	public String createMetaString() {
+		return mana + ";" + ridingCow;
 	}
 }

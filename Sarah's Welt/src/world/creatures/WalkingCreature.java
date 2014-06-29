@@ -6,6 +6,7 @@ import util.Animator;
 import util.Geom;
 import world.Material;
 import world.Node;
+import world.World;
 import world.WorldView;
 import core.geom.Vec;
 
@@ -16,8 +17,8 @@ public abstract class WalkingCreature extends Creature{
 	public float velocityUnit = 0.00035f;
 	public int vP;// distance per stepping frame (in acceleration
 
-	public WalkingCreature(Animator ani, Vec p, Node worldLink, int id){
-		super(ani, p, worldLink, id);
+	public WalkingCreature(Animator ani, Vec p, Node worldLink, boolean front, CreatureType type){
+		super(ani, p, worldLink, front, type);
 	}
 	
 	public void walkingAI(float dTime){}
@@ -57,7 +58,7 @@ public abstract class WalkingCreature extends Creature{
 	
 	public void accelerateFromGround(Vec vec){
 		pos.y++;
-		Vec linkVec = worldLink.getPoint().minus(worldLink.getNext().getPoint());
+		Vec linkVec = worldLink.p.minus(worldLink.next.p);
 		if(linkVec.cross(vec) > 0){
 			acc.set(vec);
 			vP = 0;
@@ -73,7 +74,7 @@ public abstract class WalkingCreature extends Creature{
 		if(d == 0){
 			vel.set(0, 0);
 		}
-		float v = d*WorldView.measureScale;
+		float v = d*World.measureScale;
 		Vec intersection = null;
 
 		Node finalNode = null;
@@ -83,8 +84,8 @@ public abstract class WalkingCreature extends Creature{
 					Node node = c;
 					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
 					do{
-						if(node.getPoint().x > node.getNext().getPoint().x){
-							Vec[] inter = Geom.circleIntersection(node.getPoint(), node.getNext().getPoint(), pos, v);
+						if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
+							Vec[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
 				
 							if(inter[0] != null){
 								if(((inter[0].x - pos.x)*(v/Math.abs(v))) > 0){
@@ -101,7 +102,7 @@ public abstract class WalkingCreature extends Creature{
 								}
 							}
 						}
-						node = node.getNext();
+						node = node.next;
 					} while(node != c);
 				}
 			}
@@ -118,26 +119,27 @@ public abstract class WalkingCreature extends Creature{
 		for(Material mat : Material.values()){//	iterate materials
 			if(!onlySolid || mat.solid){
 				for(Node c : WorldView.contours[mat.ordinal()]){//	iterate lines
-					Node n = c;
-					 do {
-						if(n.getPoint().x > n.getNext().getPoint().x){
+					Node node = c;
+					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
+					do{
+						if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
 							Vec inters = new Vec();
-							boolean found = Geom.intersectionLines(pos, pos.plus(vel), n.getPoint(), n.getNext().getPoint(), inters);
+							boolean found = Geom.intersectionLines(pos, pos.plus(vel), node.p, node.next.p, inters);
 							if(found && (intersection == null || inters.y > intersection[1])){
 								if(intersection == null)intersection = new float[2];
 								intersection[0] = inters.x;
 								intersection[1] = inters.y;
 								pos.set(inters);
-								worldLink = n;
-								vP = (int) (vel.x/(velocityUnit*WorldView.measureScale*100));
+								worldLink = node;
+								vP = (int) (vel.x/(velocityUnit*World.measureScale*100));
 								vel.set(0, 0);
 								acc.set(0, 0);
 								g = true;
 								foundOne = true;
 							}
 						}
-						n = n.getNext();
-					} while (n != c);
+						node = node.next;
+					} while (node != c);
 				}
 			}
 		}

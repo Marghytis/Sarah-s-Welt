@@ -8,22 +8,28 @@ import core.geom.Vec;
 
 public class JungleFlower extends WorldObject {
 
-public static int typeId;
+	public int variant;
 	
-
-	
-	static Animation[] anis = new Animation[]{
-			new Animation(0, 0),
-			new Animation(0, 1),
-			new Animation(0, 2),
-			new Animation(0, 3),
-			new Animation(0, 4),
-	};
-	
-	public JungleFlower(int type, Vec pos, Node worldLink){
-		super(new Animator(Res.JUNGLE_FLOWER, anis[type]), pos, worldLink, typeId);
-
+	public JungleFlower(int variant, Vec pos, Node worldLink){
+		super(new Animator(Res.JUNGLE_FLOWER, new Animation()), pos, worldLink, false, ObjectType.JUNGLE_FLOWER);
+		this.variant = variant;
 		mirrored = random.nextBoolean();
+	}
+	
+	public void beforeRender(){
+		animator.animation.y = variant;
+	}
+	
+	public static WorldObject createNewObject(float x, float y, Node worldLink, boolean front, String metaString){
+
+		String[] args = metaString.split(";");
+		int variant = Integer.parseInt(args[0]);
+		
+		return new JungleFlower(variant, new Vec(x, y), worldLink);
+	}
+
+	public String createMetaString() {
+		return variant + "";
 	}
 	
 }

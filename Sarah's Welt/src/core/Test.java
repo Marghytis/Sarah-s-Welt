@@ -20,10 +20,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import sound.Lesson1;
+import core.geom.Vec;
 
 public class Test {
 	public static void main(String[] args) {
-		new Test();
+//		new Test();
 	}
 	
 	public int WIDTH = 1000, HEIGHT = 500;
@@ -163,11 +164,11 @@ public class Test {
 		GL11.glColorPointer(3, GL11.GL_FLOAT, 20, 0);
 		GL11.glVertexPointer(2, GL11.GL_FLOAT, 20, 12);
 		
-		//Draw vertices with index buffer
+		//Draw vertices with _id buffer
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, ibo);
 		GL11.glDrawElements(GL11.GL_TRIANGLES, indexCount, GL11.GL_UNSIGNED_INT, 0);
 		
-		//draw vertices without index buffer
+		//draw vertices without _id buffer
 //		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexCount);
 		
 		//release buffers

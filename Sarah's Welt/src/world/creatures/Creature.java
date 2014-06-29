@@ -9,10 +9,13 @@ import util.Animator;
 import world.Material;
 import world.Node;
 import world.Thing;
+import world.World;
 import world.WorldView;
 import core.geom.Vec;
 
 public abstract class Creature extends Thing {
+	
+	public CreatureType type;
 	
 	protected Vec acc = new Vec();
 	public Vec vel = new Vec();
@@ -22,11 +25,10 @@ public abstract class Creature extends Thing {
 	public int hitradius = 100; //only relevant, if its aggressive
 	public int health = 20;
 	public int punchStrength = 1;
-	public int id;
 	
-	public Creature(Animator ani, Vec pos, Node worldLink, int id){
-		super(ani, pos, worldLink);
-		this.id = id;
+	public Creature(Animator ani, Vec pos, Node worldLink, boolean front, CreatureType type){
+		super(ani, pos, worldLink, front);
+		this.type = type;
 	}
 	
 	public void update(int dTime){
@@ -34,12 +36,12 @@ public abstract class Creature extends Thing {
 			WorldView.particleEffects.add(new DeathDust(pos.plus(animator.box.middle())));
 			WorldView.thingTasks.add(() -> {
 				onDeath();
-				WorldView.creatures[id].remove(this);
+				World.creatures[type.ordinal()].remove(this);
 			});
 		} else {
 			pos.shift(vel);
 			
-			vel.shift(acc.scaledBy(dTime).scaledBy(WorldView.measureScale*dTime));
+			vel.shift(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
 			acc.set(0, 0);
 			
 			if(hit > 0) hit--;
@@ -79,4 +81,27 @@ public abstract class Creature extends Thing {
 	}
 	
 	protected void onDeath(){}
+	
+	public enum CreatureType {
+		SNAIL(Snail::createNewCreature),
+		BUTTERFLY(Butterfly::createNewCreature),
+		HEART(Heart::createNewCreature),
+		RABBIT(Rabbit::createNewCreature),
+		BIRD(Bird::createNewCreature),
+		PANDA(Panda::createNewCreature),
+		COW(Cow::createNewCreature),
+		GNAT(Gnat::createNewCreature),
+		UNICORN(Unicorn::createNewCreature),
+		SCORPION(Scorpion::createNewCreature),
+		TREX(Trex::createNewCreature),
+		;
+		
+		public Creator create;
+		
+		CreatureType(Creator create){
+			this.create = create;
+		}
+		
+		public interface Creator {public abstract Creature create(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString);}
+	}
 }

@@ -5,15 +5,14 @@ import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.WorldView;
+import world.World;
 import world.worldObjects.Cloud;
 import world.worldObjects.WorldObject;
+import world.worldObjects.WorldObject.ObjectType;
 import core.Settings;
 import core.geom.Vec;
 
 public class Snail extends WalkingCreature {
-
-	public static int typeId;
 	
 	static Animation walk = new Animation(10, 0, true,	0, 1, 2, 3, 4, 3, 2, 1);
 	static Animation stand = new Animation(0, 0);
@@ -22,7 +21,7 @@ public class Snail extends WalkingCreature {
 
 	
 	public Snail(Vec p, Node worldLink){
-		super(new Animator(Res.SNAIL, stand), p, worldLink, typeId);
+		super(new Animator(Res.SNAIL, stand), p, worldLink, true, CreatureType.SNAIL);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
 		front = true;
@@ -54,15 +53,15 @@ public class Snail extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		WorldView.sarah.hitBy(this, null);
+		World.sarah.hitBy(this, null);
 		animator.setAnimation(stand);
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 22500){
-			if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x > pos.x){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
+			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
-			} else if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x + WorldView.sarah.animator.tex.box.size.x < pos.x){
+			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
@@ -78,7 +77,7 @@ public class Snail extends WalkingCreature {
 	
 	public boolean findNextCloud(){
 		Cloud find = null; float distanceSq = 1000000;
-		for(WorldObject c : WorldView.worldObjects[Cloud.typeId]){
+		for(WorldObject c : World.worldObjects[ObjectType.CLOUD.ordinal()]){
 			float dist = pos.minus(c.pos).lengthSqare();
 			if(dist < distanceSq){
 				find = (Cloud)c;
@@ -121,4 +120,15 @@ public class Snail extends WalkingCreature {
 		}
 	}
 
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Snail s = new Snail(new Vec(x, y), worldLink);
+		s.vel.set(vX, vY);
+		s.health = health;
+		return s;
+	}
+
+	public String createMetaString() {
+		return "";
+	}
 }

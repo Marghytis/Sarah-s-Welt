@@ -10,21 +10,33 @@ import core.geom.Vec;
 
 public class Fossil extends WorldObject{
 	
-	public static int typeId;
 	public float size;
 	public int rotation;
+	public int variant;
 
-	public static Animation[] fossil = {new Animation(0, 0), new Animation(0, 1), new Animation(0, 2)};
-	
-	public Fossil(int type, Vec pos, Node worldLink, float size, int rotation){
-		super(new Animator(Res.FOSSIL, fossil[type]), pos, worldLink, typeId);
-		front = true;
+	public Fossil(int variant, Vec pos, Node worldLink, float size, int rotation){
+		super(new Animator(Res.FOSSIL, new Animation(0, variant)), pos, worldLink, true, ObjectType.FOSSIL);
 		this.size = size;
 		this.rotation = rotation;
+		this.variant = variant;
 	}
 	
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 		GL11.glRotatef(rotation, 0, 0, 1);
+	}
+	
+	public static WorldObject createNewObject(float x, float y, Node worldLink, boolean front, String metaString){
+
+		String[] args = metaString.split(";");
+		float size = Float.parseFloat(args[0]);
+		int rotation = Integer.parseInt(args[1]);
+		int variant = Integer.parseInt(args[2]);
+		
+		return new Fossil(variant, new Vec(x, y), worldLink, size, rotation);
+	}
+
+	public String createMetaString() {
+		return size + ";" + rotation + ";" + variant;
 	}
 }

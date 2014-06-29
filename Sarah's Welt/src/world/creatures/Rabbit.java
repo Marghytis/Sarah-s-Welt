@@ -1,19 +1,15 @@
 package world.creatures;
 
-import org.lwjgl.opengl.GL11;
-
 import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Material;
 import world.Node;
-import world.WorldView;
+import world.World;
 import core.Settings;
 import core.geom.Vec;
 
 public class Rabbit extends WalkingCreature {
-
-	public static int typeId;
 	
 	static Animation stand = new Animation(0, 0);
 	static Animation hitt = new Animation(2, 0);
@@ -21,7 +17,7 @@ public class Rabbit extends WalkingCreature {
 	static Animation punch = new Animation(5, 1, false, 1, 2, 3, 4, 1);
 	
 	public Rabbit(Vec p, Node worldLink){
-		super(new Animator(Res.RABBIT, stand), p, worldLink, typeId);
+		super(new Animator(Res.RABBIT, stand), p, worldLink, false, CreatureType.RABBIT);
 //		hitradius = 50;
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
@@ -53,7 +49,7 @@ public class Rabbit extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		WorldView.sarah.hitBy(this, null);
+		World.sarah.hitBy(this, null);
 		animator.setAnimation(stand);
 	}
 	
@@ -64,10 +60,10 @@ public class Rabbit extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(WorldView.sarah.pos).lengthSqare() < 22500){
-			if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x > pos.x){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
+			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
-			} else if(WorldView.sarah.pos.x + WorldView.sarah.animator.tex.box.x + WorldView.sarah.animator.tex.box.size.x < pos.x){
+			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
@@ -93,6 +89,18 @@ public class Rabbit extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
-		if(g)GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);
+		if(g)alignWithGround();
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		Rabbit r = new Rabbit(new Vec(x, y), worldLink);
+		r.vel.set(vX, vY);
+		r.health = health;
+		return r;
+	}
+
+	public String createMetaString() {
+		return "";
 	}
 }

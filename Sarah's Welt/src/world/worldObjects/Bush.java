@@ -2,9 +2,6 @@ package world.worldObjects;
 
 import item.Inventory;
 import item.Item;
-
-import org.lwjgl.opengl.GL11;
-
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -12,22 +9,23 @@ import world.Node;
 import core.geom.Vec;
 
 public class Bush extends WorldObject{
-
-	public static int typeId;
 	
-	public int type;
+	public int variant;
 	
 	public int berryAmount;
 	
-	public Bush(int type, Vec pos, Node worldLink){
-		super(new Animator(Res.BUSH, new Animation(0, type)), pos, worldLink, typeId);
-		this.front = random.nextInt(10) == 0;
-		this.type = type;
-		berryAmount = random.nextInt(2);
+	public Bush(int variant, Vec pos, Node worldLink){
+		this(variant, random.nextInt(2), random.nextInt(10) == 0, pos, worldLink);
+	}
+	
+	protected Bush(int variant, int berryAmount, boolean front, Vec pos, Node worldLink){
+		super(new Animator(Res.BUSH, new Animation(0, variant)), pos, worldLink, front, ObjectType.BUSH);
+		this.variant = variant;
+		this.berryAmount = berryAmount;
 	}
 	
 	public boolean rightClickAction(){
-		if(berryAmount > 0 && type == 1){
+		if(berryAmount > 0 && variant == 1){
 			Inventory.addItem(Item.berry);
 			berryAmount--;
 			return true;
@@ -36,6 +34,19 @@ public class Bush extends WorldObject{
 	}
 	
 	public void beforeRender(){
-		GL11.glRotatef(worldLink.getPoint().minus(worldLink.getNext().getPoint()).angle()*(180/(float)Math.PI), 0, 0, 1);//worldLink.p.minus(worldLink.getNext().p).angle()
+		alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
+	}
+	
+	public static WorldObject createNewObject(float x, float y, Node worldLink, boolean front, String metaString){
+
+		String[] args = metaString.split(";");
+		int variant = Integer.parseInt(args[0]);
+		int berryAmount = Integer.parseInt(args[1]);
+		
+		return new Bush(variant, berryAmount, front, new Vec(x, y), worldLink);
+	}
+
+	public String createMetaString() {
+		return variant + ";" + berryAmount;
 	}
 }

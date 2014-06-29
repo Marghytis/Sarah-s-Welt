@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import resources.Res;
 import resources.TextureFile;
 import world.Calendar;
+import world.World;
 import world.WorldView;
 
 public class Main {
@@ -16,7 +17,8 @@ public class Main {
 		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();
 		Res.load();
-		WorldView.reset("TestWelt");
+		World.load("TestWelt");
+		WorldView.reset();
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){

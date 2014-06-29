@@ -2,6 +2,8 @@ package core;
 
 import item.Inventory;
 
+import javax.swing.JOptionPane;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -12,6 +14,7 @@ import resources.TextureFile;
 import util.Animation;
 import util.Animator;
 import world.Calendar;
+import world.World;
 import world.WorldView;
 import core.geom.Quad;
 
@@ -101,9 +104,9 @@ public class Menu {
 				Quad.draw(mana.x, mana.y, mana.x+mana.size.x, mana.y + mana.size.y);
 				//health/mana
 				GL11.glColor4f(0.8f, 0, 0, 0.5f);
-				Quad.draw(health.x, health.y, health.x + (WorldView.sarah.health/30.0f*health.size.x), health.y + health.size.y);
+				Quad.draw(health.x, health.y, health.x + (World.sarah.health/30.0f*health.size.x), health.y + health.size.y);
 				GL11.glColor4f(0.8f, 0, 0.8f, 0.5f);
-				Quad.draw(mana.x, mana.y, mana.x + (WorldView.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
+				Quad.draw(mana.x, mana.y, mana.x + (World.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
 				//outline
 				GL11.glColor4f(0.7f, 0.7f, 0.7f, 1);
 				health.outline();
@@ -114,10 +117,22 @@ public class Menu {
 		MAIN(true){
 			void setup(){
 				buttons = new Button[]{
-					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){WorldView.reset("TestWorld");}}),
-					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = WORLD;}}),
-					new Button("Options", 3/16.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
-					new Button("Exit", 3/16.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
+					new Button("New World", 3/16.0f, 15/16.0f, new Runnable(){public void run(){
+						String worldName =  JOptionPane.showInputDialog("World name:", "");
+						if(worldName != "" && worldName != null){
+							World.load(worldName);
+							WorldView.reset();
+						}}}),
+					new Button("Continue", 3/16.0f, 13/16.0f, new Runnable(){public void run(){Menu.view = WORLD;}}),
+					new Button("Save World", 3/16.0f, 11/16.0f, new Runnable(){public void run(){World.save();}}),
+					new Button("Load World", 3/16.0f, 9/16.0f, new Runnable(){public void run(){
+						String worldName =  JOptionPane.showInputDialog("World name:", "");
+						if(worldName != "" && worldName != null){
+							World.load(worldName);
+							WorldView.reset();
+						}}}),
+					new Button("Options", 3/16.0f, 4/16.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
+					new Button("Exit", 3/16.0f, 2/16.0f, new Runnable(){public void run(){Main.beenden = true;}})
 				};
 			}
 		},
@@ -133,7 +148,7 @@ public class Menu {
 										new ToggleButton("Time running", "Time stopped", true, 				3/4.0f, 	9/12.0f, () -> Settings.time = View.DEBUG.buttons[6].state),
 										new Button("Set morning",								 			3/4.0f, 	7/12.0f, () -> Calendar.setMorning()),
 										new Button("Set evening",											3/4.0f, 	5/12.0f, () -> Calendar.setEvening()),
-										new Button("Boost Health",											1/4.0f, 	5/12.0f, () -> WorldView.sarah.health += 5)};
+										new Button("Boost Health",											1/4.0f, 	5/12.0f, () -> World.sarah.health += 5)};
 			}
 		},
 		OPTIONS(true){
@@ -163,9 +178,9 @@ public class Menu {
 				Quad.draw(mana.x, mana.y, mana.x+mana.size.x, mana.y + mana.size.y);
 				//health/mana
 				GL11.glColor4f(0.8f, 0, 0, 0.5f);
-				Quad.draw(health.x, health.y, health.x + (WorldView.sarah.health/30.0f*health.size.x), health.y + health.size.y);
+				Quad.draw(health.x, health.y, health.x + (World.sarah.health/30.0f*health.size.x), health.y + health.size.y);
 				GL11.glColor4f(0.8f, 0, 0.8f, 0.5f);
-				Quad.draw(mana.x, mana.y, mana.x + (WorldView.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
+				Quad.draw(mana.x, mana.y, mana.x + (World.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
 				//outline
 				GL11.glColor4f(0.7f, 0.7f, 0.7f, 1);
 				health.outline();

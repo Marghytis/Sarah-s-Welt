@@ -19,7 +19,7 @@ public class Calendar{
 	static int daysPerSea = 12;
 	static int seasPerYea = 4;
 
-	static float lightLevelStep = 0.9f/minsPerOur;
+	static float lightLevelStep = 0.7f/minsPerOur;
 	public static float lightLevel = 0.1f;
 	
 	public static void tick(int delta){
@@ -38,13 +38,13 @@ public class Calendar{
 		}
 		
 		if(our == 0){
-			lightLevel = 0.1f + (min*lightLevelStep);
+			lightLevel = 0.3f + (min*lightLevelStep);
 		} else if(our < oursPerDay/2){
 			lightLevel = 1;
 		} else if(our == oursPerDay/2){
 			lightLevel = 1f - (min*lightLevelStep);
 		} else if(our > oursPerDay/2){
-			lightLevel = 0.1f;
+			lightLevel = 0.3f;
 		}
 	}
 	

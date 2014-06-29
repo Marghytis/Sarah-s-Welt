@@ -5,7 +5,7 @@ public class Inventory {
 
 	public static ItemStack[] stacks = new ItemStack[6];
 	
-	static int selectedItem;
+	public static int selectedItem;
 	
 	public static Item getSelectedItem(){
 		return stacks[selectedItem].item;

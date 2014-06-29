@@ -12,8 +12,6 @@ import core.geom.Vec;
 
 public class Cloud extends WorldObject{
 
-	public static int typeId;
-
 	private RainEffect effect;
 	public float size;
 	
@@ -21,11 +19,11 @@ public class Cloud extends WorldObject{
 	private boolean raining = false;//should not simply be set, because you maybe need to create the effect first
 	
 	public Cloud(Vec pos, Node worldLink, float size, boolean raining){
-		super(new Animator(Res.CLOUD, new Animation(0, 0)), pos, worldLink, typeId);
+		super(new Animator(Res.CLOUD, new Animation(0, 0)), pos, worldLink, false, ObjectType.CLOUD);
 		this.size = size;
+		this.raining = raining;
 		effect = new RainEffect(new Vec(pos.x + ((animator.tex.box.x*size)/2), pos.y + (animator.tex.box.y*size) + 650), (animator.tex.box.size.x*size)/2, (animator.tex.box.size.y*size)/2);
 		front = false;
-		this.raining = raining;
 	}
 	
 	public void update(int dTime){
@@ -54,5 +52,18 @@ public class Cloud extends WorldObject{
 	
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
+	}
+	
+	public static WorldObject createNewObject(float x, float y, Node worldLink, boolean front, String metaString){
+
+		String[] args = metaString.split(";");
+		float size = Float.parseFloat(args[0]);
+		boolean raining = Boolean.parseBoolean(args[1]);
+		
+		return new Cloud(new Vec(x, y), worldLink, size, raining);
+	}
+
+	public String createMetaString() {
+		return size + ";" + raining;
 	}
 }

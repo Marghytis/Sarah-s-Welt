@@ -9,6 +9,10 @@ public class Animation {
 	
 	public boolean repeat;
 	
+	public Animation(){
+		this(0, 0);
+	}
+	
 	public Animation(int x, int y){
 		this(0, y, true, x);
 	}

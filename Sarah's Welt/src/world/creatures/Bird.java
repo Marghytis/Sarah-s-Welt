@@ -18,11 +18,10 @@ public class Bird extends WalkingCreature{
 	
 	public int variant;
 	
-	public Bird(int variant, Vec p, Node worldLink, int frame){
-		super(new Animator(Res.BIRD, flap), p, worldLink, typeId);
-		front = true;
+	public Bird(int variant, Vec p, Node worldLink){
+		super(new Animator(Res.BIRD, flap), p, worldLink, true, CreatureType.BIRD);
 		health = 5;
-		animator.frame = frame;
+		animator.frame = random.nextInt(flap.sequence.length);
 		this.variant = variant;
 	}
 	
@@ -62,5 +61,19 @@ public class Bird extends WalkingCreature{
 		} else {
 			return false;
 		}
+	}
+
+	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
+
+		int variant = Integer.parseInt(metaString);
+		
+		Bird b = new Bird(variant, new Vec(x, y), worldLink);
+		b.vel.set(vX, vY);
+		b.health = health;
+		return b;
+	}
+
+	public String createMetaString() {
+		return variant + "";
 	}
 }

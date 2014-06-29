@@ -17,13 +17,14 @@ public abstract class Thing {
 	//For rendering
 	public Animator animator;
 	
-	public boolean mirrored = false;
-	public boolean front = false;
+	public boolean mirrored;
+	public boolean front;
 	
-	public Thing(Animator ani, Vec pos, Node worldLink){
+	public Thing(Animator ani, Vec pos, Node worldLink, boolean front){
 		this.pos = pos;
 		this.worldLink = worldLink;
 		this.animator = ani;
+		this.front = front;
 	}
 
 	public void update(int dTime){}
@@ -47,4 +48,11 @@ public abstract class Thing {
 	protected void beforeRender(){}
 
 	protected void afterRender(){}
+
+	
+	public void alignWithGround(){
+		GL11.glRotatef(worldLink.p.minus(worldLink.next.p).angle()*(180/(float)Math.PI), 0, 0, 1);
+	}
+	
+	public abstract String createMetaString();
 }
