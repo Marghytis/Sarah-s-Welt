@@ -43,7 +43,8 @@ public class GUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Datenbankbeispiel");
         addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
+            @Override
+			public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
@@ -66,7 +67,8 @@ public class GUI extends javax.swing.JFrame {
                 java.lang.String.class
             };
 
-            public Class getColumnClass(int columnIndex) {
+            @Override
+			public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
@@ -75,7 +77,8 @@ public class GUI extends javax.swing.JFrame {
         button_loeschen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/db_beispiel/ic_action_discard.png"))); // NOI18N
         button_loeschen.setText("Person löschen");
         button_loeschen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button_loeschenActionPerformed(evt);
             }
         });
@@ -85,7 +88,8 @@ public class GUI extends javax.swing.JFrame {
         button_hinzufuegen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/db_beispiel/ic_action_add_person.png"))); // NOI18N
         button_hinzufuegen.setText("hinzufügen");
         button_hinzufuegen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button_hinzufuegenActionPerformed(evt);
             }
         });
@@ -132,7 +136,8 @@ public class GUI extends javax.swing.JFrame {
         button_bearbeiten.setIcon(new javax.swing.ImageIcon(getClass().getResource("/db_beispiel/ic_action_edit.png"))); // NOI18N
         button_bearbeiten.setText("Person bearbeiten");
         button_bearbeiten.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button_bearbeitenActionPerformed(evt);
             }
         });

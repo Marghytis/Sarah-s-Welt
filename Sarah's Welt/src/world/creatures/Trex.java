@@ -26,6 +26,7 @@ public class Trex extends WalkingCreature {
 		punchStrength = 5;
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(g){
 //			pos.y++;
@@ -43,6 +44,7 @@ public class Trex extends WalkingCreature {
 	}
 	
 	int dir = 0;
+	@Override
 	public void walkingAI(float dTime){
 		if((!Settings.agro || !findSarah()))wanderAbout();
 		applyDirection(dir);
@@ -78,6 +80,7 @@ public class Trex extends WalkingCreature {
 		}
 	}
 	
+	@Override
 	protected void beforeRender(){
 		super.beforeRender();
 		
@@ -100,6 +103,7 @@ public class Trex extends WalkingCreature {
 		return t;
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

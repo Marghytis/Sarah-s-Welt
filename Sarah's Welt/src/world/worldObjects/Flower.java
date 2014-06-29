@@ -42,6 +42,7 @@ public class Flower extends WorldObject {
 		return new Flower(variant, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

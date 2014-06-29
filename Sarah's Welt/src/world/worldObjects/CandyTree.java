@@ -25,10 +25,12 @@ public class CandyTree extends WorldObject{
 		this.mirrored = mirrored;
 	}
 	
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 	}
 	
+	@Override
 	public boolean rightClickAction(){
 		return Inventory.addItem(Item.candyCane);
 	}
@@ -42,6 +44,7 @@ public class CandyTree extends WorldObject{
 		return new CandyTree(size, mirrored, front, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + ";" + mirrored;
 	}

@@ -24,6 +24,7 @@ public class Bush extends WorldObject{
 		this.berryAmount = berryAmount;
 	}
 	
+	@Override
 	public boolean rightClickAction(){
 		if(berryAmount > 0 && variant == 1){
 			Inventory.addItem(Item.berry);
@@ -33,6 +34,7 @@ public class Bush extends WorldObject{
 		return false;
 	}
 	
+	@Override
 	public void beforeRender(){
 		alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
@@ -46,6 +48,7 @@ public class Bush extends WorldObject{
 		return new Bush(variant, berryAmount, front, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + ";" + berryAmount;
 	}

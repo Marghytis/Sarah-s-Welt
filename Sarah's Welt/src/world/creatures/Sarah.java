@@ -76,6 +76,7 @@ public class Sarah extends WalkingCreature {
 		};
 	}
 	
+	@Override
 	public void update(int dTime){
 		Inventory.update(dTime);
 		if(Settings.flying) g = false;
@@ -110,7 +111,11 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				keyAcc = 0.00006f;
+				if(Keyboard.isKeyDown(Keyboard.KEY_TAB)){
+					keyAcc = 0.0003f;
+				} else {
+					keyAcc = 0.00006f;
+				}
 			} else {
 				keyAcc = 0.00003f;
 			}
@@ -130,6 +135,7 @@ public class Sarah extends WalkingCreature {
 		return false;
 	}
 	int keyDir;
+	@Override
 	public void walkingAI(float dTime){
 		setKeyDirection();
 		
@@ -139,6 +145,7 @@ public class Sarah extends WalkingCreature {
 	}
 	
 	public int walkMode;
+	@Override
 	protected void beforeRender(){
 		setKeyDirection();
 		
@@ -185,6 +192,7 @@ public class Sarah extends WalkingCreature {
 		}
 	}
 	
+	@Override
 	public void afterRender(){
 		TextureFile.bindNone();
 		if(Settings.hitbox){
@@ -284,6 +292,7 @@ public class Sarah extends WalkingCreature {
 		return s;
 	}
 
+	@Override
 	public String createMetaString() {
 		return mana + ";" + ridingCow;
 	}

@@ -11,6 +11,7 @@ public class Hearts implements ParticleEffect{
 	
 	public ParticleEmitter hearts = new ParticleEmitter(100, 1, HEART, 1000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.4f, (random.nextFloat() - 0.5f)*0.4f);//-0.8f
@@ -19,16 +20,20 @@ public class Hearts implements ParticleEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x *= 0.99f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a *= 0.95f;
 		}
 
+		@Override
 		public void rotationInterpolator(Particle p) {}
 
+		@Override
 		public void radiusInterpolator(Particle p) {
 			p.rad *= 0.99f;
 		}
@@ -45,19 +50,23 @@ public class Hearts implements ParticleEffect{
 		hearts.emitting = false;
 	}
 	
+	@Override
 	public void tick(float dTime){
 		hearts.tick(dTime);
 		count -= dTime;
 	}
 	
+	@Override
 	public void render(){
 		hearts.render();
 	}
 	
+	@Override
 	public void finalize(){
 		hearts.finalize();
 	}
 
+	@Override
 	public boolean living() {
 		return count > 0;
 	}

@@ -27,10 +27,12 @@ public class Quad extends Vec{
 		size.set(width, height);
 	}
 	
+	@Override
 	public Quad plus(Vec v){
 		return new Quad(x + v.x, y + v.y, size.x, size.y);
 	}
 	
+	@Override
 	public Quad scaledBy(float f){
 		return new Quad(x * f, y * f, size.x * f, size.y * f);
 	}
@@ -77,6 +79,7 @@ public class Quad extends Vec{
 		GL11.glEnd();
 	}
 
+	@Override
 	public void draw(){
 		
 		GL11.glBegin(GL11.GL_QUADS);
@@ -126,6 +129,7 @@ public class Quad extends Vec{
 		return x > this.x && x < this.x + size.x && y > this.y && y < this.y + size.y;
 	}
 	
+	@Override
 	public String toString(){
 		return "Quad[" + x + "|" + y + " -- " + size.x + "|" + size.y + "]";
 	}

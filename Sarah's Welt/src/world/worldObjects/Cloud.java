@@ -26,6 +26,7 @@ public class Cloud extends WorldObject{
 		front = false;
 	}
 	
+	@Override
 	public void update(int dTime){
 		pos.x += 0.1f;
 		
@@ -40,6 +41,7 @@ public class Cloud extends WorldObject{
 		}
 	}
 	
+	@Override
 	public void render(){
 		if(raining){
 			effect.render();
@@ -50,6 +52,7 @@ public class Cloud extends WorldObject{
 		TextureFile.bindNone();
 	}
 	
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 	}
@@ -63,6 +66,7 @@ public class Cloud extends WorldObject{
 		return new Cloud(new Vec(x, y), worldLink, size, raining);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + ";" + raining;
 	}

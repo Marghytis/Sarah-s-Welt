@@ -125,6 +125,7 @@ public class ParticleEmitter{
 		GL11.glPopMatrix();
 	}
 	
+	@Override
 	public void finalize(){
 		GL15.glDeleteBuffers(type.vbo);
 	}

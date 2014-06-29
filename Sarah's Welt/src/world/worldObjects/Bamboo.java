@@ -24,6 +24,7 @@ public class Bamboo extends WorldObject{
 		this.mirrored = mirrored;
 	}
 
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 	}
@@ -38,6 +39,7 @@ public class Bamboo extends WorldObject{
 		return new Bamboo(variant, front, new Vec(x, y), worldLink, size, mirrored);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + ";" + mirrored + ";" + variant;
 	}

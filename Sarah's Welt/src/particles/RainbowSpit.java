@@ -33,6 +33,7 @@ public class RainbowSpit implements ParticleEffect{
 				0.01f,
 		};
 		
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y + (-color*2));
 			p.vel.set(source.mirrored ? 0.2f : -0.2f, speedY[color]);
@@ -42,6 +43,7 @@ public class RainbowSpit implements ParticleEffect{
 			color = (color+1)%6;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.y -= 0.002f;
 			if(World.sarah != null){
@@ -51,10 +53,12 @@ public class RainbowSpit implements ParticleEffect{
 			}
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a = (float) (p.live) /startLife;
 		}
 
+		@Override
 		public void rotationInterpolator(Particle p) {
 			if(p.rot > 0){
 				p.rot = ((float)Math.PI/10)*p.live;
@@ -63,6 +67,7 @@ public class RainbowSpit implements ParticleEffect{
 			}
 		}
 		
+		@Override
 		public void radiusInterpolator(Particle p){
 			p.rad = 1 + ((float)p.live/startLife*0.5f);
 		}
@@ -77,6 +82,7 @@ public class RainbowSpit implements ParticleEffect{
 		this.source = source;
 	}
 	
+	@Override
 	public void tick(float delta) {
 		if(live < 1000){
 			rainbow.emitting = false;
@@ -85,14 +91,17 @@ public class RainbowSpit implements ParticleEffect{
 		live -= delta;
 	}
 
+	@Override
 	public void render() {
 		rainbow.render();
 	}
 	
+	@Override
 	public void finalize(){
 		rainbow.finalize();
 	}
 
+	@Override
 	public boolean living() {
 		return live > 0;
 	}

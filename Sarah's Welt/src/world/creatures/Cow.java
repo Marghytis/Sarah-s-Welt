@@ -19,6 +19,7 @@ public class Cow extends WalkingCreature{
 		punchStrength = 1;
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(g){
 			walkingAI(dTime);
@@ -33,12 +34,14 @@ public class Cow extends WalkingCreature{
 	}
 	
 	int dir = 0;
+	@Override
 	public void walkingAI(float dTime){
 //		wanderAbout();
 		applyDirection(dir);
 		doStepping(velocityUnit*vP*dTime);
 	}
 	
+	@Override
 	public boolean rightClickAction(){
 		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
 			World.sarah.mountCow(this);
@@ -53,6 +56,7 @@ public class Cow extends WalkingCreature{
 		}
 	}
 	
+	@Override
 	public void beforeRender(){
 		if(g)alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
@@ -65,6 +69,7 @@ public class Cow extends WalkingCreature{
 		return c;
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

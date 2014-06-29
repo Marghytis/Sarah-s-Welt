@@ -257,7 +257,7 @@ public class SimpleText {
 			if (currentChar < 256) {
 				intObject = charArray[currentChar];
 			} else {
-				intObject = (IntObject)customChars.get( new Character( (char) currentChar ) );
+				intObject = customChars.get( new Character( (char) currentChar ) );
 			}
 			
 			if( intObject != null )
@@ -323,7 +323,7 @@ public class SimpleText {
 					if (charCurrent < 256) {
 						intObject = charArray[charCurrent];
 					} else {
-						intObject = (IntObject)customChars.get( new Character( (char) charCurrent ) );
+						intObject = customChars.get( new Character( (char) charCurrent ) );
 					}
 					totalwidth += intObject.width-correctL;
 				}
@@ -347,7 +347,7 @@ public class SimpleText {
 			if (charCurrent < 256) {
 				intObject = charArray[charCurrent];
 			} else {
-				intObject = (IntObject)customChars.get( new Character( (char) charCurrent ) );
+				intObject = customChars.get( new Character( (char) charCurrent ) );
 			} 
 			
 			if( intObject != null ) {
@@ -362,7 +362,7 @@ public class SimpleText {
 								if (charCurrent < 256) {
 									intObject = charArray[charCurrent];
 								} else {
-									intObject = (IntObject)customChars.get( new Character( (char) charCurrent ) );
+									intObject = customChars.get( new Character( (char) charCurrent ) );
 								}
 								totalwidth += intObject.width-correctL;
 							}

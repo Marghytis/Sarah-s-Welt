@@ -14,6 +14,8 @@ public class Node {
 	public int _id;
 	public Vec p = null;
 	
+	public boolean inside;
+	
 	public Node(float x, float y, Material mat){
 		this(new Vec(x, y), mat);
 	}

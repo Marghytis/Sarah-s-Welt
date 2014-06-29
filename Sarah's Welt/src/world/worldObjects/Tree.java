@@ -27,10 +27,12 @@ public class Tree extends WorldObject{
 		this.type = type;
 	}
 	
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 	}
 	
+	@Override
 	public boolean rightClickAction(){
 		return Inventory.addItem(Item.stick);
 	}
@@ -45,6 +47,7 @@ public class Tree extends WorldObject{
 		return new Tree(size, mirrored, front, variant, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + ";" + mirrored + ";" + type;
 	}

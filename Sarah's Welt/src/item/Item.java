@@ -35,6 +35,7 @@ public class Item {
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Horn", 1000, 3, 2);
 	public static final Item berry = new Item(Res.ITEMS_WORLD.texs[0][0], Res.ITEMS_INV.texs[6][0], Res.ITEMS_INV.texs[6][0],
 			new Quad(-25, -2, 50, 50), new Quad(-10, -10, 30, 30), 0, "Berry", 0, null){
+		@Override
 		public boolean use(float x, float y){
 			Inventory.stacks[Inventory.selectedItem].item = Item.fist;
 			if(World.sarah.mana + 2 <= 30 && super.use(x, y)){

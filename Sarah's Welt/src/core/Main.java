@@ -8,14 +8,18 @@ import resources.TextureFile;
 import world.Calendar;
 import world.World;
 import world.WorldView;
+import core.menu.Menu;
 
 public class Main {
 
 	public static void main(String[] args){
+		
 		Window.create("Sarahs Welt 1.0", 1200, 800);
 //		Window.createFullScreen("Sarahs Welt");
 		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();
+		
+		
 		Res.load();
 		World.load("TestWelt");
 		WorldView.reset();
@@ -79,5 +83,5 @@ public class Main {
 		} else {
 			WorldView.mouseListening();
 		}
-	}	
+	}
 }

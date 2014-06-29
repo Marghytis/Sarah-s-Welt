@@ -46,6 +46,7 @@ public class CandyFlower extends WorldObject {
 		return new CandyFlower(variant, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

@@ -10,6 +10,7 @@ public class BasicMagicDissapperance implements ParticleEffect {
 	
 	public ParticleEmitter sparkle = new ParticleEmitter(100, 1, SPARKLE, 3000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y);
 			float angle = random.nextFloat()*(float)(Math.PI*2);
@@ -20,11 +21,13 @@ public class BasicMagicDissapperance implements ParticleEffect {
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x *= 0.97f;
 			p.vel.y *= 0.97f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a = (float) p.live /startLife;
 		}
@@ -35,6 +38,7 @@ public class BasicMagicDissapperance implements ParticleEffect {
 	
 	public ParticleEmitter smoke = new ParticleEmitter(60, 0, SMOKE, 1000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y);
 			float angle = random.nextFloat()*(float)(Math.PI*2);
@@ -46,15 +50,18 @@ public class BasicMagicDissapperance implements ParticleEffect {
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x *= 0.97f;
 			p.vel.y *= 0.97f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a -= 0.001f;
 		}
 
+		@Override
 		public void rotationInterpolator(Particle p) {
 			if(p.rot > 0){
 				p.rot = ((float)Math.PI/100)*p.live;
@@ -80,22 +87,26 @@ public class BasicMagicDissapperance implements ParticleEffect {
 		sparkle.emitting = false;
 	}
 	
+	@Override
 	public void tick(float dTime){
 		smoke.tick(dTime);
 		sparkle.tick(dTime);
 		count -= dTime;
 	}
 	
+	@Override
 	public void render(){
 		smoke.render();
 		sparkle.render();
 	}
 	
+	@Override
 	public void finalize(){
 		smoke.finalize();
 		sparkle.finalize();
 	}
 
+	@Override
 	public boolean living() {
 		return count > 0;
 	}

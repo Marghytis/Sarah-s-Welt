@@ -20,7 +20,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import sound.Lesson1;
-import core.geom.Vec;
 
 public class Test {
 	public static void main(String[] args) {

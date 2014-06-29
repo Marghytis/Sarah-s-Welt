@@ -22,6 +22,7 @@ public class Cactus extends WorldObject{
 		return new Cactus(variant, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

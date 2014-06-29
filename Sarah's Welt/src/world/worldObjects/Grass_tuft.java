@@ -20,6 +20,7 @@ public class Grass_tuft extends WorldObject{
 		return new Grass_tuft(new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

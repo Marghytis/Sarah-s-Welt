@@ -23,6 +23,7 @@ public abstract class WalkingCreature extends Creature{
 	
 	public void walkingAI(float dTime){}
 	
+	@Override
 	public boolean hitBy(Creature c, Item weapon){
 		if(super.hitBy(c, weapon)){
 			if(g && !(weapon instanceof DistantWeapon)){
@@ -31,8 +32,9 @@ public abstract class WalkingCreature extends Creature{
 				accelerateFromGround(new Vec(xVec, yVec));
 			}
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	protected void applyDirection(int dir){
@@ -84,7 +86,7 @@ public abstract class WalkingCreature extends Creature{
 					Node node = c;
 					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
 					do{
-						if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
+						if(node.inside && node.p.x > node.next.p.x){
 							Vec[] inter = Geom.circleIntersection(node.p, node.next.p, pos, v);
 				
 							if(inter[0] != null){
@@ -122,7 +124,7 @@ public abstract class WalkingCreature extends Creature{
 					Node node = c;
 					//TODO make circleIntersection relative to the sarah, so I can just add it to the nextPos
 					do{
-						if(node.p.x >= WorldView.rimL && node.p.x <= WorldView.rimR && node.p.x > node.next.p.x){
+						if(node.inside && node.p.x > node.next.p.x){
 							Vec inters = new Vec();
 							boolean found = Geom.intersectionLines(pos, pos.plus(vel), node.p, node.next.p, inters);
 							if(found && (intersection == null || inters.y > intersection[1])){

@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 import resources.Lightmap;
 import resources.Res;
 import resources.TextureFile;
-import world.creatures.Unicorn;
 import core.Window;
 import core.geom.Quad;
 import core.geom.Vec;

@@ -23,6 +23,7 @@ public class Butterfly extends WalkingCreature{
 		this.variant = variant;
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(!g){
 			acc.shift((0.5f - random.nextFloat())*0.00003f, (0.49f - random.nextFloat())*0.00003f);
@@ -49,6 +50,7 @@ public class Butterfly extends WalkingCreature{
 		return b;
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

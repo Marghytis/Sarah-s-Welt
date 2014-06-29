@@ -15,6 +15,7 @@ import core.Window;
 
 public enum Shader {
 	Test("Test.frag"), SMOOTH("LightingShader.frag"), POCKET_LAMP("LightingShader2.frag"), BRIGHT("AngelShader.frag"){
+		@Override
 		public void drawLight(float... data){
 			ARBShaderObjects.glUseProgramObjectARB(handle);
 				ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(handle, "lightLocation"), data[0], data[1]);
@@ -23,6 +24,7 @@ public enum Shader {
 			glUseProgramObjectARB(0);
 		}
 	}, PARTICLE("ParticleShader.frag"){
+		@Override
 		public void drawLight(float... data){
 			ARBShaderObjects.glUseProgramObjectARB(handle);
 				ARBShaderObjects.glUniform2fARB(glGetUniformLocationARB(handle, "location"), data[0], data[1]);

@@ -10,6 +10,7 @@ public class RainEffect implements ParticleEffect{
 	
 	public ParticleEmitter drops = new ParticleEmitter(200, 50, RAINDROP, 2000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt((int)size.x), pos.y + random.nextInt((int)size.y));
 			p.vel.set((random.nextFloat() - 0.5f)*0.01f, -0.2f);//-0.8f
@@ -18,15 +19,19 @@ public class RainEffect implements ParticleEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.y -= 0.01f;
 			collision(p);
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {}
 
+		@Override
 		public void rotationInterpolator(Particle p) {}
 
+		@Override
 		public void radiusInterpolator(Particle p) {}
 		
 		public void collision(Particle p){
@@ -56,18 +61,22 @@ public class RainEffect implements ParticleEffect{
 		size.set(width, height);
 	}
 	
+	@Override
 	public void tick(float dTime){
 		drops.tick(dTime);
 	}
 	
+	@Override
 	public void render(){
 		drops.render();
 	}
 	
+	@Override
 	public void finalize(){
 		drops.finalize();
 	}
 
+	@Override
 	public boolean living() {
 		return false;
 	}

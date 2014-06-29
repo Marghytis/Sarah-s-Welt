@@ -97,6 +97,9 @@ public class Generator {
 			else {
 				setZone(ZoneType.values()[random.nextInt(ZoneType.values().length-1)]);
 			}
+			if(zone.type == ZoneType.LAKE){
+				levels[0].stepPos = right ? 1000000 : -10;
+			}
 		}
 	}
 	
@@ -195,7 +198,7 @@ public class Generator {
 			if(right){
 				stepPos++;
 				if(stepPos >= type.steps.length){
-					if(random.nextInt(10) < 1){
+					if(random.nextInt(10) < 1 && zone.type.possibleStructures[level].length != 0){
 						index = random.nextInt(zone.type.possibleStructures[level].length);
 						type = zone.type.possibleStructures[level][index];
 					} else {
@@ -206,7 +209,7 @@ public class Generator {
 			} else {
 				stepPos--;
 				if(stepPos <= -1){
-					if(random.nextInt(10) < 1){
+					if(random.nextInt(10) < 1 && zone.type.possibleStructures[level].length != 0){
 						index = random.nextInt(zone.type.possibleStructures[level].length);
 						type = zone.type.possibleStructures[level][index];
 					} else {

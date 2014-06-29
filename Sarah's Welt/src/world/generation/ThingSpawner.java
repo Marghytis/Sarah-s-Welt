@@ -21,7 +21,7 @@ public class ThingSpawner {
 		for(int i = 0; i < maxCreatsPerLine; i++){
 			if(luck < perc){
 				spawner.spawn(n, random);
-				perc = (int)(perc * ((float)perc/1000.0f));
+				perc = (int)(perc * (perc/1000.0f));
 			} else {
 				break;
 			}

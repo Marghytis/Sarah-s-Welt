@@ -27,6 +27,7 @@ public class Snail extends WalkingCreature {
 		front = true;
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(g){
 //			pos.y++;
@@ -45,6 +46,7 @@ public class Snail extends WalkingCreature {
 	
 	int dir = 0;
 	boolean agro = false;
+	@Override
 	public void walkingAI(float dTime){
 		if((!Settings.agro || !findSarah()) && !findNextCloud())wanderAbout();
 		
@@ -106,6 +108,7 @@ public class Snail extends WalkingCreature {
 		}
 	}
 	
+	@Override
 	protected void beforeRender(){
 		super.beforeRender();
 		
@@ -128,6 +131,7 @@ public class Snail extends WalkingCreature {
 		return s;
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

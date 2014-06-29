@@ -16,18 +16,22 @@ public class MagicEffect implements ParticleEffect{
 		this.source = source;
 	}
 	
+	@Override
 	public void tick(float delta) {
 		
 	}
 
+	@Override
 	public void render() {
 		
 	}
 
+	@Override
 	public boolean living() {
 		return false;
 	}
 	
+	@Override
 	public void finalize(){
 		
 	}

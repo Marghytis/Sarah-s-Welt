@@ -25,6 +25,7 @@ public class Bird extends WalkingCreature{
 		this.variant = variant;
 	}
 	
+	@Override
 	public void beforeRender(){
 		super.beforeRender();
 		animator.animation.y = variant;
@@ -32,10 +33,12 @@ public class Bird extends WalkingCreature{
 	
 	int dir = 1;
 	
+	@Override
 	public void update(int dTime){
 		if(!g){
-			acc.shift(dir*0.00001f, (0.5f - random.nextFloat())*0.00001f);
+			acc.shift(dir*0.00001f, (0.5f - random.nextFloat())*0.00002f);
 			applyFriction(Material.AIR);
+			animator.setAnimation(flap);
 		} else {
 			if(random.nextInt(300) == 0){
 				animator.setAnimation(flap);
@@ -73,6 +76,7 @@ public class Bird extends WalkingCreature{
 		return b;
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

@@ -22,8 +22,8 @@ import world.creatures.Gnat;
 import world.worldObjects.CandyFlower;
 import world.worldObjects.Flower;
 import world.worldObjects.WorldObject;
-import core.Menu;
-import core.Menu.View;
+import core.menu.Menu;
+import core.menu.Menu.View;
 import core.Settings;
 import core.Window;
 
@@ -80,6 +80,7 @@ public class WorldView {
 					Node n = start;
 					do {
 						used[World.nodes[mat].indexOf(n)] = true;
+						n.inside = n.p.x >= rimL && n.p.x <= rimR;
 						n = n.next;
 					} while(n != start);
 				}
@@ -347,7 +348,7 @@ public class WorldView {
 					case Keyboard.KEY_A : World.sarah.mirrored = true; break;
 					case Keyboard.KEY_W: World.sarah.jump(); break;
 					case Keyboard.KEY_E: World.sarah.dismountCow(); break;
-					case Keyboard.KEY_F: Menu.buttonPressed(View.DEBUG.buttons[0]); break;
+					case Keyboard.KEY_F: Menu.componentPressed(View.DEBUG.components[0]); break;
 					case Keyboard.KEY_I:
 						if(Menu.view == View.INVENTORY){
 							View.WORLD.set();
@@ -359,6 +360,7 @@ public class WorldView {
 					
 				}
 			}
+			System.out.println(Keyboard.getEventCharacter());
 		}
 	}
 	

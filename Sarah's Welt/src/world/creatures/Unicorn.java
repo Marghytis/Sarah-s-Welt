@@ -37,6 +37,7 @@ public class Unicorn extends WalkingCreature {
 	
 	public int spitCount = 0;
 	
+	@Override
 	public void update(int delta){
 		if(g){
 //			pos.y++;
@@ -55,6 +56,7 @@ public class Unicorn extends WalkingCreature {
 	}
 	
 	public int dir = 0;
+	@Override
 	public void walkingAI(float dTime){
 		if(!spitting){
 			if((!Settings.agro || !findSarah()))wanderAbout();
@@ -111,6 +113,7 @@ public class Unicorn extends WalkingCreature {
 		}
 	}
 	
+	@Override
 	protected void beforeRender(){
 		super.beforeRender();
 
@@ -152,12 +155,16 @@ public class Unicorn extends WalkingCreature {
 	int colorCounter;
 	int[] sky = {0, 0, 100};
 	
+	@Override
 	public void afterRender(){
 		if(Settings.shader) Shader20.bindNone();
 	}
 	
+	@Override
 	protected void onDeath(){
 		Inventory.addItem(Item.horn);
+		World.sarah.mana = 30;
+		World.sarah.health = Math.max(World.sarah.health, 20);
 	}
 
 	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
@@ -168,6 +175,7 @@ public class Unicorn extends WalkingCreature {
 		return u;
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

@@ -29,11 +29,13 @@ public class Pyramide extends WorldObject{
 		this.variant = variant;
 	}
 	
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 		animator.animation.y = variant;
 	}
 	
+	@Override
 	public boolean rightClickAction(){
 		return Inventory.addItem(Item.stick);
 	}
@@ -48,6 +50,7 @@ public class Pyramide extends WorldObject{
 		return new Pyramide(variant, new Vec(x, y), worldLink, size, mirrored);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + ";" + mirrored + ";" + variant;
 	}

@@ -22,6 +22,7 @@ public class Heart extends WalkingCreature{
 		this.variant = variant;
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(!g){
 			collision(false);
@@ -30,6 +31,7 @@ public class Heart extends WalkingCreature{
 		super.update(dTime);
 	}
 	
+	@Override
 	public boolean rightClickAction(){
 		if(pos.minus(World.sarah.pos).lengthSqare() < 10000){
 			WorldView.particleEffects.add(new Hearts(pos.plus(animator.tex.box.middle())));
@@ -40,6 +42,7 @@ public class Heart extends WalkingCreature{
 		return false;
 	}
 	
+	@Override
 	public void beforeRender(){
 		flap.y = variant;
 	}
@@ -54,6 +57,7 @@ public class Heart extends WalkingCreature{
 		return h;
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

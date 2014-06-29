@@ -22,6 +22,7 @@ public class Panda extends WalkingCreature {
 		animator.doOnReady = () -> donePunch();
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(g){
 			walkingAI(dTime);
@@ -37,6 +38,7 @@ public class Panda extends WalkingCreature {
 	
 	int dir = 0;
 	boolean agro = false;
+	@Override
 	public void walkingAI(float dTime){
 		if(Settings.agro) findSarah();
 		
@@ -57,6 +59,7 @@ public class Panda extends WalkingCreature {
 		return false;
 	}
 	
+	@Override
 	protected void beforeRender(){
 		super.beforeRender();
 		
@@ -81,6 +84,7 @@ public class Panda extends WalkingCreature {
 		return p;
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

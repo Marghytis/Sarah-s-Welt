@@ -15,6 +15,7 @@ public class Gnat extends WalkingCreature{
 		health = 5;
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(!g){
 			acc.shift((0.5f - random.nextFloat())*0.00003f, (0.49f - random.nextFloat())*0.00003f);
@@ -31,6 +32,7 @@ public class Gnat extends WalkingCreature{
 		super.update(dTime);
 	}
 	
+	@Override
 	public void render(){
 		GL11.glVertex2f(pos.x-1, pos.y-1);
 		GL11.glVertex2f(pos.x, pos.y-1);
@@ -46,6 +48,7 @@ public class Gnat extends WalkingCreature{
 		return g;
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

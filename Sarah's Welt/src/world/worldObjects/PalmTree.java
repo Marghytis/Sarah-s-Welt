@@ -24,6 +24,7 @@ public class PalmTree extends WorldObject{
 		this.variant = variant;
 	}
 	
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 	}
@@ -38,6 +39,7 @@ public class PalmTree extends WorldObject{
 		return new PalmTree(size, mirrored, front, variant, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + ";" + mirrored + ";" + variant;
 	}

@@ -19,6 +19,7 @@ public class CandyBush extends WorldObject{
 		this.variant = variant;
 	}
 	
+	@Override
 	public void beforeRender(){
 		alignWithGround();//worldLink.p.minus(worldLink.getNext().p).angle()
 	}
@@ -30,6 +31,7 @@ public class CandyBush extends WorldObject{
 		return new CandyBush(variant, front, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

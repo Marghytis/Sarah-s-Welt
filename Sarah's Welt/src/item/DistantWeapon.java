@@ -17,6 +17,7 @@ public class DistantWeapon extends Item{
 		this.distPower = distPower;
 	}
 	
+	@Override
 	public boolean use(float x, float y){
 		if(super.use(x, y)){
 			startEffect(x, y);

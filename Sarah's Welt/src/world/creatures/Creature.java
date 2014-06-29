@@ -31,12 +31,13 @@ public abstract class Creature extends Thing {
 		this.type = type;
 	}
 	
+	@Override
 	public void update(int dTime){
 		if(health <= 0){
 			WorldView.particleEffects.add(new DeathDust(pos.plus(animator.box.middle())));
 			WorldView.thingTasks.add(() -> {
 				onDeath();
-				World.creatures[type.ordinal()].remove(this);
+				if(type != null) World.creatures[type.ordinal()].remove(this);
 			});
 		} else {
 			pos.shift(vel);

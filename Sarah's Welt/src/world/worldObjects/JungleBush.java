@@ -17,6 +17,7 @@ public class JungleBush extends WorldObject{
 		this.size = size;
 	}
 	
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 	}
@@ -29,6 +30,7 @@ public class JungleBush extends WorldObject{
 		return new JungleBush(new Vec(x, y), worldLink, size);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + "";
 	}

@@ -18,6 +18,7 @@ public class FireEffect implements ParticleEffect{
 
 	public ParticleEmitter smoke = new ParticleEmitter(1000, 100, SMOKE, 2000){
 		
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.05f, 0.1f);
@@ -25,16 +26,19 @@ public class FireEffect implements ParticleEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x += 0.001f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a = (float) p.live /startLife;
 		}
 		
+		@Override
 		public void radiusInterpolator(Particle p){
-			p.rad = 0.1f + (2.5f*(float)(startLife - p.live)/startLife);
+			p.rad = 0.1f + (2.5f*(startLife - p.live)/startLife);
 		}
 		
 	};
@@ -43,6 +47,7 @@ public class FireEffect implements ParticleEffect{
 	
 	public ParticleEmitter flame = new ParticleEmitter(10000, 50, FLAME, 1000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.01f, 0.1f);
@@ -51,16 +56,19 @@ public class FireEffect implements ParticleEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x += 0.001f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
-			p.col.a = (float) (p.live*0.8f) /startLife;
+			p.col.a = p.live*0.8f /startLife;
 			p.col.r = 0.5f + p.live*0.4f/startLife;
 			p.col.g = 0.5f - p.live*0.2f/startLife;//0.9f, 0.3f, 0.1f, 0.5f
 		}
 
+		@Override
 		public void rotationInterpolator(Particle p) {
 			if(p.rot > 0){
 				p.rot = ((float)Math.PI/10)*p.live;
@@ -69,6 +77,7 @@ public class FireEffect implements ParticleEffect{
 			}
 		}
 		
+		@Override
 		public void radiusInterpolator(Particle p){
 			p.rad = 2*((float)p.live/startLife);
 		}
@@ -83,6 +92,7 @@ public class FireEffect implements ParticleEffect{
 //			Texture.bindNone();
 //		}
 
+		@Override
 		public void renderParticle(Particle p) {
 			GL11.glColor4f(p.col.r, p.col.g, p.col.b, p.col.a);
 			GL11.glPushMatrix();
@@ -99,6 +109,7 @@ public class FireEffect implements ParticleEffect{
 	
 	public ParticleEmitter spark = new ParticleEmitter(1000, 5, SPARK, 2000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.01f, 0.1f);
@@ -108,10 +119,12 @@ public class FireEffect implements ParticleEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x += (random.nextFloat() - 0.5f)*0.01f + 0.001f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 //			p.col.a = (float) (p.live*0.8f) /startLife;
 //			p.col.r = 0.5f + p.live*0.4f/startLife;
@@ -121,6 +134,7 @@ public class FireEffect implements ParticleEffect{
 			}
 		}
 
+		@Override
 		public void rotationInterpolator(Particle p) {
 			if(p.rot > 0){
 				p.rot = ((float)Math.PI/10)*p.live;
@@ -134,6 +148,7 @@ public class FireEffect implements ParticleEffect{
 	
 	public ParticleEmitter light = new ParticleEmitter(1000, 5, LIGHT, 1000){
 		
+		@Override
 		public void renderParticles(){
 			type.tex.bind();
 				lightmap.bind();
@@ -146,6 +161,7 @@ public class FireEffect implements ParticleEffect{
 			type.tex.release();
 		}
 		
+		@Override
 		public void renderParticle(Particle p){
 			ARBShaderObjects.glUniform4fARB(glGetUniformLocationARB(Shader.Test.handle, "particleColor"), p.col.r, p.col.g, p.col.b, p.col.a);
 			GL11.glPushMatrix();
@@ -156,6 +172,7 @@ public class FireEffect implements ParticleEffect{
 			GL11.glPopMatrix();
 		}
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x + random.nextInt(size), pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.01f, 0.1f);
@@ -165,8 +182,9 @@ public class FireEffect implements ParticleEffect{
 			
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
-			p.col.a = (float) (p.live*1.0f) /startLife;
+			p.col.a = p.live*1.0f /startLife;
 		}
 	};
 
@@ -180,6 +198,7 @@ public class FireEffect implements ParticleEffect{
 		this.lightmap = lightmap;
 	}
 	
+	@Override
 	public void tick(float dTime){
 		smoke.tick(dTime);
 		flame.tick(dTime);
@@ -187,6 +206,7 @@ public class FireEffect implements ParticleEffect{
 		light.tick(dTime);
 	}
 	
+	@Override
 	public void render(){
 		smoke.render();
 		flame.render();
@@ -194,6 +214,7 @@ public class FireEffect implements ParticleEffect{
 		light.render();
 	}
 	
+	@Override
 	public void finalize(){
 		smoke.finalize();
 		flame.finalize();
@@ -201,6 +222,7 @@ public class FireEffect implements ParticleEffect{
 		light.finalize();
 	}
 
+	@Override
 	public boolean living() {
 		return true;
 	}

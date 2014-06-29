@@ -18,6 +18,7 @@ public class WorldItem extends Thing{
 		this.item = item;
 	}
 
+	@Override
 	public boolean rightClickAction(){
 		for(int i = 0; i < Inventory.stacks.length; i++){
 			if(Inventory.stacks[i].item == item || World.sarah.pos.minus(pos).lengthSqare() > 25000){
@@ -31,6 +32,7 @@ public class WorldItem extends Thing{
 		return false;
 	}
 
+	@Override
 	public void render(){
 		GL11.glPushMatrix();
 		GL11.glTranslatef(pos.x, pos.y, 0);
@@ -40,6 +42,7 @@ public class WorldItem extends Thing{
 		GL11.glPopMatrix();
 	}
 
+	@Override
 	public String createMetaString() {
 		return "";
 	}

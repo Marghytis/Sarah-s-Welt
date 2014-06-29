@@ -16,6 +16,7 @@ public class JungleFlower extends WorldObject {
 		mirrored = random.nextBoolean();
 	}
 	
+	@Override
 	public void beforeRender(){
 		animator.animation.y = variant;
 	}
@@ -28,6 +29,7 @@ public class JungleFlower extends WorldObject {
 		return new JungleFlower(variant, new Vec(x, y), worldLink);
 	}
 
+	@Override
 	public String createMetaString() {
 		return variant + "";
 	}

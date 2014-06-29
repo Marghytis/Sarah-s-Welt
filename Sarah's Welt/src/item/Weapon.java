@@ -20,6 +20,7 @@ public class Weapon extends Item{
 
 	public int power;
 	
+	@Override
 	public boolean use(float x, float y){
 		if(super.use(x, y)){
 			for(List<Creature> list : World.creatures) for(Creature c : list){

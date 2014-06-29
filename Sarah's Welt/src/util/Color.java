@@ -42,6 +42,7 @@ public class Color {
 		GL11.glColor4f(r, g, b, a);
 	}
 	
+	@Override
 	public String toString(){
 		return "Color[" + r + ", " + g + ", " + b + ", " + a + "]";
 	}

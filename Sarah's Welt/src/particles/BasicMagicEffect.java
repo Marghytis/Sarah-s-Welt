@@ -18,6 +18,7 @@ public class BasicMagicEffect extends MagicEffect{
 	
 	public ParticleEmitter light = new ParticleEmitter(1, 0, LIGHT, 1000){
 			
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y);
 			p.vel.set(dir);
@@ -26,6 +27,7 @@ public class BasicMagicEffect extends MagicEffect{
 			p.rad = 0.3f;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			for(List<Creature> list : World.creatures) for(Creature c : list){
 				if(!(c instanceof Gnat) && c.animator.box.plus(c.pos).intersects(type.tex.box.scaledBy(p.rad).plus(p.pos))){
@@ -37,10 +39,12 @@ public class BasicMagicEffect extends MagicEffect{
 			}
 		}
 		
+		@Override
 		public void colorInterpolator(Particle p){
 			p.col.a = (float) p.live /startLife;
 		}
 		
+		@Override
 		public void killParticle(Particle p){
 			sparkle.emitting = false;
 		}
@@ -50,6 +54,7 @@ public class BasicMagicEffect extends MagicEffect{
 	
 	public ParticleEmitter sparkle = new ParticleEmitter(100, 20, SPARKLE, 3000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(light.particles[0].pos.x, light.particles[0].pos.y);
 			float angle = random.nextFloat()*(float)(Math.PI*2);
@@ -60,11 +65,13 @@ public class BasicMagicEffect extends MagicEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x *= 0.97f;
 			p.vel.y *= 0.97f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a -= 0.01f;
 		}
@@ -76,22 +83,26 @@ public class BasicMagicEffect extends MagicEffect{
 		light.emittParticle(0);
 	}
 	
+	@Override
 	public void tick(float delta) {
 		light.tick(delta);
 		sparkle.tick(delta);
 		live -= delta;
 	}
 
+	@Override
 	public void render() {
 		light.render();
 		sparkle.render();
 	}
 	
+	@Override
 	public void finalize(){
 		light.finalize();
 		sparkle.finalize();
 	}
 
+	@Override
 	public boolean living() {
 		return live > 0;
 	}

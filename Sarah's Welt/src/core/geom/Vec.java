@@ -97,6 +97,7 @@ public class Vec {
 		GL11.glEnd();
 	}
 	
+	@Override
 	public String toString(){
 		return "Vec[ " + x + " | " + y + " ]";
 	}

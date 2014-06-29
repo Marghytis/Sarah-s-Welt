@@ -21,6 +21,7 @@ public class Fossil extends WorldObject{
 		this.variant = variant;
 	}
 	
+	@Override
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 		GL11.glRotatef(rotation, 0, 0, 1);
@@ -36,6 +37,7 @@ public class Fossil extends WorldObject{
 		return new Fossil(variant, new Vec(x, y), worldLink, size, rotation);
 	}
 
+	@Override
 	public String createMetaString() {
 		return size + ";" + rotation + ";" + variant;
 	}

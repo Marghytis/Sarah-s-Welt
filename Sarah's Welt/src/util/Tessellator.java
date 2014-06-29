@@ -10,7 +10,6 @@ import org.lwjgl.util.glu.GLUtessellator;
 import org.lwjgl.util.glu.GLUtessellatorCallbackAdapter;
 
 import world.Node;
-import world.WorldView;
 
 public class Tessellator extends GLUtessellatorCallbackAdapter{
 	
@@ -39,7 +38,7 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 				{
 					Node n = node;
 					do {
-						if(n.p.x >= WorldView.rimL && n.p.x <= WorldView.rimR){
+						if(n.inside){
 							double[] coords = new double[]{n.p.x, n.p.y, 0};
 							float[] data = new float[]{n.p.x, n.p.y, n.p.x/texWidth, -n.p.y/texHeight};
 							tessellator.gluTessVertex(coords, 0, data);
@@ -53,10 +52,12 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 		tessellator.gluTessEndPolygon();
 	}
 	
+	@Override
 	public void begin(int mode){
 		GL11.glBegin(mode);
 	}
 	
+	@Override
 	public void vertex(Object data) {
 		float[] coords = (float[]) data;
 
@@ -64,11 +65,13 @@ public class Tessellator extends GLUtessellatorCallbackAdapter{
 		GL11.glVertex2f(coords[0], coords[1]);
 	}
 	
+	@Override
 	public void end(){
 		GL11.glEnd();
 	}
 	
 
+	@Override
 	public void combine(double[] coords, Object[] data, float[] weight, Object[] outData){
 		outData = data;
 	}

@@ -11,6 +11,7 @@ public class BerryEat implements ParticleEffect{
 	
 	public ParticleEmitter stars = new ParticleEmitter(100, 1, STAR, 1000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.4f, (random.nextFloat() - 0.5f)*0.4f);//-0.8f
@@ -19,16 +20,20 @@ public class BerryEat implements ParticleEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x *= 0.99f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a *= 0.95f;
 		}
 
+		@Override
 		public void rotationInterpolator(Particle p) {}
 
+		@Override
 		public void radiusInterpolator(Particle p) {
 			p.rad *= 0.99f;
 		}
@@ -38,6 +43,7 @@ public class BerryEat implements ParticleEffect{
 	
 	public ParticleEmitter sparkle = new ParticleEmitter(100, 1, SPARKLE, 1000){
 
+		@Override
 		public void makeParticle(Particle p) {
 			p.pos.set(pos.x, pos.y);
 			p.vel.set((random.nextFloat() - 0.5f)*0.4f, (random.nextFloat() - 0.5f)*0.4f);//-0.8f
@@ -46,17 +52,21 @@ public class BerryEat implements ParticleEffect{
 			p.live = startLife;
 		}
 
+		@Override
 		public void velocityInterpolator(Particle p) {
 			p.vel.x *= 0.99f;
 			p.vel.y *= 0.99f;
 		}
 
+		@Override
 		public void colorInterpolator(Particle p) {
 			p.col.a *= 0.95f;
 		}
 
+		@Override
 		public void rotationInterpolator(Particle p) {}
 
+		@Override
 		public void radiusInterpolator(Particle p) {
 			p.rad *= 0.99f;
 		}
@@ -75,22 +85,26 @@ public class BerryEat implements ParticleEffect{
 		sparkle.emitting = false;
 	}
 	
+	@Override
 	public void tick(float dTime){
 		stars.tick(dTime);
 		sparkle.tick(dTime);
 		count -= dTime;
 	}
 	
+	@Override
 	public void render(){
 		stars.render();
 		sparkle.render();
 	}
 	
+	@Override
 	public void finalize(){
 		stars.finalize();
 		sparkle.finalize();
 	}
 
+	@Override
 	public boolean living() {
 		return count > 0;
 	}
