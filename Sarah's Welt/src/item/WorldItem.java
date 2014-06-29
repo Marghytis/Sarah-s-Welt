@@ -20,7 +20,7 @@ public class WorldItem extends Thing{
 
 	public boolean rightClickAction(){
 		for(int i = 0; i < Inventory.stacks.length; i++){
-			if(Inventory.stacks[i].item == item){
+			if(Inventory.stacks[i].item == item || World.sarah.pos.minus(pos).lengthSqare() > 25000){
 				return false;
 			} else if (Inventory.stacks[i].item == Item.fist){
 				Inventory.stacks[i].item = item;

@@ -19,17 +19,21 @@ public class Layer {
 		this.thickness = startThickness;
 		this.right = right;
 	}
-
-	public Layer(AimLayer aim, float startThickness, Node nTop, Node nBot, boolean right){
-		this(aim, startThickness, right);
-		start(nTop, nBot);
+	
+	public Layer(AimLayer aim, float startThickness, boolean right, Node nodeT, Node nodeB){
+		this.aim = aim;
+		this.thickness = startThickness;
+		this.right = right;
+		this.endNodeTop = nodeT;
+		this.endNodeBot = nodeB;
 	}
 	
-	public void start(Node top, Node bot){
+	public Layer start(Node top, Node bot){
 		this.endNodeTop = top;
 		this.endNodeBot = bot;
 		bot.connectReal(top);
 		top.connectReal(bot);
+		return this;
 	}
 
 	public void attach(Node top, Node bot){

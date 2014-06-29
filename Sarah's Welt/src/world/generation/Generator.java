@@ -38,8 +38,8 @@ public class Generator {
 			y -= aim.thickness;
 			Node n2 = new Node(pos.x, y, aim.material);
 
-			g1.layers.add(new Layer(aim, aim.thickness, n1, n2, true));
-			g2.layers.add(new Layer(aim, aim.thickness, n1, n2, false));
+			g1.layers.add(new Layer(aim, aim.thickness, true).start(n1, n2));
+			g2.layers.add(new Layer(aim, aim.thickness, false).start(n1, n2));
 		}
 		
 		return new Generator[]{g1, g2};

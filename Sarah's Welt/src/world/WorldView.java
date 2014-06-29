@@ -49,7 +49,7 @@ public class WorldView {
 		particleEffects = new ArrayList<>();
 		
 		contours = (List<Node>[]) new ArrayList<?>[World.nodes.length];
-		
+
 		World.updateContours();
 		setContourNodes();
 	}
@@ -69,6 +69,7 @@ public class WorldView {
 	}
 	
 	public static void setContourNodes(){
+
 		for(int mat = 0; mat < World.nodes.length; mat++){
 			List<Node> contourStarts = new ArrayList<>();
 			boolean[] used = new boolean[World.nodes[mat].size()];
@@ -338,7 +339,6 @@ public class WorldView {
 				Menu.view = View.DEBUG;
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
-				World.save();
 				Menu.view = View.MAIN;
 			} else {
 				if(Keyboard.getEventKeyState()){

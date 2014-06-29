@@ -102,6 +102,7 @@ public class World {
 		db = new Database("worlds", name);
 		boolean fresh = !loadGeneralInformation();
 		if(fresh){
+			Node.indexIndex = 0;
 			try {
 				createDatabase();
 			} catch (SQLException e) {
@@ -129,8 +130,12 @@ public class World {
 		Statement s = db.conn.createStatement();
 		s.execute("DELETE FROM 'World';");
 		s.close();
+		
+        int nodeAmount = 0;
+        for(List<Node> list : nodes) nodeAmount += list.size();
+		
 		s = db.conn.createStatement();
-		s.execute("INSERT INTO 'World' (wName, nodeAmount, invSelectedItem) VALUES ('" + name + "', '" + Node.indexIndex + "', '" + Inventory.selectedItem + "');");
+		s.execute("INSERT INTO 'World' (wName, nodeAmount, invSelectedItem) VALUES ('" + name + "', '" + nodeAmount + "', '" + Inventory.selectedItem + "');");
 		s.close();
 	}
 
@@ -160,10 +165,17 @@ public class World {
 		
         PreparedStatement p = db.conn.prepareStatement("INSERT INTO Node (n_ID, mat, next_ID, last_ID, x, y) VALUES (?,?,?,?,?,?);");
         
-        for(List<Node> list : nodes) for (Node node : list){
+        //set ids of all nodes
+        int id = 0;
+        for(List<Node> list : nodes) for(Node n : list){
+        	n._id = id;
+        	id++;
+        }
+        
+        for(int mat = 0; mat < Material.values().length; mat++) for (Node node : nodes[mat]){
         	int i = 1;
             p.setInt(i++, node._id);
-            p.setString(i++, node.mat.name());
+            p.setString(i++, Material.values()[mat].name());
             p.setInt(i++, node.next._id);
             p.setInt(i++, node.last._id);
             p.setFloat(i++, node.p.x);
@@ -197,14 +209,12 @@ public class World {
         	Node node = new Node(n_ID, new Vec(x, y), mat);
         	nextNodes[n_ID] = next_ID;
         	lastNodes[n_ID] = last_ID;
-
-        	nodes[mat.ordinal()].add(node);
         	allNodes[n_ID] = node;
         }
         
         for(Node n : allNodes){
-        	n.last = allNodes[lastNodes[n._id]];
         	n.next = allNodes[nextNodes[n._id]];
+        	n.last = allNodes[lastNodes[n._id]];
         }
         ergebnis.close();
         sql.close();
@@ -560,7 +570,7 @@ public class World {
         }
         ergebnis.close();
         sql.close();
-        
+
 //        Layers
         sql = db.conn.createStatement();
 
@@ -580,12 +590,12 @@ public class World {
         	
     		
         	if(right){
-	    		Layer layer = new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, endNodeT, endNodeB, true);
+	    		Layer layer = new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, true, endNodeT, endNodeB);
 	    		layer.shrimp = shrink;
 	    		layer.reachedAim = reachedAim;
         		rightGenerator.layers.add(layer);
         	} else {
-	    		Layer layer = new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, endNodeT, endNodeB, false);
+	    		Layer layer = new Layer(new AimLayer(mat, aimThickness, resizeStep, priority), thickness, false, endNodeT, endNodeB);
 	    		layer.shrimp = shrink;
 	    		layer.reachedAim = reachedAim;
         		leftGenerator.layers.add(layer);

@@ -117,13 +117,22 @@ public class Menu {
 		MAIN(true){
 			void setup(){
 				buttons = new Button[]{
-					new Button("New World", 3/16.0f, 7/8.0f, new Runnable(){public void run(){
+					new Button("New World", 3/16.0f, 15/16.0f, new Runnable(){public void run(){
 						String worldName =  JOptionPane.showInputDialog("World name:", "");
-						World.load(worldName);
-						WorldView.reset();}}),
-					new Button("Continue", 3/16.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = WORLD;}}),
-					new Button("Options", 3/16.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
-					new Button("Exit", 3/16.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
+						if(worldName != "" && worldName != null){
+							World.load(worldName);
+							WorldView.reset();
+						}}}),
+					new Button("Continue", 3/16.0f, 13/16.0f, new Runnable(){public void run(){Menu.view = WORLD;}}),
+					new Button("Save World", 3/16.0f, 11/16.0f, new Runnable(){public void run(){World.save();}}),
+					new Button("Load World", 3/16.0f, 9/16.0f, new Runnable(){public void run(){
+						String worldName =  JOptionPane.showInputDialog("World name:", "");
+						if(worldName != "" && worldName != null){
+							World.load(worldName);
+							WorldView.reset();
+						}}}),
+					new Button("Options", 3/16.0f, 4/16.0f, new Runnable(){public void run(){Menu.view = OPTIONS;}}),
+					new Button("Exit", 3/16.0f, 2/16.0f, new Runnable(){public void run(){Main.beenden = true;}})
 				};
 			}
 		},
