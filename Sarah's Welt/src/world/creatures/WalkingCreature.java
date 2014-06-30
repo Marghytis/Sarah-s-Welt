@@ -112,6 +112,11 @@ public abstract class WalkingCreature extends Creature{
 		if(intersection != null){
 			vel.set(intersection.minus(pos));
 			worldLink = finalNode;
+			if(d > 0){
+				mirrored = false;
+			} else if(d < 0){
+				mirrored = true;
+			}
 		}
 	}
 	

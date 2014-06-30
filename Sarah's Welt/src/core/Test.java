@@ -24,20 +24,24 @@ import sound.Lesson1;
 public class Test {
 	public static void main(String[] args) {
 //		new Test();
+		Integer i = 8;
+		Integer i2 = i;
+		i = 5;
+		System.out.println(i2);
 	}
 	
 	public int WIDTH = 1000, HEIGHT = 500;
 	Lesson1 test;
 	public Test() {
 		
-		List<int[][]> coords = readTextureCoordinator("res/creatures/Sarah.txt");
-		
-		for(int[][] pff : coords){
-			System.out.println("");
-			for(int[] vertex : pff){
-				System.out.print(" [" + vertex[0] + ", " + vertex[1] + ", " + vertex[2] + "]");
-			}
-		}
+//		List<int[][]> coords = readTextureCoordinator("res/creatures/Sarah.txt");
+//		
+//		for(int[][] pff : coords){
+//			System.out.println("");
+//			for(int[] vertex : pff){
+//				System.out.print(" [" + vertex[0] + ", " + vertex[1] + ", " + vertex[2] + "]");
+//			}
+//		}
 		
 //		createDisplay();
 //		

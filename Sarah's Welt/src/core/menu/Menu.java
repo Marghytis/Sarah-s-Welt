@@ -105,10 +105,10 @@ public class Menu {
 		MAIN2(true){
 			void setup(){
 				components = new Component[]{
-					new Button("Continue", 	3/8.0f, 7/8.0f, () -> Menu.view = WORLD),
-					new Button("Worlds", 	3/8.0f, 5/8.0f, () -> Menu.view = WORLDS),
-					new Button("Settings", 	3/8.0f, 3/8.0f, () -> Menu.view = SETTINGS),
-					new Button("Exit", 		3/8.0f, 1/8.0f, () -> Main.beenden = true)
+					new Button("Continue", 	3/8.0f, 7/8.0f, new Runnable(){public void run(){View.WORLD.set();}}),
+					new Button("Worlds", 	3/8.0f, 5/8.0f, new Runnable(){public void run(){View.WORLDS.set();}}),
+					new Button("Settings", 	3/8.0f, 3/8.0f, new Runnable(){public void run(){View.SETTINGS.set();}}),
+					new Button("Exit", 		3/8.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
 				};
 			}
 		},
@@ -146,10 +146,15 @@ public class Menu {
 				components = new Component[4];
 
 				int i = 0;
-				components[i++] = new Button("Play!", 		3/8.0f, 7/8.0f, () -> Menu.view = WORLD);
-				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, () -> Menu.view = WORLDS);
-				components[i++] = new Button("New World",	3/8.0f, 3/8.0f, () -> Menu.view = SETTINGS);
-				components[i++] = new Button("Back..",		3/8.0f, 1/8.0f, () -> Main.beenden = true);
+				components[i++] = new Button("Play!", 		3/8.0f, 7/8.0f, new Runnable(){public void run(){WORLD.set();}});
+				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = WORLDS;}});
+				components[i++] = new Button("New World",	3/8.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = SETTINGS;}});
+				components[i++] = new Button("Back..",		3/8.0f, 1/8.0f, new Runnable(){public void run(){Menu.view = MAIN2;}});
+			}
+		},
+		SETTINGS(true){
+			void setup(){
+				
 			}
 		},
 		MAIN(true){
