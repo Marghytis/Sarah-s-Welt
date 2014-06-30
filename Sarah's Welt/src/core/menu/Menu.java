@@ -102,6 +102,16 @@ public class Menu {
 	}
 	
 	public enum View {
+		MAIN2(true){
+			void setup(){
+				components = new Component[]{
+					new Button("Continue", 	3/8.0f, 7/8.0f, () -> Menu.view = WORLD),
+					new Button("Worlds", 	3/8.0f, 5/8.0f, () -> Menu.view = WORLDS),
+					new Button("Settings", 	3/8.0f, 3/8.0f, () -> Menu.view = SETTINGS),
+					new Button("Exit", 		3/8.0f, 1/8.0f, () -> Main.beenden = true)
+				};
+			}
+		},
 		WORLD(false){
 			
 			Quad health = new Quad(0.45f, 0.595f, 0.1f, 0.01f);
@@ -129,6 +139,17 @@ public class Menu {
 				health.outline();
 				mana.outline();
 				GL11.glColor3f(1, 1, 1);
+			}
+		},
+		WORLDS(true){
+			void setup(){
+				components = new Component[4];
+
+				int i = 0;
+				components[i++] = new Button("Play!", 		3/8.0f, 7/8.0f, () -> Menu.view = WORLD);
+				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, () -> Menu.view = WORLDS);
+				components[i++] = new Button("New World",	3/8.0f, 3/8.0f, () -> Menu.view = SETTINGS);
+				components[i++] = new Button("Back..",		3/8.0f, 1/8.0f, () -> Main.beenden = true);
 			}
 		},
 		MAIN(true){
