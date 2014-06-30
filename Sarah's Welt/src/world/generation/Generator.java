@@ -186,7 +186,6 @@ public class Generator {
 	public class Structure {
 		public StructureType type = StructureType.FLAT;
 		public int level;
-		public int index;
 		public int stepPos;
 		
 		public Structure(int level){
@@ -199,8 +198,7 @@ public class Generator {
 				stepPos++;
 				if(stepPos >= type.steps.length){
 					if(random.nextInt(10) < 1 && zone.type.possibleStructures[level].length != 0){
-						index = random.nextInt(zone.type.possibleStructures[level].length);
-						type = zone.type.possibleStructures[level][index];
+						type = zone.type.possibleStructures[level][random.nextInt(zone.type.possibleStructures[level].length)];
 					} else {
 						type = StructureType.FLAT;
 					}
@@ -210,8 +208,7 @@ public class Generator {
 				stepPos--;
 				if(stepPos <= -1){
 					if(random.nextInt(10) < 1 && zone.type.possibleStructures[level].length != 0){
-						index = random.nextInt(zone.type.possibleStructures[level].length);
-						type = zone.type.possibleStructures[level][index];
+						type = zone.type.possibleStructures[level][random.nextInt(zone.type.possibleStructures[level].length)];
 					} else {
 						type = StructureType.FLAT;
 					}

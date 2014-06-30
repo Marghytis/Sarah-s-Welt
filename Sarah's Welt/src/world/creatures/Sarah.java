@@ -56,9 +56,6 @@ public class Sarah extends WalkingCreature {
 		maxSpeed = 10;
 		animator.doOnReady = () -> {
 			if(g){
-				if(animator.animation == castSpell){
-					System.out.println("Test");
-				}
 				if(!ridingCow){
 					animator.animation = stand;
 				} else if(animator.animation == dismountCow){

@@ -19,6 +19,7 @@ import world.creatures.Creature.CreatureType;
 import world.creatures.Sarah;
 import world.generation.Generator;
 import world.generation.Generator.Structure;
+import world.generation.Generator.StructureType;
 import world.generation.Layer;
 import world.generation.Layer.AimLayer;
 import world.worldObjects.WorldObject;
@@ -465,7 +466,7 @@ public class World {
         	i = 1;
             p.setBoolean(i++, true);
             p.setInt(i++, structure.level);
-            p.setInt(i++, structure.index);
+            p.setInt(i++, structure.type.ordinal());
             p.setInt(i++, structure.stepPos);
             p.addBatch();
         }
@@ -473,7 +474,7 @@ public class World {
         	i = 1;
             p.setBoolean(i++, false);
             p.setInt(i++, structure.level);
-            p.setInt(i++, structure.index);
+            p.setInt(i++, structure.type.ordinal());
             p.setInt(i++, structure.stepPos);
             p.addBatch();
         }
@@ -559,13 +560,11 @@ public class World {
         	int stepPos = ergebnis.getInt("stepPos");
         	
         	if(right){
-        		rightGenerator.levels[level].index = index;
         		rightGenerator.levels[level].stepPos = stepPos;
-        		rightGenerator.levels[level].type = rightGenerator.zone.type.possibleStructures[level][index];
+        		rightGenerator.levels[level].type = StructureType.values()[index];
         	} else {
-        		leftGenerator.levels[level].index = index;
         		leftGenerator.levels[level].stepPos = stepPos;
-        		leftGenerator.levels[level].type = leftGenerator.zone.type.possibleStructures[level][index];
+        		leftGenerator.levels[level].type = StructureType.values()[index];
         	}
         }
         ergebnis.close();

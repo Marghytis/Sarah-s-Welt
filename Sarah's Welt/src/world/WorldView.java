@@ -346,7 +346,7 @@ public class WorldView {
 					switch(Keyboard.getEventKey()){
 					case Keyboard.KEY_D : World.sarah.mirrored = false; break;
 					case Keyboard.KEY_A : World.sarah.mirrored = true; break;
-					case Keyboard.KEY_W: World.sarah.jump(); break;
+					case Keyboard.KEY_SPACE: World.sarah.jump(); break;
 					case Keyboard.KEY_E: World.sarah.dismountCow(); break;
 					case Keyboard.KEY_F: Menu.componentPressed(View.DEBUG.components[0]); break;
 					case Keyboard.KEY_I:
@@ -360,7 +360,6 @@ public class WorldView {
 					
 				}
 			}
-			System.out.println(Keyboard.getEventCharacter());
 		}
 	}
 	
