@@ -1,5 +1,9 @@
 package core.menu;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.List;
+
 import item.Inventory;
 
 import org.lwjgl.input.Keyboard;
@@ -105,10 +109,10 @@ public class Menu {
 		MAIN2(true){
 			void setup(){
 				components = new Component[]{
-					new Button("Continue", 	3/8.0f, 7/8.0f, new Runnable(){public void run(){View.WORLD.set();}}),
-					new Button("Worlds", 	3/8.0f, 5/8.0f, new Runnable(){public void run(){View.WORLDS.set();}}),
-					new Button("Settings", 	3/8.0f, 3/8.0f, new Runnable(){public void run(){View.SETTINGS.set();}}),
-					new Button("Exit", 		3/8.0f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
+					new Button("Continue", 	3/8.0f, 7/8.0f, () -> View.WORLD.set()),
+					new Button("Worlds", 	3/8.0f, 5/8.0f, () -> View.WORLDS.set()),
+					new Button("Settings", 	3/8.0f, 3/8.0f, () -> View.SETTINGS.set()),
+					new Button("Exit", 		3/8.0f, 1/8.0f, () -> Main.beenden = true)
 				};
 			}
 		},
@@ -142,14 +146,41 @@ public class Menu {
 			}
 		},
 		WORLDS(true){
+			
+			Component[] worlds;
+			
 			void setup(){
-				components = new Component[4];
+				List<String> worldNames = new ArrayList<>();
+				try{
+					BufferedReader r = new BufferedReader(new FileReader("worlds/worlds.pf"));
+					String line = "";
+					while((line = r.readLine()) != null){
+						worldNames.add(line);
+					}
+				} catch (IOException e){
+					e.printStackTrace();
+				}
+				
+				components = new Component[4 + worldNames.size()];
 
 				int i = 0;
-				components[i++] = new Button("Play!", 		3/8.0f, 7/8.0f, new Runnable(){public void run(){WORLD.set();}});
-				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, new Runnable(){public void run(){Menu.view = WORLDS;}});
-				components[i++] = new Button("New World",	3/8.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = SETTINGS;}});
-				components[i++] = new Button("Back..",		3/8.0f, 1/8.0f, new Runnable(){public void run(){Menu.view = MAIN2;}});
+				components[i++] = new Button("Play!", 		3/8.0f, 7/8.0f, () -> WORLD.set());
+				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, () -> WORLDS.);
+				components[i++] = new Button("New World",	3/8.0f, 3/8.0f, () -> NEW_WORLD.set());
+				components[i++] = new Button("Back..",		3/8.0f, 1/8.0f, () -> Menu.view = MAIN2);
+
+				for(String wName : worldNames){
+					components[i++] = new Button(wName,		3/8.0f, 1/8.0f, () -> Menu.view = MAIN2);
+				}
+
+				worlds = new Component[worldNames.size()];
+				
+				System.arraycopy(components, 4, worlds, 0, worldNames.size());
+			}
+		},
+		NEW_WORLD(true){
+			void setup(){
+				
 			}
 		},
 		SETTINGS(true){
@@ -161,34 +192,31 @@ public class Menu {
 			@Override
 			void setup(){
 				components = new Component[]{
-					new Button("New World", 3/16.0f, 15/16.0f, new Runnable(){@Override
-					public void run(){
+					new Button("New World", 3/16.0f, 15/16.0f, () -> {
+					
 						String worldName =  View.MAIN.components[1].text;
 						if(worldName != "" && worldName != null){
 							World.load(worldName);
 							WorldView.reset();
-						}}}),
+						}
+						}),
 					new Textfield("WorldName", 8/16.0f, 15/16.0f, 300, 60, () -> {
 						View.MAIN.components[0].action.run();
 						View.MAIN.components[1].state = false;}),
-					new Button("Continue", 3/16.0f, 13/16.0f, new Runnable(){@Override
-					public void run(){Menu.view = WORLD;}}),
-					new Button("Save World", 3/16.0f, 11/16.0f, new Runnable(){@Override
-					public void run(){World.save();}}),
-					new Button("Load World", 3/16.0f, 9/16.0f, new Runnable(){@Override
-					public void run(){
+					new Button("Continue", 3/16.0f, 13/16.0f, () -> Menu.view = WORLD),
+					new Button("Save World", 3/16.0f, 11/16.0f, () -> World.save()),
+					new Button("Load World", 3/16.0f, 9/16.0f, () -> {
+					
 						String worldName =  View.MAIN.components[5].text;
 						if(worldName != "" && worldName != null){
 							World.load(worldName);
 							WorldView.reset();
-						}}}),
+						}}),
 					new Textfield("WorldName", 8/16.0f, 9/16.0f, 300, 60, () -> {
 						View.MAIN.components[4].action.run();
 						View.MAIN.components[5].state = false;}),
-					new Button("Options", 3/16.0f, 4/16.0f, new Runnable(){@Override
-					public void run(){Menu.view = OPTIONS;}}),
-					new Button("Exit", 3/16.0f, 2/16.0f, new Runnable(){@Override
-					public void run(){Main.beenden = true;}})
+					new Button("Options", 3/16.0f, 4/16.0f, () -> OPTIONS.set()),
+					new Button("Exit", 3/16.0f, 2/16.0f, () -> Main.beenden = true)
 				};
 			}
 		},
@@ -212,11 +240,9 @@ public class Menu {
 			@Override
 			void setup(){
 				components = new Component[]{
-						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){@Override
-						public void run(){CONTROLS.set();}}),
+						new Button("Controls", 1/2.0f, 5/8.0f, () -> CONTROLS.set()),
 						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; /*Res.test.stop();*/}),
-						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){@Override
-						public void run(){MAIN.set();}})
+						new Button("Back", 1/2.0f, 1/8.0f, () -> MAIN.set())
 				};
 			}
 		},
@@ -253,8 +279,7 @@ public class Menu {
 		CONTROLS(true){
 			@Override
 			void setup(){
-				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){@Override
-				public void run(){MAIN.set();}})};
+				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, () -> MAIN.set())};
 			}
 			String text = 	"ESC : Main menu\n"
 					+ 	"A : left\n"
@@ -274,8 +299,7 @@ public class Menu {
 		DEATH(true){
 			@Override
 			void setup(){
-				components = new Component[]{ new Button("Main Menu", -10000, -10000, new Runnable(){@Override
-				public void run(){view = MAIN;}})};
+				components = new Component[]{ new Button("Main Menu", -10000, -10000, () -> view = MAIN)};
 			}
 			
 			Animator ani = new Animator(Res.SARAH_DEATH, () -> showButton(), new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
@@ -334,6 +358,7 @@ public class Menu {
 		
 		public void set(){
 			Menu.view = this;
+			setup();
 		}
 	}
 }
