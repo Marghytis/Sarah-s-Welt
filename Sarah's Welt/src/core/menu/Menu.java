@@ -1,9 +1,5 @@
 package core.menu;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.List;
-
 import item.Inventory;
 
 import org.lwjgl.input.Keyboard;
@@ -150,32 +146,18 @@ public class Menu {
 			Component[] worlds;
 			
 			void setup(){
-				List<String> worldNames = new ArrayList<>();
-				try{
-					BufferedReader r = new BufferedReader(new FileReader("worlds/worlds.pf"));
-					String line = "";
-					while((line = r.readLine()) != null){
-						worldNames.add(line);
-					}
-				} catch (IOException e){
-					e.printStackTrace();
-				}
 				
-				components = new Component[4 + worldNames.size()];
-
+				components = new Component[4 + Main.worlds.size()];
+				
 				int i = 0;
 				components[i++] = new Button("Play!", 		3/8.0f, 7/8.0f, () -> WORLD.set());
-				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, () -> WORLDS.);
+				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, () -> WORLD.set());
 				components[i++] = new Button("New World",	3/8.0f, 3/8.0f, () -> NEW_WORLD.set());
 				components[i++] = new Button("Back..",		3/8.0f, 1/8.0f, () -> Menu.view = MAIN2);
 
-				for(String wName : worldNames){
-					components[i++] = new Button(wName,		3/8.0f, 1/8.0f, () -> Menu.view = MAIN2);
+				for(WorldO world : Main.worlds){
+					components[i++] = new ListElement(world.name, 3/8.0f, 1/8.0f, () -> Menu.view = MAIN2);
 				}
-
-				worlds = new Component[worldNames.size()];
-				
-				System.arraycopy(components, 4, worlds, 0, worldNames.size());
 			}
 		},
 		NEW_WORLD(true){

@@ -1,5 +1,11 @@
 package core;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
@@ -11,7 +17,9 @@ import world.WorldView;
 import core.menu.Menu;
 
 public class Main {
-
+	
+	public static List<WorldO> worlds;
+	
 	public static void main(String[] args){
 		
 		Window.create("Sarahs Welt 1.0", 1200, 800);
@@ -82,6 +90,20 @@ public class Main {
 			Menu.mouseListening();
 		} else {
 			WorldView.mouseListening();
+		}
+	}
+	
+	public static void loadWorlds(){
+
+		List<String> worldNames = new ArrayList<>();
+		try{
+			BufferedReader r = new BufferedReader(new FileReader("worlds/worlds"));
+			String line = "";
+			while((line = r.readLine()) != null){
+				worldNames.add(line);
+			}
+		} catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 }
