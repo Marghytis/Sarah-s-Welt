@@ -1,7 +1,9 @@
 package core;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class Main {
 	public static List<WorldO> worlds;
 	
 	public static void main(String[] args){
+		
+		loadWorlds();
 		
 		Window.create("Sarahs Welt 1.0", 1200, 800);
 //		Window.createFullScreen("Sarahs Welt");
@@ -56,6 +60,7 @@ public class Main {
 		}
 		
 //		Res.test.stop();
+		saveWorlds();
 		Res.unload();
 		Display.destroy();
 	}
@@ -95,14 +100,30 @@ public class Main {
 	
 	public static void loadWorlds(){
 
-		List<String> worldNames = new ArrayList<>();
+		worlds = new ArrayList<>();
 		try{
 			BufferedReader r = new BufferedReader(new FileReader("worlds/worlds"));
 			String line = "";
 			while((line = r.readLine()) != null){
-				worldNames.add(line);
+				String[] args = line.split(";");
+				WorldO world = new WorldO(args[0]); 
+				worlds.add(world);
+				world.last = Boolean.parseBoolean(args[1]);
 			}
+			r.close();
 		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void saveWorlds(){
+		try {
+			BufferedWriter w = new BufferedWriter(new FileWriter("worlds/worlds"));
+			for(WorldO world : worlds){
+				w.write(world.name + ";" + world.last + "\n");
+			}
+			w.close();
+		} catch(IOException e){
 			e.printStackTrace();
 		}
 	}

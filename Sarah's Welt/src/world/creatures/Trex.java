@@ -1,5 +1,7 @@
 package world.creatures;
 
+import item.Inventory;
+import item.Item;
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -93,6 +95,10 @@ public class Trex extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
+	}
+	
+	public void onDeath(){
+		Inventory.addItem(Item.horn);
 	}
 
 	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){

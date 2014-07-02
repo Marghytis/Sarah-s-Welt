@@ -8,8 +8,11 @@ import core.Window;
 
 public class ListElement extends Component{
 
-	public ListElement(float x, float y, float width, float height, String name, String text, Runnable onClick) {
+	public int index;
+	
+	public ListElement(int index, float x, float y, float width, float height, String name, String text, Runnable onClick) {
 		super(x, y, width, height, name, text, onClick);
+		this.index = index;
 	}
 
 	public void render() {
@@ -17,7 +20,11 @@ public class ListElement extends Component{
 		TextureFile.bindNone();
 		GL11.glPushMatrix();
 		GL11.glTranslatef((x*Window.WIDTH) - (size.x/2), (y*Window.HEIGHT) - (size.y/2), 0);
-		GL11.glColor4f(1, 1, 1, 0.7f);
+		if(state){
+			GL11.glColor4f(1, 0.8f, 0.8f, 0.5f);
+		} else {
+			GL11.glColor4f(1, 1, 1, 0.7f);
+		}
 		draw();
 		
 		GL11.glColor4f(0, 0, 0, 1);

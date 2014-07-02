@@ -341,6 +341,7 @@ public class WorldView {
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
 				Menu.view = View.MAIN;
+				World.save();
 			} else {
 				if(Keyboard.getEventKeyState()){
 					switch(Keyboard.getEventKey()){

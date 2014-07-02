@@ -2,6 +2,8 @@ package core.menu;
 
 import item.Inventory;
 
+import java.io.File;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -16,6 +18,7 @@ import world.WorldView;
 import core.Main;
 import core.Settings;
 import core.Window;
+import core.WorldO;
 import core.geom.Quad;
 
 public class Menu {
@@ -30,7 +33,7 @@ public class Menu {
 		while(Keyboard.next()){
 			boolean textfield = false;
 			for(Component c : view.components){
-				if(c instanceof Textfield && c.state){
+				if(c != null && c instanceof Textfield && c.state){
 					textfield = true;
 					if(Keyboard.getEventKeyState())((Textfield)c).keyListening();
 				}
@@ -58,13 +61,13 @@ public class Menu {
 			if(Mouse.getEventButton() == 0){
 				if(Mouse.getEventButtonState()){
 					for(Component c : view.components){
-						if(c.contains(Mouse.getEventX(), Mouse.getEventY())){
+						if(c != null && c.contains(Mouse.getEventX(), Mouse.getEventY())){
 							componentPressed(c);
 						}
 					}
 				} else {
 					for(Component c : view.components){
-						componentReleased(c);
+						if(c != null) componentReleased(c);
 					}
 				}
 			}
@@ -102,13 +105,13 @@ public class Menu {
 	}
 	
 	public enum View {
-		MAIN2(true){
+		MAIN(true){
 			void setup(){
 				components = new Component[]{
-					new Button("Continue", 	3/8.0f, 7/8.0f, () -> View.WORLD.set()),
-					new Button("Worlds", 	3/8.0f, 5/8.0f, () -> View.WORLDS.set()),
-					new Button("Settings", 	3/8.0f, 3/8.0f, () -> View.SETTINGS.set()),
-					new Button("Exit", 		3/8.0f, 1/8.0f, () -> Main.beenden = true)
+					new Button("Continue", 	0.5f, 7/8.0f, new Runnable(){public void run(){View.WORLD.set();}}),
+					new Button("Worlds", 	0.5f, 5/8.0f, new Runnable(){public void run(){View.WORLDS.set();}}),
+					new Button("Settings", 	0.5f, 3/8.0f, new Runnable(){public void run(){View.SETTINGS.set();}}),
+					new Button("Exit", 		0.5f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
 				};
 			}
 		},
@@ -148,83 +151,88 @@ public class Menu {
 			void setup(){
 				
 				components = new Component[4 + Main.worlds.size()];
+				worlds = new Component[Main.worlds.size()];
 				
 				int i = 0;
-				components[i++] = new Button("Play!", 		3/8.0f, 7/8.0f, () -> WORLD.set());
-				components[i++] = new Button("Delete", 		3/8.0f, 5/8.0f, () -> WORLD.set());
-				components[i++] = new Button("New World",	3/8.0f, 3/8.0f, () -> NEW_WORLD.set());
-				components[i++] = new Button("Back..",		3/8.0f, 1/8.0f, () -> Menu.view = MAIN2);
+				components[i++] = new Button("Play!", 		2/8.0f, 6/8.0f, new Runnable(){public void run(){
+					for(Component world : worlds){
+						if(world.state){
+							World.load(world.text);
+						}
+					}
+				}});
+				components[i++] = new Button("Delete", 		2/8.0f, 5/8.0f, new Runnable(){public void run(){
+					for(int i = 0; i < worlds.length; i++){
+						if(worlds[i] != null && worlds[i].state){
+							(new File("worlds/" + worlds[i].name)).delete();
+							Main.worlds.remove(worlds[i]);
+							worlds[i] = null;
+							components[i + 4] = null;
+						}
+					}
+				}});
+				components[i++] = new Button("New World",	2/8.0f, 4/8.0f, new Runnable(){public void run(){NEW_WORLD.set();}});
+				components[i++] = new Button("Back..",		2/8.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = MAIN;}});
 
 				for(WorldO world : Main.worlds){
-					components[i++] = new ListElement(world.name, 3/8.0f, 1/8.0f, () -> Menu.view = MAIN2);
+					components[i++] = new ListElement(i-5/*!*/, 6/8.0f, 0.8f - ((i-5)*1/8.0f), 300, 60, "World" + i, world.name, new Runnable(){public void run(){Menu.view = MAIN;}});
+					worlds[i - 5] = components[i-1];
 				}
 			}
 		},
 		NEW_WORLD(true){
 			void setup(){
-				
+				components = new Component[]{
+						new Button("Create!", 0.5f, 2/8.0f, new Runnable(){public void run(){{
+							
+							String worldName =  View.NEW_WORLD.components[1].text;
+							if(worldName != "" && worldName != null){
+								World.load(worldName);
+								WorldView.reset();
+								WORLD.set();
+							}
+							};}}),
+						new Textfield("", 0.5f, 0.5f, 300, 60, new Runnable(){public void run(){
+							View.NEW_WORLD.components[0].action.run();
+							View.NEW_WORLD.components[1].state = false;}}),
+						new Button("Back..", 0.5f, 1/8.0f, new Runnable(){public void run(){Menu.view = MAIN;}})
+				};
 			}
 		},
 		SETTINGS(true){
 			void setup(){
-				
-			}
-		},
-		MAIN(true){
-			@Override
-			void setup(){
 				components = new Component[]{
-					new Button("New World", 3/16.0f, 15/16.0f, () -> {
-					
-						String worldName =  View.MAIN.components[1].text;
-						if(worldName != "" && worldName != null){
-							World.load(worldName);
-							WorldView.reset();
-						}
-						}),
-					new Textfield("WorldName", 8/16.0f, 15/16.0f, 300, 60, () -> {
-						View.MAIN.components[0].action.run();
-						View.MAIN.components[1].state = false;}),
-					new Button("Continue", 3/16.0f, 13/16.0f, () -> Menu.view = WORLD),
-					new Button("Save World", 3/16.0f, 11/16.0f, () -> World.save()),
-					new Button("Load World", 3/16.0f, 9/16.0f, () -> {
-					
-						String worldName =  View.MAIN.components[5].text;
-						if(worldName != "" && worldName != null){
-							World.load(worldName);
-							WorldView.reset();
-						}}),
-					new Textfield("WorldName", 8/16.0f, 9/16.0f, 300, 60, () -> {
-						View.MAIN.components[4].action.run();
-						View.MAIN.components[5].state = false;}),
-					new Button("Options", 3/16.0f, 4/16.0f, () -> OPTIONS.set()),
-					new Button("Exit", 3/16.0f, 2/16.0f, () -> Main.beenden = true)
+						new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	9/12.0f, new Runnable(){public void run(){Settings.health = View.DEBUG.components[0].state;}}),
+						new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	7/12.0f, new Runnable(){public void run(){Settings.shader = View.DEBUG.components[1].state;}}),
+						new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	5/12.0f, new Runnable(){public void run(){Settings.shader = View.DEBUG.components[2].state;}}),
+						new Button("Help Controls",											1/2.0f, 	3/12.0f, new Runnable(){public void run(){CONTROLS.set();}}),
+						new Button("Back", 													6/8.0f,		1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};
 			}
 		},
 		DEBUG(true){
 			@Override
 			void setup(){
-				components = new Component[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, () -> Settings.flying = View.DEBUG.components[0].state),
-										new ToggleButton("Textures enabled", "Textures disabled", true,		1/2.0f, 	9/12.0f, () -> Settings.debugView = View.DEBUG.components[1].state),
-										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, () -> Settings.hitbox = View.DEBUG.components[2].state),
-										new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	5/12.0f, () -> Settings.health = View.DEBUG.components[3].state),
-										new ToggleButton("Creatures agressive", "Creatures friendly", true,	1/2.0f, 	3/12.0f, () -> Settings.agro = View.DEBUG.components[4].state),
-										new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	1/12.0f, () -> Settings.shader = View.DEBUG.components[5].state),
+				components = new Component[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, new Runnable(){public void run(){Settings.flying = View.DEBUG.components[0].state;}}),
+										new ToggleButton("Textures enabled", "Textures disabled", true,		1/2.0f, 	9/12.0f, new Runnable(){public void run(){Settings.debugView = View.DEBUG.components[1].state;}}),
+										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, new Runnable(){public void run(){Settings.hitbox = View.DEBUG.components[2].state;}}),
+										new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	5/12.0f, new Runnable(){public void run(){Settings.health = View.DEBUG.components[3].state;}}),
+										new ToggleButton("Creatures agressive", "Creatures friendly", true,	1/2.0f, 	3/12.0f, new Runnable(){public void run(){Settings.agro = View.DEBUG.components[4].state;}}),
+										new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	1/12.0f, new Runnable(){public void run(){Settings.shader = View.DEBUG.components[5].state;}}),
 										
-										new ToggleButton("Time running", "Time stopped", true, 				3/4.0f, 	9/12.0f, () -> Settings.time = View.DEBUG.components[6].state),
-										new Button("Set morning",								 			3/4.0f, 	7/12.0f, () -> Calendar.setMorning()),
-										new Button("Set evening",											3/4.0f, 	5/12.0f, () -> Calendar.setEvening()),
-										new Button("Boost Health",											1/4.0f, 	5/12.0f, () -> World.sarah.health += 5)};
+										new ToggleButton("Time running", "Time stopped", true, 				3/4.0f, 	9/12.0f, new Runnable(){public void run(){Settings.time = View.DEBUG.components[6].state;}}),
+										new Button("Set morning",								 			3/4.0f, 	7/12.0f, new Runnable(){public void run(){Calendar.setMorning();}}),
+										new Button("Set evening",											3/4.0f, 	5/12.0f, new Runnable(){public void run(){Calendar.setEvening();}}),
+										new Button("Boost Health",											1/4.0f, 	5/12.0f, new Runnable(){public void run(){World.sarah.health += 5;}})};
 			}
 		},
 		OPTIONS(true){
 			@Override
 			void setup(){
 				components = new Component[]{
-						new Button("Controls", 1/2.0f, 5/8.0f, () -> CONTROLS.set()),
-						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, () -> {Settings.sound = !Settings.sound; /*Res.test.stop();*/}),
-						new Button("Back", 1/2.0f, 1/8.0f, () -> MAIN.set())
+						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){CONTROLS.set();}}),
+						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, new Runnable(){public void run(){{Settings.sound = !Settings.sound; /*Res.test.stop();*/};}}),
+						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};
 			}
 		},
@@ -261,15 +269,14 @@ public class Menu {
 		CONTROLS(true){
 			@Override
 			void setup(){
-				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, () -> MAIN.set())};
+				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){SETTINGS.set();}})};
 			}
 			String text = 	"ESC : Main menu\n"
 					+ 	"A : left\n"
 					+ 	"D : right\n"
 					+ 	"   + S : crouch\n"
 					+ 	"   + LSHIFT : crouch\n"
-					+ 	"W : jump\n"
-					+ 	"SPACE : punch/kick\n";
+					+ 	"SPACE : jump\n";
 			@Override
 			public void render(){
 				super.render();
@@ -281,10 +288,10 @@ public class Menu {
 		DEATH(true){
 			@Override
 			void setup(){
-				components = new Component[]{ new Button("Main Menu", -10000, -10000, () -> view = MAIN)};
+				components = new Component[]{ new Button("Main Menu", -10000, -10000, new Runnable(){public void run(){view = MAIN;}})};
 			}
 			
-			Animator ani = new Animator(Res.SARAH_DEATH, () -> showButton(), new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
+			Animator ani = new Animator(Res.SARAH_DEATH, new Runnable(){public void run(){showButton();}}, new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
 			
 			@Override
 			public void set(){
@@ -334,7 +341,7 @@ public class Menu {
 		
 		public void render(){
 			for(Component b : components){
-				b.render();
+				if(b != null) b.render();
 			}
 		}
 		

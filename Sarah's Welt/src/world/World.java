@@ -24,6 +24,8 @@ import world.generation.Layer;
 import world.generation.Layer.AimLayer;
 import world.worldObjects.WorldObject;
 import world.worldObjects.WorldObject.ObjectType;
+import core.Main;
+import core.WorldO;
 import core.geom.Vec;
 
 public class World {
@@ -74,6 +76,17 @@ public class World {
 	@SuppressWarnings("unchecked")
 	public static void load(String name){
 		World.name = name;
+		boolean exists = false;
+		for(WorldO world : Main.worlds){
+			if(world.name == name){
+				exists = true;
+				world.last = true;
+			}
+		}
+		if(!exists){
+			Main.worlds.add(new WorldO(name));
+			Main.worlds.get(Main.worlds.size()-1).last = true;
+		}
 			//setup things
 		sarah = new Sarah(new Vec(0, 5), null);
 		
