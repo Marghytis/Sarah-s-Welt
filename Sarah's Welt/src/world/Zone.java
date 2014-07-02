@@ -18,6 +18,7 @@ import world.creatures.Scorpion;
 import world.creatures.Snail;
 import world.creatures.Trex;
 import world.creatures.Unicorn;
+import world.creatures.Zombie;
 import world.generation.Generator.StructureType;
 import world.generation.Layer.AimLayer;
 import world.generation.ThingSpawner;
@@ -34,6 +35,7 @@ import world.worldObjects.Fossil;
 import world.worldObjects.GiantGras;
 import world.worldObjects.GiantPlant;
 import world.worldObjects.Grass_tuft;
+import world.worldObjects.Grave;
 import world.worldObjects.JungleBush;
 import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
@@ -111,6 +113,15 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnObject(new Cactus(random.nextInt(3), new Vec(), null), node, 0, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 100),
+									
+									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
+				}),
+		CEMETERY( new AimLayer[]{new AimLayer(Material.SOIL, 10, 0.2f, 98), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
+				new StructureType[][]{{StructureType.FLAT, StructureType.RAISING}, {}, {}},
+				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Bird(3, new Vec(), null), node, 100, random), 1, 10),
+									new ThingSpawner((node, random) -> spawnCreature(new Zombie(new Vec(), null), node, 2, random), 4, 30),
+									
+									new ThingSpawner((node, random) -> spawnObject(new Grave(random.nextInt(7), new Vec(), null), node, 0, random), 1, 300),
 									
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),

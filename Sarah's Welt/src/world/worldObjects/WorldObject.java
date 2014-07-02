@@ -35,6 +35,7 @@ public abstract class WorldObject extends Thing{
 		CLOUD(Cloud::createNewObject),
 		CRACK(Crack::createNewObject),
 		FOSSIL(Fossil::createNewObject),
+		GRAVE(Grave::createNewObject),
 		;
 		
 		public Creator create;

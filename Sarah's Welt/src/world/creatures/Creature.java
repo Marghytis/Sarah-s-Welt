@@ -95,6 +95,7 @@ public abstract class Creature extends Thing {
 		UNICORN(Unicorn::createNewCreature),
 		SCORPION(Scorpion::createNewCreature),
 		TREX(Trex::createNewCreature),
+		ZOMBIE(Zombie::createNewCreature),
 		;
 		
 		public Creator create;

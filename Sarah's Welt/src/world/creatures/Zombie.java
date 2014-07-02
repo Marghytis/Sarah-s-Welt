@@ -1,7 +1,5 @@
 package world.creatures;
 
-import item.Inventory;
-import item.Item;
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -11,29 +9,25 @@ import world.World;
 import core.Settings;
 import core.geom.Vec;
 
-public class Trex extends WalkingCreature {
+public class Zombie extends WalkingCreature {
 	
-	static Animation stand = new Animation(0, 0);
-	static Animation walk = new Animation(8, 0, true, 0, 1, 2, 3, 4, 5, 6, 7);
-	static Animation punch1 = new Animation(5, 1 , false, 0, 1, 2, 3, 4, 3, 2, 1);
-//	static Animation punch2 = new Animation(5, 2, false, 0, 1, 2, 3, 4, 5, 6, 7, 8);
-//	static Animation chew = new Animation(5, 3, false, 0, 1, 2, 3);
+	static Animation stand = new Animation(0, 3);
+	static Animation hitt = new Animation(0, 3);
+	static Animation walk = new Animation(10, 0, true, 0, 1, 2, 3, 2, 1);
+	static Animation punch = new Animation(5, 1, false, 1, 2, 1);
 	
-	public Trex(Vec p, Node worldLink){
-		super(new Animator(Res.TREX, stand), p, worldLink, false, CreatureType.TREX);
+	public Zombie(Vec p, Node worldLink){
+		super(new Animator(Res.ZOMBIE, stand), p, worldLink, false, CreatureType.ZOMBIE);
 //		hitradius = 50;
-		maxSpeed = 2;
+		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
-		health = 30;
-		punchStrength = 5;
+		health = 10;
+		punchStrength = 1;
 	}
 	
 	@Override
 	public void update(int dTime){
 		if(g){
-//			pos.y++;
-//			accelerateFromGround(new Point(0, 0.001f));
-			
 			walkingAI(dTime);
 		} else {
 			acc.shift(0, -0.00005f);
@@ -65,19 +59,19 @@ public class Trex extends WalkingCreature {
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 90000){
+		if(pos.minus(World.sarah.pos).lengthSqare() < 22500){
 			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
 				dir = 1;
 			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
 				dir = -1;
 			} else {
 				dir = 0;
-				animator.setAnimation(punch1);
+				animator.setAnimation(punch);
 			}
-			maxSpeed = 4;
+			maxSpeed = 6;
 			return true;
 		} else {
-			maxSpeed = 2;
+			maxSpeed = 3;
 			return false;
 		}
 	}
@@ -87,26 +81,23 @@ public class Trex extends WalkingCreature {
 		super.beforeRender();
 		
 		if(hit > 0){
-//			animator.setAnimation(hitt);
-		} else if(!animator.animation.equals(punch1)){
+			animator.setAnimation(hitt);
+		} else if(!animator.animation.equals(punch)){
 			if(vP != 0){
 				animator.setAnimation(walk);
 			} else {
 				animator.setAnimation(stand);
 			}
 		}
-	}
-	
-	public void onDeath(){
-		Inventory.addItem(Item.axe);
+		if(g)alignWithGround();
 	}
 
 	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
 
-		Trex t = new Trex(new Vec(x, y), worldLink);
-		t.vel.set(vX, vY);
-		t.health = health;
-		return t;
+		Zombie r = new Zombie(new Vec(x, y), worldLink);
+		r.vel.set(vX, vY);
+		r.health = health;
+		return r;
 	}
 
 	@Override

@@ -34,6 +34,7 @@ public class Res {
 	public static final StackedTextures CANDY_FLOWER = new StackedTextures("worldObjects/Candy", 1, 6, -0.5f, 0f);
 	public static final StackedTextures CRACK = new StackedTextures("worldObjects/Crack", 1, 4, -0.5f, -0.5f);
 	public static final StackedTextures FOSSIL = new StackedTextures("worldObjects/Fossil", 1, 3, -0.5f, -0.5f);
+	public static final StackedTextures GRAVE = new StackedTextures("worldObjects/Grave", 1, 7, -0.5f, -0.05f);
 
 	public static final Texture FLOWER_LIGHT = new Texture("Light_dimmed");
 	
@@ -49,6 +50,7 @@ public class Res {
 	public static final StackedTextures UNICORN  = new StackedTextures("creatures/Unicorn", 6, 3, -0.5f, -0.1f);
 	public static final StackedTextures UNICORN_HAIR  = new StackedTextures("creatures/Unicorn_hair", 6, 3, -0.5f, -0.1f);
 	public static final StackedTextures TREX  = new StackedTextures("creatures/Trex", 9, 4, -0.5f, -0.05f);
+	public static final StackedTextures ZOMBIE  = new StackedTextures("creatures/Zombie", 4, 2, -0.5f, -0.05f);
 
 	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 10, -0.5f, -0.1f);
 	public static final List<int[][]> SARAH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt", 3);
