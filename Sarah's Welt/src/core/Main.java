@@ -1,5 +1,8 @@
 package core;
 
+import item.Inventory;
+import item.Item;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -35,6 +38,8 @@ public class Main {
 		Res.load();
 		World.load("TestWelt");
 		WorldView.reset();
+		
+		Inventory.addItem(Item.horn);
 		
 		long timeLastWorldTick = System.currentTimeMillis();
 		while(!Display.isCloseRequested() && !beenden){

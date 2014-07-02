@@ -42,7 +42,7 @@ public class Res {
 	public static final StackedTextures BUTTERFLY  = new StackedTextures("creatures/Butterfly", 5, 2, -0.5f, -0.5f);
 	public static final StackedTextures HEART = new StackedTextures("creatures/Heart", 4, 2, -0.5f, -0.2f);
 	public static final StackedTextures RABBIT  = new StackedTextures("creatures/Rabbit", 5, 3, -0.5f, -0.2f);
-	public static final StackedTextures BIRD  = new StackedTextures("creatures/Bird", 5, 3, -0.5f, -0.2f);
+	public static final StackedTextures BIRD  = new StackedTextures("creatures/Bird", 5, 4, -0.5f, -0.2f);
 	public static final StackedTextures PANDA  = new StackedTextures("creatures/Panda", 6, 2, -0.5f, -0.1f);
 	public static final StackedTextures SCORPION  = new StackedTextures("creatures/Scorpion", 7, 2, -0.5f, -0.1f);
 	public static final StackedTextures COW  = new StackedTextures("creatures/Cow", 7, 1, -0.5f, -0.1f);
