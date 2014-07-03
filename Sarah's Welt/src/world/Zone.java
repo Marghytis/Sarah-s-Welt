@@ -36,6 +36,7 @@ import world.worldObjects.GiantGras;
 import world.worldObjects.GiantPlant;
 import world.worldObjects.Grass_tuft;
 import world.worldObjects.Grave;
+import world.worldObjects.GraveTree;
 import world.worldObjects.JungleBush;
 import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
@@ -120,8 +121,9 @@ public class Zone {
 				new StructureType[][]{{StructureType.FLAT, StructureType.RAISING}, {}, {}},
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Bird(3, new Vec(), null), node, 100, random), 1, 10),
 									new ThingSpawner((node, random) -> spawnCreature(new Zombie(new Vec(), null), node, 2, random), 4, 30),
-									
+
 									new ThingSpawner((node, random) -> spawnObject(new Grave(random.nextInt(7), new Vec(), null), node, 0, random), 1, 300),
+									new ThingSpawner((node, random) -> spawnObject(new GraveTree(random.nextInt(2), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 300),
 									
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),

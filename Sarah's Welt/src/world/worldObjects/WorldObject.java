@@ -18,6 +18,7 @@ public abstract class WorldObject extends Thing{
 		JUNGLE_BUSH(JungleBush::createNewObject),
 		PYRAMIDE(Pyramide::createNewObject),
 		TREE(Tree::createNewObject),
+		GRAVE_TREE(GraveTree::createNewObject),
 		PALM_TREE(PalmTree::createNewObject),
 		CANDY_TREE(CandyTree::createNewObject),
 		JUNGLE_TREE(JungleTree::createNewObject),

@@ -45,7 +45,7 @@ public class World {
 	public static Database db;
 	
 	public static void updateContours(){
-		int widthHalf = 700;
+		int widthHalf = 300;
 		WorldView.rimR = (int) (World.sarah.pos.x + widthHalf);
 		while(rightGenerator.pos.x < WorldView.rimR){
 			rightGenerator.shift();

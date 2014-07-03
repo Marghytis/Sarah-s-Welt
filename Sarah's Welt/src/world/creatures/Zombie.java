@@ -11,8 +11,8 @@ import core.geom.Vec;
 
 public class Zombie extends WalkingCreature {
 	
-	static Animation stand = new Animation(0, 3);
-	static Animation hitt = new Animation(0, 3);
+	static Animation stand = new Animation(3, 0);
+	static Animation hitt = new Animation(3, 0);
 	static Animation walk = new Animation(10, 0, true, 0, 1, 2, 3, 2, 1);
 	static Animation punch = new Animation(5, 1, false, 1, 2, 1);
 	

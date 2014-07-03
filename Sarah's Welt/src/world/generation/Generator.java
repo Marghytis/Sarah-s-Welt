@@ -166,10 +166,6 @@ public class Generator {
 			Node nTop = new Node(pos.x, y, layer.aim.material);
 			y -= layer.thickness;
 			Node nBot = new Node(pos.x, y, layer.aim.material);
-
-			if(layer.aim.material == Material.STONE){
-				System.out.println((int)nTop.p.x + " | " + (int)nTop.p.y + "    " + (int)nBot.p.x + " | " + (int)nBot.p.y);
-			}
 			
 			layer.attach(nTop, nBot);
 		}
