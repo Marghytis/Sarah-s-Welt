@@ -16,8 +16,8 @@ public class GraveTree extends WorldObject{
 	public int variant;
 	public float size;
 	
-	public GraveTree(int type, Vec pos, Node worldLink, float size){
-		this(size, random.nextBoolean(), false, type, pos, worldLink);
+	public GraveTree(int variant, Vec pos, Node worldLink, float size){
+		this(size, random.nextBoolean(), false, variant, pos, worldLink);
 	}
 	
 	protected GraveTree(float size, boolean mirrored, boolean front, int variant, Vec pos, Node worldLink){
@@ -50,6 +50,6 @@ public class GraveTree extends WorldObject{
 
 	@Override
 	public String createMetaString() {
-		return size + ";" + mirrored + ";" + type;
+		return size + ";" + mirrored + ";" + variant;
 	}
 }

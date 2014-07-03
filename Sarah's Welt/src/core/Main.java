@@ -36,8 +36,14 @@ public class Main {
 		
 		
 		Res.load();
-		World.load("TestWelt");
-		WorldView.reset();
+		String lastWorld = "StartWorld";
+		for(WorldO o : worlds){
+			if(o.last){
+				lastWorld = o.name;
+				break;
+			}
+		}
+		World.load(lastWorld);
 		
 		Inventory.addItem(Item.horn);
 		
@@ -112,8 +118,8 @@ public class Main {
 			while((line = r.readLine()) != null){
 				String[] args = line.split(";");
 				WorldO world = new WorldO(args[0]); 
-				worlds.add(world);
 				world.last = Boolean.parseBoolean(args[1]);
+				worlds.add(world);
 			}
 			r.close();
 		} catch (IOException e){

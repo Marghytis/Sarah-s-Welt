@@ -349,7 +349,7 @@ public class WorldView {
 					case Keyboard.KEY_A : World.sarah.mirrored = true; break;
 					case Keyboard.KEY_SPACE: World.sarah.jump(); break;
 					case Keyboard.KEY_E: World.sarah.dismountCow(); break;
-					case Keyboard.KEY_F: Menu.componentPressed(View.DEBUG.components[0]); break;
+					case Keyboard.KEY_F: View.DEBUG.components[0].action.run();; break;
 					case Keyboard.KEY_I:
 						if(Menu.view == View.INVENTORY){
 							View.WORLD.set();

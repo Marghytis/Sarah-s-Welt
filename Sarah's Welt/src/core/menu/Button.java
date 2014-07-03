@@ -1,5 +1,6 @@
 package core.menu;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
@@ -33,5 +34,24 @@ public class Button extends Component{
 		float realX = (this.x*Window.WIDTH) - (size.x/2);
 		float realY = (this.y*Window.HEIGHT) - (size.y/2);
 		return x > realX && x < realX + size.x && y > realY && y < realY + size.y;
+	}
+
+	public boolean mousePressed() {
+		if(contains(Mouse.getEventX(), Mouse.getEventY())){
+			Res.buttonSound.play();
+			state = true;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean mouseReleased() {
+		boolean success = false;
+		if(contains(Mouse.getEventX(), Mouse.getEventY())){
+			action.run();
+			success = true;
+		}
+		state = false;
+		return success;
 	}
 }

@@ -59,6 +59,19 @@ public class World {
 	}
 	
 	public static void save(){
+		boolean existsAlready = false;
+		for(WorldO world : Main.worlds){
+			if(world.name.equals(name)){
+				existsAlready = true;
+				Main.worlds.forEach((o) -> o.last = false);
+				world.last = true;
+				break;
+			}
+		}
+		if(!existsAlready){
+			Main.worlds.add(new WorldO(name));
+			Main.worlds.get(Main.worlds.size()-1).last = true;
+		}
 		try {
 			saveGeneralInformation();
 			saveNodes();
@@ -76,17 +89,6 @@ public class World {
 	@SuppressWarnings("unchecked")
 	public static void load(String name){
 		World.name = name;
-		boolean exists = false;
-		for(WorldO world : Main.worlds){
-			if(world.name == name){
-				exists = true;
-				world.last = true;
-			}
-		}
-		if(!exists){
-			Main.worlds.add(new WorldO(name));
-			Main.worlds.get(Main.worlds.size()-1).last = true;
-		}
 			//setup things
 		sarah = new Sarah(new Vec(0, 5), null);
 		
@@ -113,7 +115,7 @@ public class World {
 		Inventory.reset();
 		//setup world and generators
 		zones = new ArrayList<>();
-		db = new Database("worlds", name);
+		db = new Database("worlds", name + ".world");
 		boolean fresh = !loadGeneralInformation();
 		if(fresh){
 			Node.indexIndex = 0;
@@ -125,6 +127,8 @@ public class World {
 			Generator[] gens = Generator.createStartGenerators(new Vec(0, 0));
 			rightGenerator = gens[0];
 			leftGenerator = gens[1];
+			WorldView.reset();
+			save();
 		} else {
 			try {
 				loadNodes();
@@ -137,6 +141,7 @@ public class World {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			WorldView.reset();
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package core.menu;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
@@ -8,11 +9,11 @@ import core.Window;
 
 public class ListElement extends Component{
 
-	public int index;
+	public Object item;
 	
-	public ListElement(int index, float x, float y, float width, float height, String name, String text, Runnable onClick) {
-		super(x, y, width, height, name, text, onClick);
-		this.index = index;
+	public ListElement(float x, float y, float width, float height, String text, Object item, Runnable action) {
+		super(x, y, width, height, text, text, action);
+		this.item = item;
 	}
 
 	public void render() {
@@ -34,4 +35,14 @@ public class ListElement extends Component{
 		GL11.glPopMatrix();
 		GL11.glColor4f(1, 1, 1, 1);
 	}
+
+	public boolean mousePressed() {
+		if(contains(Mouse.getEventX(), Mouse.getEventY())){
+			state = true;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean mouseReleased() {return false;}
 }

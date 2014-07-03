@@ -11,11 +11,11 @@ public abstract class Component extends Quad{
 	
 	public boolean state;
 	
-	public Component(float x, float y, float width, float height, String name, String text, Runnable onClick){
+	public Component(float x, float y, float width, float height, String name, String text, Runnable action){
 		super(x, y, width, height);
 		this.name = name;
 		this.text = text;
-		this.action = onClick;
+		this.action = action;
 	}
 	
 	public abstract void render();
@@ -26,4 +26,7 @@ public abstract class Component extends Quad{
 		float realY = (this.y*Window.HEIGHT) - (size.y/2);
 		return x > realX && x < realX + size.x && y > realY && y < realY + size.y;
 	}
+
+	public abstract boolean mousePressed();
+	public abstract boolean mouseReleased();
 }

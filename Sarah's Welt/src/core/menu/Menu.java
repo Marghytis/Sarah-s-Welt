@@ -14,7 +14,6 @@ import util.Animation;
 import util.Animator;
 import world.Calendar;
 import world.World;
-import world.WorldView;
 import core.Main;
 import core.Settings;
 import core.Window;
@@ -61,42 +60,14 @@ public class Menu {
 			if(Mouse.getEventButton() == 0){
 				if(Mouse.getEventButtonState()){
 					for(Component c : view.components){
-						if(c != null && c.contains(Mouse.getEventX(), Mouse.getEventY())){
-							componentPressed(c);
-						}
+						c.mousePressed();
 					}
 				} else {
 					for(Component c : view.components){
-						if(c != null) componentReleased(c);
+						c.mouseReleased();
 					}
 				}
 			}
-		}
-	}
-	
-	public static void componentPressed(Component b){
-		if(b instanceof Button){
-			Res.buttonSound.play();
-		}
-		if(b instanceof ToggleButton){
-			b.state = !b.state;
-			b.action.run();
-		} else if(!(b instanceof Textfield)){
-			b.state = true;
-		}
-	}
-	
-	public static void componentReleased(Component b){
-		if(!(b instanceof ToggleButton)){
-			if(b.contains(Mouse.getEventX(), Mouse.getEventY())){
-				if(b instanceof Button && b.state == true){
-					b.action.run();
-				} else {
-					b.state = true;
-					return;
-				}
-			}
-			b.state = false;
 		}
 	}
 
@@ -146,37 +117,62 @@ public class Menu {
 		},
 		WORLDS(true){
 			
-			Component[] worlds;
 			
 			void setup(){
 				
-				components = new Component[4 + Main.worlds.size()];
-				worlds = new Component[Main.worlds.size()];
+				components = new Component[]{
+						new Button("Play!", 		2/8.0f, 6/8.0f, new Runnable(){public void run(){
+							for(int c = 0; c < ((Container)components[4]).children.size(); c++){
+								ListElement e = ((ListElement)((Container)components[4]).children.get(c));
+								if(e.state){
+									if(!World.name.equals(e.name)) World.load(e.name);
+									WORLD.set();
+									break;
+								}
+							}
+						}}),
+						new Button("Delete", 		2/8.0f, 5/8.0f, new Runnable(){public void run(){
+							
+							for(int c = 0; c < ((Container)components[4]).children.size(); c++){
+								ListElement e = ((ListElement)((Container)components[4]).children.get(c));
+								if(e.state){
+									if(!World.name.equals(e.name)){
+								        System.gc();
+										(new File("worlds/" + e.name + ".world")).delete();//delete sql file
+										Main.worlds.remove(e.item);//remove world from list
+										
+										//reset the visual list in the menu
+										((Container)components[4]).children.clear();
+										int y = 0;
+										for(WorldO world : Main.worlds){
+											((Container)components[4]).children.add(new ListElement(6/8.0f, 0.8f - (y*1/8.0f), 300, 60, world.name, world, null));
+											y++;
+										}
+										for(Component co : ((Container)components[4]).children){
+											if(((ListElement)co).name.equals(World.name)){
+												co.state = true;
+											}
+										}
+										break;
+									} else {
+										(new Exception("Cannot delete world, because it's active!!!")).printStackTrace();
+									}
+								}
+							}
+						}}),
+						new Button("New World",	2/8.0f, 4/8.0f, new Runnable(){public void run(){NEW_WORLD.set();}}),
+						new Button("Back..",		2/8.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = MAIN;}}),
+						new Container("Worldlist")};
 				
-				int i = 0;
-				components[i++] = new Button("Play!", 		2/8.0f, 6/8.0f, new Runnable(){public void run(){
-					for(Component world : worlds){
-						if(world.state){
-							World.load(world.text);
-						}
-					}
-				}});
-				components[i++] = new Button("Delete", 		2/8.0f, 5/8.0f, new Runnable(){public void run(){
-					for(int i = 0; i < worlds.length; i++){
-						if(worlds[i] != null && worlds[i].state){
-							(new File("worlds/" + worlds[i].name)).delete();
-							Main.worlds.remove(worlds[i]);
-							worlds[i] = null;
-							components[i + 4] = null;
-						}
-					}
-				}});
-				components[i++] = new Button("New World",	2/8.0f, 4/8.0f, new Runnable(){public void run(){NEW_WORLD.set();}});
-				components[i++] = new Button("Back..",		2/8.0f, 3/8.0f, new Runnable(){public void run(){Menu.view = MAIN;}});
-
+				int y = 0;
 				for(WorldO world : Main.worlds){
-					components[i++] = new ListElement(i-5/*!*/, 6/8.0f, 0.8f - ((i-5)*1/8.0f), 300, 60, "World" + i, world.name, new Runnable(){public void run(){Menu.view = MAIN;}});
-					worlds[i - 5] = components[i-1];
+					((Container)components[4]).children.add(new ListElement(6/8.0f, 0.8f - (y*1/8.0f), 300, 60, world.name, world, new Runnable(){public void run(){Menu.view = MAIN;}}));
+					y++;
+				}
+				for(Component c : ((Container)components[4]).children){
+					if(((ListElement)c).name.equals(World.name)){
+						c.state = true;
+					}
 				}
 			}
 		},
@@ -188,8 +184,7 @@ public class Menu {
 							String worldName =  View.NEW_WORLD.components[1].text;
 							if(worldName != "" && worldName != null){
 								World.load(worldName);
-								WorldView.reset();
-								WORLD.set();
+								WORLDS.set();
 							}
 							};}}),
 						new Textfield("", 0.5f, 0.5f, 300, 60, new Runnable(){public void run(){

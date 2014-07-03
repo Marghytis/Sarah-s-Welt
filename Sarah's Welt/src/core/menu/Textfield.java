@@ -1,6 +1,7 @@
 package core.menu;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
@@ -43,5 +44,15 @@ public class Textfield extends Component{
 		Res.font.drawString(xText, yText, text, 1, 1);
 		GL11.glPopMatrix();
 		GL11.glColor4f(1, 1, 1, 1);
+	}
+
+	public boolean mousePressed() {return false;}
+
+	public boolean mouseReleased() {
+		if(contains(Mouse.getEventX(), Mouse.getEventY())){
+			state = true;
+			return true;
+		}
+		return false;
 	}
 }

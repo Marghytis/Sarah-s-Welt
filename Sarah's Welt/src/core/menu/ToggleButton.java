@@ -1,5 +1,9 @@
 package core.menu;
 
+import org.lwjgl.input.Mouse;
+
+import resources.Res;
+
 public class ToggleButton extends Button {
 	
 	public String name1;
@@ -20,5 +24,25 @@ public class ToggleButton extends Button {
 			name = name2;
 		}
 		super.render();
+	}
+	
+	public boolean mousePressed() {
+		if(contains(Mouse.getEventX(), Mouse.getEventY())){
+			Res.buttonSound.play();
+			state = !state;
+			action.run();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean mouseReleased() {
+		boolean success = false;
+		if(contains(Mouse.getEventX(), Mouse.getEventY())){
+			action.run();
+			success = true;
+		}
+		state = false;
+		return success;
 	}
 }
