@@ -37,12 +37,6 @@ public class ToggleButton extends Button {
 	}
 
 	public boolean mouseReleased() {
-		boolean success = false;
-		if(contains(Mouse.getEventX(), Mouse.getEventY())){
-			action.run();
-			success = true;
-		}
-		state = false;
-		return success;
+		return false;
 	}
 }
