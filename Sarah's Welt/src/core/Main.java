@@ -27,6 +27,10 @@ public class Main {
 	
 	public static void main(String[] args){
 		
+		if(args.length > 0){
+			World.widthHalf = Integer.parseInt(args[0]);
+		}
+		
 		loadWorlds();
 		
 		Window.create("Sarahs Welt 1.0", 1200, 800);

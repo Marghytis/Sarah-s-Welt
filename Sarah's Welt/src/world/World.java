@@ -32,6 +32,7 @@ public class World {
 
 	public static float measureScale = 50;
 	public static String name;
+	public static int widthHalf = 600;
 
 	public static Generator rightGenerator, leftGenerator;
 	
@@ -45,7 +46,6 @@ public class World {
 	public static Database db;
 	
 	public static void updateContours(){
-		int widthHalf = 300;
 		WorldView.rimR = (int) (World.sarah.pos.x + widthHalf);
 		while(rightGenerator.pos.x < WorldView.rimR){
 			rightGenerator.shift();
