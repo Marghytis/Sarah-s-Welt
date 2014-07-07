@@ -20,7 +20,7 @@ public class GiantCat extends WalkingCreature {
 	public GiantCat(Vec p, Node worldLink){
 		super(new Animator(Res.GIANT_CAT, stand), p, worldLink, false, CreatureType.GIANT_CAT);
 //		hitradius = 50;
-		maxSpeed = 5;
+		maxSpeed = 2;
 		animator.doOnReady = () -> donePunch();
 		health = 30;
 		punchStrength = 5;
