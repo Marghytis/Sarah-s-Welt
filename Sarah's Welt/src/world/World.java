@@ -154,7 +154,7 @@ public class World {
         for(List<Node> list : nodes) nodeAmount += list.size();
 		
 		s = db.conn.createStatement();
-		s.execute("INSERT INTO 'World' (wName, nodeAmount, invSelectedItem) VALUES ('" + name + "', '" + nodeAmount + "', '" + Inventory.selectedItem + "');");
+		s.execute("INSERT INTO 'World' (wName, nodeAmount, invSelectedItem, coins) VALUES ('" + name + "', '" + nodeAmount + "', '" + Inventory.selectedItem + "', '" + Inventory.coins + "');");
 		s.close();
 	}
 
@@ -162,12 +162,13 @@ public class World {
 		try {
 		Statement sql = db.conn.createStatement();
 
-        ResultSet ergebnis = sql.executeQuery("SELECT wName, nodeAmount, invSelectedItem FROM World;");
+        ResultSet ergebnis = sql.executeQuery("SELECT wName, nodeAmount, invSelectedItem, coins FROM World;");
 
         ergebnis.next(); 
         name = ergebnis.getString("wName");
         Node.indexIndex = ergebnis.getInt("nodeAmount");
         Inventory.selectedItem = ergebnis.getInt("invSelectedItem");
+        Inventory.coins = ergebnis.getInt("coins");
         
         ergebnis.close();
         sql.close();
@@ -663,25 +664,25 @@ public class World {
 	public static void createDatabase() throws SQLException{
 		Statement s = db.conn.createStatement();
 		s.executeUpdate(
-				  "DROP TABLE IF EXISTS 'World';"
-				+ "CREATE TABLE 'World' (wName VARCHAR, nodeAmount INTEGER, invSelectedItem INTEGER);"
-				+ "DROP TABLE IF EXISTS 'Node';"
+				  "DROP TABLE IF EXISTS 'World';"//1. World
+				+ "CREATE TABLE 'World' (wName VARCHAR, nodeAmount INTEGER, invSelectedItem INTEGER, coins INTEGER);"
+				+ "DROP TABLE IF EXISTS 'Node';"//2. Node
 				+ "CREATE TABLE 'Node' (n_ID INTEGER, mat VARCHAR, next_ID INTEGER, last_ID INTEGER, x FLOAT, y FLOAT);"
-				+ "DROP TABLE IF EXISTS 'Creature';"
+				+ "DROP TABLE IF EXISTS 'Creature';"//3. Creature
 				+ "CREATE TABLE 'Creature' (type INTEGER, pX FLOAT, pY FLOAT, vX FLOAT, vY FLOAT, health INTEGER, worldLink INTEGER, front BOOLEAN, metaString VARCHAR);"
-				+ "DROP TABLE IF EXISTS 'WorldObject';"
+				+ "DROP TABLE IF EXISTS 'WorldObject';"//4. WorldObject
 				+ "CREATE TABLE 'WorldObject' (type INTEGER, x FLOAT, y FLOAT, worldLink INTEGER, front BOOLEAN, metaString VARCHAR);"
-				+ "DROP TABLE IF EXISTS 'WorldItem';"
+				+ "DROP TABLE IF EXISTS 'WorldItem';"//5. WorldItem
 				+ "CREATE TABLE 'WorldItem' (item INTEGER, x FLOAT, y FLOAT, front BOOLEAN, worldLink INTEGER);"
-				+ "DROP TABLE IF EXISTS 'Zone';"
+				+ "DROP TABLE IF EXISTS 'Zone';"//6. Zone
 				+ "CREATE TABLE 'Zone' (type INTEGER, start FLOAT, end FLOAT);"
-				+ "DROP TABLE IF EXISTS 'Generator';"
+				+ "DROP TABLE IF EXISTS 'Generator';"//7. Generator
 				+ "CREATE TABLE 'Generator' (right BOOLEAN, x FLOAT, y FLOAT, zone INTEGER);"
-				+ "DROP TABLE IF EXISTS 'Structure';"
+				+ "DROP TABLE IF EXISTS 'Structure';"//8. Structure
 				+ "CREATE TABLE 'Structure' (generator BOOLEAN, level INTEGER, ind INTEGER, stepPos INTEGER);"
-				+ "DROP TABLE IF EXISTS 'Layer';"
+				+ "DROP TABLE IF EXISTS 'Layer';"//9. Layer
 				+ "CREATE TABLE 'Layer' (generator BOOLEAN, material VARCHAR, thickness FLOAT, aimThickness FLOAT, resizeStep FLOAT, priority INTEGER, endNodeT INTEGER, endNodeB INTEGER, reachedAim BOOLEAN, shrink BOOLEAN);"
-				+ "DROP TABLE IF EXISTS 'ItemStack';"
+				+ "DROP TABLE IF EXISTS 'ItemStack';"//10. ItemStack
 				+ "CREATE TABLE 'ItemStack' (slot INTEGER, item INTEGER, count INTEGER);"
 				);
 		s.close();

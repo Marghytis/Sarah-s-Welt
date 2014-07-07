@@ -34,7 +34,7 @@ public class Bird extends WalkingCreature{
 	int dir = 1;
 	
 	@Override
-	public void update(int dTime){
+	public void update(float dTime){
 		if(!g){
 			acc.shift(dir*0.00001f, (0.5f - random.nextFloat())*0.00002f);
 			applyFriction(Material.AIR);

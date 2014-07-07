@@ -27,7 +27,7 @@ public class Cloud extends WorldObject{
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float dTime){
 		pos.x += 0.1f;
 		
 		if(raining){

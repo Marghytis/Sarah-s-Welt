@@ -27,12 +27,12 @@ public class GiantCat extends WalkingCreature {
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float delta){
 		if(g){
 //			pos.y++;
 //			accelerateFromGround(new Point(0, 0.001f));
 			
-			walkingAI(dTime);
+			walkingAI(delta);
 		} else {
 			acc.shift(0, -0.00005f);
 			applyFriction(Material.AIR);
@@ -40,7 +40,7 @@ public class GiantCat extends WalkingCreature {
 			//do movement in air
 			collision(true);
 		}
-		super.update(dTime);
+		super.update(delta);
 	}
 	
 	int dir = 0;
@@ -92,6 +92,9 @@ public class GiantCat extends WalkingCreature {
 			} else {
 				animator.setAnimation(stand);
 			}
+		}
+		if(g){
+			alignWithGround();
 		}
 	}
 	
