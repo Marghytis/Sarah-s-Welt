@@ -18,14 +18,16 @@ import resources.TextureFile;
 import util.Tessellator;
 import world.Zone.ZoneType;
 import world.creatures.Creature;
+import world.creatures.Creature.CreatureType;
 import world.creatures.Gnat;
+import world.creatures.Unicorn;
 import world.worldObjects.CandyFlower;
 import world.worldObjects.Flower;
 import world.worldObjects.WorldObject;
-import core.menu.Menu;
-import core.menu.Menu.View;
 import core.Settings;
 import core.Window;
+import core.menu.Menu;
+import core.menu.Menu.View;
 
 public class WorldView {
 	//world generation
@@ -200,6 +202,14 @@ public class WorldView {
 					for(Creature c : list){
 						if(c.pos.x >= rimL && c.pos.x <= rimR){
 							c.render();
+						}
+					}
+					if(list.get(0).type == CreatureType.UNICORN){
+						Res.UNICORN_HAIR.file.bind();
+						for(Creature c : list){
+							if(c.pos.x >= rimL && c.pos.x <= rimR){
+								((Unicorn)c).renderHair();
+							}
 						}
 					}
 				}

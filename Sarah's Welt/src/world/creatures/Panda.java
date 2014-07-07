@@ -20,6 +20,7 @@ public class Panda extends WalkingCreature {
 		super(new Animator(Res.PANDA, sit), p, worldLink, true, CreatureType.PANDA);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
+		coinDrop = 3;
 	}
 	
 	@Override

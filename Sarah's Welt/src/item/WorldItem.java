@@ -3,19 +3,24 @@ package item;
 import org.lwjgl.opengl.GL11;
 
 import util.Animator;
+import world.MovableThing;
 import world.Node;
-import world.Thing;
 import world.World;
 import world.WorldView;
 import core.geom.Vec;
 
-public class WorldItem extends Thing{
+public class WorldItem extends MovableThing{
 
 	public Item item;
 	
 	public WorldItem(Item item, Vec pos, Node worldLink) {
 		super(new Animator(item.texWorld), pos, worldLink, false);
 		this.item = item;
+	}
+	
+	public void update(float delta){
+		super.update(delta);
+		item.update(delta, this);
 	}
 
 	@Override

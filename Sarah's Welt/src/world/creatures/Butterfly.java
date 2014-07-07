@@ -21,6 +21,7 @@ public class Butterfly extends WalkingCreature{
 		health = 5;
 		animator.frame = random.nextInt(flap[0].sequence.length);
 		this.variant = variant;
+		coinDrop = 1;
 	}
 	
 	@Override

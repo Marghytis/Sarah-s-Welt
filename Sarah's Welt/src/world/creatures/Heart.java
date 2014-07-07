@@ -20,6 +20,7 @@ public class Heart extends WalkingCreature{
 		vel.y = -0.2f;
 		health = 2000;
 		this.variant = variant;
+		coinDrop = 0;
 	}
 	
 	@Override

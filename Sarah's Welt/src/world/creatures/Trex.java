@@ -25,6 +25,7 @@ public class Trex extends WalkingCreature {
 		maxSpeed = 2;
 		animator.doOnReady = () -> donePunch();
 		health = 30;
+		coinDrop = 20;
 		punchStrength = 5;
 	}
 	

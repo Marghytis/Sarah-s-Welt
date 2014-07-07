@@ -24,6 +24,7 @@ public class GiantCat extends WalkingCreature {
 		animator.doOnReady = () -> donePunch();
 		health = 30;
 		punchStrength = 5;
+		coinDrop = 20;
 	}
 	
 	@Override

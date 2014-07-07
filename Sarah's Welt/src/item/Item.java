@@ -46,6 +46,15 @@ public class Item {
 			return false;
 		}
 	};
+	public static final Item coin = new Item(Res.COIN, Res.COIN, Res.COIN,
+			new Quad(-15, -6, 30, 30), new Quad(-55, -19, 80, 40), 180, "Coin", 0, null){
+		public void update(float delta, WorldItem item){
+			if(item.pos.minus(World.sarah.pos).lengthSqare() < 400){
+				WorldView.thingTasks.add(() -> World.items[coin.id].remove(item));
+				Inventory.coins++;
+			}
+		}
+	};
 	
 	public Texture texWorld;
 	public Texture texHand;
@@ -77,6 +86,8 @@ public class Item {
 		list.add(this);
 		this.id = list.indexOf(this);
 	}
+	
+	public void update(float delta, WorldItem item){}
 	
 	public boolean use(float x, float y){
 		if(coolDown <= 0){

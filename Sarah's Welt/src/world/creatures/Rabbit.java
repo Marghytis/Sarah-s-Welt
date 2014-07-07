@@ -23,6 +23,7 @@ public class Rabbit extends WalkingCreature {
 		animator.doOnReady = () -> donePunch();
 		health = 10;
 		punchStrength = 1;
+		coinDrop = 6;
 	}
 	
 	@Override

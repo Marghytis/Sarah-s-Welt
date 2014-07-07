@@ -3,11 +3,10 @@ package world.creatures;
 import item.Inventory;
 import item.Item;
 
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL11;
 
 import particles.RainbowSpit;
 import resources.Res;
-import resources.Shader20;
 import util.Animation;
 import util.Animator;
 import world.Material;
@@ -32,6 +31,7 @@ public class Unicorn extends WalkingCreature {
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
 		health = 25;
+		coinDrop = 20;
 		punchStrength = 4;
 	}
 	
@@ -128,6 +128,15 @@ public class Unicorn extends WalkingCreature {
 			}
 		}
 		
+		if(g) alignWithGround();
+	}
+	
+	public void renderHair(){
+		GL11.glPushMatrix();
+		GL11.glTranslatef(pos.x, pos.y, 0);
+
+		beforeRender();
+		
 		if(turnUp){
 			sky[color] += 10;
 		} else {
@@ -141,13 +150,16 @@ public class Unicorn extends WalkingCreature {
 			turnUp = !turnUp;
 			colorCounter = 0;
 		}
-		if(g) alignWithGround();
-		float[] color = new float[]{sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f};
 		
-		if(Settings.shader){
-			Shader20.UNICORN.bind();
-				GL20.glUniform3f(GL20.glGetUniformLocation(Shader20.UNICORN.handle, "color"), color[0], color[1], color[2]);
-		}
+		float[] color = new float[]{sky[0]/100.0f + 0.4f, sky[1]/100.0f + 0.4f, sky[2]/100.0f + 0.4f};
+		GL11.glColor3f(color[0], color[1], color[2]);
+		animator.animate(mirrored);
+		GL11.glColor3f(1, 1, 1);
+//		if(Settings.shader){
+//			Shader20.UNICORN.bind();
+//				GL20.glUniform3f(GL20.glGetUniformLocation(Shader20.UNICORN.handle, "color"), color[0], color[1], color[2]);
+//		}
+		GL11.glPopMatrix();
 	}
 	
 	int color = 0;
@@ -157,7 +169,7 @@ public class Unicorn extends WalkingCreature {
 	
 	@Override
 	public void afterRender(){
-		if(Settings.shader) Shader20.bindNone();
+//		if(Settings.shader) Shader20.bindNone();
 	}
 	
 	@Override

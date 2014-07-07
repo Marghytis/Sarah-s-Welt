@@ -25,6 +25,7 @@ public class Snail extends WalkingCreature {
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
 		front = true;
+		coinDrop = 7;
 	}
 	
 	@Override

@@ -17,6 +17,7 @@ public class Cow extends WalkingCreature{
 		maxSpeed = 5;
 		health = 10;
 		punchStrength = 1;
+		coinDrop = 0;
 	}
 	
 	@Override

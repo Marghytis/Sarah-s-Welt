@@ -3,10 +3,10 @@ package world.creatures;
 import item.DistantWeapon;
 import item.Item;
 import item.Weapon;
+import item.WorldItem;
 import particles.BloodSplash;
 import particles.DeathDust;
 import util.Animator;
-import world.Coin;
 import world.Material;
 import world.Node;
 import world.Thing;
@@ -26,6 +26,7 @@ public abstract class Creature extends Thing {
 	public int hitradius = 100; //only relevant, if its aggressive
 	public int health = 20;
 	public int punchStrength = 1;
+	public int coinDrop = 5;
 	
 	public Creature(Animator ani, Vec pos, Node worldLink, boolean front, CreatureType type){
 		super(ani, pos, worldLink, front);
@@ -83,8 +84,10 @@ public abstract class Creature extends Thing {
 	}
 	
 	protected void onDeath(){
-		for(int i = 0; i < 10; i++){
-			World.creatures[CreatureType.COIN.ordinal()].add(new Coin(pos.x, pos.y+2, (0.5f - random.nextFloat())*10f, (random.nextFloat())*30f));
+		for(int i = 0; i < coinDrop; i++){
+			WorldItem item = new WorldItem(Item.coin, new Vec(pos.x, pos.y+2), null);
+			item.vel.set((0.5f - random.nextFloat())*10f, (random.nextFloat())*30f);
+			World.items[Item.coin.id].add(item);
 		}
 	}
 	
@@ -102,7 +105,6 @@ public abstract class Creature extends Thing {
 		TREX(Trex::createNewCreature),
 		ZOMBIE(Zombie::createNewCreature),
 		GIANT_CAT(GiantCat::createNewCreature),
-		COIN(Coin::createNewCreature),
 		;
 		
 		public Creator create;

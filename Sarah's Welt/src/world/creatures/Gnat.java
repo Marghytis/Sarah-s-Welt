@@ -13,6 +13,7 @@ public class Gnat extends WalkingCreature{
 	public Gnat(Vec p, Node worldLink){
 		super(new Animator(null), p, worldLink, true, CreatureType.GNAT);
 		health = 5;
+		coinDrop = 0;
 	}
 	
 	@Override

@@ -54,6 +54,7 @@ public class Sarah extends WalkingCreature {
 		hitradius = 60;
 		punchStrength = 2;
 		maxSpeed = 10;
+		coinDrop = 0;
 		animator.doOnReady = () -> {
 			if(g){
 				if(!ridingCow){

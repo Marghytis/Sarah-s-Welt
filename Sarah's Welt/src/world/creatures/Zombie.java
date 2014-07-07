@@ -22,6 +22,7 @@ public class Zombie extends WalkingCreature {
 		maxSpeed = 5;
 		animator.doOnReady = () -> donePunch();
 		health = 10;
+		coinDrop = 10;
 		punchStrength = 1;
 	}
 	

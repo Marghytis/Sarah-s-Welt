@@ -23,6 +23,7 @@ public class Bird extends WalkingCreature{
 		health = 5;
 		animator.frame = random.nextInt(flap.sequence.length);
 		this.variant = variant;
+		coinDrop = 3;
 	}
 	
 	@Override
