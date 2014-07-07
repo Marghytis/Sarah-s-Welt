@@ -16,7 +16,7 @@ public class Gnat extends WalkingCreature{
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float dTime){
 		if(!g){
 			acc.shift((0.5f - random.nextFloat())*0.00003f, (0.49f - random.nextFloat())*0.00003f);
 			applyFriction(Material.AIR);

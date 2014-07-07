@@ -6,6 +6,7 @@ import item.Weapon;
 import particles.BloodSplash;
 import particles.DeathDust;
 import util.Animator;
+import world.Coin;
 import world.Material;
 import world.Node;
 import world.Thing;
@@ -32,7 +33,7 @@ public abstract class Creature extends Thing {
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float delta){
 		if(health <= 0){
 			WorldView.particleEffects.add(new DeathDust(pos.plus(animator.box.middle())));
 			WorldView.thingTasks.add(() -> {
@@ -42,7 +43,7 @@ public abstract class Creature extends Thing {
 		} else {
 			pos.shift(vel);
 			
-			vel.shift(acc.scaledBy(dTime).scaledBy(World.measureScale*dTime));
+			vel.shift(acc.scaledBy(delta).scaledBy(World.measureScale*delta));
 			acc.set(0, 0);
 			
 			if(hit > 0) hit--;
@@ -81,7 +82,11 @@ public abstract class Creature extends Thing {
 		}
 	}
 	
-	protected void onDeath(){}
+	protected void onDeath(){
+		for(int i = 0; i < 10; i++){
+			World.creatures[CreatureType.COIN.ordinal()].add(new Coin(pos.x, pos.y, (0.5f - random.nextFloat())*10f, (random.nextFloat())*30f));
+		}
+	}
 	
 	public enum CreatureType {
 		SNAIL(Snail::createNewCreature),
@@ -96,6 +101,7 @@ public abstract class Creature extends Thing {
 		SCORPION(Scorpion::createNewCreature),
 		TREX(Trex::createNewCreature),
 		ZOMBIE(Zombie::createNewCreature),
+		COIN(Coin::createNewCreature),
 		;
 		
 		public Creator create;

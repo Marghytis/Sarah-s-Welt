@@ -23,7 +23,7 @@ public class Heart extends WalkingCreature{
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float dTime){
 		if(!g){
 			collision(false);
 		}

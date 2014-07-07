@@ -74,7 +74,7 @@ public class Sarah extends WalkingCreature {
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float dTime){
 		Inventory.update(dTime);
 		if(Settings.flying) g = false;
 		if(g){

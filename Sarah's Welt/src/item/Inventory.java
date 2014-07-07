@@ -1,9 +1,13 @@
 package item;
 
+import core.Window;
+import resources.Res;
+
 
 public class Inventory {
 
 	public static ItemStack[] stacks = new ItemStack[6];
+	public static int coins;
 	
 	public static int selectedItem;
 	
@@ -11,7 +15,7 @@ public class Inventory {
 		return stacks[selectedItem].item;
 	}
 	
-	public static void update(int delta){
+	public static void update(float delta){
 		for(ItemStack stack : stacks){
 			if(stack.item != null && stack.item.coolDown > 0) stack.item.coolDown -= delta;
 		}
@@ -21,6 +25,7 @@ public class Inventory {
 		for(int i = 0; i < Inventory.stacks.length; i++){
 			Inventory.stacks[i] = new ItemStack(i);
 			Inventory.stacks[i].item = Item.fist;
+			coins = 0;
 		}
 	}
 	
@@ -28,6 +33,9 @@ public class Inventory {
 		for(ItemStack stack : Inventory.stacks){
 			stack.render();
 		}
+//		float xText = x + (size.x/2) - (Res.font.getWidth(text)/3);
+//		float yText = y + (size.y/2) - (Res.font.getHeight()/2);
+		Res.font.drawString(Window.WIDTH/2, Window.HEIGHT/2, "Coins: " + coins, 1, 1);
 	}
 	
 	public static boolean mouseClickedAt(float x, float y){

@@ -27,8 +27,8 @@ public abstract class Thing {
 		this.front = front;
 	}
 
-	public void update(int dTime){}
-	
+	public void update(float delta) {}
+
 	/**
 	 * World coordinates
 	 */

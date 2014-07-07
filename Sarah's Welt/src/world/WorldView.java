@@ -54,7 +54,7 @@ public class WorldView {
 		setContourNodes();
 	}
 	
-	public static void update(int delta){
+	public static void update(float delta){
 		World.sarah.update(delta);
 		if(World.sarah.health <= 0){
 			View.DEATH.set();
@@ -90,7 +90,7 @@ public class WorldView {
 		}
 	}
 	
-	public static void updateObjects(int delta){
+	public static void updateObjects(float delta){
 		for(List<WorldObject> list : World.worldObjects) for(WorldObject o : list){
 			if(o.pos.x >= rimL && o.pos.x <= rimR){
 				o.update(delta);
@@ -98,7 +98,7 @@ public class WorldView {
 		}
 	}
 	
-	public static void updateCreatures(int delta){
+	public static void updateCreatures(float delta){
 		thingTasks.clear();
 		for(List<Creature> list : World.creatures) for(Creature c : list){
 			if(c.pos.x >= rimL && c.pos.x <= rimR){
@@ -107,7 +107,7 @@ public class WorldView {
 		}
 	}
 	
-	public static void updateItems(int delta){
+	public static void updateItems(float delta){
         for(List<WorldItem> list : World.items) for(WorldItem item : list){
 			if(item.pos.x >= rimL && item.pos.x <= rimR){
 				item.update(delta);
@@ -115,7 +115,7 @@ public class WorldView {
 		}
 	}
 	
-	public static void updateEffects(int delta){
+	public static void updateEffects(float delta){
 		for(int i = 0; i < particleEffects.size(); i++){
 			particleEffects.get(i).tick(delta);
 			if(!particleEffects.get(i).living()){
@@ -164,12 +164,9 @@ public class WorldView {
 		
 		//render health on creatures
 		if(Settings.health) for(List<Creature> list : World.creatures) for(Creature c : list){
+			GL11.glColor3f(0.9f, 0.1f, 0);
 			if(!(c instanceof Gnat)) Res.font.drawString(c.pos.x - (Res.font.getWidth(c.health + "")/3), c.pos.y + 30, c.health + "", 0.5f, 0.5f);
-		}
-		
-		//health on sarah
-		if(Settings.health){
-			GL11.glColor3f(1, 0, 0);
+			//health on sarah
 			Res.font.drawString(World.sarah.pos.x - (Res.font.getWidth(World.sarah.health + "")/3), World.sarah.pos.y + 60, World.sarah.health + "", 0.5f, 0.5f);
 			GL11.glColor3f(1, 1, 1);
 		}

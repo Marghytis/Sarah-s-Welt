@@ -38,7 +38,7 @@ public class Unicorn extends WalkingCreature {
 	public int spitCount = 0;
 	
 	@Override
-	public void update(int delta){
+	public void update(float delta){
 		if(g){
 //			pos.y++;
 //			accelerateFromGround(new Point(0, 0.001f));

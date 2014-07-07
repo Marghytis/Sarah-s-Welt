@@ -23,7 +23,7 @@ public class Panda extends WalkingCreature {
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float dTime){
 		if(g){
 			walkingAI(dTime);
 		} else {

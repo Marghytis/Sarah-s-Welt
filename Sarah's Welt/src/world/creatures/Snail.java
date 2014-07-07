@@ -28,7 +28,7 @@ public class Snail extends WalkingCreature {
 	}
 	
 	@Override
-	public void update(int dTime){
+	public void update(float dTime){
 		if(g){
 //			pos.y++;
 //			accelerateFromGround(new Point(0, 0.001f));
