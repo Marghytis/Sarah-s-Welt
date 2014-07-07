@@ -33,7 +33,7 @@ public class Main {
 		
 		loadWorlds();
 		
-		Window.create("Sarahs Welt 1.0", 1200, 800);
+		Window.create("Sarahs Welt 1.0", 1000, 600);
 //		Window.createFullScreen("Sarahs Welt");
 		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();

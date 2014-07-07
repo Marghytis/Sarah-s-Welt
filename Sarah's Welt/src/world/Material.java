@@ -12,6 +12,7 @@ public enum Material {
 	SOIL("materials/Soil", 3f, true),
 	WATER("materials/Water", 2f, false),
 	CANDY("materials/Candy", 3f, true),
+	GROUND("materials/Ground", 3f, true),
 	SAND("materials/Sand", 3f, true),
 	SANDSTONE("materials/SandStone", 3f, true),;
 	

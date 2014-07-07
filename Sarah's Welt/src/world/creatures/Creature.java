@@ -101,6 +101,7 @@ public abstract class Creature extends Thing {
 		SCORPION(Scorpion::createNewCreature),
 		TREX(Trex::createNewCreature),
 		ZOMBIE(Zombie::createNewCreature),
+		GIANT_CAT(GiantCat::createNewCreature),
 		COIN(Coin::createNewCreature),
 		;
 		
