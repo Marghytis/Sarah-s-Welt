@@ -45,6 +45,7 @@ import world.worldObjects.JunglePlants;
 import world.worldObjects.JungleTree;
 import world.worldObjects.PalmTree;
 import world.worldObjects.Pyramide;
+import world.worldObjects.TownObject;
 import world.worldObjects.Tree;
 import world.worldObjects.WorldObject;
 import core.geom.Vec;
@@ -179,7 +180,7 @@ public class Zone {
 //									new ThingSpawner((node, random) -> spawnCreature(new Heart(1, new Vec(), null), node, 100, random), 1, 10),
 									
 									new ThingSpawner((node, random) -> spawnObject(new House(random.nextInt(6), new Vec(), null), node, 0, random), 1, 100),
-//									new ThingSpawner((node, random) -> spawnObject(new CandyTree(new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 70),
+									new ThingSpawner((node, random) -> spawnObject(new TownObject(random.nextInt(5), new Vec(), null), node, 0, random), 1, 80),
 //									new ThingSpawner((node, random) -> spawnObject(new CandyBush(random.nextInt(2), new Vec(), node), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
