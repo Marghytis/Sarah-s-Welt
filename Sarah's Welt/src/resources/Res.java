@@ -38,6 +38,7 @@ public class Res {
 	public static final StackedTextures CRACK = new StackedTextures("worldObjects/Crack", 1, 4, -0.5f, -0.5f);
 	public static final StackedTextures FOSSIL = new StackedTextures("worldObjects/Fossil", 1, 3, -0.5f, -0.5f);
 	public static final StackedTextures GRAVE = new StackedTextures("worldObjects/Grave", 1, 7, -0.5f, -0.05f);
+	public static final int[][][] SLOTH_ON_TREE_COORDS = readTextureCoordinator("res/worldObjects/Sloth_JungleTree.txt", 2);
 
 	public static final Texture FLOWER_LIGHT = new Texture("Light_dimmed");
 	
@@ -55,17 +56,18 @@ public class Res {
 	public static final StackedTextures TREX  = new StackedTextures("creatures/Trex", 9, 4, -0.5f, -0.05f);
 	public static final StackedTextures GIANT_CAT  = new StackedTextures("creatures/GiantCat", 5, 2, -0.5f, -0.05f);
 	public static final StackedTextures ZOMBIE  = new StackedTextures("creatures/Zombie", 4, 2, -0.5f, -0.05f);
+	public static final StackedTextures SLOTH  = new StackedTextures("creatures/Sloth", 5, 1, -0.5f, -0.05f);
 	public static final Texture COIN  = new Texture("Items/Coin", -0.5f, -0.2f);
 
 	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 10, -0.5f, -0.1f);
-	public static final List<int[][]> SARAH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt", 3);
-	public static final List<int[][]> SARAH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_Horn.txt", 3);
+	public static final int[][][] SARAH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt", 3);
+	public static final int[][][] SARAH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_Horn.txt", 3);
 	public static final StackedTextures SARAH_ON_COW = new StackedTextures("creatures/Sarah_riding_cow", 7, 2, -0.5f, -0.1f);
-	public static final List<int[][]> SARAH_ON_COW_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow.txt", 3);
-	public static final List<int[][]> SARAH_ON_COW_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow_horn.txt", 3);
+	public static final int[][][] SARAH_ON_COW_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow.txt", 3);
+	public static final int[][][] SARAH_ON_COW_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah_riding_cow_horn.txt", 3);
 	public static final StackedTextures SARAH_DEATH = new StackedTextures("creatures/Sarah_death", 14, 1, -0.5f, -0.5f);
-//	public static final List<int[][]> SARAH_DEATH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
-//	public static final List<int[][]> SARAH_DEATH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
+//	public static final int[][][] SARAH_DEATH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
+//	public static final int[][][] SARAH_DEATH_HEAD_COORDS = readTextureCoordinator("res/creatures/Sarah.txt");
 	
 	public static final StackedTextures MENU_BUTTON = new StackedTextures("Button", 1, 2, -0.5f, -0.5f);
 	public static final StackedTextures INVENTORY = new StackedTextures("items/Inventory", 1, 2);
@@ -91,15 +93,26 @@ public class Res {
 //		AL10.alDeleteSources(test.source);
 	}
 
-	public static List<int[][]> readTextureCoordinator(String file, int coordsPerVertex){
+	public static int[][][] readTextureCoordinator(String file, int coordsPerVertex){
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
 			String line;
 			
 			List<int[][]> kA = new ArrayList<>();
+			int maxLength = 0;
 			
 			while((line = reader.readLine()) != null){
-				String[] vertices = line.split(";");
+//				if(line.equals("") || line.equals(null)){
+//					kA.add(new int[0][coordsPerVertex]);
+//					continue;
+//				}
+				String[] vertices;
+				if(line.startsWith("-")){
+					vertices = new String[0];
+				} else {
+					vertices = line.split(";");
+				}
+				if(vertices.length > maxLength) maxLength = vertices.length;
 				
 				int[][] output = new int[vertices.length][coordsPerVertex];
 				
@@ -116,7 +129,11 @@ public class Res {
 			
 			reader.close();
 			
-			return kA;
+			int[][][] out = new int[kA.size()][][];
+			for(int i = 0; i < out.length; i++){
+				out[i] = kA.get(i);
+			}
+			return out;
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

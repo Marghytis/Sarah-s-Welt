@@ -48,6 +48,7 @@ import world.worldObjects.Pyramide;
 import world.worldObjects.TownObject;
 import world.worldObjects.Tree;
 import world.worldObjects.WorldObject;
+import world.worldObjects.WorldObject.ObjectType;
 import core.geom.Vec;
 
 
@@ -60,7 +61,7 @@ public class Zone {
 		this.type = type;
 	}
 	
-	/**Zones: recht große Einteilung. es gibt zwischenzones, wo jede Schicht versucht, sich baldmöglichst anzupassen (aufhören, neu beginnen)*/
+	/**Zones: recht groï¿½e Einteilung. es gibt zwischenzones, wo jede Schicht versucht, sich baldmï¿½glichst anzupassen (aufhï¿½ren, neu beginnen)*/
 	public static enum ZoneType {
 		FOREST( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}, {StructureType.ADER}, {}},
@@ -101,7 +102,7 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(3), new Vec(), null), node, 20, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnCreature(new Gnat(new Vec(), null), node, 40, random), 1, 500),
 //									
-									new ThingSpawner((node, random) -> spawnObject(new JungleTree(new Vec(), null), node, 0, random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new JungleTree(new Vec(), null, true), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new JungleFlower(random.nextInt(5), new Vec(), null) , node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new JunglePlants(new Vec(), null) , node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new JungleBush(new Vec(), node, 0.5f + random.nextFloat()) , node, 0, random), 1, 250),
@@ -234,6 +235,9 @@ public class Zone {
 		public static void spawnObject(WorldObject c, Node n, float yOffset, Random random){
 			c.pos.set(n.p.plus(n.next.p.minus(n.p).scaledBy(random.nextFloat())).plus(0, yOffset));
 			World.worldObjects[c.type.ordinal()].add(c);
+			if(c.type == ObjectType.JUNGLE_TREE){
+				((JungleTree)c).createSloth();
+			}
 		}
 
 		public static void spawnItem(WorldItem c, Node n, float yOffset, Random random){

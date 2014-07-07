@@ -2,6 +2,7 @@ package world.creatures;
 
 import item.Inventory;
 import item.Item;
+import item.WorldItem;
 
 import org.lwjgl.opengl.GL11;
 
@@ -177,6 +178,11 @@ public class Unicorn extends WalkingCreature {
 		Inventory.addItem(Item.horn);
 		World.sarah.mana = 30;
 		World.sarah.health = Math.max(World.sarah.health, 20);
+		for(int i = 0; i < coinDrop; i++){
+			WorldItem item = new WorldItem(Item.coin, new Vec(pos.x, pos.y+2), null);
+			item.vel.set((0.5f - random.nextFloat())*10f, (random.nextFloat())*30f);
+			World.items[Item.coin.id].add(item);
+		}
 	}
 
 	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){

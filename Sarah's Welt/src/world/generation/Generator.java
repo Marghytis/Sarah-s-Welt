@@ -15,7 +15,7 @@ import core.geom.Vec;
 
 /**this class handles all the world generation mechanisms*/
 public class Generator {
-	public static ZoneType startZone = ZoneType.CANDY;
+	public static ZoneType startZone = ZoneType.JUNGLE;
 	Random random;
 	public Zone zone;
 	boolean right;

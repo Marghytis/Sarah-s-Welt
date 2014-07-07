@@ -58,7 +58,7 @@ public class GiantCat extends WalkingCreature {
 	}
 	
 	public void wanderAbout(){
-		if(random.nextInt(100)<1){
+		if(random.nextInt(1000)==0){
 			dir = random.nextInt(3)-1;
 		}
 	}

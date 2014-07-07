@@ -8,18 +8,19 @@ import world.World;
 import core.Settings;
 import core.geom.Vec;
 
-public class Panda extends Creature {
+public class Sloth extends Creature{
 
-	static Animation sit = new Animation(0, 0);
-	static Animation punch = new Animation(3, 0, false, 1, 2, 3, 4, 5);
-	static Animation hitt = new Animation(0, 1);
+	static Animation sit = new Animation();
+	static Animation punch = new Animation(3, 0, false, 1, 2, 3, 4, 0);
+	static Animation hitt = new Animation(1, 0);
 
 	
-	public Panda(Vec p, Node worldLink){
-		super(new Animator(Res.PANDA, sit), p, worldLink, true, CreatureType.PANDA);
+	public Sloth(Vec p, Node worldLink){
+		super(new Animator(Res.SLOTH, sit), p, worldLink, true, CreatureType.SLOTH);
 		hitradius = 50;
 		animator.doOnReady = () -> donePunch();
 		coinDrop = 3;
+		mirrored = random.nextBoolean();
 	}
 	
 	@Override
@@ -48,12 +49,6 @@ public class Panda extends Creature {
 	protected void beforeRender(){
 		super.beforeRender();
 		
-		if(pos.x < World.sarah.pos.x){
-			mirrored = true;
-		} else if(pos.x > World.sarah.pos.x){
-			mirrored = false;
-		}
-		
 		if(hit > 0){
 			animator.setAnimation(hitt);
 		} else if(!animator.animation.equals(punch)){
@@ -63,7 +58,7 @@ public class Panda extends Creature {
 
 	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){
 
-		Panda p = new Panda(new Vec(x, y), worldLink);
+		Sloth p = new Sloth(new Vec(x, y), worldLink);
 		p.vel.set(vX, vY);
 		p.health = health;
 		return p;

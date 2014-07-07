@@ -88,7 +88,7 @@ public class Menu {
 		},
 		WORLD(false){
 			
-			Quad health = new Quad(0.45f, 0.595f, 0.1f, 0.01f);
+			Quad health = new Quad(0.1f, 0.15f, 0.8f, 0.03f);
 			Quad mana = new Quad(0.1f, 0.05f, 0.8f, 0.03f);
 			
 			@Override

@@ -252,11 +252,11 @@ public class Sarah extends WalkingCreature {
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
 		if(ridingCow){
-			return Res.SARAH_ON_COW_HAND_COORDS.get(y)[x];
-		} else if(ridingCow || y >= Res.SARAH_HAND_COORDS.size() || x >= Res.SARAH_HAND_COORDS.get(y).length){
-			return Res.SARAH_HAND_COORDS.get(0)[0];
+			return Res.SARAH_ON_COW_HAND_COORDS[y][x];
+		} else if(ridingCow || y >= Res.SARAH_HAND_COORDS.length || x >= Res.SARAH_HAND_COORDS[y].length){
+			return Res.SARAH_HAND_COORDS[0][0];
 		} else {
-			return Res.SARAH_HAND_COORDS.get(y)[x];
+			return Res.SARAH_HAND_COORDS[y][x];
 		}
 	}
 	
@@ -264,11 +264,11 @@ public class Sarah extends WalkingCreature {
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
 		if(ridingCow){
-			return Res.SARAH_ON_COW_HEAD_COORDS.get(y)[x];
-		} else if(y >= Res.SARAH_HEAD_COORDS.size() || x >= Res.SARAH_HEAD_COORDS.get(y).length){
-			return Res.SARAH_HEAD_COORDS.get(0)[0];
+			return Res.SARAH_ON_COW_HEAD_COORDS[y][x];
+		} else if(y >= Res.SARAH_HEAD_COORDS.length || x >= Res.SARAH_HEAD_COORDS[y].length){
+			return Res.SARAH_HEAD_COORDS[0][0];
 		} else {
-			return Res.SARAH_HEAD_COORDS.get(y)[x];
+			return Res.SARAH_HEAD_COORDS[y][x];
 		}
 	}
 	
