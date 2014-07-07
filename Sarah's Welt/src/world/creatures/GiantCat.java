@@ -93,7 +93,9 @@ public class GiantCat extends WalkingCreature {
 				animator.setAnimation(stand);
 			}
 		}
-		alignWithGround();
+		if(g){
+			alignWithGround();
+		}
 	}
 	
 	public void onDeath(){

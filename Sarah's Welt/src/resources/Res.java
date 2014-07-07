@@ -54,7 +54,7 @@ public class Res {
 	public static final StackedTextures TREX  = new StackedTextures("creatures/Trex", 9, 4, -0.5f, -0.05f);
 	public static final StackedTextures GIANT_CAT  = new StackedTextures("creatures/GiantCat", 5, 2, -0.5f, -0.05f);
 	public static final StackedTextures ZOMBIE  = new StackedTextures("creatures/Zombie", 4, 2, -0.5f, -0.05f);
-	public static final StackedTextures COIN  = new StackedTextures("Items/Coin", 1, 1, -0.5f, -0.5f);
+	public static final StackedTextures COIN  = new StackedTextures("Items/Coin", 1, 1, -0.5f, -0.2f);
 
 	public static final StackedTextures SARAH = new StackedTextures("creatures/Sarah", 11, 10, -0.5f, -0.1f);
 	public static final List<int[][]> SARAH_HAND_COORDS = readTextureCoordinator("res/creatures/Sarah.txt", 3);
@@ -72,6 +72,7 @@ public class Res {
 	public static final StackedTextures ITEMS_HAND = new StackedTextures("items/ItemsHand", 6, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_INV = new StackedTextures("items/ItemsInv", 7, 1, -0.5f, -0.5f);
 	public static final StackedTextures ITEMS_WEAPONS = new StackedTextures("items/Weapons", 1, 6, -0.5f, -0.5f);
+	public static final StackedTextures MONEYBAG = new StackedTextures("items/Moneybag", 1, 1, -0.5f, -0.5f);
 	
 	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static final SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);

@@ -1,5 +1,7 @@
 package item;
 
+import org.lwjgl.opengl.GL11;
+
 import core.Window;
 import resources.Res;
 
@@ -33,9 +35,17 @@ public class Inventory {
 		for(ItemStack stack : Inventory.stacks){
 			stack.render();
 		}
-//		float xText = x + (size.x/2) - (Res.font.getWidth(text)/3);
-//		float yText = y + (size.y/2) - (Res.font.getHeight()/2);
-		Res.font.drawString(Window.WIDTH/2, Window.HEIGHT/2, "Coins: " + coins, 1, 1);
+		GL11.glPushMatrix();
+		GL11.glLoadIdentity();
+		GL11.glTranslatef(Window.WIDTH*7.0f/8, Window.HEIGHT*7.0f/8, 0);
+		Res.MONEYBAG.file.bind();
+		Res.MONEYBAG.box.drawTex(Res.MONEYBAG.texs[0][0]);
+		float xText = - 50 - (Res.font.getWidth(coins + "")/3);
+		float yText = - (Res.font.getHeight()/2);
+		GL11.glColor3f(0.9f, 0.8f, 0.1f);
+		Res.font.drawString(xText, yText, coins + "", 1, 1);
+		GL11.glColor3f(1, 1, 1);
+		GL11.glPopMatrix();
 	}
 	
 	public static boolean mouseClickedAt(float x, float y){

@@ -84,7 +84,7 @@ public abstract class Creature extends Thing {
 	
 	protected void onDeath(){
 		for(int i = 0; i < 10; i++){
-			World.creatures[CreatureType.COIN.ordinal()].add(new Coin(pos.x, pos.y, (0.5f - random.nextFloat())*10f, (random.nextFloat())*30f));
+			World.creatures[CreatureType.COIN.ordinal()].add(new Coin(pos.x, pos.y+2, (0.5f - random.nextFloat())*10f, (random.nextFloat())*30f));
 		}
 	}
 	
