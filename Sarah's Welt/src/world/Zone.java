@@ -37,6 +37,7 @@ import world.worldObjects.GiantPlant;
 import world.worldObjects.Grass_tuft;
 import world.worldObjects.Grave;
 import world.worldObjects.GraveTree;
+import world.worldObjects.House;
 import world.worldObjects.JungleBush;
 import world.worldObjects.JungleFlower;
 import world.worldObjects.JunglePlants;
@@ -168,6 +169,19 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 				
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
+				}),
+		TOWN( new AimLayer[]{new AimLayer(Material.GROUND, 10, 0.2f, 100), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
+				new StructureType[][]{{StructureType.FLAT, StructureType.RAISING}, {}, {}},
+				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null), node, 20, random), 1, 40),
+									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null), node, 20, random), 1, 10),
+//									new ThingSpawner((node, random) -> spawnCreature(new Unicorn(new Vec(), null), node, 2, random), 1, 10),
+//									new ThingSpawner((node, random) -> spawnCreature(new Heart(1, new Vec(), null), node, 100, random), 1, 10),
+									
+									new ThingSpawner((node, random) -> spawnObject(new House(random.nextInt(6), new Vec(), null), node, 0, random), 1, 100),
+//									new ThingSpawner((node, random) -> spawnObject(new CandyTree(new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 70),
+//									new ThingSpawner((node, random) -> spawnObject(new CandyBush(random.nextInt(2), new Vec(), node), node, 0, random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 				}),
 		MEADOW( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}, {}, {}},
