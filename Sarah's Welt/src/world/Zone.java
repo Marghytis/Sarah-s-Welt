@@ -10,6 +10,7 @@ import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Cow;
 import world.creatures.Creature;
+import world.creatures.GiantCat;
 import world.creatures.Gnat;
 import world.creatures.Heart;
 import world.creatures.Panda;
@@ -81,7 +82,7 @@ public class Zone {
 		GIANTS( new AimLayer[]{new AimLayer(Material.GRASS, 10, 0.2f, 99), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.UP, StructureType.DOWN}, {}, {}},
 				new ThingSpawner[]{ 
-//								new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
+								new ThingSpawner((node, random) -> spawnCreature(new GiantCat(new Vec(), null), node, 5, random), 1, 20),
 //								new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(3), new Vec(), null, random.nextInt(Bird.flap.sequence.length)), node, 20, random), 1, 100),
 //								new ThingSpawner((node, random) -> spawnCreature(new Gnat(new Vec(), null), node, 40, random), 1, 500),
 //									
@@ -170,7 +171,7 @@ public class Zone {
 				
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
-		TOWN( new AimLayer[]{new AimLayer(Material.GROUND, 10, 0.2f, 100), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
+		TOWN( new AimLayer[]{new AimLayer(Material.GROUND, 10, 0.5f, 100), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
 				new StructureType[][]{{StructureType.FLAT, StructureType.RAISING}, {}, {}},
 				new ThingSpawner[]{	new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null), node, 20, random), 1, 40),
 									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null), node, 20, random), 1, 10),
