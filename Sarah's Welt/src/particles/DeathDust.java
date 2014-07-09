@@ -41,7 +41,6 @@ public static final ParticleType SMOKE = new ParticleType(new TextureFile("parti
 				p.rot = -((float)Math.PI/100)*p.live;
 			}
 		}
-
 	};
 
 	public Vec pos;
