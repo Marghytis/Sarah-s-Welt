@@ -6,6 +6,7 @@ import item.WorldItem;
 import java.util.Random;
 
 import resources.Res;
+import util.Color;
 import world.creatures.Bird;
 import world.creatures.Butterfly;
 import world.creatures.Cow;
@@ -45,6 +46,7 @@ import world.worldObjects.JunglePlants;
 import world.worldObjects.JungleTree;
 import world.worldObjects.PalmTree;
 import world.worldObjects.Pyramide;
+import world.worldObjects.Rainbow;
 import world.worldObjects.TownObject;
 import world.worldObjects.Tree;
 import world.worldObjects.WorldObject;
@@ -127,6 +129,7 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnCreature(new Zombie(new Vec(), null), node, 2, random), 4, 30),
 
 									new ThingSpawner((node, random) -> spawnObject(new Grave(random.nextInt(7), new Vec(), null), node, 0, random), 1, 300),
+									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), true, new Color(0.3f, 0.3f, 0.3f)), node, 400, random), 1, 40),
 									new ThingSpawner((node, random) -> spawnObject(new GraveTree(random.nextInt(2), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 300),
 									
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
@@ -152,7 +155,7 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnCreature(new Heart(0, new Vec(), null), node, 100, random), 1, 10),
 									
 									new ThingSpawner((node, random) -> spawnObject(new Bamboo(random.nextInt(4), new Vec(), null, random.nextFloat() + 0.5f), node, 0, random), 2, 800),
-									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 400, random), 1, 40),
+									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean(), new Color(1, 1, 1)), node, 400, random), 1, 40),
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 10, 100),
 									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									
@@ -170,6 +173,8 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnObject(new CandyBush(random.nextInt(2), new Vec(), node), node, 0, random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
+									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean(), new Color(random, 0.5f)), node, 400, random), 1, 40),
+									new ThingSpawner((node, random) -> spawnObject(new Rainbow(new Vec(), null, 0.75f + random.nextFloat()), node, 0, random), 1, 40),
 				
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
@@ -198,7 +203,7 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnObject(new Grass_tuft(new Vec(), null), node, 0, random), 2, 800),
 									new ThingSpawner((node, random) -> spawnObject(new Bush(random.nextInt(2), new Vec(), node), node, 0, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnObject(new Tree(random.nextInt(3), new Vec(), null, 0.5f + random.nextFloat()), node, 0, random), 1, 10),
-									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean()), node, 400, random), 1, 40),
+									new ThingSpawner((node, random) -> spawnObject(new Cloud(new Vec(), null, 0.5f + random.nextFloat(), random.nextBoolean(), new Color(1, 1, 1)), node, 400, random), 1, 40),
 									new ThingSpawner((node, random) -> spawnObject(new Crack(random.nextInt(Res.CRACK.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 									new ThingSpawner((node, random) -> spawnObject(new Fossil(random.nextInt(Res.FOSSIL.texs[0].length), new Vec(), null, 0.5f + random.nextFloat(), random.nextInt(360)), node, -200 - random.nextInt(1000), random), 1, 200),
 				

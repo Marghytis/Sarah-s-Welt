@@ -7,6 +7,7 @@ import resources.Res;
 import resources.TextureFile;
 import util.Animation;
 import util.Animator;
+import util.Color;
 import world.Node;
 import core.geom.Vec;
 
@@ -18,12 +19,15 @@ public class Cloud extends WorldObject{
 	public boolean needEffectPosReset = true;
 	private boolean raining = false;//should not simply be set, because you maybe need to create the effect first
 	
-	public Cloud(Vec pos, Node worldLink, float size, boolean raining){
+	public Color color = new Color(1, 1, 1);
+	
+	public Cloud(Vec pos, Node worldLink, float size, boolean raining, Color color){
 		super(new Animator(Res.CLOUD, new Animation(0, 0)), pos, worldLink, false, ObjectType.CLOUD);
 		this.size = size;
 		this.raining = raining;
 		effect = new RainEffect(new Vec(pos.x + ((animator.tex.box.x*size)/2), pos.y + (animator.tex.box.y*size) + 650), (animator.tex.box.size.x*size)/2, (animator.tex.box.size.y*size)/2);
 		front = false;
+		this.color = color;
 	}
 	
 	@Override
@@ -47,8 +51,10 @@ public class Cloud extends WorldObject{
 			effect.render();
 			GL11.glColor4f(1, 1, 1, 1);
 		}
+		color.set();
 		animator.tex.file.bind();
 		super.render();
+		GL11.glColor3f(1, 1, 1);
 		TextureFile.bindNone();
 	}
 	
@@ -63,11 +69,11 @@ public class Cloud extends WorldObject{
 		float size = Float.parseFloat(args[0]);
 		boolean raining = Boolean.parseBoolean(args[1]);
 		
-		return new Cloud(new Vec(x, y), worldLink, size, raining);
+		return new Cloud(new Vec(x, y), worldLink, size, raining, new Color(args[2]));
 	}
 
 	@Override
 	public String createMetaString() {
-		return size + ";" + raining;
+		return size + ";" + raining + ";" + color.toString2();
 	}
 }
