@@ -199,7 +199,9 @@ public class Menu {
 				components = new Component[]{
 						new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	9/12.0f, new Runnable(){public void run(){Settings.health = View.SETTINGS.components[0].state;}}),
 						new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	5/12.0f, new Runnable(){public void run(){Settings.shader = View.SETTINGS.components[1].state;}}),
-						new ToggleButton("Sound on", "Sound off", false, 					1/2.0f,		7/8.0f, new Runnable(){public void run(){{Settings.sound = !Settings.sound; /*Res.test.stop();*/};}}),
+						new ToggleButton("Sound on", "Sound off", false, 					1/2.0f,		7/8.0f, new Runnable(){public void run(){{
+							Settings.sound = !Settings.sound; 
+							if(Settings.sound) Res.music.play();};}}),
 						new Button("Help Controls",											1/2.0f, 	3/12.0f, new Runnable(){public void run(){CONTROLS.set();}}),
 						new Button("Back", 													6/8.0f,		1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.openal.AL10;
+
 import sound.Sound;
 
 public class Res {
@@ -82,6 +84,7 @@ public class Res {
 	
 	public static final Sound buttonSound = new Sound("63531__florian-reinke__click1.wav");
 	public static final Sound death = new Sound("FuneralMarch.wav");
+	public static final Sound music = new Sound("Sarahs Welt Musik.wav");
 	
 	public static void load(){
 		//do nothing, classloader loads the resources (I hope)
@@ -90,7 +93,9 @@ public class Res {
 	public static void unload(){
 		font.destroy();
 		arial.destroy();
-//		AL10.alDeleteSources(test.source);
+		AL10.alDeleteSources(buttonSound.source);
+		AL10.alDeleteSources(death.source);
+		AL10.alDeleteSources(music.source);
 	}
 
 	public static int[][][] readTextureCoordinator(String file, int coordsPerVertex){
