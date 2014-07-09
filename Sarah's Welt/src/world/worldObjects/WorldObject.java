@@ -15,6 +15,7 @@ public abstract class WorldObject extends Thing{
 	}
 	
 	public enum ObjectType {
+		RAINBOW(Rainbow::createNewObject),
 		JUNGLE_BUSH(JungleBush::createNewObject),
 		PYRAMIDE(Pyramide::createNewObject),
 		HOUSE(House::createNewObject),

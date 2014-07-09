@@ -38,6 +38,7 @@ public class Res {
 	public static final StackedTextures CRACK = new StackedTextures("worldObjects/Crack", 1, 4, -0.5f, -0.5f);
 	public static final StackedTextures FOSSIL = new StackedTextures("worldObjects/Fossil", 1, 3, -0.5f, -0.5f);
 	public static final StackedTextures GRAVE = new StackedTextures("worldObjects/Grave", 1, 7, -0.5f, -0.05f);
+	public static final StackedTextures RAINBOW = new StackedTextures("worldObjects/Rainbow", 1, 1, -0.5f, 0f);
 	public static final int[][][] SLOTH_ON_TREE_COORDS = readTextureCoordinator("res/worldObjects/Sloth_JungleTree.txt", 2);
 
 	public static final Texture FLOWER_LIGHT = new Texture("Light_dimmed");
