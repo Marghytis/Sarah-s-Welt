@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.lwjgl.openal.AL10;
 
+import core.Settings;
 import sound.Sound;
 
 public class Res {
@@ -83,9 +84,21 @@ public class Res {
 	public static final SimpleText font = new SimpleText(new Font("Times New Roman", Font.BOLD, 45), true);//Russel Write TT;
 	public static final SimpleText arial = new SimpleText(new Font("", Font.BOLD, 45), true);
 	
-	public static final Sound buttonSound = new Sound("63531__florian-reinke__click1.wav");
-	public static final Sound death = new Sound("FuneralMarch.wav");
-	public static final Sound music = new Sound("Sarahs Welt Musik.wav");
+	public static final Sound buttonSound = new Sound("63531__florian-reinke__click1.wav", null);
+	public static final Sound death = new Sound("FuneralMarch.wav", () -> {
+		while(!Res.death.hasFinished()){
+			try{
+				Thread.sleep(1000);
+			} catch (InterruptedException e){
+				e.printStackTrace();
+			}
+		}
+		if(Settings.sound){
+			Res.music.play();
+		}
+		});
+	public static final Sound music = new Sound("Sarahs Welt Loop.wav", null);
+	public static final Sound coinSound = new Sound("coins_quick_movement_in_hand.wav", null);
 	
 	public static void load(){
 		//do nothing, classloader loads the resources (I hope)

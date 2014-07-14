@@ -29,6 +29,7 @@ public class Inventory {
 			Inventory.stacks[i].item = Item.fist;
 			coins = 0;
 		}
+		selectedItem = 0;
 	}
 	
 	public static void render(){

@@ -44,7 +44,7 @@ public class Menu {
 					View.MAIN.set();
 				}
 			}
-			if(!textfield && Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
+			if(!textfield && Keyboard.getEventKey() == Keyboard.KEY_F3 && Keyboard.getEventKeyState()){
 				if(view == View.DEBUG){
 					View.WORLD.set();
 				} else {
@@ -82,7 +82,8 @@ public class Menu {
 					new Button("Continue", 	0.5f, 7/8.0f, new Runnable(){public void run(){View.WORLD.set();}}),
 					new Button("Worlds", 	0.5f, 5/8.0f, new Runnable(){public void run(){View.WORLDS.set();}}),
 					new Button("Settings", 	0.5f, 3/8.0f, new Runnable(){public void run(){View.SETTINGS.set();}}),
-					new Button("Exit", 		0.5f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}})
+					new Button("Exit", 		0.5f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}}),
+					new Button("Credits", 		7/8.0f,1/8.0f, new Runnable(){public void run(){CREDITS.set();}}),
 				};
 			}
 		},
@@ -201,7 +202,11 @@ public class Menu {
 						new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	5/12.0f, new Runnable(){public void run(){Settings.shader = View.SETTINGS.components[1].state;}}),
 						new ToggleButton("Sound on", "Sound off", false, 					1/2.0f,		7/8.0f, new Runnable(){public void run(){{
 							Settings.sound = !Settings.sound; 
-							if(Settings.sound) Res.music.play();};}}),
+							if(Settings.sound){
+								Res.music.play();
+							} else {
+								Res.music.stop();
+							}};}}),
 						new Button("Help Controls",											1/2.0f, 	3/12.0f, new Runnable(){public void run(){CONTROLS.set();}}),
 						new Button("Back", 													6/8.0f,		1/8.0f, new Runnable(){public void run(){MAIN.set();}})
 				};
@@ -221,16 +226,6 @@ public class Menu {
 										new Button("Set morning",								 			3/4.0f, 	7/12.0f, new Runnable(){public void run(){Calendar.setMorning();}}),
 										new Button("Set evening",											3/4.0f, 	5/12.0f, new Runnable(){public void run(){Calendar.setEvening();}}),
 										new Button("Boost Health",											1/4.0f, 	5/12.0f, new Runnable(){public void run(){World.sarah.health += 5;}})};
-			}
-		},
-		OPTIONS(true){
-			@Override
-			void setup(){
-				components = new Component[]{
-						new Button("Controls", 1/2.0f, 5/8.0f, new Runnable(){public void run(){CONTROLS.set();}}),
-						new ToggleButton("Sound on", "Sound off", false, 1/2.0f, 3/8.0f, new Runnable(){public void run(){{Settings.sound = !Settings.sound; /*Res.test.stop();*/};}}),
-						new Button("Back", 1/2.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})
-				};
 			}
 		},
 		INVENTORY(false){
@@ -282,10 +277,27 @@ public class Menu {
 				GL11.glColor3f(1, 1, 1);
 			}
 		},
+		CREDITS(true){
+			@Override
+			void setup(){
+				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){SETTINGS.set();}})};
+			}
+			String text = 	"Graphics: Evelyn" + "\n\n"
+						+ 	"Code: Mario" + "\n\n"
+						+ 	"Music: Urs & Vlad" + "\n\n"
+						+ 	"Documentation: Elli";
+			@Override
+			public void render(){
+				super.render();
+				GL11.glColor3f(0.4f, 0.8f, 1f);
+				Res.arial.drawString(Window.WIDTH/2 - 200, Window.HEIGHT -100, text, 1, 1);
+				GL11.glColor3f(1, 1, 1);
+			}
+		},
 		DEATH(true){
 			@Override
 			void setup(){
-				components = new Component[]{ new Button("Main Menu", -10000, -10000, new Runnable(){public void run(){view = MAIN;}})};
+				components = new Component[]{new Button("Main Menu", -10000, -10000, new Runnable(){public void run(){view = MAIN;}})};
 			}
 			
 			Animator ani = new Animator(Res.SARAH_DEATH, new Runnable(){public void run(){showButton();}}, new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
@@ -294,7 +306,7 @@ public class Menu {
 			public void set(){
 				super.set();
 				ani.frame = 0;
-//				Res.test.stop();
+				Res.music.stop();
 				Res.death.play();
 				try {
 					Thread.sleep(1000);

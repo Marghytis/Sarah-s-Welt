@@ -9,6 +9,9 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
+import resources.Res;
+import core.Settings;
+
 public class Sound {
 	  
 		/** Buffers hold sound data. */
@@ -37,9 +40,11 @@ public class Sound {
 
 	  /** Orientation of the listener. (first 3 elements are "at", second 3 are "up")
 	      Also note that these should be units of '1'. */
-	  FloatBuffer listenerOri = BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f });  
+	  FloatBuffer listenerOri = BufferUtils.createFloatBuffer(6).put(new float[] { 0.0f, 0.0f, -1.0f,  0.0f, 1.0f, 0.0f });
+	  
+	  Runnable onFinish;
 
-	public Sound(String fileName){
+	public Sound(String fileName, Runnable onFinish){
 	    sourcePos.flip();
 	    sourceVel.flip();
 	    listenerPos.flip();
@@ -51,6 +56,8 @@ public class Sound {
 	      System.out.println("Error loading data.");
 	      return;
 	    }
+	    
+	    this.onFinish = onFinish;
 	}
 	
 	public boolean playing = false;
@@ -58,16 +65,23 @@ public class Sound {
 	public void play(){
 		playing = true;
 		AL10.alSourcePlay(source);
+		
+		(new Thread(onFinish)).start();
 	}
 	
 	public void pause(){
 		playing = false;
 		AL10.alSourcePause(source);
+		
 	}
 	
 	public void stop(){
 		playing = false;
 		AL10.alSourceStop(source);
+	}
+	
+	public boolean hasFinished(){
+		return AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE) == AL10.AL_STOPPED;
 	}
 
 	  /**

@@ -57,9 +57,9 @@ public class Sarah extends WalkingCreature {
 		coinDrop = 0;
 		animator.doOnReady = () -> {
 			if(g){
-				if(!ridingCow){
+				if(!this.ridingCow){
 					animator.animation = stand;
-				} else if(animator.animation == dismountCow){
+				} else if(animator.animation.equals(dismountCow)){
 					this.ridingCow = false;
 					Cow newCow = riddenCow;
 					newCow.worldLink = World.sarah.worldLink;
@@ -251,29 +251,30 @@ public class Sarah extends WalkingCreature {
 	public int[] getHandPosition(){
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
-		if(ridingCow){
+		if(ridingCow && y < Res.SARAH_ON_COW_HAND_COORDS.length && x < Res.SARAH_ON_COW_HAND_COORDS[y].length){
 			return Res.SARAH_ON_COW_HAND_COORDS[y][x];
-		} else if(ridingCow || y >= Res.SARAH_HAND_COORDS.length || x >= Res.SARAH_HAND_COORDS[y].length){
-			return Res.SARAH_HAND_COORDS[0][0];
-		} else {
+		} else if(y < Res.SARAH_HAND_COORDS.length && x < Res.SARAH_HAND_COORDS[y].length){
 			return Res.SARAH_HAND_COORDS[y][x];
+		} else {
+			return Res.SARAH_HAND_COORDS[0][0];
 		}
 	}
 	
 	public int[] getHeadPosition(){
 		int x = animator.animation.getPoint(animator.frame);
 		int y = animator.animation.y;
-		if(ridingCow){
+		if(ridingCow && y < Res.SARAH_ON_COW_HEAD_COORDS.length && x < Res.SARAH_ON_COW_HEAD_COORDS[y].length){
 			return Res.SARAH_ON_COW_HEAD_COORDS[y][x];
-		} else if(y >= Res.SARAH_HEAD_COORDS.length || x >= Res.SARAH_HEAD_COORDS[y].length){
-			return Res.SARAH_HEAD_COORDS[0][0];
-		} else {
+		} else if(y < Res.SARAH_HEAD_COORDS.length && x < Res.SARAH_HEAD_COORDS[y].length){
 			return Res.SARAH_HEAD_COORDS[y][x];
+		} else {
+			return Res.SARAH_HEAD_COORDS[0][0];
 		}
 	}
 	
 	public void dismountCow(){
 		if(g && ridingCow){
+			System.out.println("Starting dismount");
 			animator.setAnimation(dismountCow);
 		}
 	}

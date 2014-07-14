@@ -343,7 +343,7 @@ public class WorldView {
 	
 	public static void keyListening(){
 		while(Keyboard.next()){
-			if(Menu.view != View.DEBUG && Keyboard.getEventKey() == Keyboard.KEY_G && Keyboard.getEventKeyState()){
+			if(Menu.view != View.DEBUG && Keyboard.getEventKey() == Keyboard.KEY_F3 && Keyboard.getEventKeyState()){
 				Menu.view = View.DEBUG;
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
@@ -356,7 +356,7 @@ public class WorldView {
 					case Keyboard.KEY_A : World.sarah.mirrored = true; break;
 					case Keyboard.KEY_SPACE: World.sarah.jump(); break;
 					case Keyboard.KEY_E: World.sarah.dismountCow(); break;
-					case Keyboard.KEY_F: View.DEBUG.components[0].state = !View.DEBUG.components[0].state;
+					case Keyboard.KEY_F4: View.DEBUG.components[0].state = !View.DEBUG.components[0].state;
 										Res.buttonSound.play();
 										View.DEBUG.components[0].action.run(); break;
 					case Keyboard.KEY_I:
@@ -365,6 +365,7 @@ public class WorldView {
 						} else {
 							View.INVENTORY.set();
 						} break;
+					case Keyboard.KEY_F1: View.SETTINGS.components[2].action.run(); break;
 					}
 				} else {
 					

@@ -52,6 +52,7 @@ public class Item {
 			if(item.pos.minus(World.sarah.pos).lengthSqare() < 400){
 				WorldView.thingTasks.add(() -> World.items[coin.id].remove(item));
 				Inventory.coins++;
+				Res.coinSound.play();
 			}
 		}
 	};
