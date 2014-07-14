@@ -14,6 +14,7 @@ import world.creatures.Creature;
 import world.creatures.GiantCat;
 import world.creatures.Gnat;
 import world.creatures.Heart;
+import world.creatures.Villager;
 import world.creatures.Panda;
 import world.creatures.Rabbit;
 import world.creatures.Scorpion;
@@ -184,6 +185,7 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(2), new Vec(), null), node, 20, random), 1, 10),
 //									new ThingSpawner((node, random) -> spawnCreature(new Unicorn(new Vec(), null), node, 2, random), 1, 10),
 //									new ThingSpawner((node, random) -> spawnCreature(new Heart(1, new Vec(), null), node, 100, random), 1, 10),
+									new ThingSpawner((node, random) -> spawnCreature(new Villager(new Vec(), null, random.nextInt(4)), node, 1, random), 1, 100),
 									
 									new ThingSpawner((node, random) -> spawnObject(new House(random.nextInt(6), new Vec(), null), node, 0, random), 1, 100),
 									new ThingSpawner((node, random) -> spawnObject(new TownObject(random.nextInt(5), new Vec(), null), node, 0, random), 1, 80),

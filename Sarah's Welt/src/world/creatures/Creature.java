@@ -106,6 +106,7 @@ public abstract class Creature extends Thing {
 		ZOMBIE(Zombie::createNewCreature),
 		GIANT_CAT(GiantCat::createNewCreature),
 		SLOTH(Sloth::createNewCreature),
+		VILLAGER(Villager::createNewCreature),
 		;
 		
 		public Creator create;

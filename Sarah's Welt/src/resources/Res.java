@@ -59,7 +59,7 @@ public class Res {
 	public static final StackedTextures UNICORN_HAIR  = new StackedTextures("creatures/Unicorn_hair", 6, 3, -0.5f, -0.1f);
 	public static final StackedTextures TREX  = new StackedTextures("creatures/Trex", 9, 4, -0.5f, -0.05f);
 	public static final StackedTextures GIANT_CAT  = new StackedTextures("creatures/GiantCat", 5, 2, -0.5f, -0.05f);
-	public static final StackedTextures NPC  = new StackedTextures("creatures/NPC", 1, 4, -0.5f, -0.05f);
+	public static final StackedTextures VILLAGER  = new StackedTextures("creatures/NPC", 1, 4, -0.5f, -0.05f);
 	public static final StackedTextures ZOMBIE  = new StackedTextures("creatures/Zombie", 4, 2, -0.5f, -0.05f);
 	public static final StackedTextures SLOTH  = new StackedTextures("creatures/Sloth", 5, 1, -0.5f, -0.05f);
 	public static final Texture COIN  = new Texture("Items/Coin", -0.5f, -0.2f);
