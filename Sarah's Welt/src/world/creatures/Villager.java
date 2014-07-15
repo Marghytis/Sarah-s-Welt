@@ -1,5 +1,7 @@
 package world.creatures;
 
+import item.Inventory;
+import item.Item;
 import resources.Res;
 import util.Animation;
 import util.Animator;
@@ -7,18 +9,21 @@ import world.Material;
 import world.Node;
 import world.World;
 import core.geom.Vec;
+import core.menu.Menu.View;
 
 public class Villager extends WalkingCreature{
 	
 	public int variant;
+	public Inventory inventory;
 	
 	public Villager(Vec p, Node worldLink, int variant){
 		super(new Animator(Res.VILLAGER, new Animation()), p, worldLink, false, CreatureType.VILLAGER);
 		maxSpeed = 5;
 		health = 10;
 		punchStrength = 1;
-		coinDrop = 0;
+		coinDrop = 20;
 		this.variant = variant;
+		inventory = new Inventory(4, Item.getRandomItem(random), Item.getRandomItem(random), Item.getRandomItem(random), Item.getRandomItem(random));
 	}
 	
 	@Override
@@ -39,7 +44,7 @@ public class Villager extends WalkingCreature{
 	
 	public boolean rightClickAction(){
 		if(pos.minus(World.sarah.pos).lengthSqare() < 400){
-//			World.sarah.mountCow(this);
+			View.TRADE.set(this);
 			return true;
 		}
 		return false;

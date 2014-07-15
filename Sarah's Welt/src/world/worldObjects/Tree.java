@@ -1,6 +1,5 @@
 package world.worldObjects;
 
-import item.Inventory;
 import item.Item;
 
 import org.lwjgl.opengl.GL11;
@@ -9,6 +8,7 @@ import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Node;
+import world.World;
 import core.geom.Vec;
 
 public class Tree extends WorldObject{
@@ -34,7 +34,7 @@ public class Tree extends WorldObject{
 	
 	@Override
 	public boolean rightClickAction(){
-		return Inventory.addItem(Item.stick);
+		return World.sarah.inventory.addItem(Item.stick);
 	}
 
 	public static WorldObject createNewObject(float x, float y, Node worldLink, boolean front, String metaString){

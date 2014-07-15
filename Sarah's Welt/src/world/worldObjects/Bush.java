@@ -1,11 +1,11 @@
 package world.worldObjects;
 
-import item.Inventory;
 import item.Item;
 import resources.Res;
 import util.Animation;
 import util.Animator;
 import world.Node;
+import world.World;
 import core.geom.Vec;
 
 public class Bush extends WorldObject{
@@ -27,7 +27,7 @@ public class Bush extends WorldObject{
 	@Override
 	public boolean rightClickAction(){
 		if(berryAmount > 0 && variant == 1){
-			Inventory.addItem(Item.berry);
+			World.sarah.inventory.addItem(Item.berry);
 			berryAmount--;
 			return true;
 		}

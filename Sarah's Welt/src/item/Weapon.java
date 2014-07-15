@@ -13,8 +13,8 @@ public class Weapon extends Item{
 
 	public Weapon(Texture texWorld, Texture texHand, Texture texinv,
 			Quad boxWorld, Quad boxHand, int defaultRotationHand,
-			String name, int coolDownStart, int power, Animation animation) {
-		super(texWorld, texHand, texinv, boxWorld, boxHand, defaultRotationHand, name, coolDownStart, animation);
+			String name, int coolDownStart, int value, int power, Animation animation) {
+		super(texWorld, texHand, texinv, boxWorld, boxHand, defaultRotationHand, name, coolDownStart, value, animation);
 		this.power = power;
 	}
 

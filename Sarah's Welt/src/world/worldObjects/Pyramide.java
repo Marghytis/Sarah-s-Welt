@@ -1,8 +1,5 @@
 package world.worldObjects;
 
-import item.Inventory;
-import item.Item;
-
 import org.lwjgl.opengl.GL11;
 
 import resources.Res;
@@ -33,11 +30,6 @@ public class Pyramide extends WorldObject{
 	public void beforeRender(){
 		GL11.glScalef(size, size, 0);
 		animator.animation.y = variant;
-	}
-	
-	@Override
-	public boolean rightClickAction(){
-		return Inventory.addItem(Item.stick);
 	}
 	
 	public static WorldObject createNewObject(float x, float y, Node worldLink, boolean front, String metaString){

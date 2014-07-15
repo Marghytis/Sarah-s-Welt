@@ -12,8 +12,8 @@ import core.Window;
 public class Textfield extends Component{
 
 	
-	public Textfield(String name, float x, float y, float width, float height, Runnable onEnter){
-		super(x, y, width, height, name, World.name, onEnter);
+	public Textfield(String name, float cX, float cY, float width, float height, Runnable onEnter){
+		super((Window.WIDTH*cX) - (width/2), (Window.HEIGHT*cY) - (height/2), width, height, name, World.name, onEnter);
 	}
 	
 	public void keyListening(){
@@ -32,17 +32,15 @@ public class Textfield extends Component{
 	
 	@Override
 	public void render(){
+//Quad
 		TextureFile.bindNone();
-		GL11.glPushMatrix();
-		GL11.glTranslatef((x*Window.WIDTH) - (size.x/2), (y*Window.HEIGHT) - (size.y/2), 0);
 		GL11.glColor4f(1, 1, 1, 0.7f);
 		draw();
-		
+//Text
 		GL11.glColor4f(0, 0, 0, 1);
 		float xText = x + (size.x/2) - (Res.font.getWidth(text)/3);
 		float yText = y + (size.y/2) - (Res.font.getHeight()/2);
 		Res.font.drawString(xText, yText, text, 1, 1);
-		GL11.glPopMatrix();
 		GL11.glColor4f(1, 1, 1, 1);
 	}
 

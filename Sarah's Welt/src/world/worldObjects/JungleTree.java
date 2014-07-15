@@ -38,7 +38,7 @@ public class JungleTree extends WorldObject{
 	
 	@Override
 	public boolean rightClickAction(){
-		return Inventory.addItem(Item.stick);
+		return World.sarah.inventory.addItem(Item.stick);
 	}
 	
 	public static WorldObject createNewObject(float x, float y, Node worldLink, boolean front, String metaString){

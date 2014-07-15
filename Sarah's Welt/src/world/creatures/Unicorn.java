@@ -175,7 +175,7 @@ public class Unicorn extends WalkingCreature {
 	
 	@Override
 	protected void onDeath(){
-		Inventory.addItem(Item.horn);
+		World.sarah.inventory.addItem(Item.horn);
 		World.sarah.mana = 30;
 		World.sarah.health = Math.max(World.sarah.health, 20);
 		for(int i = 0; i < coinDrop; i++){

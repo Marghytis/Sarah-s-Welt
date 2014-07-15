@@ -44,6 +44,7 @@ public class Sarah extends WalkingCreature {
 	public static Animation flyOnCow = new Animation(2, 1);//don't forget to change the texture!!!
 	
 	public int mana = 20;
+	public Inventory inventory;
 	
 	public Sarah(Vec pos, Node worldLink){
 		this(pos, worldLink, 20, false);
@@ -72,11 +73,12 @@ public class Sarah extends WalkingCreature {
 				}
 			}
 		};
+		inventory = new Inventory(6);
 	}
 	
 	@Override
 	public void update(float dTime){
-		Inventory.update(dTime);
+		World.sarah.inventory.update(dTime);
 		if(Settings.flying) g = false;
 		if(g){
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
@@ -197,7 +199,7 @@ public class Sarah extends WalkingCreature {
 				animator.tex.box.outline();
 		}
 		
-		if(Inventory.getSelectedItem() != null) Inventory.getSelectedItem().renderHand();
+		if(World.sarah.inventory.getSelectedItem() != null) World.sarah.inventory.getSelectedItem().renderHand();
 	}
 	
 	public void setKeyDirection(){

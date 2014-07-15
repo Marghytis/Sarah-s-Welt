@@ -1,6 +1,5 @@
 package world;
 
-import item.Inventory;
 import item.WorldItem;
 
 import java.util.ArrayList;
@@ -305,14 +304,11 @@ public class WorldView {
 				events : while(Mouse.next()){
 					if(Mouse.getEventButtonState()){
 						if(Mouse.getEventButton() == 0){
-							boolean clickedInWorld = true;
-							if(Menu.view == View.INVENTORY){
-								clickedInWorld = !Inventory.mouseClickedAt(Mouse.getEventX(), Mouse.getEventY());
-							}
+							boolean clickedInWorld = !Menu.mousePressed();
 							if(clickedInWorld){
 								int x = Mouse.getEventX() + (int)World.sarah.pos.x - (Window.WIDTH/2);
 								int y = Mouse.getEventY() + (int)World.sarah.pos.y - (Window.HEIGHT/2);
-								Inventory.getSelectedItem().use(x, y);
+								World.sarah.inventory.getSelectedItem().use(x, y);
 							}
 						} else if(Mouse.getEventButton() == 1){
 							int x = Mouse.getEventX() + (int)World.sarah.pos.x - (Window.WIDTH/2);
@@ -337,6 +333,10 @@ public class WorldView {
 								}
 							}
 						}
+					} else {
+						if(Mouse.getEventButton() == 0){
+							boolean clickedInWorld = !Menu.mouseReleased();
+						}
 					}
 				}
 	}
@@ -347,7 +347,11 @@ public class WorldView {
 				Menu.view = View.DEBUG;
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
-				Menu.view = View.MAIN;
+				if(Menu.view.pauseWorld || Menu.view == View.WORLD){
+					View.MAIN.set();
+				} else {
+					View.WORLD.set();
+				}
 				World.save();
 			} else {
 				if(Keyboard.getEventKeyState()){

@@ -28,13 +28,15 @@ public class Container extends Component{
 	}
 
 	public boolean mousePressed() {
+		boolean out = false;
 		for(Component c : children){
 			if(c.mousePressed()){
 				children.forEach((ch) -> ch.state = false);
 				c.state = true;
+				out = true;
 			}
 		}
-		return false;
+		return out;
 	}
 
 	public boolean mouseReleased() {

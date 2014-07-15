@@ -99,7 +99,7 @@ public class Trex extends WalkingCreature {
 	}
 	
 	public void onDeath(){
-		Inventory.addItem(Item.axe);
+		World.sarah.inventory.addItem(Item.axe);
 	}
 
 	public static Creature createNewCreature(float x, float y, float vX, float vY, int health, Node worldLink, boolean front, String metaString){

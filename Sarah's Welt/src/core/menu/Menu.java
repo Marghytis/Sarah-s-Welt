@@ -1,6 +1,7 @@
 package core.menu;
 
-import item.Inventory;
+import item.Item;
+import item.ItemStack;
 
 import java.io.File;
 
@@ -12,13 +13,14 @@ import resources.Res;
 import resources.TextureFile;
 import util.Animation;
 import util.Animator;
+import util.Color;
 import world.Calendar;
 import world.World;
+import world.creatures.Villager;
 import core.Main;
 import core.Settings;
 import core.Window;
 import core.WorldO;
-import core.geom.Quad;
 
 public class Menu {
 
@@ -38,11 +40,7 @@ public class Menu {
 				}
 			}
 			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE && Keyboard.getEventKeyState()){
-				if(view == View.MAIN){
-					View.WORLD.set();
-				} else {
-					View.MAIN.set();
-				}
+				View.WORLD.set();
 			}
 			if(!textfield && Keyboard.getEventKey() == Keyboard.KEY_F3 && Keyboard.getEventKeyState()){
 				if(view == View.DEBUG){
@@ -59,16 +57,32 @@ public class Menu {
 		while(Mouse.next()){
 			if(Mouse.getEventButton() == 0){
 				if(Mouse.getEventButtonState()){
-					for(Component c : view.components){
-						c.mousePressed();
-					}
+					mousePressed();
 				} else {
-					for(Component c : view.components){
-						c.mouseReleased();
-					}
+					mouseReleased();
 				}
 			}
 		}
+	}
+	
+	public static boolean mousePressed(){
+		boolean hit = false;
+		for(Component c : view.components){
+			if(c.mousePressed()){
+				hit = true;
+			}
+		}
+		return hit;
+	}
+	
+	public static boolean mouseReleased(){
+		boolean hit = false;
+		for(Component c : view.components){
+			if(c.mouseReleased()){
+				hit = true;
+			}
+		}
+		return hit;
 	}
 
 	public static void render(){
@@ -77,49 +91,34 @@ public class Menu {
 	
 	public enum View {
 		MAIN(true){
-			void setup(){
+			void setup(Object... args){
 				components = new Component[]{
 					new Button("Continue", 	0.5f, 7/8.0f, new Runnable(){public void run(){View.WORLD.set();}}),
 					new Button("Worlds", 	0.5f, 5/8.0f, new Runnable(){public void run(){View.WORLDS.set();}}),
 					new Button("Settings", 	0.5f, 3/8.0f, new Runnable(){public void run(){View.SETTINGS.set();}}),
 					new Button("Exit", 		0.5f, 1/8.0f, new Runnable(){public void run(){Main.beenden = true;}}),
-					new Button("Credits", 		7/8.0f,1/8.0f, new Runnable(){public void run(){CREDITS.set();}}),
+					new Button("Credits", 	7/8.0f,1/8.0f, new Runnable(){public void run(){CREDITS.set();}}),
 				};
 			}
 		},
 		WORLD(false){
+
+			void setup(Object... args){
+				components = new Component[]{
+						new Bar(Window.WIDTH*0.1f, Window.HEIGHT*0.15f, Window.WIDTH*0.8f, Window.HEIGHT*0.03f, false, "Health", () -> World.sarah.health, 30, new Color(0.8f, 0, 0, 0.5f)),
+						new Bar(Window.WIDTH*0.1f, Window.HEIGHT*0.05f, Window.WIDTH*0.8f, Window.HEIGHT*0.03f, false, "Mana", () -> World.sarah.mana, 30, new Color(0.8f, 0, 0.8f, 0.5f)),
+				};
+			}
 			
-			Quad health = new Quad(0.1f, 0.15f, 0.8f, 0.03f);
-			Quad mana = new Quad(0.1f, 0.05f, 0.8f, 0.03f);
-			
-			@Override
-			void setup(){
-				components = new Component[0];}
-			
-			@Override
 			public void render(){
 				TextureFile.bindNone();
-				GL11.glScalef(Window.WIDTH, Window.HEIGHT, 0);
-				//full box
-				GL11.glColor4f(1, 1, 1, 0.2f);
-				Quad.draw(health.x, health.y, health.x+health.size.x, health.y + health.size.y);
-				Quad.draw(mana.x, mana.y, mana.x+mana.size.x, mana.y + mana.size.y);
-				//health/mana
-				GL11.glColor4f(0.8f, 0, 0, 0.5f);
-				Quad.draw(health.x, health.y, health.x + (World.sarah.health/30.0f*health.size.x), health.y + health.size.y);
-				GL11.glColor4f(0.8f, 0, 0.8f, 0.5f);
-				Quad.draw(mana.x, mana.y, mana.x + (World.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
-				//outline
-				GL11.glColor4f(0.7f, 0.7f, 0.7f, 1);
-				health.outline();
-				mana.outline();
-				GL11.glColor3f(1, 1, 1);
+				super.render();
 			}
 		},
 		WORLDS(true){
 			
 			
-			void setup(){
+			void setup(Object... args){
 				
 				components = new Component[]{
 						new Button("Play!", 		2/8.0f, 6/8.0f, new Runnable(){public void run(){
@@ -178,7 +177,7 @@ public class Menu {
 			}
 		},
 		NEW_WORLD(true){
-			void setup(){
+			void setup(Object... args){
 				components = new Component[]{
 						new Button("Create!", 0.5f, 2/8.0f, new Runnable(){public void run(){{
 							
@@ -196,7 +195,7 @@ public class Menu {
 			}
 		},
 		SETTINGS(true){
-			void setup(){
+			void setup(Object... args){
 				components = new Component[]{
 						new ToggleButton("Health shown", "Health hidden", false, 			1/2.0f, 	9/12.0f, new Runnable(){public void run(){Settings.health = View.SETTINGS.components[0].state;}}),
 						new ToggleButton("Shader active", "Shader inactive", false, 		1/2.0f, 	5/12.0f, new Runnable(){public void run(){Settings.shader = View.SETTINGS.components[1].state;}}),
@@ -214,7 +213,7 @@ public class Menu {
 		},
 		DEBUG(true){
 			@Override
-			void setup(){
+			void setup(Object... args){
 				components = new Component[]{	new ToggleButton("Flying enabled", "Flying disabled", false,		1/2.0f, 	11/12.0f, new Runnable(){public void run(){Settings.flying = View.DEBUG.components[0].state;}}),
 										new ToggleButton("Textures enabled", "Textures disabled", true,		1/2.0f, 	9/12.0f, new Runnable(){public void run(){Settings.debugView = View.DEBUG.components[1].state;}}),
 										new ToggleButton("Hitbox shown", "Hitbox hidden", false,			1/2.0f, 	7/12.0f, new Runnable(){public void run(){Settings.hitbox = View.DEBUG.components[2].state;}}),
@@ -229,38 +228,125 @@ public class Menu {
 			}
 		},
 		INVENTORY(false){
-			
-			Quad health = new Quad(0.45f, 0.595f, 0.1f, 0.01f);
-			Quad mana = new Quad(0.1f, 0.05f, 0.8f, 0.03f);
 						
-			@Override
-			void setup(){
+			void setup(Object... args){
+				
+				ListElement[] itemStacks = new ListElement[6];
+				
+				for(ItemStack item : World.sarah.inventory.stacks){
+					itemStacks[item.slot] = new ListElement((item.slot+1)*(1.0f/7), 1.0f/5, 100, 100, "", item, () -> World.sarah.inventory.selectedItem = item.slot);
+					if(item.inv.selectedItem == item.slot) itemStacks[item.slot].state = true;
+				}
+				
+				components = new Component[]{
+						new Bar(Window.WIDTH*0.45f, Window.HEIGHT*0.595f, Window.WIDTH*0.1f, Window.HEIGHT*0.01f, false, "Health", () -> World.sarah.health, 30, new Color(0.8f, 0, 0, 0.5f)),
+						new Bar(Window.WIDTH*0.1f, Window.HEIGHT*0.05f, Window.WIDTH*0.8f, Window.HEIGHT*0.03f, false, "Mana", () -> World.sarah.mana, 30, new Color(0.8f, 0, 0.8f, 0.5f)),
+						new Container("Inventory", itemStacks),
+				};
 			}
 			
-			@Override
 			public void render(){
-				Inventory.render();
-				TextureFile.bindNone();
-				GL11.glScalef(Window.WIDTH, Window.HEIGHT, 0);
-				//full box
-				GL11.glColor4f(1, 1, 1, 0.2f);
-				Quad.draw(health.x, health.y, health.x+health.size.x, health.y + health.size.y);
-				Quad.draw(mana.x, mana.y, mana.x+mana.size.x, mana.y + mana.size.y);
-				//health/mana
-				GL11.glColor4f(0.8f, 0, 0, 0.5f);
-				Quad.draw(health.x, health.y, health.x + (World.sarah.health/30.0f*health.size.x), health.y + health.size.y);
-				GL11.glColor4f(0.8f, 0, 0.8f, 0.5f);
-				Quad.draw(mana.x, mana.y, mana.x + (World.sarah.mana/30.0f*mana.size.x), mana.y+mana.size.y);
-				//outline
-				GL11.glColor4f(0.7f, 0.7f, 0.7f, 1);
-				health.outline();
-				mana.outline();
+//Money bag
+				GL11.glPushMatrix();
+				GL11.glLoadIdentity();
+				GL11.glTranslatef(Window.WIDTH*7.0f/8, Window.HEIGHT*7.0f/8, 0);
+				Res.MONEYBAG.file.bind();
+				Res.MONEYBAG.box.drawTex(Res.MONEYBAG.texs[0][0]);
+				float xText = - 50 - (Res.font.getWidth(World.sarah.inventory.coins + "")/3);
+				float yText = - (Res.font.getHeight()/2);
+				GL11.glColor3f(0.9f, 0.8f, 0.1f);
+				Res.font.drawString(xText, yText, World.sarah.inventory.coins + "", 1, 1);
 				GL11.glColor3f(1, 1, 1);
+				GL11.glPopMatrix();
+				TextureFile.bindNone();
+//Item slots
+				super.render();
+			}
+		},
+		TRADE(false){
+			
+			Villager villy;
+			
+			void setup(Object... args){
+				ListElement[] villyInv;
+				if(args.length > 0){
+					villy = (Villager)args[0];
+					villyInv = new ListElement[4];
+					
+					for(ItemStack item : villy.inventory.stacks){
+						villyInv[item.slot] = new ListElement(((item.slot%2)+1)*(1.0f/7), (4 - (item.slot/2))/5.0f, 100, 100, "", item, () -> villy.inventory.selectedItem = item.slot);
+						if(item.inv.selectedItem == item.slot) villyInv[item.slot].state = true;
+					}
+				} else {
+					villyInv = new ListElement[0];
+				}
+				
+				ListElement[] sarahInv = new ListElement[6];
+				
+				for(ItemStack item : World.sarah.inventory.stacks){
+					sarahInv[item.slot] = new ListElement((item.slot+1)*(1.0f/7), 1.0f/5, 100, 100, "", item, () -> World.sarah.inventory.selectedItem = item.slot);
+					if(item.inv.selectedItem == item.slot) sarahInv[item.slot].state = true;
+				}
+				
+				components = new Component[]{
+						new Bar(Window.WIDTH*0.45f, Window.HEIGHT*0.595f, Window.WIDTH*0.1f, Window.HEIGHT*0.01f, false, "Health", () -> World.sarah.health, 30, new Color(0.8f, 0, 0, 0.5f)),
+						new Bar(Window.WIDTH*0.1f, Window.HEIGHT*0.05f, Window.WIDTH*0.8f, Window.HEIGHT*0.03f, false, "Mana", () -> World.sarah.mana, 30, new Color(0.8f, 0, 0.8f, 0.5f)),
+						new Container("Inventory", sarahInv),
+						new Container("Inventory Villy", villyInv),
+						new Button("Buy!", 3/4.0f, 7/12.0f, new Runnable(){public void run(){
+								ItemStack selected = null;
+								for(Component e : ((Container)View.TRADE.components[3]).children){
+									if(e.state){
+										selected = (ItemStack)((ListElement)e).item;
+										break;
+									}
+								}
+								if(selected.item != Item.fist && World.sarah.inventory.coins > selected.item.value){
+									if(World.sarah.inventory.addItem(selected.item)){
+										World.sarah.inventory.coins -= selected.item.value;
+										villy.inventory.stacks[selected.slot].item = Item.fist;
+									}
+								}
+							}}),
+						new Button("Sell!", 3/4.0f, 5/12.0f, new Runnable(){public void run(){
+							ItemStack selected = null;
+							for(Component e : ((Container)View.TRADE.components[2]).children){
+								if(e.state){
+									selected = (ItemStack)((ListElement)e).item;
+									break;
+								}
+							}
+							if(selected.item != Item.fist){
+								if(villy.inventory.addItem(selected.item)){
+									World.sarah.inventory.coins += selected.item.value;
+									World.sarah.inventory.stacks[selected.slot].item = Item.fist;
+								}
+							}
+						}}),
+				};
+			}
+			
+			public void render(){
+//Money bag
+				GL11.glPushMatrix();
+				GL11.glLoadIdentity();
+				GL11.glTranslatef(Window.WIDTH*7.0f/8, Window.HEIGHT*7.0f/8, 0);
+				Res.MONEYBAG.file.bind();
+				Res.MONEYBAG.box.drawTex(Res.MONEYBAG.texs[0][0]);
+				float xText = - 50 - (Res.font.getWidth(World.sarah.inventory.coins + "")/3);
+				float yText = - (Res.font.getHeight()/2);
+				GL11.glColor3f(0.9f, 0.8f, 0.1f);
+				Res.font.drawString(xText, yText, World.sarah.inventory.coins + "", 1, 1);
+				GL11.glColor3f(1, 1, 1);
+				GL11.glPopMatrix();
+				TextureFile.bindNone();
+//Item slots
+				super.render();
 			}
 		},
 		CONTROLS(true){
 			@Override
-			void setup(){
+			void setup(Object... args){
 				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){SETTINGS.set();}})};
 			}
 			String text = 	"ESC : Main menu\n"
@@ -279,8 +365,8 @@ public class Menu {
 		},
 		CREDITS(true){
 			@Override
-			void setup(){
-				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){SETTINGS.set();}})};
+			void setup(Object... args){
+				components = new Component[]{ new Button("Back", 6/8.0f, 1/8.0f, new Runnable(){public void run(){MAIN.set();}})};
 			}
 			String text = 	"Graphics: Evelyn" + "\n\n"
 						+ 	"Code: Mario" + "\n\n"
@@ -296,15 +382,15 @@ public class Menu {
 		},
 		DEATH(true){
 			@Override
-			void setup(){
+			void setup(Object... args){
 				components = new Component[]{new Button("Main Menu", -10000, -10000, new Runnable(){public void run(){view = MAIN;}})};
 			}
 			
 			Animator ani = new Animator(Res.SARAH_DEATH, new Runnable(){public void run(){showButton();}}, new Animation(10, 0, false, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13));
 			
 			@Override
-			public void set(){
-				super.set();
+			public void set(Object... args){
+				super.set(args);
 				ani.frame = 0;
 				Res.music.stop();
 				Res.death.play();
@@ -339,14 +425,14 @@ public class Menu {
 		};
 		
 		public Component[] components;
-		boolean pauseWorld;
+		public boolean pauseWorld;
 		
 		View(boolean stopWorldTicking){
 			this.pauseWorld = stopWorldTicking;
 			setup();
 		}
 		
-		abstract void setup();
+		abstract void setup(Object... args);
 		
 		public void render(){
 			for(Component b : components){
@@ -354,9 +440,9 @@ public class Menu {
 			}
 		}
 		
-		public void set(){
+		public void set(Object... args){
 			Menu.view = this;
-			setup();
+			setup(args);
 		}
 	}
 }

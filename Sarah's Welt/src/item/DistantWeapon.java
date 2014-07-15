@@ -11,9 +11,9 @@ public class DistantWeapon extends Item{
 	
 	public DistantWeapon(Texture texWorld, Texture texHand, Texture texinv,
 			Quad boxWorld, Quad boxHand, int defaultRotationHand, String name,
-			int coolDownStart, int distPower, Animation animation) {
+			int coolDownStart, int value, int distPower, Animation animation) {
 		super(texWorld, texHand, texinv, boxWorld, boxHand, defaultRotationHand, name,
-				coolDownStart, animation);
+				coolDownStart, value, animation);
 		this.distPower = distPower;
 	}
 	

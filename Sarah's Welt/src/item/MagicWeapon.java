@@ -16,9 +16,9 @@ public class MagicWeapon extends DistantWeapon{
 	
 	public MagicWeapon(Texture texWorld, Texture texHand, Texture texinv,
 			Quad boxWorld, Quad boxHand, int defaultRotationHand, String name,
-			int coolDownStart, int distPower, int manaUse) {
+			int coolDownStart, int value, int distPower, int manaUse) {
 		super(texWorld, texHand, texinv, boxWorld, boxHand, defaultRotationHand, name,
-				coolDownStart, distPower, Sarah.castSpell);
+				coolDownStart, distPower, value, Sarah.castSpell);
 		this.manaUse = manaUse;
 	}
 	

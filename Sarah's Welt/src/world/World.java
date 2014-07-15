@@ -112,7 +112,7 @@ public class World {
 			creatures[i] = new ArrayList<>();
 		}
 
-		Inventory.reset();
+		World.sarah.inventory = new Inventory(6);
 		//setup world and generators
 		zones = new ArrayList<>();
 		db = new Database("worlds", name + ".world");
@@ -154,7 +154,7 @@ public class World {
         for(List<Node> list : nodes) nodeAmount += list.size();
 		
 		s = db.conn.createStatement();
-		s.execute("INSERT INTO 'World' (wName, nodeAmount, invSelectedItem, coins) VALUES ('" + name + "', '" + nodeAmount + "', '" + Inventory.selectedItem + "', '" + Inventory.coins + "');");
+		s.execute("INSERT INTO 'World' (wName, nodeAmount, invSelectedItem, coins) VALUES ('" + name + "', '" + nodeAmount + "', '" + World.sarah.inventory.selectedItem + "', '" + World.sarah.inventory.coins + "');");
 		s.close();
 	}
 
@@ -167,8 +167,8 @@ public class World {
         ergebnis.next(); 
         name = ergebnis.getString("wName");
         Node.indexIndex = ergebnis.getInt("nodeAmount");
-        Inventory.selectedItem = ergebnis.getInt("invSelectedItem");
-        Inventory.coins = ergebnis.getInt("coins");
+        World.sarah.inventory.selectedItem = ergebnis.getInt("invSelectedItem");
+        World.sarah.inventory.coins = ergebnis.getInt("coins");
         
         ergebnis.close();
         sql.close();
@@ -630,7 +630,7 @@ public class World {
 		
         PreparedStatement p = db.conn.prepareStatement("INSERT INTO ItemStack (slot, item, count) VALUES (?,?,?);");
         
-        for(ItemStack stack : Inventory.stacks){
+        for(ItemStack stack : World.sarah.inventory.stacks){
         	int i = 1;
             p.setInt(i++, stack.slot);
             p.setInt(i++, stack.item.id);
@@ -654,8 +654,8 @@ public class World {
         	int item = ergebnis.getInt("item");
         	int count = ergebnis.getInt("count");
 
-			Inventory.stacks[slot].item = Item.list.get(item);
-			Inventory.stacks[slot].count = count;
+			World.sarah.inventory.stacks[slot].item = Item.list.get(item);
+			World.sarah.inventory.stacks[slot].count = count;
         }
         ergebnis.close();
         sql.close();

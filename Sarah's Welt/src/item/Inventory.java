@@ -1,70 +1,44 @@
 package item;
 
-import org.lwjgl.opengl.GL11;
-
-import core.Window;
-import resources.Res;
 
 
 public class Inventory {
 
-	public static ItemStack[] stacks = new ItemStack[6];
-	public static int coins;
+	public ItemStack[] stacks;
+	public int coins;
 	
-	public static int selectedItem;
-	
-	public static Item getSelectedItem(){
-		return stacks[selectedItem].item;
-	}
-	
-	public static void update(float delta){
-		for(ItemStack stack : stacks){
-			if(stack.item != null && stack.item.coolDown > 0) stack.item.coolDown -= delta;
-		}
-	}
-	
-	public static void reset(){
-		for(int i = 0; i < Inventory.stacks.length; i++){
-			Inventory.stacks[i] = new ItemStack(i);
-			Inventory.stacks[i].item = Item.fist;
+	public int selectedItem;
+		
+	public Inventory(int itemAmount, Item... items){
+		stacks = new ItemStack[itemAmount];
+		for(int i = 0; i < stacks.length; i++){
+			stacks[i] = new ItemStack(i, this);
+			if(i < items.length){
+				stacks[i].item = items[i];
+			} else {
+				stacks[i].item = Item.fist;
+			}
 			coins = 0;
 		}
 		selectedItem = 0;
 	}
 	
-	public static void render(){
-		for(ItemStack stack : Inventory.stacks){
-			stack.render();
-		}
-		GL11.glPushMatrix();
-		GL11.glLoadIdentity();
-		GL11.glTranslatef(Window.WIDTH*7.0f/8, Window.HEIGHT*7.0f/8, 0);
-		Res.MONEYBAG.file.bind();
-		Res.MONEYBAG.box.drawTex(Res.MONEYBAG.texs[0][0]);
-		float xText = - 50 - (Res.font.getWidth(coins + "")/3);
-		float yText = - (Res.font.getHeight()/2);
-		GL11.glColor3f(0.9f, 0.8f, 0.1f);
-		Res.font.drawString(xText, yText, coins + "", 1, 1);
-		GL11.glColor3f(1, 1, 1);
-		GL11.glPopMatrix();
+	public Item getSelectedItem(){
+		return stacks[selectedItem].item;
 	}
 	
-	public static boolean mouseClickedAt(float x, float y){
-		for(ItemStack stack : Inventory.stacks){
-			if(stack.contains(x, y)){
-				selectedItem = stack.slot;
-				return true;
-			}
+	public void update(float delta){
+		for(ItemStack stack : stacks){
+			if(stack.item != null && stack.item.coolDown > 0) stack.item.coolDown -= delta;
 		}
-		return false;
 	}
 	
-	public static boolean addItem(Item item){
-		for(int i = 0; i < Inventory.stacks.length; i++){
-			if(Inventory.stacks[i].item == item){
+	public boolean addItem(Item item){
+		for(int i = 0; i < stacks.length; i++){
+			if(stacks[i].item == item){
 				return false;
-			} else if (Inventory.stacks[i].item == Item.fist){
-				Inventory.stacks[i].item = item;
+			} else if (stacks[i].item == Item.fist){
+				stacks[i].item = item;
 				return true;
 			}
 		}

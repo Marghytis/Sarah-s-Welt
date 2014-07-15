@@ -25,11 +25,11 @@ public class WorldItem extends MovableThing{
 
 	@Override
 	public boolean rightClickAction(){
-		for(int i = 0; i < Inventory.stacks.length; i++){
-			if(Inventory.stacks[i].item == item || World.sarah.pos.minus(pos).lengthSqare() > 25000){
+		for(int i = 0; i < World.sarah.inventory.stacks.length; i++){
+			if(World.sarah.inventory.stacks[i].item == item || World.sarah.pos.minus(pos).lengthSqare() > 25000){
 				return false;
-			} else if (Inventory.stacks[i].item == Item.fist){
-				Inventory.stacks[i].item = item;
+			} else if (World.sarah.inventory.stacks[i].item == Item.fist){
+				World.sarah.inventory.stacks[i].item = item;
 				WorldView.thingTasks.add(() -> World.items[item.id].remove(this));
 				return true;
 			}
