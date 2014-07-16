@@ -133,11 +133,10 @@ public class WorldView {
 	}
 	
 	public static void render(){
+		//set OpenGL
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(0.4f, 0.3f, 0.7f, 1);
-		GL11.glLoadIdentity();
 		GL11.glTranslatef(- World.sarah.pos.x + (Window.WIDTH/2), - World.sarah.pos.y + (Window.HEIGHT/2), 0);
-		GL11.glColor4f(1, 1, 1, 1);
 
 		//back
 		renderStructures(false);

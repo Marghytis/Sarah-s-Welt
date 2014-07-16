@@ -23,20 +23,25 @@ public class Main {
 	public static List<WorldO> worlds;
 	
 	public static void main(String[] args){
+		//Size of the visible world
+		if(args.length > 0) World.widthHalf = Integer.parseInt(args[0]);
 		
-		if(args.length > 0){
-			World.widthHalf = Integer.parseInt(args[0]);
+		//Create the Window and show splash screen
+		if(args.length > 1){
+			Window.createFullScreen("Sarahs Welt 1.0");
+		} else {
+			Window.create("Sarahs Welt 1.0", 1000, 600);
 		}
-		
-		loadWorlds();
-		
-		Window.create("Sarahs Welt 1.0", 1000, 600);
-//		Window.createFullScreen("Sarahs Welt");
 		Window.fill(new TextureFile("titelbild", 0, 0).handle);
 		Display.update();
 		
-		
+		//Look in the "worlds" file which worlds there are saved
+		loadWorlds();
+
+		//Load all the resources (Textures, Sounds, Texts)
 		Res.load();
+		
+		//Load either the world which was last opened or, if there aren't any worlds, create the "StartWorld"
 		String lastWorld = "StartWorld";
 		for(WorldO o : worlds){
 			if(o.last){
@@ -46,48 +51,65 @@ public class Main {
 		}
 		World.load(lastWorld);
 		
-		long timeLastWorldTick = System.currentTimeMillis();
-		while(!Display.isCloseRequested() && !beenden){
-			long testTime = System.currentTimeMillis();
-//			Display.sync(500);
-			
-//			if(Settings.sound && !Res.test.playing) Res.test.play();
-
-			render();
-			
-			listening();
-			long t = System.currentTimeMillis();
-			calculate(Math.min((int)(t - timeLastWorldTick), 20));
-			timeLastWorldTick = t;
-			
-			Display.update();
-			try {
-				Thread.sleep(17 - (System.currentTimeMillis() - testTime));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch(IllegalArgumentException e){}
-//			System.out.println(System.currentTimeMillis() - testTime);
-		}
+		startGameLoop();
 		
-//		Res.test.stop();
+		//save the existing worlds back into the "worlds"-file
 		saveWorlds();
 		Res.unload();
 		Display.destroy();
 	}
 	
+	public static void startGameLoop(){
+		long timeLastWorldTick = System.currentTimeMillis();
+		while(!Display.isCloseRequested() && !beenden){
+			long testTime = System.currentTimeMillis();
+
+			/**
+			 * RENDER
+			 */
+			render();
+			
+			/**
+			 * LISTEN
+			 */
+			listening();
+			
+			/**
+			 * UPDATE
+			 */
+			long t = System.currentTimeMillis();
+			update(Math.min((int)(t - timeLastWorldTick), 20));
+			timeLastWorldTick = t;
+			
+			
+			//Update the Window
+			Display.update();
+			
+			//Cap the frames per second to 60
+			try {
+				Thread.sleep(17 - (System.currentTimeMillis() - testTime));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch(IllegalArgumentException e){}
+		}
+	}
+	
 	public static boolean beenden;
 	
 	public static void render(){
+		//reset OpenGL
 		GL11.glLoadIdentity();
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(0.55f, 0.53f, 0.76f, 1);
 		GL11.glColor4f(1, 1, 1, 1);
+		
+		//render World and Menu
 		WorldView.render();
 		GL11.glLoadIdentity();
 		Menu.render();
 	}
 	
-	public static void calculate(int delta){
+	public static void update(int delta){
 		
 		if(!Menu.pauseWorld()){
 			WorldView.update(delta);
