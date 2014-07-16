@@ -42,7 +42,7 @@ public class Bar extends Component{
 		GL11.glColor4f(1, 1, 1, 0.2f);
 		draw();
 //Value
-		color.set();
+		color.setGL();
 		Quad.draw(x, y, x + (upright ? size.x : (float)getValue.get()/maxValue*size.x), y + (upright ? (float)getValue.get()/maxValue*size.y : size.y));
 //Outline
 		GL11.glColor4f(0.7f, 0.7f, 0.7f, 1);

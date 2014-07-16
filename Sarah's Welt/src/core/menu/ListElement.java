@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import resources.Res;
 import resources.TextureFile;
+import util.Color;
 import core.Window;
 import core.WorldO;
 
@@ -45,6 +46,10 @@ public class ListElement extends Component{
 			Res.ITEMS_INV.file.bind();
 			if(stack != null && stack.item.texInv != null){
 				drawTex(stack.item.texInv);
+			}
+			if(state){
+				Color.setGL(1, 1, 1, 0.7f);
+				Res.font.drawString(x + (size.x/2), y + (size.y/2), item.toString(), 0.5f, 0.5f);
 			}
 		}
 		GL11.glColor4f(1, 1, 1, 1);

@@ -51,7 +51,7 @@ public class Cloud extends WorldObject{
 			effect.render();
 			GL11.glColor4f(1, 1, 1, 1);
 		}
-		color.set();
+		color.setGL();
 		animator.tex.file.bind();
 		super.render();
 		GL11.glColor3f(1, 1, 1);

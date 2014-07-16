@@ -34,7 +34,7 @@ public class CandyFlower extends WorldObject {
 	
 	public void renderLight(){
 		GL11.glTranslatef(pos.x - World.sarah.pos.x + Window.WIDTH/2 - Res.FLOWER_LIGHT.file.width/2, -(pos.y - World.sarah.pos.y) + Window.HEIGHT/2 - Res.FLOWER_LIGHT.file.height/2 - 20, 0);
-		color.set();
+		color.setGL();
 		Res.FLOWER_LIGHT.file.bind();
 		Res.FLOWER_LIGHT.box.drawTex(Res.FLOWER_LIGHT);
 	}

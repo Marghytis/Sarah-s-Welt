@@ -301,7 +301,7 @@ public class Menu {
 										break;
 									}
 								}
-								if(selected.item != Item.fist && World.sarah.inventory.coins > selected.item.value){
+								if(selected.item != Item.fist && World.sarah.inventory.coins >= selected.item.value){
 									if(World.sarah.inventory.addItem(selected.item)){
 										World.sarah.inventory.coins -= selected.item.value;
 										villy.inventory.stacks[selected.slot].item = Item.fist;
@@ -342,6 +342,7 @@ public class Menu {
 				TextureFile.bindNone();
 //Item slots
 				super.render();
+//Tool tips
 			}
 		},
 		CONTROLS(true){

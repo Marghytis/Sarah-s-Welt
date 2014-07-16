@@ -23,13 +23,13 @@ public class Item {
 
 	public static final Weapon fist = new Weapon(null, null, null, null, null, 180, "Fist", 300, 0, 2, Sarah.punch);
 	public static final Sword sword = new Sword(Res.ITEMS_WORLD.texs[0][0], Res.ITEMS_WEAPONS.texs[0][0], Res.ITEMS_INV.texs[0][0],
-			new Quad(-25, -2, 50, 50), new Quad(-55, -21, 80, 40), 180, "Sword", 500, 10, 4);
+			new Quad(-25, -2, 50, 50), new Quad(-55, -21, 80, 40), 180, "Sword", 500, 20, 4);
 	public static final Sword axe = new Sword(Res.ITEMS_WORLD.texs[1][0], Res.ITEMS_WEAPONS.texs[0][1], Res.ITEMS_INV.texs[1][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Axe", 1000, 100, 10);
 	public static final Sword stick = new Sword(Res.ITEMS_WORLD.texs[2][0], Res.ITEMS_WEAPONS.texs[0][2], Res.ITEMS_INV.texs[3][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -21, 80, 40), 180, "Stick", 500, 2, 3);
 	public static final Sword candyCane = new Sword(Res.ITEMS_WORLD.texs[3][0], Res.ITEMS_WEAPONS.texs[0][3], Res.ITEMS_INV.texs[5][0],
-			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Candy cane", 2, 1000, 3);
+			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Candy cane", 1000, 2, 3);
 	public static final Sword shovel = new Sword(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_WEAPONS.texs[0][4], Res.ITEMS_INV.texs[4][0],
 			new Quad(-25, -2, 50, 50), new Quad(-55, -19, 80, 40), 180, "Shovel", 700, 70, 4);
 	public static final MagicWeapon horn = new MagicWeapon(Res.ITEMS_WORLD.texs[4][0], Res.ITEMS_HAND.texs[5][0], Res.ITEMS_INV.texs[5][0],
@@ -47,6 +47,9 @@ public class Item {
 			return false;
 		}
 	};
+	/**
+	 * Has to be the last, so the villagers don't have it in their trades
+	 */
 	public static final Item coin = new Item(Res.COIN, Res.COIN, Res.COIN,
 			new Quad(-15, -6, 30, 30), new Quad(-55, -19, 80, 40), 180, "Coin", 0, 1, null){
 		public void update(float delta, WorldItem item){
@@ -137,6 +140,6 @@ public class Item {
 	}
 	
 	public static Item getRandomItem(Random random){
-		return list.get(random.nextInt(list.size()));
+		return list.get(random.nextInt(list.size()-1));
 	}
 }

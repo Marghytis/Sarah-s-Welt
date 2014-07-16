@@ -10,7 +10,7 @@ public class Sword extends Weapon{
 			Quad boxWorld, Quad boxHand, int defaultRotationHand, String name,
 			int coolDownStart, int value, int power) {
 		super(texWorld, texHand, texinv, boxWorld, boxHand, defaultRotationHand, name,
-				coolDownStart, power, value, Sarah.swingWeapon);
+				coolDownStart, value, power, Sarah.swingWeapon);
 	}
 
 }

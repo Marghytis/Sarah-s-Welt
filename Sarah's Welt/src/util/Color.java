@@ -5,6 +5,8 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
 public class Color {
+	
+	public static Color BLACK = new Color(0, 0, 0);
 
 	public float r, g, b, a;
 	
@@ -52,7 +54,11 @@ public class Color {
 		set(c.r, c.g, c.b, c.a);
 	}
 	
-	public void set(){
+	public void setGL(){
+		GL11.glColor4f(r, g, b, a);
+	}
+	
+	public static void setGL(float r, float g, float b, float a){
 		GL11.glColor4f(r, g, b, a);
 	}
 	

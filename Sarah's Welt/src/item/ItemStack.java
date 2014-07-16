@@ -28,4 +28,12 @@ public class ItemStack extends Quad{
 			drawTex(item.texInv);
 		}
 	}
+	
+	public String toString(){
+		if(item != null && item != Item.fist){
+			return item.name + "\nValue: " + item.value;
+		} else {
+			return "Noooothing!!!";
+		}
+	}
 }
