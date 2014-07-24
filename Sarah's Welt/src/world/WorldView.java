@@ -55,13 +55,18 @@ public class WorldView {
 		setContourNodes();
 	}
 	
+	static float lastX;
+	
 	public static void update(float delta){
 		World.sarah.update(delta);
 		if(World.sarah.health <= 0){
 			View.DEATH.set();
 		}
 		World.updateContours();
-		setContourNodes();
+		if(Math.abs(lastX - World.sarah.pos.x) > 50){
+			setContourNodes();
+			lastX = World.sarah.pos.x;
+		}
 		updateObjects(delta);
 		executeTasks();
 		updateCreatures(delta);
@@ -70,24 +75,21 @@ public class WorldView {
 	}
 	
 	public static void setContourNodes(){
-
 		for(int mat = 0; mat < World.nodes.length; mat++){
-			List<Node> contourStarts = new ArrayList<>();
+			contours[mat] = new ArrayList<>();
 			boolean[] used = new boolean[World.nodes[mat].size()];
-			for(int i = 0; i < World.nodes[mat].size(); i++){
+			for(int i = 0; i < used.length; i++){
 				if(!used[i]){
 					Node start = World.nodes[mat].get(i);
-					contourStarts.add(start);
+					contours[mat].add(start);
 					Node n = start;
 					do {
-						used[World.nodes[mat].indexOf(n)] = true;
+						used[n._id] = true;
 						n.inside = n.p.x >= rimL && n.p.x <= rimR;
 						n = n.next;
 					} while(n != start);
 				}
 			}
-			contours[mat] = new ArrayList<>();
-			contours[mat].addAll(contourStarts);
 		}
 	}
 	

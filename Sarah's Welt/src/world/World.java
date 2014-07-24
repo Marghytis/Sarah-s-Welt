@@ -118,7 +118,9 @@ public class World {
 		db = new Database("worlds", name + ".world");
 		boolean fresh = !loadGeneralInformation();
 		if(fresh){
-			Node.indexIndex = 0;
+			for(Material mat : Material.values()){
+				mat.highestNodeIndex = 0;
+			}
 			try {
 				createDatabase();
 			} catch (SQLException e) {
@@ -150,11 +152,8 @@ public class World {
 		s.execute("DELETE FROM 'World';");
 		s.close();
 		
-        int nodeAmount = 0;
-        for(List<Node> list : nodes) nodeAmount += list.size();
-		
 		s = db.conn.createStatement();
-		s.execute("INSERT INTO 'World' (wName, nodeAmount, invSelectedItem, coins) VALUES ('" + name + "', '" + nodeAmount + "', '" + World.sarah.inventory.selectedItem + "', '" + World.sarah.inventory.coins + "');");
+		s.execute("INSERT INTO 'World' (wName, invSelectedItem, coins) VALUES ('" + name + "', '" + World.sarah.inventory.selectedItem + "', '" + World.sarah.inventory.coins + "');");
 		s.close();
 	}
 
@@ -162,11 +161,10 @@ public class World {
 		try {
 		Statement sql = db.conn.createStatement();
 
-        ResultSet ergebnis = sql.executeQuery("SELECT wName, nodeAmount, invSelectedItem, coins FROM World;");
+        ResultSet ergebnis = sql.executeQuery("SELECT wName, invSelectedItem, coins FROM World;");
 
         ergebnis.next(); 
         name = ergebnis.getString("wName");
-        Node.indexIndex = ergebnis.getInt("nodeAmount");
         World.sarah.inventory.selectedItem = ergebnis.getInt("invSelectedItem");
         World.sarah.inventory.coins = ergebnis.getInt("coins");
         
@@ -186,16 +184,17 @@ public class World {
         PreparedStatement p = db.conn.prepareStatement("INSERT INTO Node (n_ID, mat, next_ID, last_ID, x, y) VALUES (?,?,?,?,?,?);");
         
         //set ids of all nodes
-        int id = 0;
-        for(List<Node> list : nodes) for(Node n : list){
-        	n._id = id;
-        	id++;
+        for(List<Node> list : nodes){
+        	int id = 0;
+        	for(Node n : list){
+            	n._id = id++;
+            }
         }
         
         for(int mat = 0; mat < Material.values().length; mat++) for (Node node : nodes[mat]){
         	int i = 1;
             p.setInt(i++, node._id);
-            p.setString(i++, Material.values()[mat].name());
+            p.setInt(i++, mat);
             p.setInt(i++, node.next._id);
             p.setInt(i++, node.last._id);
             p.setFloat(i++, node.p.x);
@@ -208,33 +207,48 @@ public class World {
         db.conn.setAutoCommit(true);
         p.close();
 	}
-	static Node[] allNodes;
+	static Node[][] allNodes;
 	private static void loadNodes() throws SQLException{
 		Statement sql = db.conn.createStatement();
 
-        ResultSet ergebnis = sql.executeQuery("SELECT n_ID, mat, next_ID, last_ID, x, y FROM Node;");
+        ResultSet ergebnis = sql.executeQuery("SELECT n_ID, mat, next_ID, last_ID, x, y FROM Node ORDER BY mat;");
         
-        allNodes = new Node[Node.indexIndex];
-        int[] nextNodes = new int[Node.indexIndex];
-        int[] lastNodes = new int[Node.indexIndex];
-        
+        allNodes = new Node[Material.values().length][0];
+        @SuppressWarnings("unchecked")
+		List<Integer>[] nextNodes = (List<Integer>[]) new ArrayList<?>[Material.values().length];
+        @SuppressWarnings("unchecked")
+        List<Integer>[] lastNodes = (List<Integer>[]) new ArrayList<?>[Material.values().length];
+
+        int mat = 0;
+        World.nodes[mat] = new ArrayList<>();
+        nextNodes[mat] = new ArrayList<>();
+        lastNodes[mat] = new ArrayList<>();
         while(ergebnis.next()){
         	int n_ID = ergebnis.getInt("n_ID");
-        	Material mat = Material.valueOf(ergebnis.getString("mat"));
+        	int newMat = ergebnis.getInt("mat");
+        	Material material = Material.values()[newMat];
         	int next_ID = ergebnis.getInt("next_ID");
         	int last_ID = ergebnis.getInt("last_ID");
         	int x = ergebnis.getInt("x");
         	int y = ergebnis.getInt("y");
+
+        	if(newMat > mat){
+	            allNodes[mat] = World.nodes[mat].toArray(new Node[0]);
+	            mat = newMat;
+	            World.nodes[mat] = new ArrayList<>();
+	            nextNodes[mat] = new ArrayList<>();
+	            lastNodes[mat] = new ArrayList<>();
+        	}
         	
-        	Node node = new Node(n_ID, new Vec(x, y), mat);
-        	nextNodes[n_ID] = next_ID;
-        	lastNodes[n_ID] = last_ID;
-        	allNodes[n_ID] = node;
+        	new Node(n_ID, new Vec(x, y), material);
+        	nextNodes[mat].add(next_ID);
+        	lastNodes[mat].add(last_ID);
         }
+        allNodes[mat] = World.nodes[mat].toArray(new Node[0]);
         
-        for(Node n : allNodes){
-        	n.next = allNodes[nextNodes[n._id]];
-        	n.last = allNodes[lastNodes[n._id]];
+        for(int m = 0; m < allNodes.length; m++) for (Node n : allNodes[m]){
+        	n.next = allNodes[m][nextNodes[m].get(n._id)];
+        	n.last = allNodes[m][lastNodes[m].get(n._id)];
         }
         ergebnis.close();
         sql.close();
@@ -245,7 +259,7 @@ public class World {
 		s.execute("DELETE FROM 'Creature'");
 		s.close();
 		
-        PreparedStatement p = db.conn.prepareStatement("INSERT INTO Creature (type, pX, pY, vX, vY, health, worldLink, front, metaString) VALUES (?,?,?,?,?,?,?,?,?);");
+        PreparedStatement p = db.conn.prepareStatement("INSERT INTO Creature (type, pX, pY, vX, vY, health, worldLink_ID, worldLink_mat, front, metaString) VALUES (?,?,?,?,?,?,?,?,?,?);");
         
         for(int type = 0; type < creatures.length; type++) for(Creature creature : creatures[type]){
         	int i = 1;
@@ -256,6 +270,7 @@ public class World {
             p.setFloat(i++, creature.vel.y);
             p.setInt(i++, creature.health);
             p.setInt(i++, creature.worldLink == null ? -1 : creature.worldLink._id);
+            p.setInt(i++, creature.worldLink == null ? -1 : creature.worldLink.mat.ordinal());
             p.setBoolean(i++, creature.front);
             p.setString(i++, creature.createMetaString());
             p.addBatch();
@@ -268,6 +283,7 @@ public class World {
         p.setFloat(i++, sarah.vel.y);
         p.setInt(i++, sarah.health);
         p.setInt(i++, sarah.worldLink == null ? -1 : sarah.worldLink._id);
+        p.setInt(i++, sarah.worldLink == null ? -1 : sarah.worldLink.mat.ordinal());
         p.setBoolean(i++, sarah.front);
         p.setString(i++, sarah.createMetaString());
         p.addBatch();
@@ -281,7 +297,7 @@ public class World {
 	private static void loadCreatures() throws SQLException {
 		Statement sql = db.conn.createStatement();
 
-        ResultSet ergebnis = sql.executeQuery("SELECT type, pX, pY, vX, vY, health, worldLink, front, metaString FROM Creature;");
+        ResultSet ergebnis = sql.executeQuery("SELECT type, pX, pY, vX, vY, health, worldLink_ID, worldLink_mat, front, metaString FROM Creature;");
         
         while(ergebnis.next()){
         	int type = ergebnis.getInt("type");
@@ -290,8 +306,9 @@ public class World {
         	float vX = ergebnis.getFloat("vX");
         	float vY = ergebnis.getFloat("vY");
         	int health = ergebnis.getInt("health");
-        	int linkIndex = ergebnis.getInt("worldLink");
-        	Node worldLink = linkIndex == -1 ? null : allNodes[linkIndex];
+        	int linkIndex = ergebnis.getInt("worldLink_ID");
+        	int linkMat = ergebnis.getInt("worldLink_mat");
+        	Node worldLink = linkIndex == -1 ? null : allNodes[linkMat][linkIndex];
         	boolean front = ergebnis.getBoolean("front");
         	String metaString = ergebnis.getString("metaString");
 
@@ -317,7 +334,7 @@ public class World {
 		s.execute("DELETE FROM 'WorldObject'");
 		s.close();
 		
-        PreparedStatement p = db.conn.prepareStatement("INSERT INTO WorldObject (type, x, y, worldLink, front, metaString) VALUES (?,?,?,?,?,?);");
+        PreparedStatement p = db.conn.prepareStatement("INSERT INTO WorldObject (type, x, y, worldLink_ID, worldLink_mat, front, metaString) VALUES (?,?,?,?,?,?,?);");
         
         for(int type = 0; type < worldObjects.length; type++) for(WorldObject object : worldObjects[type]){
         	int i = 1;
@@ -325,6 +342,7 @@ public class World {
             p.setFloat(i++, object.pos.x);
             p.setFloat(i++, object.pos.y);
             p.setInt(i++, object.worldLink == null ? -1 : object.worldLink._id);
+            p.setInt(i++, object.worldLink == null ? -1 : object.worldLink.mat.ordinal());
             p.setBoolean(i++, object.front);
             p.setString(i++, object.createMetaString());
             p.addBatch();
@@ -339,14 +357,15 @@ public class World {
 	private static void loadWorldObjects() throws SQLException {
 		Statement sql = db.conn.createStatement();
 
-        ResultSet ergebnis = sql.executeQuery("SELECT type, x, y, worldLink, front, metaString FROM WorldObject;");
+        ResultSet ergebnis = sql.executeQuery("SELECT type, x, y, worldLink_ID, worldLink_mat, front, metaString FROM WorldObject;");
         
         while(ergebnis.next()){
         	int type = ergebnis.getInt("type");
         	float x = ergebnis.getFloat("x");
         	float y = ergebnis.getFloat("y");
-        	int linkIndex = ergebnis.getInt("worldLink");
-        	Node worldLink = linkIndex == -1 ? null : allNodes[linkIndex];
+        	int linkIndex = ergebnis.getInt("worldLink_ID");
+        	int linkMat = ergebnis.getInt("worldLink_mat");
+        	Node worldLink = linkIndex == -1 ? null : allNodes[linkMat][linkIndex];
         	boolean front = ergebnis.getBoolean("front");
         	String metaString = ergebnis.getString("metaString");
 
@@ -368,7 +387,7 @@ public class World {
 		s.execute("DELETE FROM 'WorldItem'");
 		s.close();
 		
-        PreparedStatement p = db.conn.prepareStatement("INSERT INTO WorldItem (item, x, y, front, worldLink) VALUES (?,?,?,?,?);");
+        PreparedStatement p = db.conn.prepareStatement("INSERT INTO WorldItem (item, x, y, front, worldLink_ID, worldLink_mat) VALUES (?,?,?,?,?,?);");
         
         for(List<WorldItem> list : World.items) for(WorldItem item : list){
         	int i = 1;
@@ -377,6 +396,7 @@ public class World {
             p.setFloat(i++, item.pos.y);
             p.setBoolean(i++, item.front);
             p.setInt(i++, item.worldLink == null ? -1 : item.worldLink._id);
+            p.setInt(i++, item.worldLink == null ? -1 : item.worldLink.mat.ordinal());
             p.addBatch();
         }
 
@@ -389,15 +409,16 @@ public class World {
 	private static void loadItems() throws SQLException {
 		Statement sql = db.conn.createStatement();
 
-        ResultSet ergebnis = sql.executeQuery("SELECT item, x, y, front, worldLink FROM WorldItem;");
+        ResultSet ergebnis = sql.executeQuery("SELECT item, x, y, front, worldLink_ID, worldLink_mat FROM WorldItem;");
         
         while(ergebnis.next()){
         	Item item = Item.list.get(ergebnis.getInt("item"));
         	float x = ergebnis.getFloat("x");
         	float y = ergebnis.getFloat("y");
         	boolean front = ergebnis.getBoolean("front");
-        	int linkIndex = ergebnis.getInt("worldLink");
-        	Node worldLink = linkIndex == -1 ? null : allNodes[linkIndex];
+        	int linkIndex = ergebnis.getInt("worldLink_ID");
+        	int linkMat = ergebnis.getInt("worldLink_mat");
+        	Node worldLink = linkIndex == -1 ? null : allNodes[linkMat][linkIndex];
 
 			WorldItem wItem = new WorldItem(item, new Vec(x, y), worldLink);
 			wItem.front = front;
@@ -513,7 +534,7 @@ public class World {
         for(Layer layer : rightGenerator.layers){
         	i = 1;
             p.setBoolean(i++, true);
-            p.setString(i++, layer.aim.material.name());
+            p.setInt(i++, layer.aim.material.ordinal());
             p.setFloat(i++, layer.thickness);
             p.setFloat(i++, layer.aim.thickness);
             p.setFloat(i++, layer.aim.resizeStep);
@@ -527,7 +548,7 @@ public class World {
         for(Layer layer : leftGenerator.layers){
         	i = 1;
             p.setBoolean(i++, false);
-            p.setString(i++, layer.aim.material.name());
+            p.setInt(i++, layer.aim.material.ordinal());
             p.setFloat(i++, layer.thickness);
             p.setFloat(i++, layer.aim.thickness);
             p.setFloat(i++, layer.aim.resizeStep);
@@ -596,13 +617,14 @@ public class World {
         
         while(ergebnis.next()){
         	boolean right = ergebnis.getBoolean("generator");
-        	Material mat = Material.valueOf(ergebnis.getString("material"));
+        	int material = ergebnis.getInt("material");
+        	Material mat = Material.values()[material];
         	float thickness = ergebnis.getFloat("thickness");
         	float aimThickness = ergebnis.getFloat("aimThickness");
         	float resizeStep = ergebnis.getFloat("resizeStep");
         	int priority = ergebnis.getInt("priority");
-        	Node endNodeT = allNodes[ergebnis.getInt("endNodeT")];
-        	Node endNodeB = allNodes[ergebnis.getInt("endNodeB")];
+        	Node endNodeT = allNodes[material][ergebnis.getInt("endNodeT")];
+        	Node endNodeB = allNodes[material][ergebnis.getInt("endNodeB")];
         	boolean reachedAim = ergebnis.getBoolean("reachedAim");
         	boolean shrink = ergebnis.getBoolean("shrink");
         	
@@ -665,15 +687,15 @@ public class World {
 		Statement s = db.conn.createStatement();
 		s.executeUpdate(
 				  "DROP TABLE IF EXISTS 'World';"//1. World
-				+ "CREATE TABLE 'World' (wName VARCHAR, nodeAmount INTEGER, invSelectedItem INTEGER, coins INTEGER);"
+				+ "CREATE TABLE 'World' (wName VARCHAR, invSelectedItem INTEGER, coins INTEGER);"
 				+ "DROP TABLE IF EXISTS 'Node';"//2. Node
-				+ "CREATE TABLE 'Node' (n_ID INTEGER, mat VARCHAR, next_ID INTEGER, last_ID INTEGER, x FLOAT, y FLOAT);"
+				+ "CREATE TABLE 'Node' (n_ID INTEGER, mat INTEGER, next_ID INTEGER, last_ID INTEGER, x FLOAT, y FLOAT);"
 				+ "DROP TABLE IF EXISTS 'Creature';"//3. Creature
-				+ "CREATE TABLE 'Creature' (type INTEGER, pX FLOAT, pY FLOAT, vX FLOAT, vY FLOAT, health INTEGER, worldLink INTEGER, front BOOLEAN, metaString VARCHAR);"
+				+ "CREATE TABLE 'Creature' (type INTEGER, pX FLOAT, pY FLOAT, vX FLOAT, vY FLOAT, health INTEGER, worldLink_ID INTEGER, worldLink_mat INTEGER, front BOOLEAN, metaString VARCHAR);"
 				+ "DROP TABLE IF EXISTS 'WorldObject';"//4. WorldObject
-				+ "CREATE TABLE 'WorldObject' (type INTEGER, x FLOAT, y FLOAT, worldLink INTEGER, front BOOLEAN, metaString VARCHAR);"
+				+ "CREATE TABLE 'WorldObject' (type INTEGER, x FLOAT, y FLOAT, worldLink_ID INTEGER, worldLink_mat INTEGER, front BOOLEAN, metaString VARCHAR);"
 				+ "DROP TABLE IF EXISTS 'WorldItem';"//5. WorldItem
-				+ "CREATE TABLE 'WorldItem' (item INTEGER, x FLOAT, y FLOAT, front BOOLEAN, worldLink INTEGER);"
+				+ "CREATE TABLE 'WorldItem' (item INTEGER, x FLOAT, y FLOAT, front BOOLEAN, worldLink_ID INTEGER, worldLink_mat INTEGER);"
 				+ "DROP TABLE IF EXISTS 'Zone';"//6. Zone
 				+ "CREATE TABLE 'Zone' (type INTEGER, start FLOAT, end FLOAT);"
 				+ "DROP TABLE IF EXISTS 'Generator';"//7. Generator
@@ -681,7 +703,7 @@ public class World {
 				+ "DROP TABLE IF EXISTS 'Structure';"//8. Structure
 				+ "CREATE TABLE 'Structure' (generator BOOLEAN, level INTEGER, ind INTEGER, stepPos INTEGER);"
 				+ "DROP TABLE IF EXISTS 'Layer';"//9. Layer
-				+ "CREATE TABLE 'Layer' (generator BOOLEAN, material VARCHAR, thickness FLOAT, aimThickness FLOAT, resizeStep FLOAT, priority INTEGER, endNodeT INTEGER, endNodeB INTEGER, reachedAim BOOLEAN, shrink BOOLEAN);"
+				+ "CREATE TABLE 'Layer' (generator BOOLEAN, material INTEGER, thickness FLOAT, aimThickness FLOAT, resizeStep FLOAT, priority INTEGER, endNodeT INTEGER, endNodeB INTEGER, reachedAim BOOLEAN, shrink BOOLEAN);"
 				+ "DROP TABLE IF EXISTS 'ItemStack';"//10. ItemStack
 				+ "CREATE TABLE 'ItemStack' (slot INTEGER, item INTEGER, count INTEGER);"
 				);

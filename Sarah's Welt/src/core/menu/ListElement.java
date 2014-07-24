@@ -58,7 +58,7 @@ public class ListElement extends Component{
 	public boolean mousePressed() {
 		if(contains(Mouse.getEventX(), Mouse.getEventY())){
 			state = true;
-			((ItemStack)item).inv.selectedItem = ((ItemStack)item).slot;
+			if(item instanceof ItemStack) ((ItemStack)item).inv.selectedItem = ((ItemStack)item).slot;
 			return true;
 		}
 		return false;

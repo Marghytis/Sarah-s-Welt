@@ -4,7 +4,6 @@ import core.geom.Vec;
 
 
 public class Node {
-	static int indexIndex;//TODO read and save in database
 	
 	public Material mat;
 	public Node next = null;//next should always be counter-clockwise
@@ -21,7 +20,7 @@ public class Node {
 	}
 	
 	public Node(Vec p, Material mat){
-		this(indexIndex++, p, mat);
+		this(mat.highestNodeIndex + 1, p, mat);
 	}
 	
 	public Node(int index, Vec p, Material mat){
@@ -29,6 +28,7 @@ public class Node {
 		this.p = p;
 		this.mat = mat;
 		World.nodes[mat.ordinal()].add(this);
+		mat.highestNodeIndex = Math.max(index, mat.highestNodeIndex);
 	}
 
 	public void connectReal(Node node2) {

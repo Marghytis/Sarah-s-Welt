@@ -224,7 +224,8 @@ public class Menu {
 										new ToggleButton("Time running", "Time stopped", true, 				3/4.0f, 	9/12.0f, new Runnable(){public void run(){Settings.time = View.DEBUG.components[6].state;}}),
 										new Button("Set morning",								 			3/4.0f, 	7/12.0f, new Runnable(){public void run(){Calendar.setMorning();}}),
 										new Button("Set evening",											3/4.0f, 	5/12.0f, new Runnable(){public void run(){Calendar.setEvening();}}),
-										new Button("Boost Health",											1/4.0f, 	5/12.0f, new Runnable(){public void run(){World.sarah.health += 5;}})};
+										new Button("Boost Health",											1/4.0f, 	5/12.0f, new Runnable(){public void run(){World.sarah.health += 5;}}),
+										new Text(() -> "Sarah pos: " + World.sarah.pos.x,					1/4.0f, 	3/12.0f, 200, 60)};
 			}
 		},
 		INVENTORY(false){

@@ -22,6 +22,7 @@ public enum Material {
 	public float decelerationFactor;//density or friction; this is determined by the 'solid' boolean
 	public boolean solid = true;
 	
+	public int highestNodeIndex;
 	
 	Material(String name, float decelerationFactor, boolean solid){
 		textureFile = new TextureFile(name);
