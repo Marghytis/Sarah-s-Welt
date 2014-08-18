@@ -27,7 +27,7 @@ public class Main {
 		if(args.length > 0) World.widthHalf = Integer.parseInt(args[0]);
 		
 		//Create the Window and show splash screen
-		if(args.length > 1){
+		if(true){//args.length > 1
 			Window.createFullScreen("Sarahs Welt 1.0");
 		} else {
 			Window.create("Sarahs Welt 1.0", 1000, 600);

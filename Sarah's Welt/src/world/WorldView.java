@@ -76,11 +76,16 @@ public class WorldView {
 	
 	public static void setContourNodes(){
 		for(int mat = 0; mat < World.nodes.length; mat++){
+			for(int i = 0; i < World.nodes[mat].size(); i++){
+				World.nodes[mat].get(i)._id = i;
+			}
+		}
+		for(int mat = 0; mat < World.nodes.length; mat++){
 			contours[mat] = new ArrayList<>();
 			boolean[] used = new boolean[World.nodes[mat].size()];
-			for(int i = 0; i < used.length; i++){
+			for(int i = 0; i < World.nodes[mat].size(); i++){
+				Node start = World.nodes[mat].get(i);
 				if(!used[i]){
-					Node start = World.nodes[mat].get(i);
 					contours[mat].add(start);
 					Node n = start;
 					do {

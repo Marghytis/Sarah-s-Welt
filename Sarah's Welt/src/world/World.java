@@ -119,7 +119,7 @@ public class World {
 		boolean fresh = !loadGeneralInformation();
 		if(fresh){
 			for(Material mat : Material.values()){
-				mat.highestNodeIndex = 0;
+				mat.highestNodeIndex = -1;
 			}
 			try {
 				createDatabase();

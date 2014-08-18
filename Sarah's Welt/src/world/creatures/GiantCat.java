@@ -1,6 +1,5 @@
 package world.creatures;
 
-import item.Inventory;
 import item.Item;
 import resources.Res;
 import util.Animation;
@@ -61,6 +60,7 @@ public class GiantCat extends WalkingCreature {
 		if(random.nextInt(1000)==0){
 			dir = random.nextInt(3)-1;
 		}
+		animator.setAnimation(walk);
 	}
 	
 	public boolean findSarah(){
