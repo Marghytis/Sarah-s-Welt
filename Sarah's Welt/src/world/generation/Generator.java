@@ -95,11 +95,15 @@ public class Generator {
 				setZone(ZoneType.DESERT);
 			}
 			else {
-				setZone(ZoneType.values()[random.nextInt(ZoneType.values().length-1)]);
+				ZoneType newZone = ZoneType.values()[random.nextInt(ZoneType.values().length-1)];
+				setZone(newZone);
+				if(newZone == ZoneType.LAKE){
+					yLake = pos.y;
+				}
 			}
-			if(zone.type == ZoneType.LAKE){
-				levels[0].stepPos = right ? 1000000 : -10;
-			}
+//			if(zone.type == ZoneType.LAKE){
+//				levels[0].stepPos = right ? 1000000 : -10;
+//			}
 		}
 	}
 	
@@ -152,6 +156,8 @@ public class Generator {
 			}
 		}
 	}
+	
+	public float yLake;
 
 	/** Remove, start and resize layers*/
 	public void updateLayers(){
@@ -162,6 +168,10 @@ public class Generator {
 			if(layer.approachAim()){
 				layers.remove(layer);
 				l--;
+			}
+			
+			if(layer.aim.material == Material.WATER){
+				y = yLake;
 			}
 			Node nTop = new Node(pos.x, y, layer.aim.material);
 			y -= layer.thickness;
