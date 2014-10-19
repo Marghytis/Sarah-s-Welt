@@ -136,7 +136,7 @@ public class Zone {
 									new ThingSpawner((node, random) -> spawnItem(new WorldItem(Item.sword, new Vec(), null), node, 0, random), 1, 5),
 				}),
 		LAKE( new AimLayer[]{new AimLayer(Material.WATER, 200, 20, 100), new AimLayer(Material.EARTH, 30, 1f, 90), new AimLayer(Material.STONE, 10000, 200, 0)},
-				new StructureType[][]{{StructureType.FLAT}, {}, {}},
+				new StructureType[][]{{StructureType.FLAT, StructureType.RAISING}, {StructureType.RAISING}, {}},
 				new ThingSpawner[]{ 
 ////											new ThingSpawner((node, random) -> spawnCreature(new Butterfly(random.nextInt(2), new Vec(), null, random.nextInt(Butterfly.flap1.sequence.length)), node, 20, random), 1, 10),
 ////											new ThingSpawner((node, random) -> spawnCreature(new Bird(random.nextInt(3), new Vec(), null, random.nextInt(Bird.flap.sequence.length)), node, 20, random), 1, 100),

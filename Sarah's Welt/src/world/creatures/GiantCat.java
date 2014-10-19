@@ -12,8 +12,9 @@ import core.geom.Vec;
 
 public class GiantCat extends WalkingCreature {
 	
-	static Animation stand = new Animation(0, 1);
-	static Animation walk = new Animation(5, 0, true, 0, 1, 2, 3, 4);
+	static Animation stand = new Animation(0, 0);
+	static Animation walk = new Animation(15, 0, true, 0, 1, 2, 3, 4);
+	static Animation walkSlowly = new Animation(30, 0, true, 0, 1, 2, 3, 4);
 	static Animation punch1 = new Animation(3, 1 , false, 2, 0, 1, 2);
 	
 	public GiantCat(Vec p, Node worldLink){
@@ -52,7 +53,11 @@ public class GiantCat extends WalkingCreature {
 	}
 	
 	public void donePunch(){
-		World.sarah.hitBy(this, null);
+		Vec headPos = new Vec(pos).shift(pos.x < World.sarah.pos.x ? 60 : -60, 30);
+		
+		if(headPos.minus(World.sarah.pos).lengthSqare() < 5000){
+			World.sarah.hitBy(this, null);
+		}
 		animator.setAnimation(stand);
 	}
 	
@@ -60,15 +65,19 @@ public class GiantCat extends WalkingCreature {
 		if(random.nextInt(1000)==0){
 			dir = random.nextInt(3)-1;
 		}
-		animator.setAnimation(walk);
+		animator.setAnimation(walkSlowly);
 	}
 	
 	public boolean findSarah(){
-		if(pos.minus(World.sarah.pos).lengthSqare() < 90000){
-			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > pos.x){
+		Vec headPos = new Vec(pos).shift(pos.x < World.sarah.pos.x ? 60 : -60, 30);
+		
+		if(headPos.minus(World.sarah.pos).lengthSqare() < 90000){
+			if(World.sarah.pos.x + World.sarah.animator.tex.box.x > headPos.x){
 				dir = 1;
-			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < pos.x){
+				animator.setAnimation(walk);
+			} else if(World.sarah.pos.x + World.sarah.animator.tex.box.x + World.sarah.animator.tex.box.size.x < headPos.x){
 				dir = -1;
+				animator.setAnimation(walk);
 			} else {
 				dir = 0;
 				animator.setAnimation(punch1);
@@ -88,8 +97,8 @@ public class GiantCat extends WalkingCreature {
 		if(hit > 0){
 //			animator.setAnimation(hitt);
 		} else if(!animator.animation.equals(punch1)){
-			if(vP != 0){
-				animator.setAnimation(walk);
+			if(dir != 0){
+//				animator.setAnimation(walk);
 			} else {
 				animator.setAnimation(stand);
 			}

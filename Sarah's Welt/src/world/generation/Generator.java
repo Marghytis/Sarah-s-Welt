@@ -166,18 +166,33 @@ public class Generator {
 			Layer layer = layers.get(l);
 			//approche thickness to aim thickness
 			if(layer.approachAim()){
-				layers.remove(layer);
+				layers.remove(l);
 				l--;
+				if(layer.aim.material == Material.WATER){
+					pos.set(pos.x, yLake);
+					y = pos.y;
+				}
 			}
 			
 			if(layer.aim.material == Material.WATER){
-				y = yLake;
+				if(yLake < y - layer.thickness){
+					layers.remove(l);
+					l--;
+					continue;
+				} else {
+					Node nTop = new Node(pos.x, yLake, layer.aim.material);
+					y -= layer.thickness;
+					Node nBot = new Node(pos.x, y, layer.aim.material);
+					
+					layer.attach(nTop, nBot);
+				}
+			} else {
+				Node nTop = new Node(pos.x, y, layer.aim.material);
+				y -= layer.thickness;
+				Node nBot = new Node(pos.x, y, layer.aim.material);
+				
+				layer.attach(nTop, nBot);
 			}
-			Node nTop = new Node(pos.x, y, layer.aim.material);
-			y -= layer.thickness;
-			Node nBot = new Node(pos.x, y, layer.aim.material);
-			
-			layer.attach(nTop, nBot);
 		}
 	}
 	
