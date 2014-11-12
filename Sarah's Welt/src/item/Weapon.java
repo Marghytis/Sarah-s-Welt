@@ -39,6 +39,7 @@ public class Weapon extends Item{
 			if(hitCreature != null){
 				hitCreature.hitBy(World.sarah, this);
 			}
+			super.used();
 			return true;
 		} else {
 			return false;

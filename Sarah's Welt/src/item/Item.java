@@ -38,10 +38,10 @@ public class Item {
 			new Quad(-25, -2, 50, 50), new Quad(-10, -10, 30, 30), 0, "Berry", 0, 8, null){
 		@Override
 		public boolean use(float x, float y){
-			World.sarah.inventory.stacks[World.sarah.inventory.selectedItem].item = Item.fist;
 			if(World.sarah.mana + 2 <= 30 && super.use(x, y)){
 				World.sarah.mana += 2;
 				WorldView.particleEffects.add(new BerryEat(new Vec(World.sarah.pos.x + (World.sarah.animator.box.size.x/2), World.sarah.pos.y + (World.sarah.animator.box.size.y/2))));
+				super.used();
 				return true;
 			}
 			return false;
@@ -97,12 +97,13 @@ public class Item {
 	public void update(float delta, WorldItem item){}
 	
 	public boolean use(float x, float y){
-		if(coolDown <= 0){
-			World.sarah.useItem(this);
-			coolDown = coolDownStart;
-			return true;
-		}
-		return false;
+		return coolDown <= 0;
+	}
+	
+	public void used(){
+		World.sarah.inventory.stacks[World.sarah.inventory.selectedItem].count--;
+		World.sarah.useItem(this);
+		coolDown = coolDownStart;
 	}
 	
 	public void renderWorld(){

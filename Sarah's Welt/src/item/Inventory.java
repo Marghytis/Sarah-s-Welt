@@ -29,16 +29,23 @@ public class Inventory {
 	
 	public void update(float delta){
 		for(ItemStack stack : stacks){
-			if(stack.item != null && stack.item.coolDown > 0) stack.item.coolDown -= delta;
+			if(stack.count <= 0) stack.item = Item.fist;
+			if(stack.item != Item.fist && stack.item.coolDown > 0) stack.item.coolDown -= delta;
 		}
 	}
 	
 	public boolean addItem(Item item){
 		for(int i = 0; i < stacks.length; i++){
 			if(stacks[i].item == item){
-				return false;
+				if(stacks[i].count <= 5){
+					stacks[i].count++;
+					return true;
+				} else {
+					return false;
+				}
 			} else if (stacks[i].item == Item.fist){
 				stacks[i].item = item;
+				stacks[i].count = 1;
 				return true;
 			}
 		}
