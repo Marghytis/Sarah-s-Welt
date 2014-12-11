@@ -109,7 +109,7 @@ public class WorldView {
 	public static void updateCreatures(float delta){
 		thingTasks.clear();
 		for(List<Creature> list : World.creatures) for(Creature c : list){
-			if(c.pos.x >= rimL && c.pos.x <= rimR){
+			if(c.pos.x >= rimL+50 && c.pos.x <= rimR-50){
 				c.update(delta);
 			}
 		}

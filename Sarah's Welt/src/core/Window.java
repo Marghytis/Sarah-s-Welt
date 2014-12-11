@@ -108,9 +108,9 @@ public class Window {
 	    	AL.create(null, 15, 22050, true);
 	    } catch (LWJGLException le) {
 	    	le.printStackTrace();
-	      return;
+	    	setupOpenAL();
 	    }
-	    AL10.alGetError();
+//	    AL10.alGetError();
 	}
 	
 	public static void setSize(int w, int h){
